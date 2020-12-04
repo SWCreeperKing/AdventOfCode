@@ -6,12 +6,12 @@ namespace AdventOfCode
     public class Day3p1
     {
         [Run(3, 1)]
-        public static void Main()
+        public static void Main(string input)
         {
             var right = 3;
             var down = 1;
 
-            var arr = Inputs.input3.Split('\n');
+            var arr = input.Split('\n');
 
             var h = arr.Length;
             var w = arr[0].Length - 1;

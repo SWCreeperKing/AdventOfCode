@@ -13,6 +13,7 @@ namespace AdventOfCode
     {
         public static void Main()
         {
+            Inputs.Init();
             var assembly = Assembly.GetExecutingAssembly();
             List<(RunAttribute, MethodInfo)> dayParts = new();
             foreach (var a in assembly.GetTypes())
@@ -45,7 +46,7 @@ namespace AdventOfCode
 
                 var methodExe = (from d in dayParts where d.Item1.day == day && d.Item1.part == part select d).ToArray();
                 if (methodExe.Length < 1) Console.WriteLine("invalid selection");
-                else methodExe[0].Item2.Invoke(0, new object[]{});
+                else methodExe[0].Item2.Invoke(0, new object[]{Inputs.inputs[day - 1]});
             } while (true);
         }
     }

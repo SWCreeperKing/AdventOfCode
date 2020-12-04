@@ -7,9 +7,9 @@ namespace AdventOfCode
     public class Day3p2
     {
         [Run(3, 2)]
-        public static void Main()
+        public static void Main(string input)
         {
-            var arr = Inputs.input3.Split('\n');
+            var arr = input.Split('\n');
 
             var find = new[]
             {

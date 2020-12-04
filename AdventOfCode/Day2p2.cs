@@ -10,10 +10,10 @@ namespace AdventOfCode
         record Data(int Contain, int NotContain, char C, string S);
 
         [Run(2, 2)]
-        public static void Main()
+        public static void Main(string input)
         {
             var inputs = (from s
-                    in Inputs.input2.Split('\n')
+                    in input.Split('\n')
                 select s.Split(' ')
                 into ss
                 let n12 = ss[0].Split('-')

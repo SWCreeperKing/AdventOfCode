@@ -7,9 +7,9 @@ namespace AdventOfCode
     public class Day1p2
     {
         [Run(1, 2)]
-        public static void Main()
+        public static void Main(string input)
         {
-            var split = Inputs.input1.Split(' ');
+            var split = input.Replace("\n", " ").Split(' ');
             var numArr = (from s in split select int.Parse(s)).ToArray();
             var sortedInput = (from n in numArr orderby n select n).ToArray();
             var start = 0;
