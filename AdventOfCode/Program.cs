@@ -15,8 +15,8 @@ namespace AdventOfCode
             // Day2p2.Main();
             // Day3p1.Main();
             // Day3p2.Main();
-            // Day4p1.Main();
-            Day4p2.Main();
+            Day4p1.Main();
+            // Day4p2.Main();
         }
     }
 }

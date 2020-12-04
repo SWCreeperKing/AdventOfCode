@@ -12,10 +12,7 @@ namespace AdventOfCode
                 (from s in new Regex(@"\n\r\n").Split(Inputs.input4)
                     where new Regex(@"[(\n\r)\n\r ]").Replace(s, "") != ""
                     select new Regex(@"[(\n\r)\n\r]").Replace(s, ""))
-                .Count(realS =>
-                    realS.Contains("byr:") && realS.Contains("iyr:") && realS.Contains("eyr:") &&
-                    realS.Contains("hgt:") && realS.Contains("hcl:") && realS.Contains("ecl:") &&
-                    realS.Contains("pid:"));
+                .Count(realS => new Regex(@"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}").IsMatch(realS));
 
             Console.WriteLine(count);
         }
