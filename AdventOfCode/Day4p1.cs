@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     public class Day4p1
     {
+        [Run(4, 1)]
         public static void Main()
         {
             var count =

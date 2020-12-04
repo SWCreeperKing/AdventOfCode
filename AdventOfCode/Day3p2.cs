@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     public class Day3p2
     {
+        [Run(3, 2)]
         public static void Main()
         {
             var arr = Inputs.input3.Split('\n');

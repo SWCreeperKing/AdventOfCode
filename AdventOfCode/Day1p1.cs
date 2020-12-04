@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     class Day1p1
     {
+        [Run(1, 1)]
         public static void Main()
         {
             var split = Inputs.input1.Split(' ');

@@ -1,9 +1,11 @@
 ﻿using System;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     public class Day3p1
     {
+        [Run(3, 1)]
         public static void Main()
         {
             var right = 3;

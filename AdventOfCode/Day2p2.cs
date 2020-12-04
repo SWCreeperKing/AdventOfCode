@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
@@ -8,6 +9,7 @@ namespace AdventOfCode
     {
         record Data(int Contain, int NotContain, char C, string S);
 
+        [Run(2, 2)]
         public static void Main()
         {
             var inputs = (from s

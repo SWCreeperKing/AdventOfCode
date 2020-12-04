@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
@@ -7,6 +8,7 @@ namespace AdventOfCode
     {
         record Data(int Low, int High, char C, string S);
 
+        [Run(2, 1)]
         public static void Main()
         {
             var inputs = (from s
