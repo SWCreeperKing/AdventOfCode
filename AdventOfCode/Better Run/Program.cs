@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AdventOfCode;
 using AdventOfCode.Better_Run;
 
 Program.Main();
 
-namespace AdventOfCode
+namespace AdventOfCode.Better_Run
 {
     public class Program
     {

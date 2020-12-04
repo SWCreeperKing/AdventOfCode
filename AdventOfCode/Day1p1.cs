@@ -14,7 +14,7 @@ namespace AdventOfCode
             var sortedInput = (from n in numArr orderby n select n).ToArray();
             var start = 0;
             var ending = numArr.Length - 1;
-
+            
             int added;
             int numb1;
             int numb2;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
+﻿using System.IO;
 
-namespace AdventOfCode
+namespace AdventOfCode.Better_Run
 {
     public static class Inputs
     {
