@@ -9,15 +9,13 @@ namespace AdventOfCode
         [Run(5, 2)]
         public static long Main(string input)
         {
-            long next;
-
             var max =
                 (from s in input.Split(Environment.NewLine)
                     select (s.Substring(0, 7), s.Substring(7).Replace("R", "B").Replace("L", "F")))
                 .Select(i => BinaryFinder(0, 127, i.Item1) * 8 + BinaryFinder(0, 7, i.Item2))
                 .Select(dummy => (long) dummy).OrderBy(l => l).ToList();
 
-            next = max[0];
+            var next = max[0];
             foreach (var m in max)
             {
                 if (m == next) next++;
