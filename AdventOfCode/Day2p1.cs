@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -11,22 +12,20 @@ namespace AdventOfCode
         [Run(2, 1)]
         public static void Main(string input)
         {
-            var inputs = (from s
-                    in input.Split('\n')
-                select s.Split(' ')
-                into ss
-                let n12 = ss[0].Split('-')
-                select (Data)
-                    new(int.Parse(n12[0]), int.Parse(n12[1]), ss[1].Replace(":", "")[0], ss[2])).ToList();
-
-            var validPasswords =
-                (from i in inputs
-                    where i.S.Any(s => s == i.C)
-                    let arr = (from s in i.S where s == i.C select s).ToArray()
-                    where arr.Length >= i.Low && arr.Length <= i.High
-                    select i.S).ToList();
-
-            Console.WriteLine($"{validPasswords.Count}");
+            var validPasswords = (from s
+                        in input.Split('\n')
+                    select s.Split(' ')
+                    into ss
+                    let n12 = ss[0].Split('-')
+                    select (Data)
+                        new(int.Parse(n12[0]), int.Parse(n12[1]), ss[1].Replace(":", "")[0], ss[2].Replace("\r", "")))
+                .Count(d =>
+                {
+                    var r = new Regex($@"[^{d.C}]").Replace(d.S, "").Length;
+                    return d.Low <= r && d.High >= r;
+                });
+            
+            Console.WriteLine($"{validPasswords}");
         }
     }
 }
