@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -7,7 +6,7 @@ namespace AdventOfCode
     public class Day3p2
     {
         [Run(3, 2)]
-        public static void Main(string input)
+        public static long Main(string input)
         {
             var arr = input.Split('\n');
 
@@ -20,7 +19,8 @@ namespace AdventOfCode
                 Method(1, 2, arr)
             };
 
-            Console.WriteLine($"numbers: [{string.Join(", ", find)}], ans: {find.Aggregate(1L, (current, i) => current * i)}");
+            // Console.WriteLine($"numbers: [{string.Join(", ", find)}], ans: {find.Aggregate(1L, (current, i) => current * i)}");
+            return find.Aggregate(1L, (current, i) => current * i);
         }
 
         public static int Method(int right, int down, string[] arr)

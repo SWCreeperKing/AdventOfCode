@@ -1,12 +1,11 @@
-﻿using System;
-using AdventOfCode.Better_Run;
+﻿using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     public class Day3p1
     {
         [Run(3, 1)]
-        public static void Main(string input)
+        public static int Main(string input)
         {
             var right = 3;
             var down = 1;
@@ -26,13 +25,13 @@ namespace AdventOfCode
                 var c = c1[rj];
                 var cIs = c == '#';
                 if (cIs) trees++;
-                arr[i] = arr[i].Remove(rj, 1).Insert(rj, cIs? "X" : "O"); // testing
+                // arr[i] = arr[i].Remove(rj, 1).Insert(rj, cIs? "X" : "O"); // testing
                 j += right;
             }
-
-
-            Console.WriteLine(string.Join("\n", arr)); // testing
-            Console.WriteLine(trees);
+            
+            return trees;
+            // Console.WriteLine(string.Join("\n", arr)); // testing
+            // Console.WriteLine(trees);
         }
     }
 }

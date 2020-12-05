@@ -45,7 +45,16 @@ namespace AdventOfCode.Better_Run
 
                 var methodExe = (from d in dayParts where d.Item1.day == day && d.Item1.part == part select d).ToArray();
                 if (methodExe.Length < 1) Console.WriteLine("invalid selection");
-                else methodExe[0].Item2.Invoke(0, new object[]{Inputs.inputs[day - 1]});
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    var answer = methodExe[0].Item2.Invoke(0, new object[] {Inputs.inputs[day - 1]});
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write("Answer: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(answer);
+                    Console.ResetColor();
+                }
             } while (true);
         }
     }
