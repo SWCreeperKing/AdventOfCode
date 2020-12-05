@@ -13,7 +13,6 @@ namespace AdventOfCode
             select (int.Parse(n12[0]), int.Parse(n12[1]), ss[1][0], ss[2].Replace("\r", ""))).Count(d =>
         {
             var (contain, notContain, c, s) = d;
-            if (!s.Contains(c) || s.Length < contain || s.Length < notContain) return false;
             return s[contain - 1] == c ^ s[notContain - 1] == c;
         });
     }
