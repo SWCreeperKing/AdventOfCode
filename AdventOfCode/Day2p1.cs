@@ -8,14 +8,10 @@ namespace AdventOfCode
     {
         [Run(2, 1)]
         public static int Main(string input) => (from s in input.Split('\n')
-            select s.Split(' ')
+            select s.Split(' ') 
             into ss
             let n12 = ss[0].Split('-')
             select (int.Parse(n12[0]), int.Parse(n12[1]), ss[1][0], ss[2])).Count(d =>
-        {
-            var (low, high, c, s) = d;
-            var r = new Regex($@"[^{c}]").Replace(s, "").Length;
-            return low <= r && high >= r;
-        });
+            new Regex($@"[^{d.Item3}]").Replace(d.Item4, "").Length.IsInRange(d.Item1, d.Item2));
     }
 }

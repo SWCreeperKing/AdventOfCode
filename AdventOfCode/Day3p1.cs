@@ -7,31 +7,14 @@ namespace AdventOfCode
         [Run(3, 1)]
         public static int Main(string input)
         {
-            var right = 3;
-            var down = 1;
-
             var arr = input.Split('\n');
+            int h = arr.Length, w = arr[0].Length, trees = 0;
 
-            var h = arr.Length;
-            var w = arr[0].Length - 1;
-            var trees = 0;
+            for (int i = 1, j = 3; i < h; i++, j += 3)
+                if (arr[i][(i * w + j) % w] == '#')
+                    trees++;
 
-            var j = right;
-            for (var i = down; i < h; i += down)
-            {
-                var rj = i * w + j;
-                rj %= w;
-                var c1 = arr[i];
-                var c = c1[rj];
-                var cIs = c == '#';
-                if (cIs) trees++;
-                // arr[i] = arr[i].Remove(rj, 1).Insert(rj, cIs? "X" : "O"); // testing
-                j += right;
-            }
-            
             return trees;
-            // Console.WriteLine(string.Join("\n", arr)); // testing
-            // Console.WriteLine(trees);
         }
     }
 }

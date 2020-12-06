@@ -9,37 +9,18 @@ namespace AdventOfCode
         public static long Main(string input)
         {
             var arr = input.Split('\n');
-
-            var find = new[]
-            {
-                Method(1, 1, arr),
-                Method(3, 1, arr),
-                Method(5, 1, arr),
-                Method(7, 1, arr),
-                Method(1, 2, arr)
-            };
-
-            // Console.WriteLine($"numbers: [{string.Join(", ", find)}], ans: {find.Aggregate(1L, (current, i) => current * i)}");
-            return find.Aggregate(1L, (current, i) => current * i);
+            
+            return new[] {Method(1, 1, arr), Method(3, 1, arr), Method(5, 1, arr), Method(7, 1, arr), Method(1, 2, arr)}
+                .Aggregate(1L, (current, i) => current * i);
         }
 
         public static int Method(int right, int down, string[] arr)
         {
-            var h = arr.Length;
-            var w = arr[0].Length - 1;
-            var trees = 0;
-            var j = right;
-            
-            for (var i = down; i < h; i += down)
-            {
-                var rj = i * w + j;
-                rj %= w;
-                var c1 = arr[i];
-                var c = c1[rj];
-                var cIs = c == '#';
-                if (cIs) trees++;
-                j += right;
-            }
+            int h = arr.Length, w = arr[0].Length, trees = 0;
+
+            for (int i = down, j = right; i < h; i += down, j += right)
+                if (arr[i][(i * w + j) % w] == '#')
+                    trees++;
 
             return trees;
         }
