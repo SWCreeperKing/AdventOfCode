@@ -8,9 +8,9 @@ namespace AdventOfCode
     {
         [Run(4, 1)]
         public static int Main(string input) =>
-            (from s in new Regex(@"\n\r\n").Split(input)
-                where new Regex(@"[(\n\r)\n\r ]").Replace(s, "") != ""
-                select new Regex(@"[(\n\r)\n\r]").Replace(s, ""))
+            (from s in new Regex(@"\n\n").Split(input)
+                where new Regex(@"[\n ]").Replace(s, "") != ""
+                select new Regex(@"[\n]").Replace(s, ""))
             .Count(realS => new Regex(@"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}").IsMatch(realS));
     }
 }

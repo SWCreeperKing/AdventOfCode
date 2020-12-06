@@ -10,7 +10,7 @@ namespace AdventOfCode.Better_Run
         {
             var days = Directory.GetFiles("Input");
             inputs = new string[days.Length];
-            for (var i = 0; i < inputs.Length; i++) inputs[i] = ReadFile(days[i]); 
+            for (var i = 0; i < inputs.Length; i++) inputs[i] = ReadFile(days[i]).Replace("\r", "");
         }
 
         public static string ReadFile(string file)

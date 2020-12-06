@@ -10,7 +10,7 @@ namespace AdventOfCode
             select s.Split(' ')
             into ss
             let n12 = ss[0].Split('-')
-            select (int.Parse(n12[0]), int.Parse(n12[1]), ss[1][0], ss[2].Replace("\r", ""))).Count(d =>
+            select (int.Parse(n12[0]), int.Parse(n12[1]), ss[1][0], ss[2])).Count(d =>
         {
             var (contain, notContain, c, s) = d;
             return s[contain - 1] == c ^ s[notContain - 1] == c;

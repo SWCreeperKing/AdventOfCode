@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -10,9 +11,10 @@ namespace AdventOfCode
         public static long Main(string input)
         {
             var max =
-                (from s in input.Split(Environment.NewLine)
-                    select (s.Substring(0, 7), s.Substring(7).Replace("R", "B").Replace("L", "F")))
-                .Select(i => BinaryFinder(0, 127, i.Item1) * 8 + BinaryFinder(0, 7, i.Item2))
+                (from s in input.Split("\n")
+                    select Convert.ToInt32(new Regex(@"(B|R)")
+                        .Replace(new Regex(@"(F|L)")
+                            .Replace(s, "0"), "1"), 2))
                 .Select(dummy => (long) dummy).OrderBy(l => l).ToList();
 
             var next = max[0];
@@ -23,19 +25,6 @@ namespace AdventOfCode
             }
 
             return -1;
-        }
-
-        public static int BinaryFinder(int start, int last, string pattern)
-        {
-            if (pattern.Length == 1) return pattern == "B" ? last : start;
-            var leng = Math.Abs(start - last) / 2d;
-
-            return pattern[0] switch
-            {
-                'B' => BinaryFinder((int) Math.Ceiling(Math.Abs(leng + start)), last, pattern.Substring(1)),
-                'F' => BinaryFinder(start, (int) Math.Floor(Math.Abs(leng - last)), pattern.Substring(1)),
-                _ => -1
-            };
         }
     }
 }
