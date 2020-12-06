@@ -12,7 +12,6 @@ namespace AdventOfCode
             (from s in input.Split("\n")
                 select Convert.ToInt32(new Regex(@"(B|R)")
                     .Replace(new Regex(@"(F|L)")
-                        .Replace(s, "0"), "1"), 2))
-            .Aggregate(0, Math.Max);
+                        .Replace(s, "0"), "1"), 2)).Max();
     }
 }

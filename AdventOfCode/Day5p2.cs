@@ -11,20 +11,12 @@ namespace AdventOfCode
         public static long Main(string input)
         {
             var max =
-                (from s in input.Split("\n")
-                    select Convert.ToInt32(new Regex(@"(B|R)")
-                        .Replace(new Regex(@"(F|L)")
-                            .Replace(s, "0"), "1"), 2))
-                .Select(dummy => (long) dummy).OrderBy(l => l).ToList();
+                from s in input.Split("\n")
+                select Convert.ToInt32(new Regex(@"(B|R)")
+                    .Replace(new Regex(@"(F|L)")
+                        .Replace(s, "0"), "1"), 2);
 
-            var next = max[0];
-            foreach (var m in max)
-            {
-                if (m == next) next++;
-                else return m + 1;
-            }
-
-            return -1;
+            return Enumerable.Range(max.Min(), max.Max()).Except(max).First();
         }
     }
 }
