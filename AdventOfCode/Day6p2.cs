@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -8,6 +9,7 @@ namespace AdventOfCode
         [Run(6, 2)]
         public static int Main(string input) =>
             (from s in input.Split("\n\n")
-                select s.Remove("\n")).Sum(g => g.Intersect(g).Count());
+                select s.Split("\n")
+                    .Aggregate((ss, sss) => string.Join("", ss.Intersect(sss))).Length).Sum();
     }
 }
