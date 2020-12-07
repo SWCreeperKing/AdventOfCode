@@ -12,7 +12,7 @@ namespace AdventOfCode.Better_Run
         public static long[] ToLongArr(this IEnumerable<string> texts) => texts.Select(long.Parse).ToArray();
         public static string ReplaceWithSpace(this string text, string pattern) => text.Replace(pattern, " ");
         public static string Remove(this string text, string pattern) => text.Replace(pattern, "");
-        public static string[] SplitSpace(this string text) => text.Split(" ");
+        public static string[] SplitSpace(this string text) => text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
         public static string[] Split(this string text, string pattern) =>
             text.Split(pattern, StringSplitOptions.RemoveEmptyEntries);
