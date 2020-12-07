@@ -12,11 +12,9 @@ namespace AdventOfCode
         [Run(7, 1)]
         public static long Main(string input)
         {
-            var lines = input.Remove(".").Remove(" bags").Remove(" bag").Split("\n");
-            var c = 0L;
             List<(Bag, Bag[])> bags = new();
 
-            foreach (var l in lines)
+            foreach (var l in input.Remove(".").Remove(" bags").Remove(" bag").Split("\n"))
             {
                 var containSplit = l.Split(" contain ");
                 var keyBag = containSplit[0].SplitSpace();

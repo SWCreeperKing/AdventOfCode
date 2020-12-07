@@ -15,11 +15,9 @@ namespace AdventOfCode
         [Run(7, 2)]
         public static long Main(string input)
         {
-            var lines = input.Remove(".").Remove(" bags").Remove(" bag").Split("\n");
-            var c = 0L;
             List<(Bag, Bag[])> bags = new();
 
-            foreach (var l in lines)
+            foreach (var l in input.Remove(".").Remove(" bags").Remove(" bag").Split("\n"))
             {
                 var containSplit = l.Split(" contain ");
                 var keyBag = containSplit[0].SplitSpace();
@@ -34,16 +32,11 @@ namespace AdventOfCode
                 else bags.Add((bb, new Bag[0]));
             }
 
-            var catalyst =
-                (from bBag in bags where bBag.Item1.Shade == "shiny" && bBag.Item1.Color == "gold" select bBag).First();
+            static long Counter(Bag[] bags, List<(Bag, Bag[])> bagz) =>
+                bags.Sum(b =>
+                    b.Amount * Counter(bagz.Find(bb => bb.Item1.Compare == b.Compare).Item2, bagz));
 
-            long Counter(Bag bag, Bag[] bags, List<(Bag, Bag[])> bagz)
-            {
-                return bags.Sum(b =>
-                    b.Amount + b.Amount * Counter(b, bagz.Find(bb => bb.Item1.Compare == b.Compare).Item2, bagz));
-            }
-
-            return Counter(catalyst.Item1, catalyst.Item2, bags);
+            return Counter((from bBag in bags where bBag.Item1.Shade == "shiny" && bBag.Item1.Color == "gold" select bBag).First().Item2, bags);
         }
     }
 }
