@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
@@ -10,7 +9,7 @@ namespace AdventOfCode
         [Run(8, 1)]
         public static int Main(string input)
         {
-            var instructions = input.Split("\n");
+            var instructions = input.Split("\n").Select(s => s.SplitSpace()).ToArray();
             var accumulator = 0;
 
             List<int> history = new();
@@ -18,14 +17,13 @@ namespace AdventOfCode
             {
                 if (history.Contains(i)) return accumulator;
                 history.Add(i);
-                var split = instructions[i].SplitSpace();
-                switch (split[0])
+                switch (instructions[i][0])
                 {
                     case "acc":
-                        accumulator += int.Parse(split[1]);
+                        accumulator += int.Parse(instructions[i][1]);
                         break;
                     case "jmp":
-                        i += int.Parse(split[1]);
+                        i += int.Parse(instructions[i][1]);
                         continue;
                 }
                 i++;

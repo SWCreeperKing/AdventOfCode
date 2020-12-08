@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -9,28 +9,27 @@ namespace AdventOfCode
         [Run(8, 2)]
         public static int Main(string input)
         {
-            var instructions = input.Split("\n");
+            var instructions = input.Split("\n").Select(s => s.SplitSpace()).ToArray();
 
             for (var i = 0; i < instructions.Length; i++)
             {
                 var oldInst = instructions[i];
-                var split = instructions[i].SplitSpace();
-                instructions[i] = split[0] switch
+                instructions[i] = oldInst[0] switch
                 {
-                    "nop" => $"jmp {split[1]}",
-                    "jmp" => $"nop {split[1]}",
+                    "nop" => new[] {"jmp", $"{oldInst[1]}"},
+                    "jmp" => new[] {"nop", $"{oldInst[1]}"},
                     _ => oldInst
                 };
 
-                var r = Run(instructions);
-                if (r.Item1) return r.Item2;
+                var (worked, accumulator) = Run(instructions);
+                if (worked) return accumulator;
                 instructions[i] = oldInst;
             }
 
             return -1;
         }
 
-        public static (bool, int) Run(string[] instructions)
+        public static (bool, int) Run(string[][] instructions)
         {
             var accumulator = 0;
             List<int> history = new();
@@ -38,17 +37,15 @@ namespace AdventOfCode
             {
                 if (history.Contains(i)) return (false, 0);
                 history.Add(i);
-                var split = instructions[i].SplitSpace();
-                switch (split[0])
+                switch (instructions[i][0])
                 {
                     case "acc":
-                        accumulator += int.Parse(split[1]);
+                        accumulator += int.Parse(instructions[i][1]);
                         break;
                     case "jmp":
-                        i += int.Parse(split[1]);
+                        i += int.Parse(instructions[i][1]);
                         continue;
                 }
-
                 i++;
             }
 
