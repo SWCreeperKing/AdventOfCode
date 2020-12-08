@@ -8,7 +8,7 @@ namespace AdventOfCode
         [Run(3, 2)]
         public static long Main(string input)
         {
-            var arr = input.Split('\n');
+            var arr = input.Split("\n");
             
             return new[] {Method(1, 1, arr), Method(3, 1, arr), Method(5, 1, arr), Method(7, 1, arr), Method(1, 2, arr)}
                 .Aggregate(1L, (current, i) => current * i);

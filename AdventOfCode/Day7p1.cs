@@ -1,50 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
 {
     public class Day7p1
     {
-        record Bag(string Shade, string Color, int Amount = -1);
-
         [Run(7, 1)]
         public static long Main(string input)
         {
-            List<(Bag, Bag[])> bags = new();
+            Dictionary<string, List<(int, string)>> realBags = new();
 
-            foreach (var l in input.Remove(".").Remove(" bags").Remove(" bag").Split("\n"))
+            foreach (var l in input.Split("\n"))
             {
-                var containSplit = l.Split(" contain ");
-                var keyBag = containSplit[0].SplitSpace();
-                var bb = new Bag(keyBag[0], keyBag[1]);
-                if (!containSplit[1].Contains("no other"))
-                {
-                    var bagz = from b in containSplit[1].Split(", ")
-                        let bS = b.SplitSpace()
-                        select new Bag(bS[1], bS[2], int.TryParse(bS[0], out var i) ? i : 1);
-                    bags.Add((bb, bagz.ToArray()));
-                }
-                else bags.Add((bb, new Bag[0]));
+                var key = Regex.Match(l, @"^[a-z]+ [a-z]+ bag").Value.Remove(" bag");
+                var value = Regex.Matches(l, "(\\d+) ([a-z]+ [a-z]+ bag)")
+                    .Select(x => (int.Parse(x.Groups[1].Value), x.Groups[2].Value.Remove(" bag"))).ToList();
+                if (realBags.ContainsKey(key)) realBags[key].AddRange(value);
+                else realBags.Add(key, value);
             }
 
-            var finder =
-                (from bBag in bags where bBag.Item2.Any(b => b.Shade == "shiny" && b.Color == "gold") select bBag.Item1)
-                .ToList();
+            var realFinder = (from rBagz in realBags
+                from rbag in rBagz.Value
+                where rbag.Item2 == "shiny gold"
+                select rBagz.Key).ToList();
 
-            List<Bag> hasGold = new();
-            
-            while (finder.Count > 0)
+            List<string> realHasGold = new();
+            while (realFinder.Count > 0)
             {
-                var first = finder.First();
-                var bag = bags.FindAll(b => b.Item2.Any(bb => first.Shade == bb.Shade && first.Color == bb.Color));
-                finder.Remove(first);
-                hasGold.Add(first);
-                bag.ForEach(b => finder.Add(b.Item1));
+                var realFirst = realFinder.First();
+                realFinder.AddRange(from rBag in realBags
+                    where rBag.Value.Any(rb => rb.Item2 == realFirst)
+                    select rBag.Key);
+                realFinder.Remove(realFirst);
+                if (!realHasGold.Contains(realFirst)) realHasGold.Add(realFirst);
             }
 
-            return hasGold.Union(hasGold).Count();
+            return realHasGold.Count;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AdventOfCode
         [Run(3, 1)]
         public static int Main(string input)
         {
-            var arr = input.Split('\n');
+            var arr = input.Split("\n");
             int h = arr.Length, w = arr[0].Length, trees = 0;
 
             for (int i = 1, j = 3; i < h; i++, j += 3)
