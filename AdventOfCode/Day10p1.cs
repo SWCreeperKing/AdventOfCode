@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode
@@ -20,8 +19,6 @@ namespace AdventOfCode
                         break;
                     case 3:
                         diff3++;
-                        break;
-                    default:
                         break;
                 }
 

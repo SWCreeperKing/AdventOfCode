@@ -16,16 +16,15 @@ namespace AdventOfCode
 
             long Amass(int i = 0)
             {
-                if (combos.ContainsKey(i)) return combos[i];
-
-                var adder = 0L;
-                for (var j = 1; j < 4; j++)
+                for (long j = 1, adder = 0; j < 4; j++)
                 {
-                    var ij = i + j;
-                    if (ij < numbers.Count && numbers[ij] - numbers[i] < 4) adder += Amass(ij);
+                    var ij = i + (int) j;
+                    if (ij < numbers.Count && numbers[ij] - numbers[i] < 4)
+                        adder += combos.ContainsKey(ij) ? combos[ij] : Amass(ij);
+                    if (j == 3) return combos[i] = adder;
                 }
 
-                return combos[i] = adder;
+                return -1;
             }
 
             Amass();
