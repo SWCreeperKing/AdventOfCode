@@ -42,10 +42,10 @@ namespace AdventOfCode.Better_Run
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 var inp = Console.ReadLine();
-                switch (inp)
+                if (inp is null) continue;
+                var inpSplit = inp.Split(" ");
+                switch (inpSplit.First())
                 {
-                    case null:
-                        continue;
                     case "all":
                         foreach (var (_, d, p) in dayParts.Keys.Where(ydp => ydp.year == year))
                         {
@@ -60,6 +60,17 @@ namespace AdventOfCode.Better_Run
                         var years = dayParts.Keys.Select(ydp => ydp.year).ToArray();
                         years = years.Union(years).ToArray();
                         int newYear;
+
+                        if (inpSplit.Length > 1)
+                        {
+                            var s = inpSplit[1];
+                            if (int.TryParse(s, out var nyr) && years.Contains(nyr))
+                            {
+                                year = nyr;
+                                continue;
+                            }
+                        }
+                        
                         do
                         {
                             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -74,6 +85,8 @@ namespace AdventOfCode.Better_Run
                             }
                             Console.WriteLine($"{yr} is not a valid year!");
                         } while (!years.Contains(newYear));
+
+                        year = newYear;
                         Console.ResetColor();
 
                         continue;
