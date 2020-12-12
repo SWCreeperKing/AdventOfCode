@@ -5,7 +5,7 @@ namespace AdventOfCode
 {
     public class Day9p2
     {
-        [Run(9, 2)]
+        [Run(9, 2, 70672245)]
         public static long Main(string input)
         {
             var weakness = Day9p1.Main(input);

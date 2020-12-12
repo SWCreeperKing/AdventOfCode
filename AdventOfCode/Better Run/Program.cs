@@ -13,16 +13,19 @@ namespace AdventOfCode.Better_Run
         // These are all solutions for
         // Advent of Code (2020):
         // https://adventofcode.com/
-        
+
         public static void Main()
         {
             var r = new Random();
             Inputs.Init();
             var assembly = Assembly.GetExecutingAssembly();
-            List<(RunAttribute, MethodInfo)> dayParts = new();
-            foreach (var a in assembly.GetTypes())
-                dayParts.AddRange(a.GetMethods()
-                    .Where(m => m.GetCustomAttributes<RunAttribute>().ToArray().Length > 0).Select(m => (m.GetCustomAttribute<RunAttribute>(), m)));
+
+            var dayParts =
+                (from a in assembly.GetTypes()
+                    from m in a.GetMethods()
+                    where m.GetCustomAttributes<RunAttribute>().ToArray().Length > 0
+                    select (m.GetCustomAttribute<RunAttribute>()!, (MethodInfo) m)).ToList()
+                .ToDictionary(m => (m.Item1.day, m.Item1.part), m => m);
 
             do
             {
@@ -32,15 +35,30 @@ namespace AdventOfCode.Better_Run
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 var inp = Console.ReadLine();
-                if (inp is null) continue;
-                
-                int day;
-                int part;
+                switch (inp)
+                {
+                    case null:
+                        continue;
+                    case "all":
+                    {
+                        foreach (var (d, p) in dayParts.Keys)
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write($"Day {d} Part {p}: ");
+                            Console.ResetColor();
+                            Execute(d, p);
+                        }
+
+                        continue;
+                    }
+                }
+
                 try
                 {
                     var split = inp.Split(':');
-                    day = int.Parse(split[0]);
-                    part = int.Parse(split[1]);
+                    var day = int.Parse(split[0]);
+                    var part = int.Parse(split[1]);
+                    Execute(day, part);
                 }
                 catch
                 {
@@ -48,27 +66,54 @@ namespace AdventOfCode.Better_Run
                     Console.WriteLine("Parsing error, make sure to put in valid numbers");
                     var n1 = r.Next(1, 26);
                     var n2 = r.Next(1, 3);
-                    Console.WriteLine($"The input is not correct format, Day {n1} part {n2} will look like '{n1}:{n2}'");
+                    Console.WriteLine(
+                        $"The input is not correct format, Day {n1} part {n2} will look like '{n1}:{n2}'");
                     Console.ResetColor();
-                    continue;
                 }
 
-                var methodExe = (from d in dayParts where d.Item1.day == day && d.Item1.part == part select d).ToArray();
-                if (methodExe.Length < 1)
+                void Execute(int day, int part)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("invalid selection");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    var answer = methodExe[0].Item2.Invoke(0, new object[] {Inputs.inputs[day - 1]});
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.Write("Answer: ");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(answer);
-                    Console.ResetColor();
+                    if (!dayParts.ContainsKey((day, part)))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("invalid selection");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        var methodExe = dayParts[(day, part)];
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        var realAnswer = methodExe.Item1.answer;
+                        var answer = methodExe.Item2.Invoke(0, new object[] {Inputs.inputs[day - 1]});
+                        if (answer is null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Error with solution, Null Return");
+                            return;
+                        }
+
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.Write("Answer: ");
+
+                        if (realAnswer == -1) Console.ForegroundColor = ConsoleColor.Yellow;
+                        else
+                            Console.ForegroundColor = answer switch
+                            {
+                                int i when realAnswer == i => ConsoleColor.Green,
+                                long j when realAnswer == j => ConsoleColor.Green,
+                                double k when realAnswer == k => ConsoleColor.Green,
+                                _ => ConsoleColor.Red
+                            };
+                        if (Console.ForegroundColor != ConsoleColor.Red) Console.WriteLine(answer);
+                        else
+                        {
+                            Console.Write(answer);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($" The Answer Should Be: {realAnswer}");
+                        }
+
+                        Console.ResetColor();
+                    }
                 }
             } while (true);
         }

@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     public class eDay11p1
     {
-        [Run(11, 1)]
+        [Run(11, 1, 2275)]
         public static int Main(string input)
         {
             var currSet = input.Split("\n");
@@ -61,7 +61,6 @@ namespace AdventOfCode
                 currSet = newSet;
             }
 
-            Console.WriteLine(string.Join("\n", currSet));
             return oldCount;
         }
     }

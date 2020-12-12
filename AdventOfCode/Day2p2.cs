@@ -5,7 +5,7 @@ namespace AdventOfCode
 {
     public class Day2p2
     {
-        [Run(2, 2)]
+        [Run(2, 2, 747)]
         public static int Main(string input) => (from s in input.Split('\n')
             select s.Split(' ')
             into ss

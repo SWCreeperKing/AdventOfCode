@@ -5,7 +5,7 @@ namespace AdventOfCode
 {
     public class Day10p1
     {
-        [Run(10, 1)]
+        [Run(10, 1, 1848)]
         public static int Main(string input)
         {
             int diff1 = 0, diff3 = 1, last = 0;

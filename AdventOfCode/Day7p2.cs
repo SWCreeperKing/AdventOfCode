@@ -7,7 +7,7 @@ namespace AdventOfCode
 {
     public class Day7p2
     {
-        [Run(7, 2)]
+        [Run(7, 2, 38426)]
         public static long Main(string input)
         {
             Dictionary<string, List<(int, string)>> realBags = new();

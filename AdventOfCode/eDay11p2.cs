@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     public class eDay11p2
     {
-        [Run(11, 2)]
+        [Run(11, 2, 2121)]
         public static int Main(string input)
         {
             var currSet = input.Split("\n");

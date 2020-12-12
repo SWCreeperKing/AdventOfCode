@@ -7,7 +7,7 @@ namespace AdventOfCode
 {
     public class Day10p2
     {
-        [Run(10, 2)]
+        [Run(10, 2, 8099130339328)]
         public static long Main(string input)
         {
             var numbers = new[] {0}.Concat(input.Split("\n").Select(int.Parse).OrderBy(i => i)).ToList();

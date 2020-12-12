@@ -6,7 +6,7 @@ namespace AdventOfCode
 {
     public class Day9p1
     {
-        [Run(9, 1)]
+        [Run(9, 1, 552655238)]
         public static long Main(string input)
         {
             var numbers = input.Split("\n").Select(long.Parse).ToArray();

@@ -6,7 +6,7 @@ namespace AdventOfCode
 {
     public class Day8p1
     {
-        [Run(8, 1)]
+        [Run(8, 1, 2058)]
         public static int Main(string input)
         {
             var instructions = input.Split("\n").Select(s => s.SplitSpace()).ToArray();

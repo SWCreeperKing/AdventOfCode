@@ -18,7 +18,7 @@ namespace AdventOfCode
             {"pid", "[0-9]{9}"},
         };
 
-        [Run(4, 2)]
+        [Run(4, 2, 103)]
         public static int Main(string input)
         {
             return input.Split("\n\n").ToList().Select(s => s.Split("\n ".ToCharArray())).ToArray().Select(masterS =>

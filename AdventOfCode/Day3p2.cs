@@ -5,7 +5,7 @@ namespace AdventOfCode
 {
     public class Day3p2
     {
-        [Run(3, 2)]
+        [Run(3, 2, 3316272960)]
         public static long Main(string input)
         {
             var arr = input.Split("\n");

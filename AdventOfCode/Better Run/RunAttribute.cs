@@ -6,7 +6,9 @@ namespace AdventOfCode.Better_Run
     {
         public int day;
         public int part;
+        public double answer;
 
-        public RunAttribute(int day, int part) => (this.day, this.part) = (day, part);
+        public RunAttribute(int day, int part, double answer = -1) =>
+            (this.day, this.part, this.answer) = (day, part, answer);
     }
 }

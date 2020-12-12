@@ -7,7 +7,7 @@ namespace AdventOfCode
 {
     public class Day5p2
     {
-        [Run(5, 2)]
+        [Run(5, 2, 741)]
         public static long Main(string input)
         {
             var max =

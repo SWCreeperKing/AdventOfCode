@@ -5,7 +5,7 @@ namespace AdventOfCode
 {
     class Day1p1
     {
-        [Run(1, 1)]
+        [Run(1, 1, 1016619)]
         public static int Main(string input)
         {
             var numArr = input.ReplaceWithSpace("\n").SplitSpace().ToIntArr();
