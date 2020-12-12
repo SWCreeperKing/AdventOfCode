@@ -3,11 +3,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day5p2
     {
-        [Run(5, 2, 741)]
+        [Run(2020, 5, 2, 741)]
         public static long Main(string input)
         {
             var max =

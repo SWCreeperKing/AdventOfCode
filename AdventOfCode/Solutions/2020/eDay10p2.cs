@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day10p2
     {
-        [Run(10, 2, 8099130339328)]
+        [Run(2020, 10, 2, 8099130339328)]
         public static long Main(string input)
         {
             var numbers = new[] {0}.Concat(input.Split("\n").Select(int.Parse).OrderBy(i => i)).ToList();

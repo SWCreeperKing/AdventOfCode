@@ -2,11 +2,11 @@
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day8p2
     {
-        [Run(8, 2, 1000)]
+        [Run(2020, 8, 2, 1000)]
         public static int Main(string input)
         {
             var instructions = input.Split("\n").Select(s => s.SplitSpace()).ToArray();
@@ -46,6 +46,7 @@ namespace AdventOfCode
                         i += int.Parse(instructions[i][1]);
                         continue;
                 }
+
                 i++;
             }
 

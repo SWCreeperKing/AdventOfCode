@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day10p1
     {
-        [Run(10, 1, 1848)]
+        [Run(2020, 10, 1, 1848)]
         public static int Main(string input)
         {
             int diff1 = 0, diff3 = 1, last = 0;

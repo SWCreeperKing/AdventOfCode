@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day4p2
     {
@@ -18,7 +18,7 @@ namespace AdventOfCode
             {"pid", "[0-9]{9}"},
         };
 
-        [Run(4, 2, 103)]
+        [Run(2020, 4, 2, 103)]
         public static int Main(string input)
         {
             return input.Split("\n\n").ToList().Select(s => s.Split("\n ".ToCharArray())).ToArray().Select(masterS =>

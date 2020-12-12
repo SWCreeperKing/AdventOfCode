@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day3p2
     {
-        [Run(3, 2, 3316272960)]
+        [Run(2020, 3, 2, 3316272960)]
         public static long Main(string input)
         {
             var arr = input.Split("\n");
-            
+
             return new[] {Method(1, 1, arr), Method(3, 1, arr), Method(5, 1, arr), Method(7, 1, arr), Method(1, 2, arr)}
                 .Aggregate(1L, (current, i) => current * i);
         }

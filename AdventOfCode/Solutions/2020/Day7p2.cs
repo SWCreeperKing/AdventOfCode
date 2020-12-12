@@ -3,11 +3,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day7p2
     {
-        [Run(7, 2, 38426)]
+        [Run(2020, 7, 2, 38426)]
         public static long Main(string input)
         {
             Dictionary<string, List<(int, string)>> realBags = new();

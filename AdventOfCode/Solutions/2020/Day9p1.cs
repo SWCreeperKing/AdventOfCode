@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day9p1
     {
-        [Run(9, 1, 552655238)]
+        [Run(2020, 9, 1, 552655238)]
         public static long Main(string input)
         {
             var numbers = input.Split("\n").Select(long.Parse).ToArray();
@@ -20,6 +19,7 @@ namespace AdventOfCode
                     select m).Count();
                 if (n == 0) return numbers[i];
             }
+
             return -1;
         }
     }

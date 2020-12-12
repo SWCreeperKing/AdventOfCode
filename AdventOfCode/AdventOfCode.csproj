@@ -6,9 +6,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="Input/*.*">
+        <Content Include="Input/**/*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Input\2015" />
+      <Folder Include="Input\2016" />
+      <Folder Include="Input\2017" />
+      <Folder Include="Input\2018" />
+      <Folder Include="Input\2019" />
+      <Folder Include="Solutions" />
     </ItemGroup>
     
 </Project>

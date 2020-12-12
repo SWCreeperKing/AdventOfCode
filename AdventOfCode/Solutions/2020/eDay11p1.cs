@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class eDay11p1
     {
-        [Run(11, 1, 2275)]
+        [Run(2020, 11, 1, 2275)]
         public static int Main(string input)
         {
             var currSet = input.Split("\n");

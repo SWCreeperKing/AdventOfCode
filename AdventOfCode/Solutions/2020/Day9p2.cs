@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class Day9p2
     {
-        [Run(9, 2, 70672245)]
+        [Run(2020, 9, 2, 70672245)]
         public static long Main(string input)
         {
             var weakness = Day9p1.Main(input);

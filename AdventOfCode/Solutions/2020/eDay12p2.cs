@@ -2,11 +2,11 @@
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode
+namespace AdventOfCode.Solutions._2020
 {
     public class eDay12p2
     {
-        [Run(12, 2, 45763)]
+        [Run(2020, 12, 2, 45763)]
         public static long Main(string input)
         {
             var path = input.Split("\n").Select(s => (s[0], int.Parse(s[1..]))).ToArray();
