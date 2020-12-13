@@ -16,5 +16,20 @@ namespace AdventOfCode.Better_Run
 
         public static string[] Split(this string text, string pattern) =>
             text.Split(pattern, StringSplitOptions.RemoveEmptyEntries);
+
+        public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end) =>
+            arr.Skip(start).Take(end - start).ToArray();
+
+        public static T TryGet<T>(this IEnumerable<T> arr, int indx, T elseReturn)
+        {
+            try
+            {
+                return arr.ToArray()[indx];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return elseReturn;
+            }
+        }
     }
 }

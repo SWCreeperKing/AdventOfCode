@@ -99,7 +99,7 @@ namespace AdventOfCode.Better_Run
                     var part = int.Parse(split[1]);
                     Execute(year, day, part);
                 }
-                catch
+                catch (FormatException)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Parsing error, make sure to put in valid numbers");
@@ -122,36 +122,14 @@ namespace AdventOfCode.Better_Run
                     {
                         var methodExe = dayParts[(year, day, part)];
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-                        var realAnswer = methodExe.Item1.answer;
-                        var answer = methodExe.Item2.Invoke(0, new object[] {Inputs.inputs[(year, day)]});
+                        var answer = (IConvertible) methodExe.Item2.Invoke(0, new object[] {Inputs.inputs[(year, day)]});
                         if (answer is null)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Error with solution, Null Return");
                             return;
                         }
-
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write("Answer: ");
-
-                        if (realAnswer == -1) Console.ForegroundColor = ConsoleColor.Yellow;
-                        else
-                            Console.ForegroundColor = answer switch
-                            {
-                                int i when realAnswer == i => ConsoleColor.Green,
-                                long j when realAnswer == j => ConsoleColor.Green,
-                                double k when realAnswer == k => ConsoleColor.Green,
-                                _ => ConsoleColor.Red
-                            };
-                        if (Console.ForegroundColor != ConsoleColor.Red) Console.WriteLine(answer);
-                        else
-                        {
-                            Console.Write(answer);
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine($" The Answer Should Be: {realAnswer}");
-                        }
-
-                        Console.ResetColor();
+                        methodExe.Item1.Check(answer.ToDouble(null));
                     }
                 }
             } while (true);

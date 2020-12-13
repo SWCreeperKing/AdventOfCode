@@ -3,10 +3,13 @@ using AdventOfCode.Better_Run;
 
 namespace AdventOfCode.Solutions._2020
 {
-    public class Day3p2
+    public class Day3
     {
+        [Run(2020, 3, 1, 203)]
+        public static int Part1(string input) => Method(3, 1, input.Split("\n"));
+
         [Run(2020, 3, 2, 3316272960)]
-        public static long Main(string input)
+        public static long Part2(string input)
         {
             var arr = input.Split("\n");
 
