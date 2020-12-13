@@ -18,7 +18,7 @@ namespace AdventOfCode.Solutions._2015
             return counter - 1;
         }
         
-        [Run(2015, 4, 2)]
+        [Run(2015, 4, 2, 9958218)]
         public static int Part2(string input)
         {
             var md5 = MD5.Create();

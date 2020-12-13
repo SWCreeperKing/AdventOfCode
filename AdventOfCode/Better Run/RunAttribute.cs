@@ -50,7 +50,7 @@ namespace AdventOfCode.Better_Run
                 {
                     Console.Write(i);
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($" The Answer Should Be: {i}");
+                    Console.WriteLine($" The Answer Should Be: {answer}");
                 }
 
             }
