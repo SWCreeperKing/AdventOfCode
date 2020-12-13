@@ -11,7 +11,7 @@ namespace AdventOfCode.Solutions._2015
             {
                 var split = s.Split("x").Select(int.Parse).ToArray();
                 var sides = new[] {split[0] * split[1], split[0] * split[2], split[1] * split[2]};
-                return 2 * sides[0] + 2 * sides[1] + 2 * sides[2] + sides.Min();
+                return 2 * sides.Sum() + sides.Min();
             });
 
         [Run(2015, 2, 2, 3737498)]
