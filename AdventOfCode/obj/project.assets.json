@@ -8,26 +8,24 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\pizza\\.nuget\\packages\\": {}
+    "C:\\Users\\2jmph\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\coding projects\\C#\\AdventOfCode\\AdventOfCode\\AdventOfCode.csproj",
+      "projectUniqueName": "C:\\Users\\2jmph\\RiderProjects\\AdventOfCode\\AdventOfCode\\AdventOfCode.csproj",
       "projectName": "AdventOfCode",
-      "projectPath": "E:\\coding projects\\C#\\AdventOfCode\\AdventOfCode\\AdventOfCode.csproj",
-      "packagesPath": "C:\\Users\\pizza\\.nuget\\packages\\",
-      "outputPath": "E:\\coding projects\\C#\\AdventOfCode\\AdventOfCode\\obj\\",
+      "projectPath": "C:\\Users\\2jmph\\RiderProjects\\AdventOfCode\\AdventOfCode\\AdventOfCode.csproj",
+      "packagesPath": "C:\\Users\\2jmph\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\2jmph\\RiderProjects\\AdventOfCode\\AdventOfCode\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pizza\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\2jmph\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -60,7 +58,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.2.20479.15\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

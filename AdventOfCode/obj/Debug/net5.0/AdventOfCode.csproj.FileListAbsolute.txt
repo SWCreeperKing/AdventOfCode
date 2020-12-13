@@ -14,3 +14,34 @@ E:\coding projects\C#\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.dl
 E:\coding projects\C#\AdventOfCode\AdventOfCode\obj\Debug\net5.0\ref\AdventOfCode.dll
 E:\coding projects\C#\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.pdb
 E:\coding projects\C#\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.genruntimeconfig.cache
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2015\Day1.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2015\Day2.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day1.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day2.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day3.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day4.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day5.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day6.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day7.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day8.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\Day9.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\eDay10.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\eDay11.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2020\eDay12.txt
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.exe
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.deps.json
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.runtimeconfig.json
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.runtimeconfig.dev.json
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.dll
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\ref\AdventOfCode.dll
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\AdventOfCode.pdb
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.csprojAssemblyReference.cache
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.AssemblyInfoInputs.cache
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.AssemblyInfo.cs
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.csproj.CoreCompileInputs.cache
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.dll
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\ref\AdventOfCode.dll
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.pdb
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\obj\Debug\net5.0\AdventOfCode.genruntimeconfig.cache
+C:\Users\2jmph\RiderProjects\AdventOfCode\AdventOfCode\bin\Debug\net5.0\Input\2015\Day3.txt
