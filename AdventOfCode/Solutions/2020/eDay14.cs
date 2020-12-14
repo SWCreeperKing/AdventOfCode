@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode.Solutions._2020
@@ -14,16 +13,12 @@ namespace AdventOfCode.Solutions._2020
             return $"{"0".Repeat(36 - converted.Length)}{converted}";
         }
 
-        static string Mask(string num, string mask, bool keepX = true)
+        static string Mask(long num, string mask, bool keepX = true)
         {
-            var s = "";
+            string s = "", numS = Stringify(num);
             for (var i = 0; i < 36; i++)
-                s += keepX switch
-                {
-                    true when mask[i] is 'X' or '1' => mask[i],
-                    false when mask[i] is '1' or '0' => mask[i],
-                    _ => num[i]
-                };
+                if (mask[i] == '1' || mask[i] == (keepX ? 'X' : '0')) s += mask[i];
+                else s += numS[i];
 
             return s;
         }
@@ -42,7 +37,7 @@ namespace AdventOfCode.Solutions._2020
         public static long Part1(string input)
         {
             long Update(long number, string mask) =>
-                BinaryConvert(string.Join("", Mask(Stringify(number), mask, false).Reverse()));
+                BinaryConvert(string.Join("", Mask(number, mask, false).Reverse()));
 
             Dictionary<int, long> storage = new();
             var mask = "";
@@ -51,11 +46,7 @@ namespace AdventOfCode.Solutions._2020
             {
                 var split = instruction.Split("=");
                 if (split[0] == "mask") mask = split[1];
-                else
-                {
-                    var indx = int.Parse(Regex.Match(split[0], @"mem\[([0-9]*)\]").Groups[1].Value);
-                    storage[indx] = Update(int.Parse(split[1]), mask);
-                }
+                else storage[int.Parse(split[0].Remove("mem[").Remove("]"))] = Update(int.Parse(split[1]), mask);
             }
 
             return storage.Values.Sum();
@@ -69,11 +60,9 @@ namespace AdventOfCode.Solutions._2020
                 List<string> arr = new();
                 var indx = initMask.IndexOf('X');
                 var coreMask = initMask.Remove(indx, 1);
-                arr.Add(coreMask.Insert(indx, "0"));
-                arr.Add(coreMask.Insert(indx, "1"));
+                arr.AddRange(new[] {coreMask.Insert(indx, "0"), coreMask.Insert(indx, "1")});
                 if (!arr[0].Contains("X")) return arr.ToArray();
-                arr.AddRange(Brancher(arr[0]));
-                arr.AddRange(Brancher(arr[1]));
+                arr.AddRange(Brancher(arr[0]).Union(Brancher(arr[1])));
                 return arr.ToArray();
             }
 
@@ -85,12 +74,8 @@ namespace AdventOfCode.Solutions._2020
                 var split = instruction.Split("=");
                 if (split[0] == "mask") mask = split[1];
                 else
-                {
-                    var indx = int.Parse(Regex.Match(split[0], @"mem\[([0-9]*)\]").Groups[1].Value);
-                    var maskStorage = Brancher(Mask(Stringify(indx), mask));
-                    foreach (var storedMask in maskStorage)
+                    foreach (var storedMask in Brancher(Mask(int.Parse(split[0].Remove("mem[").Remove("]")), mask)))
                         storage[BinaryConvert(storedMask)] = int.Parse(split[1]);
-                }
             }
 
             return storage.Values.Sum();
