@@ -22,6 +22,14 @@ namespace AdventOfCode.Better_Run
 
         public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end) =>
             arr.Skip(start).Take(end - start).ToArray();
+
+        public static T[] Combine<T>(this T[] core, T[] subCore, Func<T, T, T> condition)
+        {
+            var minLeng = Math.Min(core.Length, subCore.Length);
+            var together = new T[minLeng];
+            for (var i = 0; i < minLeng; i++) together[i] = condition.Invoke(core[i], subCore[i]);
+            return together;
+        }
         
     }
 }

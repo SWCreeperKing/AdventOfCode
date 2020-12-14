@@ -13,25 +13,10 @@ namespace AdventOfCode.Solutions._2020
             return $"{"0".Repeat(36 - converted.Length)}{converted}";
         }
 
-        static string Mask(long num, string mask, bool keepX = true)
-        {
-            string s = "", numS = Stringify(num);
-            for (var i = 0; i < 36; i++)
-                if (mask[i] == '1' || mask[i] == (keepX ? 'X' : '0')) s += mask[i];
-                else s += numS[i];
+        static string Mask(long num, string mask, bool keepX = true) => string.Join("",
+            mask.ToArray().Combine(Stringify(num).ToArray(), (c, c1) => c == '1' || c == (keepX ? 'X' : '0') ? c : c1));
 
-            return s;
-        }
-
-        static long BinaryConvert(string arr)
-        {
-            long l = 0;
-            for (var i = 0; i < 36; i++)
-                if (arr[i] == '1')
-                    l += (long) Math.Pow(2, i);
-
-            return l;
-        }
+        static long BinaryConvert(string arr, int i = 0) => (long) arr.Select(c => c == '1' ? Math.Pow(2, i++) : 0 * i++).Sum();
 
         [Run(2020, 14, 1, 17765746710228)]
         public static long Part1(string input)
