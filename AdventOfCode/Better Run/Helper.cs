@@ -23,6 +23,13 @@ namespace AdventOfCode.Better_Run
         public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end) =>
             arr.Skip(start).Take(end - start).ToArray();
 
+        public static T[] Append<T>(this T[] arr, T[] appender)
+        {
+            var l = arr.ToList();
+            l.AddRange(appender);
+            return l.ToArray();
+        }
+        
         public static T[] Combine<T>(this T[] core, T[] subCore, Func<T, T, T> condition)
         {
             var minLeng = Math.Min(core.Length, subCore.Length);
@@ -30,6 +37,14 @@ namespace AdventOfCode.Better_Run
             for (var i = 0; i < minLeng; i++) together[i] = condition.Invoke(core[i], subCore[i]);
             return together;
         }
-        
+
+        public static T[] Swap<T>(this IEnumerable<T> rawArr, int pos1, int pos2)
+        {
+            var arr = rawArr.ToArray();
+            var holder = arr[pos1];
+            arr[pos1] = arr[pos2];
+            arr[pos2] = holder;
+            return arr;
+        }
     }
 }
