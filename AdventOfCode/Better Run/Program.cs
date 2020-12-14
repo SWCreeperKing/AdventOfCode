@@ -43,7 +43,8 @@ namespace AdventOfCode.Better_Run
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 var inp = Console.ReadLine();
                 if (inp is null) continue;
-                var inpSplit = inp.Split(" ");
+                var inpSplit = inp.Split(" ").ToList();
+                if (!inp.Contains(":") && inpSplit.First() is not "all" or "year" && inpSplit.Count == 1) inpSplit.Insert(0, "year");
                 switch (inpSplit.First())
                 {
                     case "all":
@@ -61,9 +62,10 @@ namespace AdventOfCode.Better_Run
                         years = years.Union(years).ToArray();
                         int newYear;
 
-                        if (inpSplit.Length > 1)
+                        if (inpSplit.Count > 1)
                         {
                             var s = inpSplit[1];
+                            if (s.Length < 3) s = $"20{s}";
                             if (int.TryParse(s, out var nyr) && years.Contains(nyr))
                             {
                                 year = nyr;

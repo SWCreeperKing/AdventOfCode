@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
 namespace AdventOfCode.Solutions._2015
@@ -10,23 +14,19 @@ namespace AdventOfCode.Solutions._2015
         {
             var lights = new bool[1000, 1000];
 
-            foreach (var (inst, (x1, y1), (x2, y2)) in input.Split("\n")
-                .Select(s => s.Remove("through ").Remove("turn ")).Select(s =>
-                {
-                    var ss = s.Split(" ");
-                    var s1 = ss[1].Split(",");
-                    var s2 = ss[2].Split(",");
-                    return (ss[0], (int.Parse(s1[0]), int.Parse(s1[1])), (int.Parse(s2[0]), int.Parse(s2[1])));
-                }).ToArray())
+            foreach (var (inst, (x1, y1), (x2, y2)) in input.Split("\n").Select(s =>
+            {
+                var reg = Regex.Match(s.Remove("turn "),
+                    @"^((on|off)|toggle) ([0-9]{1,3}),([0-9]{1,3}) through ([0-9]{1,3}),([0-9]{1,3})$").Groups;
+                return (reg[1].Value, (int.Parse(reg[3].Value), int.Parse(reg[4].Value)),
+                    (int.Parse(reg[5].Value), int.Parse(reg[6].Value)));
+            }).ToArray())
+            {
+                Func<string, bool, bool> func = (instr, b) => instr is "on" || instr is not "off" && !b;
                 for (var i = x1; i <= x2; i++)
                 for (var j = y1; j <= y2; j++)
-                    lights[i, j] = inst switch
-                    {
-                        "on" => true,
-                        "off" => false,
-                        "toggle" => !lights[i, j]
-                    };
-
+                    lights[i, j] = func.Invoke(inst, lights[i, j]);
+            }
 
             return lights.Cast<bool>().Count(b => b);
         }
@@ -36,25 +36,20 @@ namespace AdventOfCode.Solutions._2015
         {
             var realLights = new int[1000, 1000];
 
-            foreach (var (inst, (x1, y1), (x2, y2)) in input.Split("\n")
-                .Select(s => s.Remove("through ").Remove("turn ")).Select(s =>
-                {
-                    var ss = s.Split(" ");
-                    var s1 = ss[1].Split(",");
-                    var s2 = ss[2].Split(",");
-                    return (ss[0], (int.Parse(s1[0]), int.Parse(s1[1])), (int.Parse(s2[0]), int.Parse(s2[1])));
-                }).ToArray())
+            foreach (var (inst, (x1, y1), (x2, y2)) in input.Split("\n").Select(s =>
+            {
+                var reg = Regex.Match(s.Remove("turn "),
+                    @"^((on|off)|toggle) ([0-9]{1,3}),([0-9]{1,3}) through ([0-9]{1,3}),([0-9]{1,3})$").Groups;
+                return (reg[1].Value, (int.Parse(reg[3].Value), int.Parse(reg[4].Value)),
+                    (int.Parse(reg[5].Value), int.Parse(reg[6].Value)));
+            }).ToArray())
+            {
+                Func<string, int, int> func = (instr, i) =>
+                    instr is "on" ? 1 : instr is "off" && i > 0 ? -1 : instr is "off" ? 0 : 2;
                 for (var i = x1; i <= x2; i++)
                 for (var j = y1; j <= y2; j++)
-                {
-                    realLights[i, j] += inst switch
-                    {
-                        "on" => 1,
-                        "off" when realLights[i, j] > 0 => -1,
-                        "off" => 0,
-                        "toggle" => 2
-                    };
-                }
+                    realLights[i, j] += func.Invoke(inst, realLights[i, j]);
+            }
 
             return realLights.Cast<int>().Sum(b => b);
         }
