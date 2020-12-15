@@ -23,13 +23,16 @@ namespace AdventOfCode.Better_Run
         public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end) =>
             arr.Skip(start).Take(end - start).ToArray();
 
+        public static int[] FindAllIndexesOf<T>(this IEnumerable<T> arr, T search) =>
+            arr.Select((o, i) => object.Equals(search, o) ? i : -1).Where(i => i != -1).ToArray();
+
         public static T[] Append<T>(this T[] arr, T[] appender)
         {
             var l = arr.ToList();
             l.AddRange(appender);
             return l.ToArray();
         }
-        
+
         public static T[] Combine<T>(this T[] core, T[] subCore, Func<T, T, T> condition)
         {
             var minLeng = Math.Min(core.Length, subCore.Length);
