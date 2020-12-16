@@ -23,7 +23,7 @@ namespace AdventOfCode.Better_Run
         public double[][] testAgainst;
         public string[] testAgainstS;
 
-        public RunAttribute(int year, int day, int part) => (this.year, this.day, this.part) = (year, day, part);
+        public RunAttribute(int year, int day, int part) => (this.year, this.day, this.part, answer) = (year, day, part, -1);
 
         public RunAttribute(int year, int day, int part, double answer = -1) =>
             (this.year, this.day, this.part, this.answer) = (year, day, part, answer);
