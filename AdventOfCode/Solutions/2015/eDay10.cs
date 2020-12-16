@@ -13,12 +13,7 @@ namespace AdventOfCode.Solutions._2015
         static int RunLook(string inp, int run)
         {
             var s = inp;
-            for (var i = 0; i < run; i++)
-            {
-                var b = s;
-                s = LookSay(s);
-                Console.WriteLine($"{i}/{run}: {b.Length} => {s.Length} ({s.Length - b.Length})");
-            }
+            for (var i = 0; i < run; i++) s = LookSay(s);
             return s.Length;
         }
 

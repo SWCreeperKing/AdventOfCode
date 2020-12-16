@@ -124,14 +124,14 @@ namespace AdventOfCode.Better_Run
                     {
                         var methodExe = dayParts[(year, day, part)];
                         Console.ForegroundColor = ConsoleColor.DarkBlue;
-                        var answer = (IConvertible) methodExe.Item2.Invoke(0, new object[] {Inputs.inputs[(year, day)]});
+                        var answer = methodExe.Item2.Invoke(0, new object[] {Inputs.inputs[(year, day)]});
                         if (answer is null)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Error with solution, Null Return");
                             return;
                         }
-                        methodExe.Item1.Check(answer.ToDouble(null));
+                        methodExe.Item1.MasterCheck(answer);
                     }
                 }
             } while (true);

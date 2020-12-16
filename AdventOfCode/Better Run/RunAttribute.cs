@@ -19,10 +19,20 @@ namespace AdventOfCode.Better_Run
 
         public bool eliminate;
         public double answer;
+        public string answerS;
         public double[][] testAgainst;
+        public string[] testAgainstS;
+
+        public RunAttribute(int year, int day, int part) => (this.year, this.day, this.part) = (year, day, part);
 
         public RunAttribute(int year, int day, int part, double answer = -1) =>
             (this.year, this.day, this.part, this.answer) = (year, day, part, answer);
+
+        public RunAttribute(int year, int day, int part, string answerS = "") =>
+            (this.year, this.day, this.part, this.answerS) = (year, day, part, answerS);
+
+        public RunAttribute(int year, int day, int part, params string[] testAgainstS) =>
+            (this.year, this.day, this.part, eliminate, this.testAgainstS) = (year, day, part, true, testAgainstS);
 
         public RunAttribute(int year, int day, int part, params double[] testAgainst)
         {
@@ -31,13 +41,77 @@ namespace AdventOfCode.Better_Run
             this.testAgainst = testAgainst.GroupBy(item => i++ / 2).Select(ii => ii.ToArray()).ToArray();
         }
 
+        public void MasterCheck(object o)
+        {
+            if (o is null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ANSWER TURNED OUT AS NULL");
+                Console.ResetColor();
+                return;
+            }
+
+            switch (o)
+            {
+                case string s:
+                    Check(s);
+                    break;
+                case double d:
+                    Check(d);
+                    break;
+                case long l:
+                    Check(l);
+                    break;
+                case int i:
+                    Check(i);
+                    break;
+            }
+        }
+
+        public void Check(string s)
+        {
+            if (eliminate)
+            {
+                if (testAgainstS.Contains(s))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{s} is proven not to be correct!");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write("Plausible Answer: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(s);
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("Answer: ");
+
+                if (answerS == s) Console.ForegroundColor = ConsoleColor.Yellow;
+                else Console.ForegroundColor = answerS == s ? ConsoleColor.Green : ConsoleColor.Red;
+
+                if (Console.ForegroundColor != ConsoleColor.Red) Console.WriteLine(s);
+                else
+                {
+                    Console.Write(s);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($" The Answer Should Be: {answer}");
+                }
+            }
+
+            Console.ResetColor();
+        }
+
         public void Check(double i)
         {
             if (eliminate)
             {
                 var ranges = testAgainst.Select(r => r[0]).ToArray();
+
                 var comparators = testAgainst.Select(r => (Runner) r[1]).ToArray();
-                
                 if (!ranges.Contains(i))
                 {
                     if (comparators.Any(c => c != Runner.Unknown))
@@ -55,10 +129,11 @@ namespace AdventOfCode.Better_Run
                                     if (number >= i) compared = Runner.Low;
                                     break;
                             }
+
                             if (compared != Runner.Unknown) break;
                         }
 
-                        
+
                         Console.ForegroundColor = ConsoleColor.Red;
                         switch (compared)
                         {
@@ -69,11 +144,11 @@ namespace AdventOfCode.Better_Run
                                 Console.WriteLine($"Number, {i}, is too low");
                                 break;
                         }
-                        
+
                         Console.ResetColor();
                         if (compared is Runner.High or Runner.Low) return;
                     }
-                    
+
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.Write("Plausible Answer: ");
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -85,6 +160,7 @@ namespace AdventOfCode.Better_Run
                     Console.WriteLine($"{i} is proven not to be correct!");
                 }
             }
+
             else
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
