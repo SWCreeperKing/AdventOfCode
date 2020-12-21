@@ -33,13 +33,11 @@ namespace AdventOfCode.Solutions._2020
         public static long Part2(string input)
         {
             var realInp = input.Split("\n\n");
-            var rules = realInp[0].Split("\n");
             var myTicket = realInp[1].Split("\n")[^1].Split(",");
             var nearbyTickets = realInp[2].Split("\n")[1..].ToList();
-
             Dictionary<string, Func<int, bool>> requirementsRaw = new();
 
-            foreach (var r in rules)
+            foreach (var r in realInp[0].Split("\n"))
             {
                 var reg = Regex.Match(r, @"(.*): ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
                 var (one, two, three, four) = (int.Parse(reg[2].Value), int.Parse(reg[3].Value),
@@ -48,9 +46,8 @@ namespace AdventOfCode.Solutions._2020
             }
 
             var requirements = requirementsRaw.Values.ToList();
-            var removalQueue = nearbyTickets
-                .Where(ticket => !ticket.Split(",").All(s => requirements.Any(f => f.Invoke(int.Parse(s))))).ToList();
-            nearbyTickets.RemoveAll(s => removalQueue.Contains(s));
+            nearbyTickets = nearbyTickets
+                .Where(ticket => ticket.Split(",").All(s => requirements.Any(f => f.Invoke(int.Parse(s))))).ToList();
             var restructure = new List<int>[myTicket.Length];
 
             foreach (var split in nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray()))
@@ -75,11 +72,10 @@ namespace AdventOfCode.Solutions._2020
                 for (var i = 0; i < candidates.Length; i++)
                 {
                     if (concrete[i] != -1 || candidates[i].Count > 1) continue;
-                    var found = candidates[i].First();
+                    var found = concrete[i] = candidates[i].First();
                     foreach (var t in candidates)
                         if (t.Count > 1)
                             t.Remove(found);
-                    concrete[i] = found;
                 }
 
             var keys = requirementsRaw.Keys.ToArray();
