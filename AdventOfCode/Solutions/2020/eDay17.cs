@@ -147,7 +147,7 @@ namespace AdventOfCode.Solutions._2020
             return dim.GetAllBoxes();
         }
 
-        [Run(2020, 17, 2)]
+        [Run(2020, 17, 2, 1972)]
         public static int Part2(string input)
         {
             var inp = input.Split("\n");
