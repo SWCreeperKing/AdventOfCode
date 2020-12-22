@@ -12,11 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Input\2016" />
       <Folder Include="Input\2017" />
       <Folder Include="Input\2018" />
       <Folder Include="Input\2019" />
-      <Folder Include="Solutions\2016" />
       <Folder Include="Solutions\2017" />
       <Folder Include="Solutions\2018" />
       <Folder Include="Solutions\2019" />
