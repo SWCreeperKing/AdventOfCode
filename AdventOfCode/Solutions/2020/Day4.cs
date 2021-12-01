@@ -17,17 +17,17 @@ namespace AdventOfCode.Solutions._2020
             {"ecl", "amb|blu|brn|gry|grn|hzl|oth"},
             {"pid", "[0-9]{9}"},
         };
-        
+
         [Run(2020, 4, 1, 170)]
-        public static int Part1(string input) => input.Split("\n\n").ToList().Select(s => s.Split("\n ".ToCharArray()))
-            .ToArray().Count(realS => realS.Count(s => new Regex(@"(byr|iyr|eyr|hgt|hcl|ecl|pid)").IsMatch(s)) == 7);
-        
+        public static int Part1(string input) =>
+            input.Split("\n\n").Select(s => s.Replace("\n", " ").Split(' ')).Count(realS =>
+                realS.Count(s => new Regex(@"(byr|iyr|eyr|hgt|hcl|ecl|pid)").IsMatch(s)) == 7);
+
         [Run(2020, 4, 2, 103)]
         public static int Part2(string input)
         {
-            return input.Split("\n\n").ToList().Select(s => s.Split("\n ".ToCharArray())).ToArray().Select(masterS =>
+            return input.Split("\n\n").Select(s => s.Replace("\n", " ").Split(' ')).Select(masterS =>
                     masterS
-                        .ToList()
                         .All(s =>
                         {
                             var split = s.Split(":");

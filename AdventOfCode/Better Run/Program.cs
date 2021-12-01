@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reflection;
 using AdventOfCode.Better_Run;
 
-Program.Main();
-
 namespace AdventOfCode.Better_Run
 {
     public class Program

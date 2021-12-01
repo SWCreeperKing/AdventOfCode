@@ -16,6 +16,10 @@ namespace AdventOfCode.Better_Run
         public static string[] SplitSpace(this string text) => text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         public static bool IsAllNumbers(this string text) => text.All(c => Regex.Match($"{c}", @"\d").Success);
         public static string Repeat(this string pattern, int i) => string.Join("", Enumerable.Repeat(pattern, i));
+        public static string Rever(this string s) => string.Join("", s.Reverse().ToArray());
+        public static bool IsSequential(this int[] arr) => arr.Zip(arr.Skip(1), (a, b) => (a + 1) == b).All(x => x);
+        public static int FindIndexOf<T>(this T[] arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
+        public static int FindLastIndexOf<T>(this T[] arr, T find) => arr.ToList().FindLastIndex(t => t.Equals(find));
 
         public static string[] Split(this string text, string pattern) =>
             text.Split(pattern, StringSplitOptions.RemoveEmptyEntries);
@@ -44,10 +48,19 @@ namespace AdventOfCode.Better_Run
         public static T[] Swap<T>(this IEnumerable<T> rawArr, int pos1, int pos2)
         {
             var arr = rawArr.ToArray();
-            var holder = arr[pos1];
-            arr[pos1] = arr[pos2];
-            arr[pos2] = holder;
+            (arr[pos1], arr[pos2]) = (arr[pos2], arr[pos1]);
             return arr;
         }
+
+        public static bool AnyContainsAny<T>(this IEnumerable<T> arr, IEnumerable<T> arr2) => arr2.Any(arr.Contains);
+
+        public static T[] Copy<T>(this T[] t)
+        {
+            var n = new T[t.Length];
+            for (var i = 0; i < t.Length; i++) n[i] = t[i];
+            return n;
+        }
+
+        public static string ToS(this IEnumerable<char> carr) => string.Join("", carr);
     }
 }
