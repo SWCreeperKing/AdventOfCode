@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Better_Run
@@ -10,16 +12,10 @@ namespace AdventOfCode.Better_Run
 
         public static void Init()
         {
-            var yrs = Directory.GetDirectories($"{Directory.GetCurrentDirectory()}/Input");
-            foreach (var yr in yrs)
-            {
-                var year = int.Parse(Regex.Split(yr, @"[/\\]")[^1]);
-                foreach (var t in Directory.GetFiles($"Input/{year}"))
-                {
-                    var day = int.Parse(Regex.Replace(t, $@"({year}|\D)", ""));
-                    inputs[(year, day)] = ReadFile(t).Remove("\r");
-                }
-            }
+            Regex reg = new(@"(?:[\w\d\\/])+[\\/](\d+)");
+            foreach (var year in Directory.GetDirectories("Input").Select(s => int.Parse(reg.Match(s).Groups[1].Value)))
+            foreach (var file in Directory.GetFiles($"Input/{year}"))
+                inputs[(year, int.Parse(reg.Match(file).Groups[1].Value))] = ReadFile(file).Replace("\r", "");
         }
 
         public static string ReadFile(string file)
