@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace AdventOfCode.Better_Run
 {
@@ -62,5 +63,8 @@ namespace AdventOfCode.Better_Run
         }
 
         public static string ToS(this IEnumerable<char> carr) => string.Join("", carr);
+
+        public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense) =>
+            arr.Skip(grouping - 1).Select((n, i) => condense.Invoke(arr[i..(i + grouping)]));
     }
 }
