@@ -90,7 +90,7 @@ namespace AdventOfCode.Better_Run
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write("Answer: ");
 
-                if (answerS == s) Console.ForegroundColor = ConsoleColor.Yellow;
+                if (answerS == "") Console.ForegroundColor = ConsoleColor.Yellow;
                 else Console.ForegroundColor = answerS == s ? ConsoleColor.Green : ConsoleColor.Red;
 
                 if (Console.ForegroundColor != ConsoleColor.Red) Console.WriteLine(s);
