@@ -67,14 +67,10 @@ namespace AdventOfCode.Better_Run
         public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense) =>
             arr.Skip(grouping - 1).Select((n, i) => condense.Invoke(arr[i..(i + grouping)]));
 
-        // public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1) =>
-        //     leng == 1 ?
-        // : list.Select(t => new T[] {
-        //     t
-        // })
-        // GetPermutations(list, (leng == -1 ? list.Count() : leng) - 1).SelectMany(t => list.Where(o => !t.Contains(o)),
-        // (t1, t2) => t1.Concat(new[] {
-        //     t2
-        // }));
+        public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1) =>
+            leng == 1
+                ? list.Select(t => new[] { t })
+                : GetPermutations(list, (leng == -1 ? list.Count() : leng) - 1)
+                    .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }));
     }
 }
