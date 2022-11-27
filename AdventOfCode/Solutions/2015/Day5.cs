@@ -2,19 +2,20 @@
 using System.Text.RegularExpressions;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2015
-{
-    public class Day5
-    {
-        [Run(2015, 5, 1, 236)]
-        public static int Part1(string input) => (from s in input.Split("\n")
-            where Regex.Matches(s, @"[aeiou]").Count >= 3 && Regex.Match(s, @"([a-z])\1{1,}").Success &&
-                  !Regex.Match(s, @"(ab|cd|pq|xy)").Success
-            select s).Count();
+namespace AdventOfCode.Solutions._2015;
 
-        [Run(2015, 5, 2, 51)]
-        public static int Part2(string input) => (from s in input.Split("\n")
-            where Regex.Match(s, @"([a-z])[a-z]\1").Success && Regex.Match(s, @"([a-z][a-z])[a-z]*\1").Success
-            select s).Count();
-    }
+public class Day5 : Puzzle<string[], int>
+{
+    public override (int part1, int part2) Result { get; } = (236, 51);
+    public override (int year, int day) PuzzleSolution { get; } = (2015, 5);
+    public override string[] ProcessInput(string input) => input.Split('\n');
+
+    public override int Part1(string[] inp) =>
+        inp.Count(s =>
+            Regex.Matches(s, @"[aeiou]").Count >= 3 && Regex.Match(s, @"([a-z])\1{1,}").Success &&
+            !Regex.Match(s, @"(ab|cd|pq|xy)").Success);
+
+    public override int Part2(string[] inp) =>
+        inp.Count(s =>
+            Regex.Match(s, @"([a-z])[a-z]\1").Success && Regex.Match(s, @"([a-z][a-z])[a-z]*\1").Success);
 }

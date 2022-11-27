@@ -1,59 +1,40 @@
-using System;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2019
+namespace AdventOfCode.Solutions._2019;
+
+public class Day2 : Puzzle<int[], long>
 {
-    public class Day2
+    public override (long part1, long part2) Result { get; } = (2692315, 0);
+    public override (int year, int day) PuzzleSolution { get; } = (2019, 2);
+    public override int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
+
+    public override long Part1(int[] inp)
     {
-        [Run(2019, 2, 1, 2692315)]
-        public static long Part1(string input)
+        inp[1] = 12;
+        inp[2] = 2;
+        for (var i = 0; i < inp.Length; i += 4)
         {
-            var command = input.Split(',').Select(int.Parse).ToArray();
-            command[1] = 12;
-            command[2] = 2;
-            for (var i = 0; i < command.Length; i += 4)
-            {
-                switch (command[i])
-                {
-                    case 1:
-                        command[command[i + 3]] = command[command[i + 1]] + command[command[i + 2]];
-                        continue;
-                    case 2:
-                        command[command[i + 3]] = command[command[i + 1]] * command[command[i + 2]];
-                        continue;
-                    case 99:
-                        break;
-                }
-
-                break;
-            }
-
-            return command[0];
+            if (inp[i] is not (1 or 2)) break;
+            inp[inp[i + 3]] = inp[i] == 1
+                ? inp[inp[i + 1]] + inp[inp[i + 2]]
+                : inp[inp[i + 1]] * inp[inp[i + 2]];
         }
-        
-        [Run(2019, 2, 2, 64615560, 1)]
-        public static long Part2(string input)
+
+        return inp[0];
+    }
+
+    // not 64615560
+    public override long Part2(int[] inp)
+    {
+        for (var i = 0; i < inp.Length; i += 4)
         {
-            var command = input.Split(',').Select(int.Parse).ToArray();
-            for (var i = 0; i < command.Length; i += 4)
-            {
-                switch (command[i])
-                {
-                    case 1:
-                        command[command[i + 3]] = command[command[i + 1]] + command[command[i + 2]];
-                        continue;
-                    case 2:
-                        command[command[i + 3]] = command[command[i + 1]] * command[command[i + 2]];
-                        continue;
-                    case 99:
-                        break;
-                }
-
-                break;
-            }
-
-            return command[0] * command[1] * command[2];
+            if (inp[i] is not (1 or 2)) break;
+            inp[inp[i + 3]] = inp[i] == 1
+                ? inp[inp[i + 1]] + inp[inp[i + 2]]
+                : inp[inp[i + 1]] * inp[inp[i + 2]];
         }
+
+        return inp[0] * inp[1] * inp[2];
     }
 }

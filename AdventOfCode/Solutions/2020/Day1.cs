@@ -1,31 +1,17 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2020
+namespace AdventOfCode.Solutions._2020;
+
+public class Day1 : Puzzle<int[], long>
 {
-    public class Day1
-    {
-        [Run(2020,1, 1, 1016619)] // run attribute, for reflection to run
-        public static int Part1(string input)
-        {
-            var numArr = input.Split('\n') // split by \n
-                .Select(int.Parse)                    // convert entire IEnumerable<string> to IEnumerable<int>
-                .ToArray();                           // convert IEnumerable<int> to int[]
-            return (from i in numArr   // for every int i in numArr
-                let n = 2020 - i       // set n = 2020 - i
-                where numArr.Contains(n) // where there is n in numArr
-                select i * n).First();   // select and get the first one
-        }
-        
-        [Run(2020, 1, 2, 218767230)]
-        public static int Part2(string input)
-        {
-            var numArr = input.ReplaceWithSpace("\n").SplitSpace().ToIntArr();
-            return (from i in numArr
-                from j in numArr
-                let n = 2020 - i - j
-                where numArr.Contains(n)
-                select i * j * n).First();
-        }
-    }
+    public override (long part1, long part2) Result { get; } = (1016619, 218767230);
+    public override (int year, int day) PuzzleSolution { get; } = (2020, 1);
+    public override int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
+
+    public override long Part1(int[] inp) =>
+        (from i in inp let n = 2020 - i where inp.Contains(n) select i * n).First();
+
+    public override long Part2(int[] inp) =>
+        (from i in inp from j in inp let n = 2020 - i - j where inp.Contains(n) select i * j * n).First();
 }

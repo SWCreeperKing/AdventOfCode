@@ -3,64 +3,60 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2016
+namespace AdventOfCode.Solutions._2016;
+
+public class Day1 : Puzzle<string[], long>
 {
-    public class Day1
+    public override (long part1, long part2) Result { get; } = (230, 0);
+    public override (int year, int day) PuzzleSolution { get; } = (2016, 1);
+    public override string[] ProcessInput(string input) => input.Split(", ");
+
+    public override long Part1(string[] inp)
     {
-        [Run(2016, 1, 1, 230)]
-        public static int Part1(string input)
+        var pos = new[] { 0, 0, 0, 0 };
+        var rotate = 0;
+        foreach (var (c, i) in inp.Select(s => (s[0], int.Parse(s[1..]))))
         {
-            var inp = input.Split(", ");
-            var pos = new[] {0, 0, 0, 0};
-            var rotate = 0;
-            foreach (var (c, i) in inp.Select(s => (s[0], int.Parse(s[1..]))))
+            rotate += c switch
             {
-                switch (c)
-                {
-                    case 'R':
-                        rotate++;
-                        break;
-                    case 'L':
-                        rotate += 3;
-                        break;
-                }
+                'R' => 1,
+                'L' => 3,
+                _ => 0
+            };
 
-                rotate %= 4;
-                pos[rotate] += i;
-            }
-
-            return Math.Abs(pos[0] - pos[2]) + Math.Abs(pos[1] - pos[3]);
+            rotate %= 4;
+            pos[rotate] += i;
         }
-        
-        [Run(2016, 1, 2, 5, 0)]
-        public static int Part2(string input) // need to fix
+
+        return Math.Abs(pos[0] - pos[2]) + Math.Abs(pos[1] - pos[3]);
+    }
+
+    // not 5
+    public override long Part2(string[] inp)
+    {
+        List<int[]> history = new();
+        var pos = new[] { 0, 0, 0, 0 };
+        var rotate = 0;
+        foreach (var (c, i) in inp.Select(s => (s[0], int.Parse(s[1..]))))
         {
-            var inp = input.Split(", ");
-            List<int[]> history = new();
-            var pos = new[] {0, 0, 0, 0};
-            var rotate = 0;
-            foreach (var (c, i) in inp.Select(s => (s[0], int.Parse(s[1..]))))
+            rotate += c switch
             {
-                switch (c)
-                {
-                    case 'R':
-                        rotate++;
-                        break;
-                    case 'L':
-                        rotate += 3;
-                        break;
-                }
+                'R' => 1,
+                'L' => 3,
+                _ => 0
+            };
 
-                rotate %= 4;
-                for (var j = 0; j <= i; j++)
-                {
-                    pos[rotate]++;
-                    if (history.Contains(pos)) {return Math.Abs(pos[0] - pos[2]) + Math.Abs(pos[1] - pos[3]);}
-                    history.Add(pos);
-                }
+            rotate %= 4;
+            for (var j = 0; j <= i; j++)
+            {
+                pos[rotate]++;
+                if (history.Contains(pos))
+                    return Math.Abs(pos[0] - pos[2]) + Math.Abs(pos[1] - pos[3]);
+
+                history.Add(pos);
             }
-
-            return -1;
         }
+
+        return -1;
     }
 }

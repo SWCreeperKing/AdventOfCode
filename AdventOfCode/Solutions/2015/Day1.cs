@@ -1,28 +1,21 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2015
+namespace AdventOfCode.Solutions._2015;
+
+public class Day1 : Puzzle<string, int>
 {
-    public class Day1
+    public override (int part1, int part2) Result { get; } = (280, 1797);
+    public override (int year, int day) PuzzleSolution { get; } = (2015, 1);
+    public override string ProcessInput(string input) => input;
+    public override int Part1(string inp) => inp.Sum(c => c is '(' ? 1 : -1);
+
+    public override int Part2(string inp)
     {
-        [Run(2015, 1, 1, 280)]
-        public static int Part1(string input) => input.Sum(c => c is '(' ? 1 : -1);
-
-        [Run(2015, 1, 2, 1797)]
-        public static int Part2(string input)
-        {
-            var floor = 0;
-            for (var i = 0; i < input.Length; i++)
-            {
-                floor += input[i] switch
-                {
-                    '(' => 1,
-                    ')' => -1
-                };
-                if (floor == -1) return i + 1;
-            }
-
-            return floor;
-        }
+        var floor = 0;
+        for (var i = 0; i < inp.Length; i++)
+            if ((floor += inp[i] is '(' ? 1 : -1) == -1)
+                return i + 1;
+        return floor;
     }
 }

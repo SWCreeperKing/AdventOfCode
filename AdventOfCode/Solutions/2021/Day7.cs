@@ -2,55 +2,28 @@ using System;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2021
+namespace AdventOfCode.Solutions._2021;
+
+public class Day7 : Puzzle<int[], long>
 {
-    public class Day7
+    public override (long part1, long part2) Result { get; } = (340056, 96592275);
+    public override (int year, int day) PuzzleSolution { get; } = (2021, 7);
+    public override int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
+
+    public override long Part1(int[] inp)
     {
-        [Run(2021, 7, 1, 340056)]
-        public static int Part1(string input)
-        {
-            var posIn = input.Split(',').Select(int.Parse).ToArray();
-            var posArr = new int[posIn.Max() + 1];
-            foreach (var i in posIn) posArr[i]++;
+        var posArr = new int[inp.Max() + 1];
+        foreach (var i in inp) posArr[i]++;
+        return posArr.Select((_, key) => posArr.Select((t, line) => Math.Abs(line - key) * t).Sum())
+            .Prepend(int.MaxValue).Min();
+    }
 
-            var fuel = int.MaxValue;
-            for (var key = 0; key < posArr.Length; key++)
-            {
-                var rawFuel = 0;
-                for (var line = 0; line < posArr.Length; line++)
-                {
-                    if (line == key || posArr[line] == 0) continue;
-                    rawFuel += Math.Abs(line - key) * posArr[line];
-                }
-
-                fuel = Math.Min(fuel, rawFuel);
-            }
-
-            return fuel;
-        }
-
-        [Run(2021, 7, 2, 96592275)]
-        public static int Part2(string input)
-        {
-            var posIn = input.Split(',').Select(int.Parse).ToArray();
-            var posArr = new int[posIn.Max() + 1];
-            foreach (var i in posIn) posArr[i]++;
-
-            var fuel = int.MaxValue;
-            for (var key = 0; key < posArr.Length; key++)
-            {
-                var rawFuel = 0;
-                for (var line = 0; line < posArr.Length; line++)
-                {
-                    if (line == key || posArr[line] == 0) continue;
-                    var f = Math.Abs(line - key);
-                    rawFuel += f * (f + 1) / 2 * posArr[line];
-                }
-
-                fuel = Math.Min(fuel, rawFuel);
-            }
-
-            return fuel;
-        }
+    public override long Part2(int[] inp)
+    {
+        var posArr = new int[inp.Max() + 1];
+        foreach (var i in inp) posArr[i]++;
+        return posArr.Select((_, key) =>
+                posArr.Select((t, line) => Math.Abs(line - key) * (Math.Abs(line - key) + 1) / 2 * t).Sum())
+            .Prepend(int.MaxValue).Min();
     }
 }

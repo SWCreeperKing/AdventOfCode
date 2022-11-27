@@ -1,25 +1,19 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2015
-{
-    public class Day2
-    {
-        [Run(2015, 2, 1, 1586300)]
-        public static int Part1(string input) =>
-            input.Split("\n").Sum(s =>
-            {
-                var split = s.Split("x").Select(int.Parse).ToArray();
-                var sides = new[] {split[0] * split[1], split[0] * split[2], split[1] * split[2]};
-                return 2 * sides.Sum() + sides.Min();
-            });
+namespace AdventOfCode.Solutions._2015;
 
-        [Run(2015, 2, 2, 3737498)]
-        public static int Part2(string input) =>
-            input.Split("\n").Sum(s =>
-            {
-                var split = s.Split("x").Select(int.Parse).OrderBy(i => i).ToArray();
-                return (split[0] + split[1]) * 2 + split[0] * split[1] * split[2];
-            });
-    }
+public class Day2 : Puzzle<int[][], int>
+{
+    public override (int part1, int part2) Result { get; } = (1586300, 3737498);
+    public override (int year, int day) PuzzleSolution { get; } = (2015, 2);
+
+    public override int[][] ProcessInput(string input) =>
+        input.Split('\n').Select(s => s.Split("x").Select(int.Parse).ToArray()).ToArray();
+
+    public override int Part1(int[][] inp) =>
+        inp.Select(i => new[] { i[0] * i[1], i[0] * i[2], i[1] * i[2] }).Sum(s => 2 * s.Sum() + s.Min());
+
+    public override int Part2(int[][] inp) =>
+        inp.Select(i => i.OrderBy(i => i).ToArray()).Sum(s => (s[0] + s[1]) * 2 + s[0] * s[1] * s[2]);
 }

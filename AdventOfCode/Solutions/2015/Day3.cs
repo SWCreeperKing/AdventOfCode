@@ -2,68 +2,53 @@
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2015
+namespace AdventOfCode.Solutions._2015;
+
+public class Day3 : Puzzle<char[], int>
 {
-    public class Day3
+    public override (int part1, int part2) Result { get; } = (2592, 2360);
+    public override (int year, int day) PuzzleSolution { get; } = (2015, 3);
+    public override char[] ProcessInput(string input) => input.ToCharArray();
+
+    public override int Part1(char[] inp)
     {
-        [Run(2015, 3, 1, 2592)]
-        public static int Part1(string input)
+        Dictionary<(int, int), int> presents = new() { { (0, 0), 1 } };
+        var pos = new[] { 0, 0 };
+
+        foreach (var movement in inp)
         {
-            var instructions = input.ToCharArray();
-            Dictionary<(int, int), int> presents = new(){{(0, 0), 1}};
-            var pos = new[]{0, 0};
+            if (movement is '^' or '>') pos[movement == '^' ? 1 : 0]++;
+            else if (movement is 'v' or '<') pos[movement == 'v' ? 1 : 0]--;
 
-            foreach (var movement in instructions)
-            {
-                switch (movement)
-                {
-                    case '^' or '>':
-                        pos[movement == '^' ? 1 : 0]++;
-                        break;
-                    case 'v' or '<':
-                        pos[movement == 'v' ? 1 : 0]--;
-                        break;
-                }
-
-                var dictPos = (pos[0], pos[1]);
-                if (!presents.Keys.Contains(dictPos)) presents.Add(dictPos, 1); 
-                else presents[dictPos]++;
-            }
-            
-            return presents.Count;
+            var dictPos = (pos[0], pos[1]);
+            if (!presents.Keys.Contains(dictPos)) presents.Add(dictPos, 1);
+            else presents[dictPos]++;
         }
 
-        [Run(2015, 3, 2, 2360)]
-        public static int Part2(string input)
+        return presents.Count;
+    }
+
+    public override int Part2(char[] inp)
+    {
+        Dictionary<(int, int), int> presents = new() { { (0, 0), 1 } };
+        var pos = new[] { 0, 0 };
+        var roboPos = new[] { 0, 0 };
+        var switcher = false;
+
+        foreach (var movement in inp)
         {
-            var instructions = input.ToCharArray();
-            Dictionary<(int, int), int> presents = new(){{(0, 0), 1}};
-            var pos = new[]{0, 0};
-            var roboPos = new[] {0, 0};
-            var switcher = false;
+            if (movement is '^' or '>') (switcher ? roboPos : pos)[movement == '^' ? 1 : 0]++;
+            else if (movement is 'v' or '<') (switcher ? roboPos : pos)[movement == 'v' ? 1 : 0]--;
 
-            foreach (var movement in instructions)
-            {
-                switch (movement)
-                {
-                    case '^' or '>':
-                        (switcher ? roboPos : pos)[movement == '^' ? 1 : 0]++;
-                        break;
-                    case 'v' or '<':
-                        (switcher ? roboPos : pos)[movement == 'v' ? 1 : 0]--;
-                        break;
-                }
+            var chosenPos = switcher ? roboPos : pos;
+            var dictPos = (chosenPos[0], chosenPos[1]);
 
-                var chosenPos = switcher ? roboPos : pos;
-                var dictPos = (chosenPos[0], chosenPos[1]);
-                
-                if (!presents.Keys.Contains(dictPos)) presents.Add(dictPos, 1); 
-                else presents[dictPos]++;
+            if (!presents.Keys.Contains(dictPos)) presents.Add(dictPos, 1);
+            else presents[dictPos]++;
 
-                switcher = !switcher;
-            }
-            
-            return presents.Count;
+            switcher = !switcher;
         }
+
+        return presents.Count;
     }
 }

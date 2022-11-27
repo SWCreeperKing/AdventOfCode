@@ -3,74 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2021
+namespace AdventOfCode.Solutions._2021;
+
+public class Day5 : Puzzle<(int x1, int x2, int y1, int y2)[], int>
 {
-    public class Day5
+    public override (int part1, int part2) Result { get; } = (5092, 20484);
+    public override (int year, int day) PuzzleSolution { get; } = (2021, 5);
+        
+    public override (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
     {
-        private static void Add(int x, int y, IDictionary<(int x, int y), int> dict)
-        {
-            if (dict.ContainsKey((x, y))) dict[(x, y)]++;
-            else dict[(x, y)] = 1;
-        }
+        return input.Split("\n")
+            .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
+            .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1])).ToArray();
+    }
 
-        [Run(2021, 5, 1, 5092)]
-        public static int Part1(string input)
-        {
-            var cords = input.Split("\n")
-                .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
-                .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1])).ToArray();
-            Dictionary<(int x, int y), int> dict = new();
+    public override int Part1((int x1, int x2, int y1, int y2)[] inp)
+    {
+        Dictionary<(int x, int y), int> dict = new();
 
-            foreach (var (x1, x2, y1, y2) in cords)
-            {
-                if (y1 == y2)
-                    for (var x = Math.Min(x1, x2); x <= Math.Max(x1, x2); x++)
-                        Add(x, y1, dict);
+        foreach (var (x1, x2, y1, y2) in inp)
+            if (y1 == y2) AddLoop(x1, x2, y1, dict);
+            else if (x1 == x2) AddLoop(y1, y2, x1, dict, false);
 
-                if (x1 != x2) continue;
-                for (var y = Math.Min(y1, y2); y <= Math.Max(y1, y2); y++) Add(x1, y, dict);
-            }
+        return dict.Count(kv => kv.Value > 1);
+    }
 
-            return dict.Count(kv => kv.Value > 1);
-        }
+    public override int Part2((int x1, int x2, int y1, int y2)[] inp)
+    {
+        Dictionary<(int x, int y), int> dict = new();
 
-        [Run(2021, 5, 2, 20484)]
-        public static int Part2(string input)
-        {
-            var cords = input.Split("\n")
-                .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
-                .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1])).ToArray();
-            Dictionary<(int x, int y), int> dict = new();
-            foreach (var (x1, x2, y1, y2) in cords)
-            {
-                if (y1 == y2)
-                    for (var x = Math.Min(x1, x2); x <= Math.Max(x1, x2); x++)
-                        Add(x, y1, dict);
-                else if (x1 == x2)
-                    for (var y = Math.Min(y1, y2); y <= Math.Max(y1, y2); y++)
-                        Add(x1, y, dict);
-                else
-                {
-                    var x = x1;
-                    var y = y1;
+        foreach (var (x1, x2, y1, y2) in inp)
+            if (y1 == y2) AddLoop(x1, x2, y1, dict);
+            else if (x1 == x2) AddLoop(y1, y2, x1, dict, false);
+            else
+                for (var i = 0; i <= Math.Max(Math.Abs(x1 - x2), Math.Abs(y1 - y2)); i++)
+                    Add(x1 + (x1 < x2 ? i : -i), y1 + (y1 < y2 ? i : -i), dict);
 
-                    bool IsN(int a, int a1, int a2) => 
-                        a1 < a2
-                            ? a >= a2 
-                            : a <= a2;
+        return dict.Count(kv => kv.Value > 1);
+    }
+        
+    private static void AddLoop(int a1, int a2, int b, IDictionary<(int x, int y), int> dict, bool n = true)
+    {
+        for (var a = Math.Min(a1, a2); a <= Math.Max(a1, a2); a++)
+            Add(n ? a : b, n ? b : a, dict);
+    }
 
-                    while (true)
-                    {
-                        Add(x, y, dict);
-
-                        if (IsN(x, x1, x2) && IsN(y, y1, y2)) break;
-                        x += x1 < x2 ? 1 : -1;
-                        y += y1 < y2 ? 1 : -1;
-                    }
-                }
-            }
-
-            return dict.Count(kv => kv.Value > 1);
-        }
+    private static void Add(int x, int y, IDictionary<(int x, int y), int> dict)
+    {
+        if (dict.ContainsKey((x, y))) dict[(x, y)]++;
+        else dict[(x, y)] = 1;
     }
 }

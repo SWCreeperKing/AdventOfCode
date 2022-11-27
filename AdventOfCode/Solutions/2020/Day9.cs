@@ -1,45 +1,44 @@
 ﻿using System.Linq;
 using AdventOfCode.Better_Run;
 
-namespace AdventOfCode.Solutions._2020
+namespace AdventOfCode.Solutions._2020;
+
+public class Day9 : Puzzle<long[], long>
 {
-    public class Day9
+    public override (long part1, long part2) Result { get; } = (552655238, 70672245);
+    public override (int year, int day) PuzzleSolution { get; } = (2020, 9);
+    public override long[] ProcessInput(string input) => input.Split("\n").Select(long.Parse).ToArray();
+
+    public override long Part1(long[] inp)
     {
-        [Run(2020, 9, 1, 552655238)]
-        public static long Part1(string input)
+        for (var i = 25; i < inp.Length; i++)
         {
-            var numbers = input.Split("\n").Select(long.Parse).ToArray();
-            for (var i = 25; i < numbers.Length; i++)
-            {
-                var preamble = numbers.SubArr(i - 25, i);
-                var n = (from m in preamble
-                    let nn = numbers[i] - m
-                    where preamble.Contains(nn)
-                    select m).Count();
-                if (n == 0) return numbers[i];
-            }
-
-            return -1;
+            var preamble = inp.SubArr(i - 25, i);
+            var n = (from m in preamble
+                let nn = inp[i] - m
+                where preamble.Contains(nn)
+                select m).Count();
+            if (n == 0) return inp[i];
         }
 
-        [Run(2020, 9, 2, 70672245)]
-        public static long Part2(string input)
-        {
-            var weakness = Part1(input);
-            var numbers = input.Split("\n").Select(long.Parse).ToArray();
-            for (var i = 2; i < numbers.Length; i++)
-            {
-                for (var j = 0; j < i; j++)
-                {
-                    var preamble = numbers.SubArr(i - j, i);
-                    var sum = preamble.Sum();
-                    if (sum < weakness) continue;
-                    if (sum > weakness) break;
-                    return preamble.Min() + preamble.Max();
-                }
-            }
+        return -1;
+    }
 
-            return -1;
+    public override long Part2(long[] inp)
+    {
+        var weakness = Part1(inp);
+        for (var i = 2; i < inp.Length; i++)
+        {
+            for (var j = 0; j < i; j++)
+            {
+                var preamble = inp.SubArr(i - j, i);
+                var sum = preamble.Sum();
+                if (sum < weakness) continue;
+                if (sum > weakness) break;
+                return preamble.Min() + preamble.Max();
+            }
         }
+
+        return -1;
     }
 }
