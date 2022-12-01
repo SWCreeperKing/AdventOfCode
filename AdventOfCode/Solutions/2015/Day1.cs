@@ -14,8 +14,10 @@ public class Day1 : Puzzle<string, int>
     {
         var floor = 0;
         for (var i = 0; i < inp.Length; i++)
-            if ((floor += inp[i] is '(' ? 1 : -1) == -1)
-                return i + 1;
+        {
+            if ((floor += inp[i] is '(' ? 1 : -1) == -1) return i + 1;
+        }
+
         return floor;
     }
 }

@@ -6,35 +6,35 @@ using static System.Text.Json.JsonValueKind;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay12 : Puzzle<string, long>
+public partial class eDay12 : Puzzle<string, long>
 {
+    [GeneratedRegex(@"[-\d]+")] private static partial Regex NegativeRegex();
     public override (long part1, long part2) Result { get; } = (111754, 65402);
     public override (int year, int day) PuzzleSolution { get; } = (2015, 12);
     public override string ProcessInput(string input) => input;
 
     public override long Part1(string input)
     {
-        var matches = Regex.Matches(input, @"[-\d]+");
-        var counter = 0;
-        foreach (var match in matches) counter += int.Parse(match.ToString() ?? string.Empty);
-        return counter;
+        return NegativeRegex().Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
     }
 
     public override long Part2(string input) => SearchWithoutRed(input);
 
-    public static int SearchWithoutRed(string inp)
+    private static int SearchWithoutRed(string inp)
     {
-        int JsonStuff(JsonElement e) =>
-            e.ValueKind switch
+        bool JsonRed(JsonProperty jp) => jp.Value.ValueKind is not String || jp.Value.GetString() is not "red";
+        int JsonStuffJp(JsonProperty jp) => JsonStuff(jp.Value);
+
+        int JsonStuff(JsonElement e)
+        {
+            return e.ValueKind switch
             {
-                Object => e.EnumerateObject().Any(jp =>
-                    jp.Value.ValueKind is JsonValueKind.String && jp.Value.GetString() is "red")
-                    ? 0
-                    : e.EnumerateObject().Select(jp => JsonStuff(jp.Value)).Sum(),
+                Object when e.EnumerateObject().All(JsonRed) => e.EnumerateObject().Select(JsonStuffJp).Sum(),
                 Array => e.EnumerateArray().Select(JsonStuff).Sum(),
                 Number => e.GetInt32(),
                 _ => 0
             };
+        }
 
         return JsonStuff(JsonDocument.Parse(inp).RootElement);
     }

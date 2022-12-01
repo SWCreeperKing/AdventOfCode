@@ -12,6 +12,7 @@ public class Program
     // These are all solutions for
     // Advent of Code:
     // https://adventofcode.com/
+    // my highest placing is 2021, day 2, part 2 at 499 place and a total time of 4:14
 
     [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
         MessageId = "type: System.Int64[]")]
@@ -91,12 +92,12 @@ public class Program
                     continue;
             }
 
-            try
+            var split = inp.Split(':');
+            if (int.TryParse(split[0], out var dayNum) && int.TryParse(split[1], out var partNum))
             {
-                var split = inp.Split(':');
-                Execute(new Puzz(year, int.Parse(split[0]), int.Parse(split[1])));
+                Execute(new Puzz(year, dayNum, partNum));
             }
-            catch (FormatException)
+            else
             {
                 Console.ForegroundColor = Red;
                 Console.WriteLine("Parsing error, make sure to put in valid numbers");
