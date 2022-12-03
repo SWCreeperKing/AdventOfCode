@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
-using static AdventOfCode.Better_Run.Helper;
+using AdventOfCode.Experimental_Run;
+using static AdventOfCode.Helper;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay17 : Puzzle<int[], long>
+[Day(2015, 17, "No Such Thing as Too Much")]
+public static class eDay17
 {
-    public override (long part1, long part2) Result { get; } = (1638, 17);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 17);
-    public override int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
+    [Answer(1638)] public static long Part1(int[] inp) => ContainerCombination(inp).Count(arr => arr.Sum() == 150);
 
-    public override long Part1(int[] inp) => ContainerCombination(inp).Count(arr => arr.Sum() == 150);
-
-    public override long Part2(int[] inp)
+    [Answer(17)]
+    public static long Part2(int[] inp)
     {
         var viableMatches = ContainerCombination(inp).Where(arr => arr.Sum() == 150);
         var minCount = viableMatches.Select(arr => arr.Length).Min();

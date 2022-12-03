@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace AdventOfCode.Better_Run;
+namespace AdventOfCode;
 
 public static class Helper
 {
@@ -39,12 +41,12 @@ public static class Helper
         return pair.ToDictionary(kv => kv.Key, kv => kv.Value);
     }
 
-    public static void Each<T>(this IEnumerable<T> arr, Action<T> action)
+    public static void ForEach<T>(this IEnumerable<T> arr, Action<T> action)
     {
         foreach (var element in arr) action(element);
     }
 
-    public static void Each<T>(this IEnumerable<T> arr, Action<T, int> action)
+    public static void ForEach<T>(this IEnumerable<T> arr, Action<T, int> action)
     {
         for (var i = 0; i < arr.Count(); i++)
         {
@@ -60,15 +62,25 @@ public static class Helper
 
     public static bool IsSequential(params int[] arr)
     {
-        return arr.Reverse().Select((n, i) => n + i).Distinct().Count() == 1;
+        for (var i = 1; i < arr.Length; i++)
+        {
+            if (arr[i - 1] + 1 != arr[i]) return false;
+        }
+
+        return true;
+    }
+
+    public static bool IsSequential(Span<int> arr)
+    {
+        for (var i = 1; i < arr.Length; i++)
+        {
+            if (arr[i - 1] + 1 != arr[i]) return false;
+        }
+
+        return true;
     }
 
     public static int ToInt(this char c, int offset = 97) => (c - offset) % 27;
-
-    public static string[] Split(this string text, string pattern)
-    {
-        return text.Split(pattern, StringSplitOptions.RemoveEmptyEntries);
-    }
 
     public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end)
     {
@@ -166,5 +178,26 @@ public static class Helper
     {
         if (arr.Count() != boolArr.Count) throw new ArgumentException($"GetFrom error: {arr.Count()} != {boolArr}");
         return arr.Where((_, i) => boolArr.ElementAt(i));
+    }
+
+    public static string Time(this Stopwatch sw)
+    {
+        var elapsed = sw.Elapsed;
+        StringBuilder sb = new();
+        if (elapsed.Hours > 0) sb.Append(elapsed.Hours).Append("hr ");
+        if (elapsed.Minutes > 0) sb.Append(elapsed.Minutes).Append("min ");
+        if (elapsed.Seconds > 0) sb.Append(elapsed.Seconds).Append("sec ");
+        if (elapsed.Milliseconds > 0) sb.Append(elapsed.Milliseconds).Append("ms ");
+
+        var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000) / 100 / 10f;
+        if (ns > 0) sb.Append($"{ns:###.#}kns");
+        return sb.ToString().TrimEnd();
+    }
+
+    public static string String<T>(this IEnumerable<T> arr) => $"[{string.Join(",", arr)}]";
+
+    public static string String<T, K>(this IEnumerable<T> arr, Func<T, K> select)
+    {
+        return $"[{string.Join(",", arr.Select(select))}]";
     }
 }

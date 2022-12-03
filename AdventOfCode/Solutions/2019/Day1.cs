@@ -1,22 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2019;
 
-public class Day1 : Puzzle<int[], long>
+[Day(2019, 1, "The Tyranny of the Rocket Equation")]
+public static class Day1
 {
-    public override (long part1, long part2) Result { get; } = (3465245, 5194970);
-    public override (int year, int day) PuzzleSolution { get; } = (2019, 1);
-    public override int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
-    public override long Part1(int[] inp) => inp.Select(i => i / 3 - 2).Sum();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
+    [Answer(3465245)] public static long Part1(int[] inp) => inp.Select(i => i / 3 - 2).Sum();
 
-    public override long Part2(int[] inp) =>
-        inp.Select(i =>
+    [Answer(5194970)]
+    public static long Part2(int[] inp)
+    {
+        return inp.Select(i =>
         {
             List<int> ints = new();
             var hold = i;
             while ((hold = hold / 3 - 2) > 0) ints.Add(hold);
             return ints.Sum();
         }).Sum();
+    }
 }

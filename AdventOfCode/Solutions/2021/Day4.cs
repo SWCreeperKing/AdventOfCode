@@ -1,21 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day4 : Puzzle<(string[] arr, Card[] cards), int>
+[Day(2021, 4, "Giant Squid")]
+public class Day4
 {
-    public override (int part1, int part2) Result { get; } = (35711, 5586);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 4);
-    public override (string[] arr, Card[] cards) ProcessInput(string input)
+    [ModifyInput]
+    public static (string[] arr, Card[] cards) ProcessInput(string input)
     {
         var arr = input.Split("\n\n");
         return (arr, arr.Skip(1).Select(s => new Card(s)).ToArray());
     }
 
-    public override int Part1((string[] arr, Card[] cards) inp)
+    [Answer(35711)]
+    public static int Part1((string[] arr, Card[] cards) inp)
     {
         foreach (var num in inp.arr[0].Split(',').Select(int.Parse))
         {
@@ -26,7 +27,8 @@ public class Day4 : Puzzle<(string[] arr, Card[] cards), int>
         return inp.cards.First(c => c.Check()).Calc();
     }
 
-    public override int Part2((string[] arr, Card[] cards) inp)
+    [Answer(5586)]
+    public static int Part2((string[] arr, Card[] cards) inp)
     {
         foreach (var num in inp.arr[0].Split(',').Select(int.Parse))
         {

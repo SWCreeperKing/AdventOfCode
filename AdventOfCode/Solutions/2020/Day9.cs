@@ -1,15 +1,15 @@
 ﻿using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day9 : Puzzle<long[], long>
+[Day(2020, 9, "Encoding Error")]
+public static class Day9
 {
-    public override (long part1, long part2) Result { get; } = (552655238, 70672245);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 9);
-    public override long[] ProcessInput(string input) => input.Split("\n").Select(long.Parse).ToArray();
+    [ModifyInput] public static long[] ProcessInput(string input) => input.Split("\n").Select(long.Parse).ToArray();
 
-    public override long Part1(long[] inp)
+    [Answer(552655238)]
+    public static long Part1(long[] inp)
     {
         for (var i = 25; i < inp.Length; i++)
         {
@@ -24,7 +24,8 @@ public class Day9 : Puzzle<long[], long>
         return -1;
     }
 
-    public override long Part2(long[] inp)
+    [Answer(70672245)]
+    public static long Part2(long[] inp)
     {
         var weakness = Part1(inp);
         for (var i = 2; i < inp.Length; i++)

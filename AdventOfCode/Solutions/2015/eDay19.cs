@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay19 : Puzzle<(string, List<(string, string)>), long>
+[Day(2015, 19, "Medicine for Rudolph")]
+public static class eDay19
 {
-    public override (long part1, long part2) Result { get; } = (535, 212);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 19);
-
-    public override (string, List<(string, string)>) ProcessInput(string input)
+    [ModifyInput]
+    public static (string, List<(string, string)>) ProcessInput(string input)
     {
         var baseSplit = input.Replace("\r", "").Split("\n\n");
         var dict = baseSplit[0].Split('\n').Select(s =>
@@ -21,7 +20,8 @@ public class eDay19 : Puzzle<(string, List<(string, string)>), long>
         return (baseSplit[1], dict);
     }
 
-    public override long Part1((string, List<(string, string)>) inp)
+    [Answer(535)]
+    public static long Part1((string, List<(string, string)>) inp)
     {
         List<string> replaced = new();
         var replaceString = inp.Item1;
@@ -38,7 +38,8 @@ public class eDay19 : Puzzle<(string, List<(string, string)>), long>
         return replaced.Distinct().Count();
     }
 
-    public override long Part2((string, List<(string, string)>) inp)
+    [Answer(212)]
+    public static long Part2((string, List<(string, string)>) inp)
     {
         var reversed = inp.Item2.Select(ss => (ss.Item2, ss.Item1)).ToList();
         var finalE = reversed.Where(ss => ss.Item2 == "e").ToList();

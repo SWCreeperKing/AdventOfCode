@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
-using static AdventOfCode.Better_Run.Helper;
+using AdventOfCode.Experimental_Run;
+using static AdventOfCode.Helper;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay11 : Puzzle<int[], string>
+[Day(2015, 11, "Corporate Policy")]
+public class eDay11
 {
-    public override (string part1, string part2) Result { get; } = ("hxbxxyzz", "hxcaabcc");
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 11);
-    public override int[] ProcessInput(string input) => input.Select(c => c.ToInt()).ToArray();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Select(c => c.ToInt()).ToArray();
 
-    public override string Part1(int[] input)
+    [Answer("hxbxxyzz")]
+    public static string Part1(int[] input)
     {
         input[^1]--;
         while (true)
@@ -23,7 +23,8 @@ public class eDay11 : Puzzle<int[], string>
             bool hasConsecutive = false, hasPair = false;
             for (int i = 1, pair = -1; i < input.Length; i++)
             {
-                if (!hasConsecutive && i < input.Length - 1 && IsSequential(input[(i - 1)..(i + 2)]))
+                Span<int> span = input;
+                if (!hasConsecutive && i < input.Length - 1 && IsSequential(span[(i - 1)..(i + 2)]))
                 {
                     hasConsecutive = true;
                 }
@@ -37,7 +38,8 @@ public class eDay11 : Puzzle<int[], string>
         }
     }
 
-    public override string Part2(int[] input)
+    [Answer("hxcaabcc")]
+    public static string Part2(int[] input)
     {
         Part1(input);
         input[^1]++;
@@ -46,7 +48,6 @@ public class eDay11 : Puzzle<int[], string>
 
     private static void Increment(IList<int> arr)
     {
-        // Console.Write($"[{string.Join(",",arr.Select(a => a.ToChar()))}] -> ");
         arr[^1]++;
         for (var i = arr.Count - 1; i >= 1; i--)
         {
@@ -54,7 +55,5 @@ public class eDay11 : Puzzle<int[], string>
             arr[i - 1]++;
             arr[i] %= 26;
         }
-
-        // Console.WriteLine($"[{string.Join(",",arr.Select(a => a.ToChar()))}]");
     }
 }

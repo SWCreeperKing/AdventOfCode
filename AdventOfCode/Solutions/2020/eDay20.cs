@@ -1,5 +1,4 @@
 using System.Linq;
-using AdventOfCode.Better_Run;
 
 namespace AdventOfCode.Solutions._2020;
 

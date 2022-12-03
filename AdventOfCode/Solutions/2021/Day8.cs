@@ -1,20 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day8 : Puzzle<string, long>
+[Day(2021, 8, "Seven Segment Search")]
+public class Day8
 {
-    public override (long part1, long part2) Result { get; } = (375, 1019355);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 8);
-    public override string ProcessInput(string input) => input;
+    [ModifyInput] public static string ProcessInput(string input) => input;
 
-    public override long Part1(string inp) =>
-        inp.Split("\n").Select(s => s.Split(" | ")[^1].Split(' '))
+    [Answer(375)]
+    public static long Part1(string inp)
+    {
+        return inp.Split("\n").Select(s => s.Split(" | ")[^1].Split(' '))
             .Select(s => s.Select(ss => ss.Length is 2 or 3 or 4 or 7).Count(b => b)).Sum();
+    }
 
-    public override long Part2(string inp)
+    [Answer(1019355)]
+    public static long Part2(string inp)
     {
         var n = inp.Split("\n").Select(s =>
         {
@@ -29,7 +32,7 @@ public class Day8 : Puzzle<string, long>
         }).Sum();
     }
 
-    public Dictionary<string, int> Asm(string[] inp)
+    private static Dictionary<string, int> Asm(string[] inp)
     {
         Dictionary<string, int> map = new()
         {
@@ -50,8 +53,9 @@ public class Day8 : Puzzle<string, long>
         return map;
     }
 
-    public int Decode(string s, Dictionary<string, int> map) =>
-        s.Length switch
+    private static int Decode(string s, Dictionary<string, int> map)
+    {
+        return s.Length switch
         {
             2 => 1,
             4 => 4,
@@ -61,4 +65,5 @@ public class Day8 : Puzzle<string, long>
                 (from key in map.Keys where !s.Except(key).Any() && !key.Except(s).Any() select key)
                 .First()]
         };
+    }
 }

@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day5 : Puzzle<(int x1, int x2, int y1, int y2)[], int>
+[Day(2021, 5, "Hydrothermal Venture")]
+public class Day5
 {
-    public override (int part1, int part2) Result { get; } = (5092, 20484);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 5);
-        
-    public override (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
+    [ModifyInput]
+    public static (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
     {
         return input.Split("\n")
             .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
             .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1])).ToArray();
     }
 
-    public override int Part1((int x1, int x2, int y1, int y2)[] inp)
+    [Answer(5092)]
+    public static int Part1((int x1, int x2, int y1, int y2)[] inp)
     {
         Dictionary<(int x, int y), int> dict = new();
 
@@ -28,7 +28,8 @@ public class Day5 : Puzzle<(int x1, int x2, int y1, int y2)[], int>
         return dict.Count(kv => kv.Value > 1);
     }
 
-    public override int Part2((int x1, int x2, int y1, int y2)[] inp)
+    [Answer(20484)]
+    public static int Part2((int x1, int x2, int y1, int y2)[] inp)
     {
         Dictionary<(int x, int y), int> dict = new();
 

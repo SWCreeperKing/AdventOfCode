@@ -1,17 +1,16 @@
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day6 : Puzzle<string, long>
+[Day(2021, 6, "Lanternfish")]
+public class Day6
 {
-    public override (long part1, long part2) Result { get; } = (391671, 1754000560399);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 6);
-    public override string ProcessInput(string input) => input;
-    public override long Part1(string inp) => Solve(inp, 80);
-    public override long Part2(string inp) => Solve(inp, 256);
+    [ModifyInput] public static string ProcessInput(string input) => input;
+    [Answer(391671)] public static long Part1(string inp) => Solve(inp, 80);
+    [Answer(1754000560399)] public static long Part2(string inp) => Solve(inp, 256);
 
-    public static long Solve(string input, int count)
+    private static long Solve(string input, int count)
     {
         var days = new long[9];
         foreach (var i in input.Split(',').Select(int.Parse)) days[i]++;
@@ -19,7 +18,7 @@ public class Day6 : Puzzle<string, long>
         return days.Sum();
     }
 
-    public static long[] Iterate(long[] arr)
+    private static long[] Iterate(long[] arr)
     {
         var hold = arr[1];
         for (var j = 2; j < arr.Length; j++) arr[j - 1] = arr[j];

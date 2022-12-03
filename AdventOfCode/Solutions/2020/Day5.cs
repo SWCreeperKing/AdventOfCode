@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day5 : Puzzle<int[], int>
+[Day(2020, 5, "Binary Boarding")]
+public static partial class Day5
 {
-    public override (int part1, int part2) Result { get; } = (994, 741);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 5);
+    [GeneratedRegex("(B|R)")] private static partial Regex BrRegex();
+    [GeneratedRegex("(F|L)")] private static partial Regex FlRegex();
 
-    public override int[] ProcessInput(string input) =>
-        input.Split("\n").Select(s =>
-            Convert.ToInt32(new Regex(@"(B|R)").Replace(new Regex(@"(F|L)").Replace(s, "0"), "1"), 2)).ToArray();
+    [ModifyInput]
+    public static int[] ProcessInput(string input)
+    {
+        return input.Split('\n').Select(s =>
+            Convert.ToInt32(BrRegex().Replace(FlRegex().Replace(s, "0"), "1"), 2)).ToArray();
+    }
 
-    public override int Part1(int[] inp) => inp.Max();
-    public override int Part2(int[] inp) => Enumerable.Range(inp.Min(), inp.Max()).Except(inp).First();
+    [Answer(994)] public static int Part1(int[] inp) => inp.Max();
+    [Answer(741)] public static int Part2(int[] inp) => Enumerable.Range(inp.Min(), inp.Max()).Except(inp).First();
 }

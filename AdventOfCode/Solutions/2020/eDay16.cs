@@ -2,22 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay16 : Puzzle<(string[] inp, string[] nearbyTickets), long>
+[Day(2020, 16, "Ticket Translation")]
+public class eDay16
 {
-    public override (long part1, long part2) Result { get; } = (29878, 855438643439);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 16);
-
-    public override (string[] inp, string[] nearbyTickets) ProcessInput(string input)
+    [ModifyInput]
+    public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
         return (inp, inp[2].Split("\n")[1..]);
     }
 
-    public override long Part1((string[] inp, string[] nearbyTickets) inp)
+    [Answer(29878)]
+    public static long Part1((string[] inp, string[] nearbyTickets) inp)
     {
         var rules = inp.inp[0].Split("\n");
         List<Func<int, bool>> requirements = new();
@@ -35,7 +35,8 @@ public class eDay16 : Puzzle<(string[] inp, string[] nearbyTickets), long>
                 .Aggregate(current1, (current, i) => current + i));
     }
 
-    public override long Part2((string[] inp, string[] nearbyTickets) inp)
+    [Answer(855438643439)]
+    public static long Part2((string[] inp, string[] nearbyTickets) inp)
     {
         var myTicket = inp.inp[1].Split("\n")[^1].Split(",");
         Dictionary<string, Func<int, bool>> requirementsRaw = new();

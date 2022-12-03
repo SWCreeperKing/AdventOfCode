@@ -1,29 +1,27 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay16 : Puzzle<Dictionary<string, int>[], int>
+[Day(2015, 16, "Aunt Sue")]
+public static class eDay16
 {
-    public override (int part1, int part2) Result { get; } = (373, 260);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 16);
-
     private static Dictionary<string, int> searchFor = new()
     {
         ["children"] = 3, ["cats"] = 7, ["samoyeds"] = 2, ["pomeranians"] = 3, ["akitas"] = 0, ["vizslas"] = 0,
         ["goldfish"] = 5, ["trees"] = 3, ["cars"] = 2, ["perfumes"] = 1
     };
 
-    public override Dictionary<string, int>[] ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<string, int>[] ProcessInput(string input)
     {
         var split = input.Split('\n');
         var sues = new Dictionary<string, int>[split.Length];
         for (var i = 0; i < sues.Length; i++)
         {
             sues[i] = new Dictionary<string, int>();
-            split[i][(split[i].IndexOf(": ") + 2)..].Split(", ").Each(s =>
+            split[i][(split[i].IndexOf(": ") + 2)..].Split(", ").ForEach(s =>
             {
                 var ssplit = s.Split(": ");
                 sues[i][ssplit[0]] = int.Parse(ssplit[1]);
@@ -33,7 +31,8 @@ public class eDay16 : Puzzle<Dictionary<string, int>[], int>
         return sues;
     }
 
-    public override int Part1(Dictionary<string, int>[] inp)
+    [Answer(373)]
+    public static int Part1(Dictionary<string, int>[] inp)
     {
         var searchForKeysWithZero = searchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 
@@ -47,7 +46,8 @@ public class eDay16 : Puzzle<Dictionary<string, int>[], int>
         return scores.MaxBy(score => score.Item2).i + 1;
     }
 
-    public override int Part2(Dictionary<string, int>[] inp)
+    [Answer(260)]
+    public static int Part2(Dictionary<string, int>[] inp)
     {
         var searchForKeysWithZero = searchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 

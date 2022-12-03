@@ -2,27 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public partial class eDay14 : Puzzle<Dictionary<string, eDay14.Flight>, long>
+[Day(2015, 14, "Reindeer Olympics")]
+public static partial class eDay14
 {
     [GeneratedRegex(@"(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.")]
-    private partial Regex InputRegex();
+    private static partial Regex InputRegex();
 
     public record Flight(int Speed, int Sec, int Rest);
 
-    public override (long part1, long part2) Result { get; } = (2660, 1256);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 14);
-
-    public override Dictionary<string, Flight> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<string, Flight> ProcessInput(string input)
     {
         return input.Split('\n').Select(l => InputRegex().Match(l).Groups.Range(1..4)).ToDictionary(match => match[0],
             match => new Flight(int.Parse(match[1]), int.Parse(match[2]), int.Parse(match[3])));
     }
 
-    public override long Part1(Dictionary<string, Flight> inp)
+    [Answer(2660)]
+    public static long Part1(Dictionary<string, Flight> inp)
     {
         var distance = 0;
         foreach (var (speed, sec, rest) in inp.Values)
@@ -35,7 +35,8 @@ public partial class eDay14 : Puzzle<Dictionary<string, eDay14.Flight>, long>
         return distance;
     }
 
-    public override long Part2(Dictionary<string, Flight> inp)
+    [Answer(1256)]
+    public static long Part2(Dictionary<string, Flight> inp)
     {
         Dictionary<string, int> canMove = new();
         Dictionary<string, int> distance = new();

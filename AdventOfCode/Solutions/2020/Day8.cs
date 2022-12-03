@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day8 : Puzzle<string[][], int>
+[Day(2020, 8, "Handheld Halting")]
+public static class Day8
 {
-    public override (int part1, int part2) Result { get; } = (2058, 2058);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 8);
-
-    public override string[][] ProcessInput(string input)
+    [ModifyInput]
+    public static string[][] ProcessInput(string input)
     {
         return input.Split("\n").Select(s => s.SplitSpace()).ToArray();
     }
 
-    public override int Part1(string[][] inp)
+    [Answer(2058)]
+    public static int Part1(string[][] inp)
     {
         var accumulator = 0;
 
@@ -39,7 +39,8 @@ public class Day8 : Puzzle<string[][], int>
         return accumulator;
     }
 
-    public override int Part2(string[][] inp)
+    [Answer(1000)]
+    public static int Part2(string[][] inp)
     {
         for (var i = 0; i < inp.Length; i++)
         {
@@ -58,8 +59,8 @@ public class Day8 : Puzzle<string[][], int>
 
         return -1;
     }
-        
-    public static (bool, int) Run(string[][] instructions)
+
+    private static (bool, int) Run(string[][] instructions)
     {
         var accumulator = 0;
         List<int> history = new();

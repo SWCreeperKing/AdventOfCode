@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day4 : Puzzle<string[][], int>
+[Day(2020, 4, "Passport Processing")]
+public class Day4
 {
     static Dictionary<string, string> regex = new()
     {
@@ -15,23 +16,29 @@ public class Day4 : Puzzle<string[][], int>
         { "hgt", "1[5-8][0-9]cm|19[0-3]cm|59in|6[0-9]in|7[0-6]in" },
         { "hcl", "#[0-9a-f]{6}" },
         { "ecl", "amb|blu|brn|gry|grn|hzl|oth" },
-        { "pid", "[0-9]{9}" },
+        { "pid", "[0-9]{9}" }
     };
 
-    public override (int part1, int part2) Result { get; } = (170, 103);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 4);
+    [ModifyInput]
+    public static string[][] ProcessInput(string input)
+    {
+        return input.Split("\n\n").Select(s => s.Replace('\n', ' ').Split(' ')).ToArray();
+    }
 
-    public override string[][] ProcessInput(string input) =>
-        input.Split("\n\n").Select(s => s.Replace('\n', ' ').Split(' ')).ToArray();
+    [Answer(170)]
+    public static int Part1(string[][] inp)
+    {
+        return inp.Count(realS => realS.Count(s => new Regex(@"(byr|iyr|eyr|hgt|hcl|ecl|pid)").IsMatch(s)) == 7);
+    }
 
-    public override int Part1(string[][] inp) =>
-        inp.Count(realS => realS.Count(s => new Regex(@"(byr|iyr|eyr|hgt|hcl|ecl|pid)").IsMatch(s)) == 7);
-
-    public override int Part2(string[][] inp) =>
-        inp.Select(masterS => masterS.All(s =>
+    [Answer(103)]
+    public static int Part2(string[][] inp)
+    {
+        return inp.Select(masterS => masterS.All(s =>
             {
                 var split = s.Split(":");
                 return !regex.ContainsKey(split[0]) || Regex.IsMatch(split[1], $"^({regex[split[0]]})$");
             }) && Regex.IsMatch(string.Join(" ", masterS), @"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}"))
             .Count(doesCount => doesCount);
+    }
 }

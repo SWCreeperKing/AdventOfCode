@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class Day7 : Puzzle<Dictionary<string, string[]>, long>
+[Day(2015, 7, "Some Assembly Required")]
+public static class Day7
 {
-    public override (long part1, long part2) Result { get; } = (956, 40149);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 7);
-
-    public override Dictionary<string, string[]> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<string, string[]> ProcessInput(string input)
     {
         return input.Split('\n').Select(instruction => instruction.Split(" -> "))
             .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
     }
 
-    public override long Part1(Dictionary<string, string[]> inp) => FollowWire("a", inp);
+    [Answer(956)]
+    public static long Part1(Dictionary<string, string[]> inp) => FollowWire("a", inp);
 
-    public override long Part2(Dictionary<string, string[]> inp)
+    [Answer(40149)]
+    public static long Part2(Dictionary<string, string[]> inp)
     {
         var a = FollowWire("a", inp);
         return FollowWire("a", inp, new Dictionary<string, long> { ["b"] = a });

@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day7 : Puzzle<int[], long>
+[Day(2021, 7, "The Treachery of Whales")]
+public class Day7
 {
-    public override (long part1, long part2) Result { get; } = (340056, 96592275);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 7);
-    public override int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
 
-    public override long Part1(int[] inp)
+    [Answer(340056)]
+    public static long Part1(int[] inp)
     {
         var posArr = new int[inp.Max() + 1];
         foreach (var i in inp) posArr[i]++;
@@ -18,7 +18,8 @@ public class Day7 : Puzzle<int[], long>
             .Prepend(int.MaxValue).Min();
     }
 
-    public override long Part2(int[] inp)
+    [Answer(96592275)]
+    public static long Part2(int[] inp)
     {
         var posArr = new int[inp.Max() + 1];
         foreach (var i in inp) posArr[i]++;

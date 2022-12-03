@@ -1,15 +1,19 @@
 ﻿using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day6 : Puzzle<string[], int>
+[Day(2020, 6, "Custom Customs")]
+public static class Day6
 {
-    public override (int part1, int part2) Result { get; } = (6551, 3358);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 6);
-    public override string[] ProcessInput(string input) => input.Split("\n\n");
-    public override int Part1(string[] inp) => inp.Select(s => s.Remove("\n")).Sum(g => g.Union(g).Count());
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n\n");
 
-    public override int Part2(string[] inp) =>
-        inp.Select(s => s.Split("\n").Aggregate((ss, sss) => ss.Intersect(sss).ToS()).Length).Sum();
+    [Answer(6551)]
+    public static int Part1(string[] inp) => inp.Select(s => s.Remove("\n")).Sum(g => g.Union(g).Count());
+
+    [Answer(3358)]
+    public static int Part2(string[] inp)
+    {
+        return inp.Select(s => s.Split("\n").Aggregate((ss, sss) => ss.Intersect(sss).ToS()).Length).Sum();
+    }
 }

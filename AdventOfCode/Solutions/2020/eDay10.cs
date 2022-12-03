@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay10 : Puzzle<int[], long>
+[Day(2020, 10, "Adapter Array")]
+public class eDay10
 {
-    public override (long part1, long part2) Result { get; } = (1848, 8099130339328);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 10);
-    public override int[] ProcessInput(string input) => input.Split("\n").Select(int.Parse).Order().ToArray();
+    [ModifyInput]
+    public static int[] ProcessInput(string input) => input.Split("\n").Select(int.Parse).Order().ToArray();
 
-    public override long Part1(int[] inp)
+    [Answer(1848)]
+    public static long Part1(int[] inp)
     {
         var last = 0;
         var counter = new[] { 0, 1 };
@@ -24,7 +25,8 @@ public class eDay10 : Puzzle<int[], long>
         return counter[0] * counter[1];
     }
 
-    public override long Part2(int[] inp)
+    [Answer(8099130339328)]
+    public static long Part2(int[] inp)
     {
         var numbers = new[] { 0 }.Concat(inp).ToList();
         numbers.Add(numbers.Max() + 3);
@@ -36,7 +38,10 @@ public class eDay10 : Puzzle<int[], long>
             {
                 var ij = i + (int) j;
                 if (ij < numbers.Count && numbers[ij] - numbers[i] < 4)
-                    adder += combos.ContainsKey(ij) ? combos[ij] : Amass(ij);
+                {
+                    adder += combos.TryGetValue(ij, out var value) ? value : Amass(ij);
+                }
+
                 if (j == 3) return combos[i] = adder;
             }
 

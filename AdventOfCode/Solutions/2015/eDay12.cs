@@ -1,24 +1,24 @@
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 using static System.Text.Json.JsonValueKind;
 
 namespace AdventOfCode.Solutions._2015;
 
-public partial class eDay12 : Puzzle<string, long>
+[Day(2015, 12, "JSAbacusFramework.io")]
+public partial class eDay12
 {
     [GeneratedRegex(@"[-\d]+")] private static partial Regex NegativeRegex();
-    public override (long part1, long part2) Result { get; } = (111754, 65402);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 12);
-    public override string ProcessInput(string input) => input;
+    [ModifyInput] public static string ProcessInput(string input) => input;
 
-    public override long Part1(string input)
+    [Answer(111754)]
+    public static long Part1(string input)
     {
         return NegativeRegex().Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
     }
 
-    public override long Part2(string input) => SearchWithoutRed(input);
+    [Answer(65402)] public static long Part2(string input) => SearchWithoutRed(input);
 
     private static int SearchWithoutRed(string inp)
     {

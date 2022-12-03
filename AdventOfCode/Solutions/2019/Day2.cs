@@ -1,15 +1,15 @@
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2019;
 
-public class Day2 : Puzzle<int[], long>
+[Day(2019, 2, "Program Alarm")]
+public class Day2
 {
-    public override (long part1, long part2) Result { get; } = (2692315, 0);
-    public override (int year, int day) PuzzleSolution { get; } = (2019, 2);
-    public override int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
 
-    public override long Part1(int[] inp)
+    [Answer(2692315)]
+    public static long Part1(int[] inp)
     {
         inp[1] = 12;
         inp[2] = 2;
@@ -25,7 +25,7 @@ public class Day2 : Puzzle<int[], long>
     }
 
     // not 64615560
-    public override long Part2(int[] inp)
+    public static long Part2(int[] inp)
     {
         for (var i = 0; i < inp.Length; i += 4)
         {

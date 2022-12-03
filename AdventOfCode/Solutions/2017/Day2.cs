@@ -1,20 +1,22 @@
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2017;
 
-public class Day2 : Puzzle<string, long>
+[Day(2017, 2, "Corruption Checksum")]
+public static partial class Day2
 {
-    public override (long part1, long part2) Result { get; } = (46402, 0);
-    public override (int year, int day) PuzzleSolution { get; } = (2017, 2);
-    public override string ProcessInput(string input) => input;
+    [GeneratedRegex(@"([ \t]+)")] public static partial Regex SpaceTab();
 
-    public override long Part1(string input) =>
-        Regex.Replace(input, @"([ \t]+)", " ").Split("\n").Select(s => s.Split(" ").Select(int.Parse))
+    [Answer(46402)]
+    public static long Part1(string input)
+    {
+        return SpaceTab().Replace(input, " ").Split("\n").Select(s => s.Split(" ").Select(int.Parse))
             .Sum(row => row.Max() - row.Min());
+    }
 
-    public override long Part2(string inp)
+    public static long Part2(string inp)
     {
         return -1;
         // [Run(2017, 2, 2, 46402)]

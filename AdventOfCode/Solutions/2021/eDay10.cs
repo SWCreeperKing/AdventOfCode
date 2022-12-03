@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class eDay10 : Puzzle<string, long>
+[Day(2021, 10, "Syntax Scoring")]
+public class eDay10
 {
-    public override (long part1, long part2) Result { get; } = (271245, 1685293086);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 10);
-    public override string ProcessInput(string input) => input;
+    [ModifyInput] public static string ProcessInput(string input) => input;
 
-    public override long Part1(string inp)
+    [Answer(271245)]
+    public static long Part1(string inp)
     {
         var wrong = 0;
         foreach (var line in inp.Split('\n'))
@@ -43,7 +43,8 @@ public class eDay10 : Puzzle<string, long>
         return wrong;
     }
 
-    public override long Part2(string inp)
+    [Answer(1685293086)]
+    public static long Part2(string inp)
     {
         List<long> incomplete = new();
         foreach (var line in inp.Split('\n'))

@@ -1,20 +1,19 @@
 using System;
 using System.Text;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay10 : Puzzle<string, long>
+[Day(2015, 10, "Elves Look, Elves Say")]
+public class eDay10
 {
-    public override (long part1, long part2) Result { get; } = (492982, 6989950);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 10);
-    public override string ProcessInput(string input) => input;
-    public override long Part1(string input) => RunLook(input, 40);
-    public override long Part2(string input) => RunLook(input, 50);
+    [ModifyInput] public static string ProcessInput(string input) => input;
+    [Answer(492982)] public static long Part1(string input) => RunLook(input, 40);
+    [Answer(6989950)] public static long Part2(string input) => RunLook(input, 50);
 
     private static string LookSay(string look)
     {
-        Span<char> span = look.ToCharArray(); 
+        Span<char> span = look.ToCharArray();
         StringBuilder sb = new();
         var indexChar = 0;
         for (var i = 1; i < span.Length; i++)

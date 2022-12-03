@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class Day9 : Puzzle<Dictionary<(int, int), int>, long>
+[Day(2021, 9, "Smoke Basin")]
+public static class Day9
 {
-    public override (long part1, long part2) Result { get; } = (452, 1263735);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 9);
-
-    public override Dictionary<(int, int), int> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<(int, int), int> ProcessInput(string input)
     {
         Dictionary<(int, int), int> dict = new();
         var split = input.Split('\n');
@@ -19,7 +18,8 @@ public class Day9 : Puzzle<Dictionary<(int, int), int>, long>
         return dict;
     }
 
-    public override long Part1(Dictionary<(int, int), int> inp)
+    [Answer(452)]
+    public static long Part1(Dictionary<(int, int), int> inp)
     {
         var count = 0;
         foreach (var ((y, x), i) in inp)
@@ -34,7 +34,8 @@ public class Day9 : Puzzle<Dictionary<(int, int), int>, long>
         return count;
     }
 
-    public override long Part2(Dictionary<(int, int), int> inp)
+    [Answer(1263735)]
+    public static long Part2(Dictionary<(int, int), int> inp)
     {
         return -1;
         List<int> basins = new();
@@ -50,7 +51,7 @@ public class Day9 : Puzzle<Dictionary<(int, int), int>, long>
         return basins[0] * basins[1] * basins[2];
     }
 
-    public int FindBasin(Dictionary<(int, int), int> map, int x, int y)
+    private static int FindBasin(Dictionary<(int, int), int> map, int x, int y)
     {
         List<(int, int)> count = new();
         var maxY = map.Select(kv => kv.Key.Item1).Max();

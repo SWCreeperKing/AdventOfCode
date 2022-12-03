@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay17 : Puzzle<string[], int>
+[Day(2020, 17, "Conway Cubes")]
+public class eDay17
 {
-    public override (int part1, int part2) Result { get; } = (295, 1972);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 17);
-    public override string[] ProcessInput(string input) => input.Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 
-    public override int Part1(string[] inp)
+    [Answer(295)]
+    public static int Part1(string[] inp)
     {
         Array3D dim = new();
 
@@ -44,7 +44,8 @@ public class eDay17 : Puzzle<string[], int>
         return dim.GetAllBoxes();
     }
 
-    public override int Part2(string[] inp)
+    [Answer(1972)]
+    public static int Part2(string[] inp)
     {
         Array4D dim = new();
             

@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay12 : Puzzle<(char, int)[], long>
+[Day(2020, 12, "Rain Risk")]
+public class eDay12
 {
-    public override (long part1, long part2) Result { get; } = (759, 45763);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 12);
-
-    public override (char, int)[] ProcessInput(string input)
+    [ModifyInput]
+    public static (char, int)[] ProcessInput(string input)
     {
         return input.Split("\n").Select(s => (s[0], int.Parse(s[1..]))).ToArray();
     }
 
-    public override long Part1((char, int)[] inp)
+    [Answer(759)]
+    public static long Part1((char, int)[] inp)
     {
         var dir = new[] {(0, 1), (1, 0), (0, -1), (-1, 0)};
         var ship = new[] {0, 0};
@@ -42,7 +42,8 @@ public class eDay12 : Puzzle<(char, int)[], long>
         return Math.Abs(ship[0]) + Math.Abs(ship[1]);
     }
 
-    public override long Part2((char, int)[] inp)
+    [Answer(45763)]
+    public static long Part2((char, int)[] inp)
     {
         var ship = new[] {0, 0};
         var waypoint = new[] {10, -1};

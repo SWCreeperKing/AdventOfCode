@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
-using static AdventOfCode.Better_Run.Helper;
+using AdventOfCode.Experimental_Run;
+using static AdventOfCode.Helper;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay21 : Puzzle<Entity, int>
+[Day(2015, 21, "RPG Simulator 20XX")]
+public class eDay21
 {
     private static readonly List<Item> weapons = new()
     {
@@ -23,16 +24,15 @@ public class eDay21 : Puzzle<Entity, int>
         new Item(25, 1), new Item(50, 2), new Item(100, 3), new Item(20, 0, 1), new Item(40, 0, 2), new Item(80, 0, 3)
     };
 
-    public override (int part1, int part2) Result { get; } = (78, 148);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 21);
-
-    public override Entity ProcessInput(string input)
+    [ModifyInput]
+    public static Entity ProcessInput(string input)
     {
         var arr = input.Split('\n').Select(s => s.Split(": ")[1]).Select(int.Parse).ToArray();
         return new Entity(arr[0], arr[1], arr[2]);
     }
 
-    public override int Part1(Entity inp)
+    [Answer(78)]
+    public static int Part1(Entity inp)
     {
         List<int> costs = new();
 
@@ -58,7 +58,8 @@ public class eDay21 : Puzzle<Entity, int>
         return costs.Min();
     }
 
-    public override int Part2(Entity inp)
+    [Answer(148)]
+    public static int Part2(Entity inp)
     {
         List<int> costs = new();
 

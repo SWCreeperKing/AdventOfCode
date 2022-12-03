@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay18 : Puzzle<string[], long>
+[Day(2020, 18, "Operation Order")]
+public class eDay18
 {
-    public override (long part1, long part2) Result { get; } = (12956356593940, 94240043727614);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 18);
-    public override string[] ProcessInput(string input) => input.Split("\n");
-    public override long Part1(string[] inp) => inp.Sum(s => CalculateStart(s));
-    public override long Part2(string[] inp) => inp.Sum(s => CalculateStart(s, false));
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
+    [Answer(12956356593940)] public static long Part1(string[] inp) => inp.Sum(s => CalculateStart(s));
+    [Answer(94240043727614)] public static long Part2(string[] inp) => inp.Sum(s => CalculateStart(s, false));
 
     private static (int, int) GetPera(IList<string> equation)
     {

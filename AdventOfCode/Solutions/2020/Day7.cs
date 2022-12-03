@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day7 : Puzzle<Dictionary<string, List<(int, string)>>, long>
+[Day(2020, 7, "Handy Haversacks")]
+public static class Day7
 {
-    public override (long part1, long part2) Result { get; } = (213, 38426);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 7);
-
-    public override Dictionary<string, List<(int, string)>> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<string, List<(int, string)>> ProcessInput(string input)
     {
         Dictionary<string, List<(int, string)>> realBags = new();
 
@@ -26,7 +25,8 @@ public class Day7 : Puzzle<Dictionary<string, List<(int, string)>>, long>
         return realBags;
     }
 
-    public override long Part1(Dictionary<string, List<(int, string)>> inp)
+    [Answer(213)]
+    public static long Part1(Dictionary<string, List<(int, string)>> inp)
     {
         var realFinder = new List<string>();
         foreach (var (key, value) in inp)
@@ -45,8 +45,11 @@ public class Day7 : Puzzle<Dictionary<string, List<(int, string)>>, long>
         return realHasGold.Count;
     }
 
-    public override long Part2(Dictionary<string, List<(int, string)>> inp) => Counter(inp["shiny gold"], inp);
+    [Answer(38426)]
+    public static long Part2(Dictionary<string, List<(int, string)>> inp) => Counter(inp["shiny gold"], inp);
 
-    public static long Counter(IEnumerable<(int, string)> bags, Dictionary<string, List<(int, string)>> bagz) =>
-        bags.Sum(b => b.Item1 * (1 + Counter(bagz[b.Item2], bagz)));
+    private static long Counter(IEnumerable<(int, string)> bags, Dictionary<string, List<(int, string)>> bagz)
+    {
+        return bags.Sum(b => b.Item1 * (1 + Counter(bagz[b.Item2], bagz)));
+    }
 }

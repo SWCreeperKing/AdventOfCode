@@ -1,23 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public class eDay15 : Puzzle<long[][], long>
+[Day(2015, 15, "Science for Hungry People")]
+public static class eDay15
 {
-    public override (long part1, long part2) Result { get; } = (21367368, 1766400);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 15);
-
-    public override long[][] ProcessInput(string input)
+    [ModifyInput]
+    public static long[][] ProcessInput(string input)
     {
         return input.Replace(",", "").Split('\n')
             .Select(cookie => cookie.Split(' ').Skip(1).OddIndexes().Select(long.Parse).ToArray()).ToArray();
     }
 
-    public override long Part1(long[][] inp) => CookCookie(inp, false);
-    public override long Part2(long[][] inp) => CookCookie(inp, true);
+    [Answer(21367368)] public static long Part1(long[][] inp) => CookCookie(inp, false);
+    [Answer(1766400)] public static long Part2(long[][] inp) => CookCookie(inp, true);
 
     private static long CookCookie(IReadOnlyList<long[]> ingredients, bool calories)
     {

@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2018;
 
-public class Day1 : Puzzle<long[], long>
+[Day(2018, 1, "Chronal Calibration")]
+public static class Day1
 {
-    public override (long part1, long part2) Result { get; } = (497, 558);
-    public override (int year, int day) PuzzleSolution { get; } = (2018, 1);
-    public override long[] ProcessInput(string input) => input.Split('\n').Select(long.Parse).ToArray();
+    [ModifyInput] public static long[] ProcessInput(string input) => input.Split('\n').Select(long.Parse).ToArray();
+    [Answer(497)] public static long Part1(long[] inp) => inp.Sum();
 
-    public override long Part1(long[] inp) => inp.Sum();
-
-    public override long Part2(long[] inp)
+    [Answer(558)]
+    public static long Part2(long[] inp)
     {
         var finalFreq = 0L;
         List<long> history = new() { finalFreq };

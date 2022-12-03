@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay13 : Puzzle<string[], long>
+[Day(2020, 13, "Shuttle Search")]
+public static class eDay13
 {
-    public override (long part1, long part2) Result { get; } = (174, 780601154795940);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 13);
-    public override string[] ProcessInput(string input) => input.Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 
-    public override long Part1(string[] inp)
+    [Answer(174)]
+    public static long Part1(string[] inp)
     {
         var timeStamp = int.Parse(inp[0]);
         var busSchedule = inp[1].Split(",").Where(s => s != "x").Select(int.Parse).ToDictionary(i => i);
@@ -28,7 +28,8 @@ public class eDay13 : Puzzle<string[], long>
         return (ordered.First().Value - timeStamp) * ordered.First().Key;
     }
 
-    public override long Part2(string[] inp)
+    [Answer(780601154795940)]
+    public static long Part2(string[] inp)
     {
         var busses = inp[1].Split(",").Select(s => s == "x" ? "-1" : s).Select(long.Parse).ToArray();
 

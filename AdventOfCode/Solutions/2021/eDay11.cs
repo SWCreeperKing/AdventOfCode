@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2021;
 
-public class eDay11 : Puzzle<Dictionary<(int, int), int>, long>
+[Day(2021, 11, "Dumbo Octopus")]
+public class eDay11
 {
-    public override (long part1, long part2) Result { get; } = (1673, 279);
-    public override (int year, int day) PuzzleSolution { get; } = (2021, 11);
-
-    public override Dictionary<(int, int), int> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<(int, int), int> ProcessInput(string input)
     {
         Dictionary<(int, int), int> dict = new();
         var split = input.Split('\n');
@@ -19,7 +18,8 @@ public class eDay11 : Puzzle<Dictionary<(int, int), int>, long>
         return dict;
     }
 
-    public override long Part1(Dictionary<(int, int), int> inp)
+    [Answer(1673)]
+    public static long Part1(Dictionary<(int, int), int> inp)
     {
         var flashes = 0;
             
@@ -37,7 +37,8 @@ public class eDay11 : Puzzle<Dictionary<(int, int), int>, long>
         return flashes;
     }
 
-    public override long Part2(Dictionary<(int, int), int> inp)
+    [Answer(279)]
+    public static long Part2(Dictionary<(int, int), int> inp)
     {
         var flashes = 0;
 
@@ -57,7 +58,7 @@ public class eDay11 : Puzzle<Dictionary<(int, int), int>, long>
         }
     }
 
-    private void Flash(int y, int x, Dictionary<(int, int), int> inp)
+    private static void Flash(int y, int x, Dictionary<(int, int), int> inp)
     {
         for (var i = -1; i <= 1; i++)
         for (var j = -1; j <= 1; j++)

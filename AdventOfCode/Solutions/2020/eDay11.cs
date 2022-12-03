@@ -1,20 +1,19 @@
 ﻿using System.Linq;
 using System.Text;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay11 : Puzzle<string[], int>
+[Day(2020, 11, "Seating System")]
+public static class eDay11
 {
-    private static (int, int)[] area = {(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)};
-    static bool IsOccupied(char c) => c == '#';
-    
-    public override (int part1, int part2) Result { get; } = (2275, 2121);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 11);
-    public override string[] ProcessInput(string input) => input.Split("\n");
+    private static (int, int)[] area = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1) };
+    private static bool IsOccupied(char c) => c == '#';
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 
-    public override int Part1(string[] inp)
-    {        
+    [Answer(2275)]
+    public static int Part1(string[] inp)
+    {
         char Look(int i, int j)
         {
             return i >= inp.Length || i < 0
@@ -61,7 +60,8 @@ public class eDay11 : Puzzle<string[], int>
         return oldCount;
     }
 
-    public override int Part2(string[] inp)
+    [Answer(2121)]
+    public static int Part2(string[] inp)
     {
         char Look(int i, int j, int ii, int jj)
         {

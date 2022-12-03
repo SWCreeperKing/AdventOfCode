@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-public partial class Day9 : Puzzle<Dictionary<(string, string), int>, long>
+[Day(2015, 9, "All in a Single Night")]
+public static partial class Day9
 {
     [GeneratedRegex(@"(.*) to (.*) = (.*)")]
     private static partial Regex InputRegex();
 
-    public override (long part1, long part2) Result { get; } = (141, 736);
-    public override (int year, int day) PuzzleSolution { get; } = (2015, 9);
-
-    public override Dictionary<(string, string), int> ProcessInput(string input)
+    [ModifyInput]
+    public static Dictionary<(string, string), int> ProcessInput(string input)
     {
         return input.Split("\n").SelectMany(s =>
         {
@@ -24,7 +23,8 @@ public partial class Day9 : Puzzle<Dictionary<(string, string), int>, long>
         }).ToDictionary(ssi => ssi.Item1, ssi => ssi.Item2);
     }
 
-    public override long Part1(Dictionary<(string, string), int> inp)
+    [Answer(141)]
+    public static long Part1(Dictionary<(string, string), int> inp)
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 
@@ -36,7 +36,8 @@ public partial class Day9 : Puzzle<Dictionary<(string, string), int>, long>
         return shorter;
     }
 
-    public override long Part2(Dictionary<(string, string), int> inp)
+    [Answer(736)]
+    public static long Part2(Dictionary<(string, string), int> inp)
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 

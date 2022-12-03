@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay14 : Puzzle<string[], long>
+[Day(2020, 14, "Docking Data")]
+public class eDay14
 {
-    public override (long part1, long part2) Result { get; } = (17765746710228, 4401465949086);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 14);
-    public override string[] ProcessInput(string input) => input.Remove(" ").Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Remove(" ").Split("\n");
 
-    public override long Part1(string[] inp)
+    [Answer(17765746710228)]
+    public static long Part1(string[] inp)
     {
         Dictionary<int, long> storage = new();
         var mask = "";
@@ -26,7 +26,8 @@ public class eDay14 : Puzzle<string[], long>
         return storage.Values.Sum();
     }
 
-    public override long Part2(string[] inp)
+    [Answer(4401465949086)]
+    public static long Part2(string[] inp)
     {
         Dictionary<long, long> storage = new();
         var mask = "";

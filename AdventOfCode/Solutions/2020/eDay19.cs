@@ -2,27 +2,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using AdventOfCode.Better_Run;
+using AdventOfCode.Experimental_Run;
 
 // this is interesting, will keep this in mind, (Credit for part 2)
 using Parser = System.Func<string, System.Collections.Generic.IEnumerable<string>>;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day19 : Puzzle<(string[] inp, string[] rules, string[] realIn), int>
+[Day(2020, 19, "Monster Messages")]
+public static class Day19
 {
     private static readonly Regex RuleRegex = new(@"""(\D)""", RegexOptions.Compiled);
 
-    public override (int part1, int part2) Result { get; } = (122, 287);
-    public override (int year, int day) PuzzleSolution { get; } = (2020, 19);
-
-    public override (string[] inp, string[] rules, string[] realIn) ProcessInput(string input)
+    [ModifyInput]
+    public static (string[] inp, string[] rules, string[] realIn) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
         return (inp, inp[0].Split("\n"), inp[1].Split("\n"));
     }
 
-    public override int Part1((string[] inp, string[] rules, string[] realIn) inp)
+    [Answer(122)]
+    public static int Part1((string[] inp, string[] rules, string[] realIn) inp)
     {
         Dictionary<int, string> splitRules = new();
         foreach (var (i, r) in inp.rules.Select(s =>
@@ -39,7 +39,8 @@ public class Day19 : Puzzle<(string[] inp, string[] rules, string[] realIn), int
     // https://github.com/encse/adventofcode/blob/master/2020/Day19/Solution.cs
 
     // maybe in the future I will come up with a way for part 2 to be done with Regex
-    public override int Part2((string[] inp, string[] rules, string[] realIn) inp)
+    [Answer(287)]
+    public static int Part2((string[] inp, string[] rules, string[] realIn) inp)
     {
         Dictionary<int, string> splitRules = new();
         foreach (var (i, r) in inp.rules.Select(s =>
