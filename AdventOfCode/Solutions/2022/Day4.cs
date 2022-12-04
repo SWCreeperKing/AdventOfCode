@@ -10,7 +10,7 @@ public class Day4
     [ModifyInput]
     public static Range[][] ProcessInput(string inp)
     {
-        return inp.Split("\n").Select(s => s.Split(',').Select(ss =>
+        return inp.Split('\n').Select(s => s.Split(',').Select(ss =>
         {
             var split = ss.Split('-').Select(int.Parse).ToArray();
             return split[0]..split[1];

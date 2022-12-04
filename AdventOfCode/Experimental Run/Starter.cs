@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,6 +36,7 @@ public static class Starter
         RunInput();
     }
 
+    [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
     public static void RunInput()
     {
         var days = GetDayList();
@@ -167,7 +169,7 @@ public static class Starter
                         break;
                 }
             }
-            else Console.WriteLine($"Possible Answer: [{answer}]");
+            else WriteLine($"[#darkyellow]Possible Answer: [{answer}]");
         }
         catch (TargetException e)
         {

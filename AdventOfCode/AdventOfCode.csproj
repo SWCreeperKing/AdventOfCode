@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="Input/**">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        <Content Include="Input/**" CopyToOutputDirectory="Always" />
     </ItemGroup>
 </Project>

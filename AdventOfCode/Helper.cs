@@ -216,7 +216,14 @@ public static class Helper
 
     public static bool IsOverlapping(this Range r1, Range r2)
     {
-        return (r1.Start.Value <= r2.Start.Value && r1.End.Value >= r2.Start.Value) 
+        return (r1.Start.Value <= r2.Start.Value && r1.End.Value >= r2.Start.Value)
                || (r1.Start.Value <= r2.End.Value && r1.End.Value >= r2.End.Value);
+    }
+
+    public static IEnumerable<IEnumerable<T>> GetCombinations<T>(this IEnumerable<T> arr, int k) where T : IComparable
+    {
+        if (k == 1) return arr.Select(t => new[] { t });
+        return arr.GetCombinations(k - 1).SelectMany(t => arr.Where(o => o.CompareTo(t.Last()) > 0),
+            (t1, t2) => t1.Concat(new[] { t2 }));
     }
 }

@@ -11,7 +11,7 @@ public class eDay21
 {
     private static readonly List<Item> weapons = new()
     {
-        new Item(4), new Item(10, 5), new Item(25, 6), new Item(40, 7), new Item(74, 8)
+        new Item(8, 4), new Item(10, 5), new Item(25, 6), new Item(40, 7), new Item(74, 8)
     };
 
     private static readonly List<Item> armors = new()
