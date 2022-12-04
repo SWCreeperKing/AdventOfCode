@@ -9,7 +9,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 11, "Corporate Policy")]
 public class eDay11
 {
-    [ModifyInput] public static int[] ProcessInput(string input) => input.Select(c => c.ToInt()).ToArray();
+    [ModifyInput] public static int[] ProcessInput(string input) => input.Select(c => c - 'a').ToArray();
 
     [Answer("hxbxxyzz")]
     public static string Part1(int[] input)

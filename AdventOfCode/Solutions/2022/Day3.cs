@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
@@ -12,19 +11,15 @@ public static class Day3
     [Answer(7903)]
     public static long Part1(string[] inp)
     {
-        return inp.Select(s => (s[..(s.Length / 2)], s[(s.Length / 2)..]))
-            .Select(s => s.Item1.Intersect(s.Item2).First()).Select(Value).Sum();
+        return inp.Select(s => s.Chunk(s.Length / 2))
+            .Select(carr => carr.InterceptSelf().First()).Select(Value).Sum();
     }
 
     [Answer(2548)]
     public static long Part2(string[] inp)
     {
-        return inp.Chunk(3).Select(arr => Value(arr[0].Intersect(arr[1].Intersect(arr[2])).First())).Sum();
+        return inp.Chunk(3).Select(arr => Value(arr.InterceptSelf()[0])).Sum();
     }
 
-    private static int Value(char c)
-    {
-        if (c is >= 'a' and <= 'z') return c.ToInt() + 1;
-        return $"{c}".ToLower()[0].ToInt() + 27;
-    }
+    private static int Value(char c) => c is >= 'a' and <= 'z' ? c - 'a' + 1 : c - 'A' + 27;
 }

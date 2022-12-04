@@ -80,8 +80,6 @@ public static class Helper
         return true;
     }
 
-    public static int ToInt(this char c, int offset = 97) => (c - offset) % 27;
-
     public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end)
     {
         return arr.Skip(start).Take(end - start).ToArray();
@@ -199,5 +197,26 @@ public static class Helper
     public static string String<T, K>(this IEnumerable<T> arr, Func<T, K> select)
     {
         return $"[{string.Join(",", arr.Select(select))}]";
+    }
+
+    public static string InterceptSelf(this IEnumerable<string> arr)
+    {
+        return arr.Aggregate((s1, s2) => s1.Intersect(s2).ToS());
+    }
+
+    public static IEnumerable<char> InterceptSelf(this IEnumerable<IEnumerable<char>> arr)
+    {
+        return arr.Aggregate((carr1, carr2) => carr1.Intersect(carr2));
+    }
+
+    public static bool IsInRange(this Range r1, Range r2)
+    {
+        return r1.Start.Value >= r2.Start.Value && r1.End.Value <= r2.End.Value;
+    }
+
+    public static bool IsOverlapping(this Range r1, Range r2)
+    {
+        return (r1.Start.Value <= r2.Start.Value && r1.End.Value >= r2.Start.Value) 
+               || (r1.Start.Value <= r2.End.Value && r1.End.Value >= r2.End.Value);
     }
 }
