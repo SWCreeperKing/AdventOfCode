@@ -10,7 +10,7 @@ public static class Day8
     [ModifyInput]
     public static string[][] ProcessInput(string input)
     {
-        return input.Split("\n").Select(s => s.SplitSpace()).ToArray();
+        return input.Split('\n').Select(s => s.SplitSpace()).ToArray();
     }
 
     [Answer(2058)]

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -12,33 +11,70 @@ public class Day2
     [ModifyInput]
     public static char[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.ToCharArray()).ToArray();
 
-    [Answer(19636)]
-    public static long Part1(char[][] inp)
+    [Answer("19636")]
+    public static string Part1(char[][] inp)
     {
-        List<Vector2> code = new() { Vector2.One };
-        foreach (var carr in inp) code.Add(GetDigit(carr, code[^1]));
-        return long.Parse(string.Join("", code.Skip(1).Select(v2 => v2.Y * 3 + v2.X + 1)));
+        var map = MakeMap("""
+        123
+        456
+        789
+        """);
+        List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
+        foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
+        return string.Join("", code.Skip(1).Select(v2 => map[v2]));
+    }
+    
+    [Answer("3CC43")]
+    public static string Part2(char[][] inp)
+    {
+        var map = MakeMap("""
+          1
+         234
+        56789
+         ABC
+          D
+        """);
+        List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
+        foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
+        return string.Join("", code.Skip(1).Select(v2 => map[v2]));
     }
 
-    public static Vector2 GetDigit(char[] inp, Vector2 digitStart)
+    public static Vector2 GetDigit(char[] inp, Vector2 currPos, Dictionary<Vector2, char> map)
     {
-        var pos = digitStart;
+        var pos = currPos;
         foreach (var c in inp)
         {
+            var posHolder = pos;
             switch (c)
             {
                 case 'U' or 'D':
-                    pos.Y += c is 'U' ? -1 : 1;
+                    posHolder.Y += c is 'U' ? -1 : 1;
                     break;
                 case 'L' or 'R':
-                    pos.X += c is 'L' ? -1 : 1;
+                    posHolder.X += c is 'L' ? -1 : 1;
                     break;
             }
 
-            pos.X = Math.Clamp(pos.X, 0, 2);
-            pos.Y = Math.Clamp(pos.Y, 0, 2);
+            if (map.ContainsKey(posHolder)) pos = posHolder;
         }
 
         return pos;
+    }
+
+    public static Dictionary<Vector2, char> MakeMap(string rawMap)
+    {
+        Dictionary<Vector2, char> vectors = new();
+        var map = rawMap.Replace("\r", "").Split('\n');
+        for (var y = 0; y < map.Length; y++)
+        {
+            var line = map[y];
+            for (var x = 0; x < line.Length; x++)
+            {
+                if (line[x] == ' ') continue;
+                vectors.Add(new Vector2(x, y), line[x]);
+            }
+        }
+        
+        return vectors;
     }
 }
