@@ -12,7 +12,8 @@ public static class Day3
     public static long Part1(string[] inp)
     {
         return inp.Select(s => s.Chunk(s.Length / 2))
-            .Select(carr => carr.InterceptSelf().First()).Select(Value).Sum();
+            .Select(carr => carr.InterceptSelf().First())
+            .Select(Value).Sum();
     }
 
     [Answer(2548)]

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
@@ -10,39 +9,29 @@ public class Day4
     [ModifyInput]
     public static (string[], int, string)[] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s => s.Split('-')).Select(s => (s[..s.Length], s[^1], s[^1].IndexOf('[')))
-            .Select(s => (s.Item1[..^1], int.Parse(s.Item2[..s.Item3]), s.Item2[(s.Item3 + 1)..^2])).ToArray();
+        return inp.Split('\n').Select(s =>
+        {
+            var i = s.LastIndexOf('-');
+            var split = s[(i + 1)..].Split('[');
+            return (s[..i].Split('-'), int.Parse(split[0]), split[1].Replace("]", ""));
+        }).Where(s =>
+        {
+            var group = string.Join("", s.Item1).GroupBy(c => c).OrderByDescending(g => g.Count())
+                .ThenBy(g => g.Key).Select(g => g.Key).Take(5);
+            return s.Item3.All(c => group.Contains(c));
+        }).ToArray();
     }
 
-    // low 14810 | low 75464 | high 186343
-    public static long Part1((string[], int, string)[] inp)
-    {
-        // inp = ProcessInput("""
-        // aaaaa-bbb-z-y-x-123[abxyz]
-        // a-b-c-d-e-f-g-h-987[abcde]
-        // not-a-real-room-404[oarel]
-        // totally-real-room-200[decoy]
-        // """);
-        var realInp = inp.Select(s => (string.Join("", s.Item1), s.Item2, s.Item3));
-        return realInp.Sum(s =>
-        {
-            var group = s.Item1.GroupBy(c => c).OrderByDescending(g => g.Count());
-            List<int> avaliable = new();
-            var count = 0;
-            foreach (var g in group)
-            {
-                if (count >= 5) break;
-                count++;
-                if (avaliable.Contains(g.Count())) continue;
-                avaliable.Add(g.Count());
-            }
+    [Answer(185371)] public static long Part1((string[], int, string)[] inp) => inp.Sum(s => s.Item2);
 
-            var realGroup = group.Where(g => avaliable.Contains(g.Count())).Select(g => g.Key);
-            // Console.WriteLine($"{realGroup.String()} => {s.Item3} | {(s.Item3.All(c => realGroup.Contains(c)) ? s.Item2 : 0)}");
-            // Console.WriteLine($"{group.String()} => {(s.Item3.All(c => group.Contains(c)) ? s.Item2 : 0)}");
-            // Console.WriteLine($"{group.String()} => {s.Item3}");
-            // Console.WriteLine(s.Item3.Select(c => $"{c} -> {realGroup.String()} = {realGroup.Contains(c)}").String());
-            return s.Item3.All(c => realGroup.Contains(c)) ? s.Item2 : 0;
-        });
+    [Answer(984)]
+    public static long Part2((string[], int, string)[] inp)
+    {
+        return inp.Select(s =>
+        {
+            var realWords = s.Item1
+                .Select(str => string.Join("", str.Select(c => (char) ((c - 'a' + s.Item2) % 26 + 'a'))));
+            return (string.Join(" ", realWords), s.Item2);
+        }).First(s => s.Item1.Contains("northpole")).Item2;
     }
 }

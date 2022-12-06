@@ -43,13 +43,12 @@ public static class Day2
         return inp.Select(t =>
         {
             var select = conditionArray[t.Item2 - 1];
-            var end = select switch
+            return select + select switch
             {
                 0 => loseArray[t.Item1 - 1],
                 3 => t.Item1,
                 6 => winArray[t.Item1 - 1]
             };
-            return select + end;
         }).Sum();
     }
 }

@@ -29,6 +29,11 @@ public static class Helper
     public static IEnumerable<T> EvenIndexes<T>(this IEnumerable<T> arr) => arr.Where((_, i) => i % 2 == 0);
     public static IEnumerable<T> OddIndexes<T>(this IEnumerable<T> arr) => arr.Where((_, i) => i % 2 == 1);
 
+    public static string Remove(this string text, params string[] pattern)
+    {
+        return pattern.Aggregate(text, (s, p) => s.Remove(p));
+    }
+
     public static string[] Range(this GroupCollection gc, Range range)
     {
         var arr = new string[range.End.Value - (range.Start.Value - 1)];
@@ -125,9 +130,28 @@ public static class Helper
 
     public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense)
     {
-        return arr.Skip(grouping - 1).Select((n, i) => condense.Invoke(arr[i..(i + grouping)]));
+        return arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr[i..(i + grouping)]));
+    }
+    
+    public static IEnumerable<IEnumerable<T>> Window<T>(this IEnumerable<T> arr, int grouping, bool before = false)
+    {
+        for (var i = 0; i < arr.Count(); i++)
+        {
+            if (!before && i < grouping) continue;
+            yield return arr.Take(Math.Max(0, i - grouping)..i);
+        }
     }
 
+    public static int FirstIndexWhere<T>(this IEnumerable<T> arr, Func<T, bool> where)
+    {
+        return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
+    }
+
+    public static int Unique<T>(this IEnumerable<T> arr)
+    {
+        return arr.Distinct().Count();
+    }
+    
     public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1)
     {
         return leng == 1

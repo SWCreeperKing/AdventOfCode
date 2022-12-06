@@ -9,7 +9,9 @@ public static class Day1
     [ModifyInput]
     public static int[] ProcessInput(string input)
     {
-        return input.Split("\n\n").Select(s => s.Split('\n').Select(int.Parse).Sum()).ToArray();
+        return input.Split("\n\n")
+            .Select(s => s.Split('\n').Select(int.Parse).Sum())
+            .ToArray();
     }
 
     [Answer(68923)] public static long Part1(int[] inp) => inp.Max();

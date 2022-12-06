@@ -15,9 +15,8 @@ public static partial class Day5
     public static (Dictionary<int, Stack<char>> ship, int[][] commands) ProcessInput(string inp)
     {
         var split = inp.Split("\n\n");
-        var topRaw = split[0].Split('\n')
-            .Select(s => s.Chunk(4).Select(c => c.ToS().Trim().Replace("[", "")
-                .Replace("]", "")).ToArray()).SkipLast(1).ToArray();
+        var topRaw = split[0].Split('\n').Select(s => s.Chunk(4).Select(c => c[1]).ToArray())
+            .SkipLast(1).ToArray();
         var commands = split[1].Split('\n')
             .Select(s => InputRegex().Match(s).Groups.Range(1..3).Select(int.Parse).ToArray()).ToArray();
         Dictionary<int, Stack<char>> top = new();
@@ -27,9 +26,9 @@ public static partial class Day5
             for (var i = 0; i < row.Length; i++)
             {
                 var c = row.ElementAt(i);
-                if (c == "") continue;
+                if (c == ' ') continue;
                 if (!top.ContainsKey(i)) top.Add(i, new Stack<char>());
-                top[i].Push(c.First());
+                top[i].Push(c);
             }
         }
 
