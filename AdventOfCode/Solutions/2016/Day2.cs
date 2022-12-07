@@ -21,7 +21,7 @@ public class Day2
         """);
         List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
         foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
-        return string.Join("", code.Skip(1).Select(v2 => map[v2]));
+        return code.Skip(1).Select(v2 => map[v2]).Join();
     }
     
     [Answer("3CC43")]
@@ -36,7 +36,7 @@ public class Day2
         """);
         List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
         foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
-        return string.Join("", code.Skip(1).Select(v2 => map[v2]));
+        return code.Skip(1).Select(v2 => map[v2]).Join();
     }
 
     public static Vector2 GetDigit(char[] inp, Vector2 currPos, Dictionary<Vector2, char> map)
@@ -64,7 +64,7 @@ public class Day2
     public static Dictionary<Vector2, char> MakeMap(string rawMap)
     {
         Dictionary<Vector2, char> vectors = new();
-        var map = rawMap.Replace("\r", "").Split('\n');
+        var map = rawMap.Replace("\r", string.Empty).Split('\n');
         for (var y = 0; y < map.Length; y++)
         {
             var line = map[y];

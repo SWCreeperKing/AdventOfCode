@@ -38,7 +38,7 @@ public class Day4
             {
                 var split = s.Split(":");
                 return !regex.ContainsKey(split[0]) || Regex.IsMatch(split[1], $"^({regex[split[0]]})$");
-            }) && Regex.IsMatch(string.Join(" ", masterS), @"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}"))
+            }) && Regex.IsMatch(masterS.Join(" "), @"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}"))
             .Count(doesCount => doesCount);
     }
 }

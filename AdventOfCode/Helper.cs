@@ -18,11 +18,10 @@ public static class Helper
     public static int[] ToIntArr(this IEnumerable<string> texts) => texts.Select(int.Parse).ToArray();
     public static long[] ToLongArr(this IEnumerable<string> texts) => texts.Select(long.Parse).ToArray();
     public static string ReplaceWithSpace(this string text, string pattern) => text.Replace(pattern, " ");
-    public static string Remove(this string text, string pattern) => text.Replace(pattern, "");
+    public static string Remove(this string text, string pattern) => text.Replace(pattern, string.Empty);
     public static string[] SplitSpace(this string text) => text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
     public static bool IsAllNumbers(this string text) => NumberOnlyRegex.IsMatch(text);
-    public static string Repeat(this string pattern, int i) => string.Join("", Enumerable.Repeat(pattern, i));
-    public static string Rever(this string s) => string.Join("", s.Reverse().ToArray());
+    public static string Repeat(this string pattern, int i) => Enumerable.Repeat(pattern, i).Join();
     public static int FindIndexOf<T>(this T[] arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
     public static int FindLastIndexOf<T>(this T[] arr, T find) => arr.ToList().FindLastIndex(t => t.Equals(find));
     public static T Multi<T>(this IEnumerable<T> arr) where T : INumber<T> => arr.Aggregate((l1, l2) => l1 * l2);
@@ -117,22 +116,15 @@ public static class Helper
         return arr;
     }
 
-    public static bool AnyContainsAny<T>(this IEnumerable<T> arr, IEnumerable<T> arr2) => arr2.Any(arr.Contains);
-
-    public static T[] Copy<T>(this T[] t)
-    {
-        var n = new T[t.Length];
-        for (var i = 0; i < t.Length; i++) n[i] = t[i];
-        return n;
-    }
-
-    public static string ToS(this IEnumerable<char> carr) => string.Join("", carr);
+    public static bool Contains<T>(this IEnumerable<T> arr, IEnumerable<T> arr2) => arr2.Any(arr.Contains);
+    public static string Join<T>(this IEnumerable<T> carr, string join = "") => string.Join(join, carr);
+    public static string Join<T>(this IEnumerable<T> carr, char join) => string.Join(join, carr);
 
     public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense)
     {
         return arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr[i..(i + grouping)]));
     }
-    
+
     public static IEnumerable<IEnumerable<T>> Window<T>(this IEnumerable<T> arr, int grouping, bool before = false)
     {
         for (var i = 0; i < arr.Count(); i++)
@@ -147,11 +139,8 @@ public static class Helper
         return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
     }
 
-    public static int Unique<T>(this IEnumerable<T> arr)
-    {
-        return arr.Distinct().Count();
-    }
-    
+    public static int Unique<T>(this IEnumerable<T> arr) => arr.Distinct().Count();
+
     public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1)
     {
         return leng == 1
@@ -212,20 +201,20 @@ public static class Helper
         if (elapsed.Milliseconds > 0) sb.Append(elapsed.Milliseconds).Append("ms ");
 
         var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000) / 100 / 10f;
-        if (ns > 0) sb.Append($"{ns:###.#}kns");
+        if (ns > 0) sb.Append($"{ns:###.#}µs");
         return sb.ToString().TrimEnd();
     }
 
-    public static string String<T>(this IEnumerable<T> arr) => $"[{string.Join(",", arr)}]";
+    public static string String<T>(this IEnumerable<T> arr) => $"[{arr.Join(',')}]";
 
     public static string String<T, K>(this IEnumerable<T> arr, Func<T, K> select)
     {
-        return $"[{string.Join(",", arr.Select(select))}]";
+        return $"[{arr.Select(select).Join(',')}]";
     }
 
     public static string InterceptSelf(this IEnumerable<string> arr)
     {
-        return arr.Aggregate((s1, s2) => s1.Intersect(s2).ToS());
+        return arr.Aggregate((s1, s2) => s1.Intersect(s2).Join());
     }
 
     public static IEnumerable<char> InterceptSelf(this IEnumerable<IEnumerable<char>> arr)

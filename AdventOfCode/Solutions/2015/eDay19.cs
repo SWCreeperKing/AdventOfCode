@@ -11,7 +11,7 @@ public static class eDay19
     [ModifyInput]
     public static (string, List<(string, string)>) ProcessInput(string input)
     {
-        var baseSplit = input.Replace("\r", "").Split("\n\n");
+        var baseSplit = input.Replace("\r", string.Empty).Split("\n\n");
         var dict = baseSplit[0].Split('\n').Select(s =>
         {
             var split = s.Split(" => ");

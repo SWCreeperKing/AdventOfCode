@@ -13,9 +13,9 @@ public class Day3
     [Answer(1082324)]
     public static int Part1(string[] inp)
     {
-        var gamma = Enumerable.Range(0, inp[0].Length).Select(i => inp.Select(s => s[i]).ToS())
-            .Select(s => s.Count(c => c is '0') > inp.Length / 2 ? '0' : '1').ToS();
-        return Convert.ToInt32(gamma, 2) * Convert.ToInt32(gamma.Select(c => c == '0' ? '1' : '0').ToS(), 2);
+        var gamma = Enumerable.Range(0, inp[0].Length).Select(i => inp.Select(s => s[i]).Join())
+            .Select(s => s.Count(c => c is '0') > inp.Length / 2 ? '0' : '1').Join();
+        return Convert.ToInt32(gamma, 2) * Convert.ToInt32(gamma.Select(c => c == '0' ? '1' : '0').Join(), 2);
     }
 
     [Answer(1353024)]

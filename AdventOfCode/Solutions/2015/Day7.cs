@@ -47,7 +47,7 @@ public static class Day7
             [var x, "RSHIFT", var parse] => Follow(x) >> int.Parse(parse),
             ["NOT", var x] => ~Follow(x),
             [var x] => Follow(x),
-            _ => throw new ArgumentException($"Oopsie: [{string.Join(",", instruction)}]")
+            _ => throw new ArgumentException($"Oopsie: [{instruction.String()}]")
         };
 
         return cache[wire] = valueFromInstruction;

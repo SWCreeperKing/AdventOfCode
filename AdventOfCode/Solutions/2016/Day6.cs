@@ -24,12 +24,12 @@ public class Day6
     [Answer("tsreykjj")]
     public static string Part1(List<char>[] inp)
     {
-        return inp.Select(list => list.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key).ToS();
+        return inp.Select(list => list.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key).Join();
     }
 
     [Answer("hnfbujie")]
     public static string Part2(List<char>[] inp)
     {
-        return inp.Select(list => list.GroupBy(c => c).OrderBy(g => g.Count()).First().Key).ToS();
+        return inp.Select(list => list.GroupBy(c => c).OrderBy(g => g.Count()).First().Key).Join();
     }
 }

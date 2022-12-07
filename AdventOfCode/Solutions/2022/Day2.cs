@@ -9,8 +9,7 @@ public static class Day2
 {
     private static readonly Dictionary<string, int> rockPaperValue = new()
     {
-        ["A"] = 1, ["B"] = 2, ["C"] = 3,
-        ["X"] = 1, ["Y"] = 2, ["Z"] = 3
+        ["A"] = 1, ["B"] = 2, ["C"] = 3, ["X"] = 1, ["Y"] = 2, ["Z"] = 3
     };
 
     private static readonly int[] winArray = { 2, 3, 1 };

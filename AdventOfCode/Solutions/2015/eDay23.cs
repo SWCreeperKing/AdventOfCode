@@ -10,7 +10,7 @@ public static class eDay23
     [ModifyInput]
     public static string[][] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s => s.Replace(",", "").Split(' ').ToArray()).ToArray();
+        return inp.Split('\n').Select(s => s.Replace(",", string.Empty).Split(' ').ToArray()).ToArray();
     }
 
     [Answer(184)]

@@ -34,7 +34,7 @@ public class eDay11
                 pair = input[i];
             }
 
-            if (hasConsecutive && hasPair) return string.Join("", input.Select(i => i.ToChar()));
+            if (hasConsecutive && hasPair) return input.Select(i => i.ToChar()).Join();
         }
     }
 

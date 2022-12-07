@@ -13,10 +13,10 @@ public class Day4
         {
             var i = s.LastIndexOf('-');
             var split = s[(i + 1)..].Split('[');
-            return (s[..i].Split('-'), int.Parse(split[0]), split[1].Replace("]", ""));
+            return (s[..i].Split('-'), int.Parse(split[0]), split[1].Replace("]", string.Empty));
         }).Where(s =>
         {
-            var group = string.Join("", s.Item1).GroupBy(c => c).OrderByDescending(g => g.Count())
+            var group = s.Item1.Join().GroupBy(c => c).OrderByDescending(g => g.Count())
                 .ThenBy(g => g.Key).Select(g => g.Key).Take(5);
             return s.Item3.All(c => group.Contains(c));
         }).ToArray();
@@ -30,8 +30,8 @@ public class Day4
         return inp.Select(s =>
         {
             var realWords = s.Item1
-                .Select(str => string.Join("", str.Select(c => (char) ((c - 'a' + s.Item2) % 26 + 'a'))));
-            return (string.Join(" ", realWords), s.Item2);
+                .Select(str => str.Select(c => (char) ((c - 'a' + s.Item2) % 26 + 'a')).Join());
+            return (realWords.Join(' '), s.Item2);
         }).First(s => s.Item1.Contains("northpole")).Item2;
     }
 }

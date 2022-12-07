@@ -78,8 +78,8 @@ public class eDay20
         {
             (this.id, this.rawData) = (id, rawData);
             var data = rawData.Split('\n');
-            sides = new[] { data[0], data.Select(s => s[^1]).ToS(), data[^1], data.Select(s => s[0]).ToS() };
-            sidesFlipped = sides.Select(s => s.Rever()).ToArray();
+            sides = new[] { data[0], data.Select(s => s[^1]).Join(), data[^1], data.Select(s => s[0]).Join() };
+            sidesFlipped = sides.Select(s => s.Reverse().Join()).ToArray();
         }
     }
 

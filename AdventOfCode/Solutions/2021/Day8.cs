@@ -40,10 +40,10 @@ public class Day8
             { inp.First(s => s.Length is 3), 7 }, { inp.First(s => s.Length is 7), 8 }
         };
         var mapR = map.ToDictionary(kv => kv.Value, kv => kv.Key);
-        var bottomAndBotLeft = mapR[8].Except(mapR[4]).Except(mapR[7].Except(mapR[1])).ToS();
+        var bottomAndBotLeft = mapR[8].Except(mapR[4]).Except(mapR[7].Except(mapR[1])).Join();
         map.Add(inp.First(s => s.Length is 6 && s.Except(bottomAndBotLeft).Count() == 5), 9);
         mapR = map.ToDictionary(kv => kv.Value, kv => kv.Key);
-        var bottomLeft = mapR[8].Except(mapR[9]).ToS();
+        var bottomLeft = mapR[8].Except(mapR[9]).Join();
         map.Add(inp.First(s => s.Length is 5 && s.Contains(bottomLeft)), 2);
         map.Add(inp.First(s => s.Length is 5 && !s.Contains(bottomLeft) && !mapR[1].Except(s).Any()), 3);
         map.Add(inp.First(s => s.Length is 5 && !s.Contains(bottomLeft) && mapR[1].Except(s).Any()), 5);

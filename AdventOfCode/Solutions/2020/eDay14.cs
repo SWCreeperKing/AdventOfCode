@@ -14,7 +14,7 @@ public class eDay14
     public static long Part1(string[] inp)
     {
         Dictionary<int, long> storage = new();
-        var mask = "";
+        var mask = string.Empty;
 
         foreach (var instruction in inp)
         {
@@ -30,7 +30,7 @@ public class eDay14
     public static long Part2(string[] inp)
     {
         Dictionary<long, long> storage = new();
-        var mask = "";
+        var mask = string.Empty;
 
         foreach (var instruction in inp)
         {
@@ -54,8 +54,9 @@ public class eDay14
 
     private static string Mask(long num, string mask, bool keepX = true)
     {
-        return string.Join("",
-            mask.ToArray().Combine(Stringify(num).ToArray(), (c, c1) => c == '1' || c == (keepX ? 'X' : '0') ? c : c1));
+        return mask.ToArray()
+            .Combine(Stringify(num).ToArray(), (c, c1) => c == '1' || c == (keepX ? 'X' : '0') ? c : c1)
+            .Join();
     }
 
     private static long BinaryConvert(string arr, int i = 0)
@@ -65,7 +66,7 @@ public class eDay14
 
     private static long Update(long number, string mask)
     {
-        return BinaryConvert(string.Join("", Mask(number, mask, false).Reverse()));
+        return BinaryConvert(Mask(number, mask, false).Reverse().Join());
     }
 
     private static IEnumerable<string> Brancher(string initMask)
@@ -74,7 +75,7 @@ public class eDay14
         var indx = initMask.IndexOf('X');
         var coreMask = initMask.Remove(indx, 1);
         arr.AddRange(new[] { coreMask.Insert(indx, "0"), coreMask.Insert(indx, "1") });
-        if (!arr[0].Contains("X")) return arr.ToArray();
+        if (!arr[0].Contains('X')) return arr.ToArray();
         arr.AddRange(Brancher(arr[0]).Union(Brancher(arr[1])));
         return arr.ToArray();
     }

@@ -15,7 +15,8 @@ public static partial class Day5
     public static (Dictionary<int, Stack<char>> ship, int[][] commands) ProcessInput(string inp)
     {
         var split = inp.Split("\n\n");
-        var topRaw = split[0].Split('\n').Select(s => s.Chunk(4).Select(c => c[1]).ToArray())
+        var topRaw = split[0].Split('\n')
+            .Select(s => s.Chunk(4).Select(c => c[1]).ToArray())
             .SkipLast(1).ToArray();
         var commands = split[1].Split('\n')
             .Select(s => InputRegex().Match(s).Groups.Range(1..3).Select(int.Parse).ToArray()).ToArray();
@@ -43,7 +44,7 @@ public static partial class Day5
             for (var i = 0; i < command[0]; i++) inp.ship[command[2] - 1].Push(inp.ship[command[1] - 1].Pop());
         }
 
-        return inp.ship.Select(kv => kv.Value.Peek()).ToS();
+        return inp.ship.Select(kv => kv.Value.Peek()).Join();
     }
 
     [Answer("BRQWDBBJM")]
@@ -56,6 +57,6 @@ public static partial class Day5
             while (holder.TryPop(out var c)) inp.ship[command[2] - 1].Push(c);
         }
 
-        return inp.ship.Select(kv => kv.Value.Peek()).ToS();
+        return inp.ship.Select(kv => kv.Value.Peek()).Join();
     }
 }

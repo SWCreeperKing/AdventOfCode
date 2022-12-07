@@ -11,7 +11,7 @@ public static class eDay15
     [ModifyInput]
     public static long[][] ProcessInput(string input)
     {
-        return input.Replace(",", "").Split('\n')
+        return input.Replace(",", string.Empty).Split('\n')
             .Select(cookie => cookie.Split(' ').Skip(1).OddIndexes().Select(long.Parse).ToArray()).ToArray();
     }
 

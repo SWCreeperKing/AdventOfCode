@@ -9,40 +9,62 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 7, "Internet Protocol Version 7")]
 public static partial class Day7
 {
-    [GeneratedRegex(@"(\w{1})((?!\1)\w{2})\1")]
+    [GeneratedRegex(@"(\w{1})((?!\1)(\w{1})\3)\1")]
     public static partial Regex AbbaRegex();
 
-    [ModifyInput] public static string[] ProcessInput(string inp) => inp.Split('\n');
+    [GeneratedRegex(@"(\w{1})(?!\1)(\w{1})\1")]
+    public static partial Regex AbaRegex();
 
-    // high 569
-    public static long Part1(string[] inp)
+    [ModifyInput]
+    public static (string[] brackets, string[] normal)[] ProcessInput(string inp)
     {
-        var counter = 0;
-        foreach (var s in inp)
+        return inp.Split('\n').Select(s =>
         {
-            var str = s;
+            var str = s.AsSpan();
             List<string> bracketString = new();
             List<string> normalString = new();
-            while (str.Contains('['))
+            int i = 0, j = 0;
+            while ((i = s.IndexOf('[', i)) != -1)
             {
-                var start = str.IndexOf('[');
-                normalString.Add(str[..start]);
-                var end = str.IndexOf(']');
-                bracketString.Add(str[(start + 1)..end]);
-                str = str[(end + 1)..];
+                normalString.Add(str[j..i].ToString());
+                var end = s.IndexOf(']', i);
+                bracketString.Add(str[(i + 1)..end].ToString());
+                j = end + 1;
+                i++;
             }
 
-            normalString.Add(str);
+            normalString.Add(str[s.LastIndexOf(']')..].ToString());
+            return (bracketString.ToArray(), normalString.ToArray());
+        }).ToArray();
+    }
 
-            if (bracketString.Any(s => AbbaRegex().IsMatch(s)) ||
-                !normalString.Any(s => AbbaRegex().IsMatch(s)))
+    [Answer(118)]
+    public static long Part1((string[] brackets, string[] normal)[] inp)
+    {
+        return inp.Count(s =>
+            !s.brackets.Any(s => AbbaRegex().IsMatch(s)) && s.normal.Any(s => AbbaRegex().IsMatch(s)));
+    }
+
+    [Answer(260)]
+    public static long Part2((string[] brackets, string[] normal)[] inp)
+    {
+        return inp.Count(s =>
+        {
+            foreach (var str in s.brackets)
             {
-                continue;
+                var i = 0;
+                while (AbaRegex().IsMatch(str, i))
+                {
+                    var match = AbaRegex().Match(str, i);
+                    var groups = match.Groups;
+                    i = str.IndexOf(match.Value, i);
+                    var bab = $"{groups[2].Value}{groups[1].Value}{groups[2].Value}";
+                    if (s.normal.Any(s => s.Contains(bab))) return true;
+                    i++;
+                }
             }
 
-            counter++;
-        }
-
-        return counter;
+            return false;
+        });
     }
 }

@@ -66,7 +66,7 @@ public static class ClrCnsl
         }
     }
 
-    public static string CleanColors(string text) => RegMatch.Replace(text, "");
+    public static string CleanColors(string text) => RegMatch.Replace(text, string.Empty);
 
     public static void Write(string text)
     {

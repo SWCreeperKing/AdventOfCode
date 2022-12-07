@@ -198,6 +198,6 @@ public static class Starter
 
     public static void LoadFile(int day)
     {
-        inputCache.Add(day, File.ReadAllText($"Input/{selectedYear}/{day}.txt").Replace("\r", ""));
+        inputCache.Add(day, File.ReadAllText($"Input/{selectedYear}/{day}.txt").Replace("\r", string.Empty));
     }
 }

@@ -14,6 +14,6 @@ public static class Day6
     [Answer(3358)]
     public static int Part2(string[] inp)
     {
-        return inp.Select(s => s.Split("\n").Aggregate((ss, sss) => ss.Intersect(sss).ToS()).Length).Sum();
+        return inp.Select(s => s.Split("\n").Aggregate((ss, sss) => ss.Intersect(sss).Join()).Length).Sum();
     }
 }

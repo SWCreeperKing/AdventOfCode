@@ -87,7 +87,7 @@ public static class Day19
         }
 
         var parser = GetParser(0);
-        return inp.realIn.Count(data => parser(data).Any(st => st == ""));
+        return inp.realIn.Count(data => parser(data).Any(st => st == string.Empty));
     }
 
     private static string Rule(int i, Dictionary<int, string> splitRules)

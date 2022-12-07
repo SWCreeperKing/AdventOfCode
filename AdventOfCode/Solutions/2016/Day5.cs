@@ -44,7 +44,7 @@ public static class Day5
             if (found == 8) break;
         }
 
-        return string.Join("", chars);
+        return chars.Join();
     }
 
     private static IEnumerable<byte[]> Hashes(string input)
