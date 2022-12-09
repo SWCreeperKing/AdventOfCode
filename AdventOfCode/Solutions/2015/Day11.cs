@@ -7,7 +7,7 @@ using static AdventOfCode.Helper;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 11, "Corporate Policy")]
-public class eDay11
+public class Day11
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Select(c => c - 'a').ToArray();
 

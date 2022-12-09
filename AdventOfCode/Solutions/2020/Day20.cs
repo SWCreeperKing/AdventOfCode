@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class eDay20
+public class Day20
 {
     // public class Tile
     // {

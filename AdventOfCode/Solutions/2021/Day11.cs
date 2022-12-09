@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 11, "Dumbo Octopus")]
-public class eDay11
+public class Day11
 {
     [ModifyInput]
     public static Dictionary<(int, int), int> ProcessInput(string input)

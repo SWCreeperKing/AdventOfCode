@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 14, "Docking Data")]
-public class eDay14
+public class Day14
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Remove(" ").Split("\n");
 

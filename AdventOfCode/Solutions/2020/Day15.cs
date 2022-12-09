@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 15, "Rambunctious Recitation")]
-public static class eDay15
+public static class Day15
 {
     [ModifyInput]
     public static IReadOnlyList<int> ProcessInput(string input) => input.Split(",").Select(int.Parse).ToArray();

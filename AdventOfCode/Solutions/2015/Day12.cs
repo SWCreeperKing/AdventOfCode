@@ -7,7 +7,7 @@ using static System.Text.Json.JsonValueKind;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 12, "JSAbacusFramework.io")]
-public partial class eDay12
+public partial class Day12
 {
     [GeneratedRegex(@"[-\d]+")] private static partial Regex NegativeRegex();
     [ModifyInput] public static string ProcessInput(string input) => input;

@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 10, "Syntax Scoring")]
-public class eDay10
+public class Day10
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
 

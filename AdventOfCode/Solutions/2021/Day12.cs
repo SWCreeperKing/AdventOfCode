@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 12, "Passage Pathing")]
-public class eDay12
+public class Day12
 {
     public class Node
     {

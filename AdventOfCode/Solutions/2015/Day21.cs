@@ -7,7 +7,7 @@ using static AdventOfCode.Helper;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 21, "RPG Simulator 20XX")]
-public class eDay21
+public class Day21
 {
     private static readonly List<Item> weapons = new()
     {

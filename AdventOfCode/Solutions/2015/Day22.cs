@@ -11,7 +11,7 @@ namespace AdventOfCode.Solutions._2015;
  * and then modified it to use Records 
  */
 [Day(2015, 22, "Wizard Simulator 20XX")]
-public class eDay22
+public class Day22
 {
     [ModifyInput]
     public static GameState ProcessInput(string input)

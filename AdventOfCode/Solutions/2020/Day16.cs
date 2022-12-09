@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 16, "Ticket Translation")]
-public class eDay16
+public class Day16
 {
     [ModifyInput]
     public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)

@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 13, "Shuttle Search")]
-public static class eDay13
+public static class Day13
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 

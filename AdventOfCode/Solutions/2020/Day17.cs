@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 17, "Conway Cubes")]
-public class eDay17
+public class Day17
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 

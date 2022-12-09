@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 15, "Science for Hungry People")]
-public static class eDay15
+public static class Day15
 {
     [ModifyInput]
     public static long[][] ProcessInput(string input)

@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 24, "It Hangs in the Balance")]
-public class eDay24
+public class Day24
 {
     [ModifyInput] public static long[] ProcessInput(string inp) => inp.Split('\n').Select(long.Parse).ToArray();
 
