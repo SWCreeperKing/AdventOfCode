@@ -239,4 +239,24 @@ public static class Helper
         return arr.GetCombinations(k - 1).SelectMany(t => arr.Where(o => o.CompareTo(t.Last()) > 0),
             (t1, t2) => t1.Concat(new[] { t2 }));
     }
+
+    public static string[][] SuperSplit(this string str, string split1, string split2)
+    {
+        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+    }
+
+    public static string[][] SuperSplit(this string str, char split1, char split2)
+    {
+        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+    }
+
+    public static string[][] SuperSplit(this string str, string split1, char split2)
+    {
+        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+    }
+
+    public static string[][] SuperSplit(this string str, char split1, string split2)
+    {
+        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+    }
 }
