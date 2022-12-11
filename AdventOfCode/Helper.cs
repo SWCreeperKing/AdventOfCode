@@ -241,6 +241,11 @@ public static class Helper
             (t1, t2) => t1.Concat(new[] { t2 }));
     }
 
+    public static T[] SuperSplit<T>(this string str, string split1, string split2, Func<string[], T> select)
+    {
+        return str.Split(split1).Select(s => s.Split(split2)).Select(select).ToArray();
+    }
+
     public static string[][] SuperSplit(this string str, string split1, string split2)
     {
         return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
@@ -248,16 +253,16 @@ public static class Helper
 
     public static string[][] SuperSplit(this string str, char split1, char split2)
     {
-        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+        return str.SuperSplit($"{split1}", $"{split2}");
     }
 
     public static string[][] SuperSplit(this string str, string split1, char split2)
     {
-        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+        return str.SuperSplit(split1, $"{split2}");
     }
 
     public static string[][] SuperSplit(this string str, char split1, string split2)
     {
-        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
+        return str.SuperSplit($"{split1}", split2);
     }
 }
