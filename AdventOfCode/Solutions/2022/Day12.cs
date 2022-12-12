@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
+using RT.Dijkstra;
+using static AdventOfCode.Solutions._2022.Day12;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 12, "")]
+[Day(2022, 12, "Hill Climbing Algorithm")]
 public class Day12
 {
     public static readonly ImmutableList<(int x, int y)> search = new List<(int x, int y)>
@@ -35,8 +33,15 @@ public class Day12
 
         foreach (var (x, y, id) in matrix.Iterate())
         {
-            if (id == 0) start = (x, y);
-            if (id == -1) end = (x, y);
+            switch (id)
+            {
+                case 0:
+                    start = (x, y);
+                    break;
+                case -1:
+                    end = (x, y);
+                    break;
+            }
         }
 
         matrix[end.x, end.y] = 'z' - 'a' + 1;
@@ -44,85 +49,75 @@ public class Day12
         return new(start, end, matrix);
     }
 
-    // nope 503
+    [Answer(481)]
     public static long Part1(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp)
     {
-        var (start, end, matrix) = inp;
-        var chain = SolveMap(matrix, 1, start, end);
-        return chain;
+        DijkstrasAlgorithm.Run(new MapNode(inp.start.x, inp.start.y, inp.map, inp.end), 0,
+            (i1, i2) => i1 + i2, out var count);
+        return count;
     }
 
     public static long Part2(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp)
     {
-        return 0;
-    }
-
-    public static int SolveMap(Matrix2d<int> map, int alt, (int x, int y) start, (int x, int y) end)
-    {
-        var nodeMap = new Matrix2d<Node>(map.size);
-        nodeMap[start.x, start.y] = new Node(0, 0);
-
-        int Distance((int x, int y) pos1, (int x, int y) pos2)
-        {
-            return Math.Abs(pos1.x - pos2.x) + Math.Abs(pos1.y - pos2.y);
-        }
-
-        var (curX, curY) = start;
-        var (w, h) = map.size;
-
-        Dictionary<(int x, int y), long> toSearch = new();
-        while (true)
-        {
-            var thisNode = nodeMap[curX, curY];
-            foreach (var (addX, addY) in search)
-            {
-                var newX = curX + addX;
-                if (newX < 0 || newX >= w) continue;
-
-                var newY = curY + addY;
-                if (newY < 0 || newY >= h) continue;
-
-                var newPos = (newX, newY);
-                if (!map[newX, newY].IsInRange(1, alt + 1)) continue;
-                if (newPos == start) continue;
-
-                if (newPos == end)
-                {
-                    List<Node> nodes = new();
-
-                    var currNode = nodeMap[curX, curY];
-                    while (currNode is not null)
-                    {
-                        nodes.Add(currNode);
-                        currNode = currNode.Parent;
-                    }
-
-                    return nodes.Count;
-                }
-
-                var rawNode = new Node(Distance(start, newPos), Distance(end, newPos), thisNode);
-
-                if (nodeMap[newX, newY] is null) nodeMap[newX, newY] = rawNode;
-                else
-                {
-                    var occupiedNode = nodeMap[newX, newY];
-                    if (occupiedNode.FCost > rawNode.FCost) nodeMap[newX, newY] = rawNode;
-                    else continue;
-                }
-
-                toSearch[newPos] = nodeMap[newX, newY].FCost;
-            }
-
-            if (!toSearch.Any()) throw new Exception("oh no"); // should never throw, if so then OH NO NO NO NO NO
-            var order = toSearch.Values.Order().First();
-            (curX, curY) = toSearch.First(kv => kv.Value == order).Key;
-            alt = map[curX, curY];
-            toSearch.Remove((curX, curY));
-        }
+        DijkstrasAlgorithm.Run(new MapNode(inp.end.x, inp.end.y, inp.map, inp.start, true), 0,
+            (i1, i2) => i1 + i2, out var count);
+        return count;
     }
 }
 
-public record Node(int GCost = int.MaxValue, int HCost = int.MaxValue, Node Parent = null)
+public class MapNode : Node<int, int>
 {
-    public long FCost => GCost + HCost;
+    public (int x, int y) position;
+    public (int x, int y) dest;
+    public Matrix2d<int> map;
+    public bool isPart2;
+
+    public MapNode(int x, int y, Matrix2d<int> map, (int x, int y) dest, bool isPart2 = false)
+    {
+        position = (x, y);
+        this.dest = dest;
+        this.map = map;
+        this.isPart2 = isPart2;
+    }
+
+    public override bool Equals(Node<int, int> other)
+    {
+        var otherPos = ((MapNode) other).position;
+        return position.x == otherPos.x && position.y == otherPos.y;
+    }
+
+    public override int GetHashCode() => position.GetHashCode();
+
+    public override bool IsFinal
+    {
+        get
+        {
+            if (isPart2) return map[position.x, position.y] == 1;
+            return dest.x == position.x && dest.y == position.y;
+        }
+    }
+
+    public override IEnumerable<Edge<int, int>> Edges
+    {
+        get
+        {
+            List<Edge<int, int>> nodes = new();
+
+            var thisAltitude = map[position.x, position.y];
+            var (w, h) = map.size;
+
+            foreach (var (addX, addY) in search)
+            {
+                var (newX, newY) = (position.x + addX, position.y + addY);
+                if (newX < 0 || newX >= w || newY < 0 || newY >= h) continue;
+
+                if (!map[newX, newY].IsInRange(0, thisAltitude + 1) && !isPart2) continue;
+                if (!(thisAltitude - 1).IsInRange(0, map[newX, newY]) && isPart2) continue;
+
+                nodes.Add(new Edge<int, int>(1, 0, new MapNode(newX, newY, map, dest, isPart2)));
+            }
+
+            return nodes;
+        }
+    }
 }

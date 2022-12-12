@@ -9,4 +9,8 @@
     <ItemGroup>
         <Content Include="Input/**" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="RT.Dijkstra" Version="1.0.16" />
+    </ItemGroup>
 </Project>
