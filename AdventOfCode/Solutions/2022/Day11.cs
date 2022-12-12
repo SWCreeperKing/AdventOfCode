@@ -9,9 +9,11 @@ namespace AdventOfCode.Solutions._2022;
 public class Day11
 {
     [ModifyInput]
-    public static string[][] ProcessInput(string inp) =>
-        inp.Split("\n\n")
+    public static string[][] ProcessInput(string inp)
+    {
+        return inp.Split("\n\n")
             .Select(s => s.Split('\n').Skip(1).ToArray()).ToArray();
+    }
 
     [Answer(61503)]
     public static long Part1(string[][] inp)
@@ -114,31 +116,31 @@ public class Day11
         }
 
         Console.WriteLine(inspections.String());
-        
+
         var highest = inspections.OrderDescending().Take(2).ToArray();
 
         return inspections[inspections.FindIndexOf(highest[0])] * inspections[inspections.FindIndexOf(highest[1])];
     }
+}
 
-    public class Monkey
+public class Monkey
+{
+    public Operation operation;
+    public int testDivisibility;
+    public List<long> startingItems = new();
+    public int[] throwTo = new int[2];
+}
+
+public class Operation
+{
+    public bool isAddOrMulti = true;
+    public int[] op = new int[2];
+
+    public long RunOp(long old)
     {
-        public required Operation operation;
-        public int testDivisibility;
-        public List<long> startingItems = new();
-        public int[] throwTo = new int[2];
-
-        public class Operation
-        {
-            public bool isAddOrMulti = true;
-            public int[] op = new int[2];
-
-            public long RunOp(long old)
-            {
-                var first = op[0] == 0 ? old : op[0];
-                var second = op[1] == 0 ? old : op[1];
-                if (isAddOrMulti) return first + second;
-                return first * second;
-            }
-        }
+        var first = op[0] == 0 ? old : op[0];
+        var second = op[1] == 0 ? old : op[1];
+        if (isAddOrMulti) return first + second;
+        return first * second;
     }
 }
