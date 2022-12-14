@@ -1,106 +1,39 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 14, "")]
+[Day(2022, 14, "Regolith Reservoir")]
 public class Day14
 {
     [ModifyInput]
-    public static (int x, int y)[][] ProcessInput(string inp) =>
-        inp.SuperSplit("\n", " -> ", s => s.Select(str =>
-        {
-            var split = str.Split(',');
-            return (x: int.Parse(split[0]), y: int.Parse(split[1]));
-        }).ToArray());
-
-    public static long Part1((int x, int y)[][] inp)
-    {
-        var map = new Matrix2d<int>(1000, 1000);
-
-        void DrawVertical(int x, int y, int toY)
-        {
-            var (minY, maxY) = (Math.Min(y, toY), Math.Max(y, toY));
-            for (var newY = minY; newY <= maxY; newY++) map[x, newY] = 100;
-        }
-
-        void DrawHorizontal(int x, int y, int toX)
-        {
-            var (minX, maxX) = (Math.Min(x, toX), Math.Max(x, toX));
-            for (var newX = minX; newX <= maxX; newX++) map[newX, y] = 100;
-        }
-
-        foreach (var line in inp)
-        {
-            for (var i = 1; i < line.Length; i++)
-            {
-                var (x1, y1) = line[i - 1];
-                var (x2, y2) = line[i];
-                if (x1 != x2) DrawHorizontal(x1, y1, x2);
-                else DrawVertical(x1, y1, y2);
-            }
-        }
-
-        var sand = 0;
-        while (true)
-        {
-            sand++;
-            var x = 500;
-            var y = 0;
-            while (true)
-            {
-                if (map[x, y + 1] is 100 or 50)
-                {
-                    var isLeft = map[x - 1, y + 1] is 100 or 50;
-                    var isright = map[x + 1, y + 1] is 100 or 50;
-                    if (isLeft && isright)
-                    {
-                        map[x, y] = 50;
-                        break;
-                    }
-
-                    if (!isLeft && !isright) x--;
-                    else if (!isLeft) x--;
-                    else x++;
-                    continue;
-                }
-
-                y++;
-                if (y + 1 >= map.size.h) return sand - 1;
-            }
-        }
-
-        return -1;
-    }
-
-    public static long Part2((int x, int y)[][] inp)
+    public static Matrix2d<bool> ProcessInput(string inp)
     {
         var highY = 0;
-
-        foreach (var line in inp)
+        var lineOps = inp.SuperSplit("\n", " -> ", s => s.Select(str =>
         {
-            foreach (var (_, cordY) in line) highY = Math.Max(cordY, highY);
-        }
-
-        var map = new Matrix2d<int>(1500, highY + 2);
+            var split = str.Split(',');
+            var y = int.Parse(split[1]);
+            highY = Math.Max(highY, y);
+            return (x: int.Parse(split[0]), y);
+        }).ToArray());
+        var map = new Matrix2d<bool>(1000, highY + 2);
 
         void DrawVertical(int x, int y, int toY)
         {
             var (minY, maxY) = (Math.Min(y, toY), Math.Max(y, toY));
-            for (var newY = minY; newY <= maxY; newY++) map[x, newY] = 100;
+            for (var newY = minY; newY <= maxY; newY++) map[x, newY] = true;
         }
 
         void DrawHorizontal(int x, int y, int toX)
         {
             var (minX, maxX) = (Math.Min(x, toX), Math.Max(x, toX));
-            for (var newX = minX; newX <= maxX; newX++) map[newX, y] = 100;
+            for (var newX = minX; newX <= maxX; newX++) map[newX, y] = true;
         }
 
-        foreach (var line in inp)
+        foreach (var line in lineOps)
         {
             for (var i = 1; i < line.Length; i++)
             {
@@ -111,40 +44,64 @@ public class Day14
             }
         }
 
+        return map;
+    }
+
+    [Answer(825)]
+    public static long Part1(Matrix2d<bool> inp)
+    {
         var sand = 0;
         while (true)
         {
-            sand++;
-            var x = 500;
-            var y = 0;
-            while (true)
-            {
-                if (map[x, y] is 50) return sand - 1;
-                if (map[x, y + 1] is 100 or 50)
-                {
-                    var isLeft = map[x - 1, y + 1] is 100 or 50;
-                    var isright = map[x + 1, y + 1] is 100 or 50;
-                    if (isLeft && isright)
-                    {
-                        map[x, y] = 50;
-                        break;
-                    }
-
-                    if (!isLeft && !isright) x--;
-                    else if (!isLeft) x--;
-                    else x++;
-                    continue;
-                }
-
-                y++;
-                if (y + 1 >= map.size.h)
-                {
-                    map[x, y] = 50;
-                    break;
-                }
-            }
+            if (UpdateMap(inp, 500, 0)) sand++;
+            else return sand;
         }
+    }
 
-        return -1;
+    [Answer(26729)]
+    public static long Part2(Matrix2d<bool> inp)
+    {
+        const int x = 500, y = 0;
+        var sand = 0;
+        while (true)
+        {
+            if (inp[x, y]) return sand;
+            UpdateMap(inp, x, y, true);
+            sand++;
+        }
+    }
+
+    private static bool UpdateMap(Matrix2d<bool> map, int x, int y, bool part2 = false)
+    {
+        while (true)
+        {
+            if (map[x, y + 1])
+            {
+                var isLeft = map[x - 1, y + 1];
+                var isRight = map[x + 1, y + 1];
+                if (isLeft && isRight) return map[x, y] = true;
+
+                switch (isLeft)
+                {
+                    case false when !isRight:
+                    case false:
+                        x--;
+                        break;
+                    default:
+                        x++;
+                        break;
+                }
+
+                continue;
+            }
+
+            y++;
+            if (part2)
+            {
+                if (y + 1 < map.size.h) continue;
+                return map[x, y] = true;
+            } 
+            if (y + 1 >= map.size.h) return false;
+        }
     }
 }
