@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode;
@@ -265,4 +266,6 @@ public static class Helper
     {
         return str.SuperSplit($"{split1}", split2);
     }
+
+    public static int ToInt(this JsonNode node) => node.GetValue<int>();
 }

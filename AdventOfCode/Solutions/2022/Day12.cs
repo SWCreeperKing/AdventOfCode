@@ -57,6 +57,7 @@ public class Day12
         return count;
     }
 
+    [Answer(480)]
     public static long Part2(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp)
     {
         DijkstrasAlgorithm.Run(new MapNode(inp.end.x, inp.end.y, inp.map, inp.start, true), 0,
