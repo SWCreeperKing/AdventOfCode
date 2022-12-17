@@ -10,7 +10,8 @@ public static class Day1
     public static int[] ProcessInput(string input)
     {
         return input.Split("\n\n")
-            .Select(s => s.Split('\n').Select(int.Parse).Sum())
+            .Select(s => 
+                s.Split('\n').Select(int.Parse).Sum())
             .ToArray();
     }
 

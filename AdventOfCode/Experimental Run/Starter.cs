@@ -167,6 +167,15 @@ public static class Starter
                             _ => (long) realAnswer
                         });
                         break;
+                    case ulong l:
+                        Answer(l == realAnswer switch
+                        {
+                            int ai => (ulong) ai,
+                            uint uai => uai,
+                            long al => (ulong) al,
+                            _ => (ulong) realAnswer
+                        });
+                        break;
                 }
             }
             else WriteLine($"[#darkyellow]Possible Answer: [{answer}]");
