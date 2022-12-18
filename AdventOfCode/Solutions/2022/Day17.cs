@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2022;
@@ -69,7 +70,7 @@ public class Day17
                 AddPiece((x, y), piece);
                 x = 2;
                 rock++;
-                y = positions.Max(l => l.Any()? l.Max() : 0) + 4;
+                y = positions.Max(l => l.Any() ? l.Max() : 0) + 4;
             }
         }
 
@@ -78,6 +79,7 @@ public class Day17
 
     public static long Part2(bool[] inp)
     {
+        List<string> repeatCache = new();
         List<int>[] positions = { new(), new(), new(), new(), new(), new(), new() };
 
         var y = 3;
@@ -125,7 +127,27 @@ public class Day17
                 AddPiece((x, y), piece);
                 x = 2;
                 rock++;
-                y = positions.Max(l => l.Any()? l.Max() : 0) + 4;
+                y = positions.Max(l => l.Any() ? l.Max() : 0) + 4;
+
+                Console.SetCursorPosition(0, 1);
+                Console.WriteLine($"{rock:###,###}    ");
+
+                List<int> toNormalized = new();
+                foreach (var list in positions)
+                {
+                    if (!list.Any()) continue;
+                    toNormalized.AddRange(list.TakeLast(Math.Min(list.Count, 25)));
+                }
+
+                var normalizer = toNormalized.Min();
+                var repeater = SHA256
+                    .HashData(toNormalized.Select(i => i - normalizer).SelectMany(BitConverter.GetBytes).ToArray())
+                    .Join();
+
+                if (repeatCache.Contains(repeater))
+                {
+                    return (long) ((positions.Max(l => l.Max()) + 1) * ((float) rock / 1e13));
+                }
             }
         }
 

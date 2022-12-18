@@ -11,6 +11,10 @@ public class Matrix2d<T>
     public readonly T[] array;
     public readonly (int w, int h) size;
 
+    public Matrix2d(int wh) : this(wh, wh)
+    {
+    }
+
     public Matrix2d(int w, int h)
     {
         size = (w, h);

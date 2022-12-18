@@ -1,15 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
+using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 16, "")]
+// just like 2015 day 22, i was unable to solve this
+// solution used: https://github.com/encse/adventofcode/blob/master/2022/Day16/Solution.cs
+// >24hr was waited before submitting
+[Day(2022, 16, "Proboscidea Volcanium")]
 public class Day16
 {
-    public static Regex inputRegex =
+    private static readonly Regex InputRegex =
         new(@"Valve ([A-Z]{2}) has flow rate=(\d+); tunnel(?:s|) lead(?:s|) to valve(?:s|) ([A-Z]{2}(, [A-Z]{2})*)",
             RegexOptions.Compiled);
 
@@ -20,83 +25,193 @@ public class Day16
 
         return split.Select(s =>
         {
-            var matches = inputRegex.Match(s).Groups.Range(1..3);
+            var matches = InputRegex.Match(s).Groups.Range(1..3);
             return (matches[0], int.Parse(matches[1]), matches[2].Split(", "));
         }).ToArray();
     }
 
     public static long Part1((string valve, int rate, string[] leadTo)[] inp)
     {
-        Dictionary<long, string[]> preLeadTo = new();
-        Dictionary<string, long> binaryIds = new();
-        Dictionary<long, long[]> leadTo = new();
-        Dictionary<long, int> rates = new();
-
-        var lastBinaryId = 0;
-        foreach (var (valve, rate, lead) in inp)
-        {
-            var binaryId = 1L << lastBinaryId++;
-            binaryIds[valve] = binaryId;
-            rates[binaryId] = rate;
-            preLeadTo[binaryId] = lead;
-        }
-
-        foreach (var (k, v) in preLeadTo) leadTo[k] = v.Select(s => binaryIds[s]).ToArray();
-
-        List<State> states = new() { new State(binaryIds["AA"], 0, 0) };
-
-        long OpenedToCarry(long opened)
-        {
-            return rates.Where(kv => (kv.Key & opened) != 0L).Sum(kv => kv.Value);
-        }
-
-        for (var time = 1; time < 31; time++)
-        {
-            Console.WriteLine($"\n{states.String()}");
-            var beforeStates = states.ToArray();
-            states.Clear();
-            Dictionary<long, State> stateCache = new();
-
-            foreach (var (id, opened, carry) in beforeStates)
-            {
-                var openedCarry = OpenedToCarry(opened);
-                stateCache[id] = new State(id, opened, carry + openedCarry);
-            }
-
-            List<State> children = new();
-
-            foreach (var (id, opened, carry) in stateCache.Values.ToList())
-            {
-                var lead = leadTo[id];
-                foreach (var child in lead)
-                {
-                    var open = opened;
-                    if (stateCache.ContainsKey(child)) open |= child;
-                    children.Add(new State(child, open, carry));
-                }
-            }
-
-            var bestCompare = children.GroupBy(state => state.Id)
-                .Select(group => group.Count() == 1 ? group.First() : group.MaxBy(state => state.Carry));
-
-            foreach (var best in bestCompare)
-            {
-                if (stateCache.ContainsKey(best.Id) && best.Carry > stateCache[best.Id].Carry)
-                {
-                    stateCache[best.Id] = best;
-                } else if (!stateCache.ContainsKey(best.Id)) stateCache[best.Id] = best;
-            }
-
-            states = stateCache.Values.ToList();
-        }
-
-        return states.Max(kv => kv.Carry);
+        return Solve(inp, true, 30);
     }
 
     public static long Part2((string valve, int rate, string[] leadTo)[] inp)
     {
-        return 0;
+        return Solve(inp, false, 26);
     }
-}
 
-public record State(long Id, long Opened, long Carry);
+    private static int Solve((string valve, int rate, string[] leadTo)[] inp, bool singlePlayer, int time)
+    {
+        var map = Parse(inp);
+        var start = map.Valves.Single(x => x.Name == "AA");
+
+        var valvesToOpen = new BitArray(map.Valves.Length);
+        for (var i = 0; i < map.Valves.Length; i++)
+        {
+            if (map.Valves[i].FlowRate > 0) valvesToOpen[i] = true;
+        }
+
+        return MaxFlow(map, 0, 0, new Player(start, 0),
+            singlePlayer ? new Player(start, int.MaxValue) : new Player(start, 0), valvesToOpen, time);
+    }
+
+    private static int MaxFlow(Map map, int maxFlow, int currentFlow, Player player0, Player player1,
+        BitArray valvesToOpen,
+        int remainingTime)
+    {
+        if (player0.Distance != 0 && player1.Distance != 0) throw new ArgumentException();
+        var nextStatesByPlayer = new Player[2][];
+
+        for (var iPlayer = 0; iPlayer < 2; iPlayer++)
+        {
+            var player = iPlayer == 0 ? player0 : player1;
+
+            if (player.Distance > 0)
+            {
+                nextStatesByPlayer[iPlayer] = new[] { player with { Distance = player.Distance - 1 } };
+            }
+            else if (valvesToOpen[player.Valve.Id])
+            {
+                currentFlow += player.Valve.FlowRate * (remainingTime - 1);
+                if (currentFlow > maxFlow) maxFlow = currentFlow;
+
+                valvesToOpen = new BitArray(valvesToOpen)
+                {
+                    [player.Valve.Id] = false
+                };
+                nextStatesByPlayer[iPlayer] = new[] { player };
+            }
+            else
+            {
+                var nextStates = new List<Player>();
+
+                for (var i = 0; i < valvesToOpen.Length; i++)
+                {
+                    if (!valvesToOpen[i]) continue;
+                    var nextValve = map.Valves[i];
+                    var distance = map.Distances[player.Valve.Id, nextValve.Id];
+                    nextStates.Add(new Player(nextValve, distance - 1));
+                }
+
+                nextStatesByPlayer[iPlayer] = nextStates.ToArray();
+            }
+        }
+
+        remainingTime--;
+        if (remainingTime < 1) return maxFlow;
+        if (currentFlow + Residue(valvesToOpen, map, remainingTime) <= maxFlow) return maxFlow;
+
+        for (var i0 = 0; i0 < nextStatesByPlayer[0].Length; i0++)
+        {
+            for (var i1 = 0; i1 < nextStatesByPlayer[1].Length; i1++)
+            {
+                player0 = nextStatesByPlayer[0][i0];
+                player1 = nextStatesByPlayer[1][i1];
+
+                if ((nextStatesByPlayer[0].Length > 1 || nextStatesByPlayer[1].Length > 1) &&
+                    player0.Valve == player1.Valve)
+                {
+                    continue;
+                }
+
+                var advance = 0;
+                if (player0.Distance > 0 && player1.Distance > 0)
+                {
+                    advance = Math.Min(player0.Distance, player1.Distance);
+                    player0 = player0 with { Distance = player0.Distance - advance };
+                    player1 = player1 with { Distance = player1.Distance - advance };
+                }
+
+                maxFlow = MaxFlow(
+                    map,
+                    maxFlow,
+                    currentFlow,
+                    player0,
+                    player1,
+                    valvesToOpen,
+                    remainingTime - advance
+                );
+            }
+        }
+
+        return maxFlow;
+    }
+
+    private static int Residue(BitArray valvesToOpen, Map map, int remainingTime)
+    {
+        var flow = 0;
+        for (var i = 0; i < valvesToOpen.Length; i++)
+        {
+            if (!valvesToOpen[i]) continue;
+            if (remainingTime <= 0) break;
+            flow += map.Valves[i].FlowRate * (remainingTime - 1);
+            if ((i & 1) == 0) remainingTime--;
+        }
+
+        return flow;
+    }
+
+    private static Map Parse((string valve, int rate, string[] leadTo)[] inp)
+    {
+        var valves = inp.Select(set => new Valve(0, set.valve, set.rate, set.leadTo))
+            .OrderByDescending(valve => valve.FlowRate)
+            .Select((v, i) => v with { Id = i })
+            .ToArray();
+
+        return new Map(ComputeDistances(valves), valves);
+    }
+
+    private static Matrix2d<int> ComputeDistances(Valve[] valves)
+    {
+        var distances = new Matrix2d<int>(valves.Length);
+        for (var i = 0; i < valves.Length; i++)
+        {
+            for (var j = 0; j < valves.Length; j++) distances[i, j] = int.MaxValue;
+        }
+
+        foreach (var valve in valves)
+        {
+            foreach (var target in valve.Tunnels)
+            {
+                var targetNode = valves.Single(x => x.Name == target);
+                distances[valve.Id, targetNode.Id] = 1;
+                distances[targetNode.Id, valve.Id] = 1;
+            }
+        }
+
+        var n = distances.size.w;
+        var done = false;
+        while (!done)
+        {
+            done = true;
+            for (var source = 0; source < n; source++)
+            {
+                for (var target = 0; target < n; target++)
+                {
+                    if (source == target) continue;
+                    for (var through = 0; through < n; through++)
+                    {
+                        if (distances[source, through] == int.MaxValue || distances[through, target] == int.MaxValue)
+                        {
+                            continue;
+                        }
+
+                        var cost = distances[source, through] + distances[through, target];
+                        if (cost >= distances[source, target]) continue;
+                        done = false;
+                        distances[source, target] = cost;
+                        distances[target, source] = cost;
+                    }
+                }
+            }
+        }
+
+        return distances;
+    }
+
+    private record Map(Matrix2d<int> Distances, Valve[] Valves);
+
+    private record Valve(int Id, string Name, int FlowRate, string[] Tunnels);
+
+    private record Player(Valve Valve, int Distance);
+}
