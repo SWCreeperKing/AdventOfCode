@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using static AdventOfCode.Experimental_Run.ClrCnsl;
+using static AdventOfCode.Experimental_Run.Misc.Enums;
 
 namespace AdventOfCode.Experimental_Run;
 
@@ -47,7 +49,7 @@ public static class Starter
             {
                 SwitchYear(runner.year);
                 RunDay(runner.day, true);
-                
+
                 Console.WriteLine("Press any key to continue . . . ");
                 Console.ReadKey(true);
             }
@@ -155,51 +157,61 @@ public static class Starter
             object modified = null;
             if (modifyAtt is not null) modified = modifyAtt.Invoke(null, new[] { inp });
 
-            var partMethod = methods.First(m => m.Name.ToLower() == $"part{part}");
-            var hasAnswer = partMethod.GetCustomAttributes<AnswerAttribute>().Any();
-            var realAnswer = hasAnswer ? partMethod.GetCustomAttributes<AnswerAttribute>().First().Answer : null;
+            var partMethod =
+                methods.First(m => m.Name.Equals($"part{part}", StringComparison.CurrentCultureIgnoreCase));
+
+            var answerAttributes = partMethod.GetCustomAttributes<AnswerAttribute>();
+            var hasAnswer = answerAttributes.Any();
+            var hasRealAnswer = answerAttributes.Any(att => att.State == AnswerState.Correct);
+            var realAnswer = hasRealAnswer ? answerAttributes.First().Answer : null;
+
             Sw.Restart();
             Sw.Start();
             var answer = partMethod.Invoke(null, new[] { modified ?? inp });
             Sw.Stop();
 
-            void Answer(bool isRight)
+            if (!hasAnswer)
             {
-                WriteLine(isRight
-                    ? $"[#green]Answer: [{answer}] | Took [{Sw.Time()}]"
-                    : $"[#red]Incorrect Answer: [{answer}] | The correct answer is [#blue][{realAnswer}][#r] | Took [{Sw.Time()}]");
+                WriteLine($"[#darkyellow]Possible Answer: [{answer}]");
             }
-
-            if (realAnswer is not null)
+            else
             {
-                switch (answer)
+                var states = answerAttributes
+                    .Select(ans => ans.Evaluate(answer))
+                    .Where(state => state is not AnswerState.Possible);
+
+                var extra = $"[#r]| Took [{Sw.Time()}]";
+                var correct = answerAttributes.Where(att => att.State is AnswerState.Correct);
+                if (correct.Any(att => att.State is not AnswerState.Correct))
                 {
-                    case string s:
-                        Answer(s == (string) realAnswer);
-                        break;
-                    case int i:
-                        Answer(i == (int) realAnswer);
-                        break;
-                    case long l:
-                        Answer(l == realAnswer switch
-                        {
-                            int ai => ai,
-                            uint uai => uai,
-                            _ => (long) realAnswer
-                        });
-                        break;
-                    case ulong l:
-                        Answer(l == realAnswer switch
-                        {
-                            int ai => (ulong) ai,
-                            uint uai => uai,
-                            long al => (ulong) al,
-                            _ => (ulong) realAnswer
-                        });
-                        break;
+                    extra = $"[#r]| The correct answer is [#blue][{realAnswer}] {extra}";
+                }
+
+                if (!states.Any())
+                {
+                    WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+                }
+                else if (states.Any(state => state is AnswerState.Correct))
+                {
+                    WriteLine($"[#green]Answer: [{answer}] {extra}");
+                }
+                else if (states.Any(state => state is AnswerState.Not))
+                {
+                    WriteLine($"[#red]Incorrect Answer: [{answer}] {extra}");
+                }
+                else if (states.Any(state => state is AnswerState.High))
+                {
+                    WriteLine($"[#darkyellow]Incorrect Answer, it is too [#red]High[#r]: [{answer}] {extra}");
+                }
+                else if (states.Any(state => state is AnswerState.Low))
+                {
+                    WriteLine($"[#darkyellow]Incorrect Answer, it is too [#red]Low[#r]: [{answer}] {extra}");
+                }
+                else
+                {
+                    WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
                 }
             }
-            else WriteLine($"[#darkyellow]Possible Answer: [{answer}]");
         }
         catch (TargetException e)
         {
@@ -228,6 +240,15 @@ public static class Starter
 
     public static void LoadFile(int day)
     {
-        InputCache.Add(day, File.ReadAllText($"Input/{SelectedYear}/{day}.txt").Replace("\r", string.Empty));
+        if (!Directory.Exists($"Input/{SelectedYear}"))
+        {
+            Directory.CreateDirectory($"Input/{SelectedYear}");
+        }
+
+        var file = $"Input/{SelectedYear}/{day}.txt";
+        InputCache.Add(day,
+            !File.Exists(file)
+                ? Program.SaveInput(SelectedYear, day).Replace("\r", string.Empty)
+                : File.ReadAllText(file).Replace("\r", string.Empty));
     }
 }

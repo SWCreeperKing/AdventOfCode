@@ -23,7 +23,7 @@ public class Matrix2d<T>
 
     public Matrix2d((int w, int h) size)
     {
-        this.Size = size;
+        Size = size;
         Array = new T[size.w * size.h];
     }
 

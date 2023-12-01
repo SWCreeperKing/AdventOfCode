@@ -12,4 +12,13 @@ public class Enums
         Down = 2,
         Left = 3
     }
+
+    public enum AnswerState
+    {
+        Possible,
+        Correct,
+        Not,
+        High,
+        Low
+    }
 }
