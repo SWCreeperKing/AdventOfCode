@@ -4,7 +4,7 @@ public class Enums
 {
     public static readonly (int x, int y)[] Surround =
         { (0, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1) };
-    
+
     public enum Direction
     {
         Up = 0,

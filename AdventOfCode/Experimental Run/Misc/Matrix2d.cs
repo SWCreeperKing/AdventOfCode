@@ -8,8 +8,8 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Matrix2d<T>
 {
-    public readonly T[] array;
-    public readonly (int w, int h) size;
+    public readonly T[] Array;
+    public readonly (int w, int h) Size;
 
     public Matrix2d(int wh) : this(wh, wh)
     {
@@ -17,20 +17,20 @@ public class Matrix2d<T>
 
     public Matrix2d(int w, int h)
     {
-        size = (w, h);
-        array = new T[w * h];
+        Size = (w, h);
+        Array = new T[w * h];
     }
 
     public Matrix2d((int w, int h) size)
     {
-        this.size = size;
-        array = new T[size.w * size.h];
+        this.Size = size;
+        Array = new T[size.w * size.h];
     }
 
     public Matrix2d(T[][] inArray)
     {
-        size = (inArray.Max(t => t.Length), inArray.Length);
-        array = new T[size.w * size.h];
+        Size = (inArray.Max(t => t.Length), inArray.Length);
+        Array = new T[Size.w * Size.h];
 
         for (var y = 0; y < inArray.Length; y++)
         {
@@ -43,8 +43,8 @@ public class Matrix2d<T>
 
     public IEnumerable<(int, int, T)> Iterate()
     {
-        for (var y = 0; y < size.h; y++)
-        for (var x = 0; x < size.w; x++)
+        for (var y = 0; y < Size.h; y++)
+        for (var x = 0; x < Size.w; x++)
             yield return (x, y, this[x, y]);
     }
 
@@ -86,7 +86,7 @@ public class Matrix2d<T>
 
         if (direction is Right or Down)
         {
-            for (var i = set; i < (isVertical ? size.h : size.w); i++)
+            for (var i = set; i < (isVertical ? Size.h : Size.w); i++)
             {
                 yield return isVertical ? this[x, i] : this[i, y];
             }
@@ -102,15 +102,15 @@ public class Matrix2d<T>
 
     public T this[int index]
     {
-        get => array[index];
-        set => array[index] = value;
+        get => Array[index];
+        set => Array[index] = value;
     }
 
     public T this[int x, int y]
     {
-        get => array[y * size.w + x];
-        set => array[y * size.w + x] = value;
+        get => Array[y * Size.w + x];
+        set => Array[y * Size.w + x] = value;
     }
 
-    public static implicit operator T[](Matrix2d<T> matrix2d) => matrix2d.array;
+    public static implicit operator T[](Matrix2d<T> matrix2d) => matrix2d.Array;
 }

@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2022;
 [Day(2022, 10, "Cathode-Ray Tube")]
 public class Day10
 {
-    private static readonly long[] cyclesToCountOn = { 20, 60, 100, 140, 180, 220 };
+    private static readonly long[] CyclesToCountOn = { 20, 60, 100, 140, 180, 220 };
 
     [ModifyInput]
     public static (string op, int val)[] ProcessInput(string inp)
@@ -26,10 +26,10 @@ public class Day10
         for (var i = 0; i < inp.Length;)
         {
             Console.Write((cycle % 40).IsInRange(x, x + 2) ? "██" : "  ");
-            
+
             if (cycle % 40 == 0) Console.WriteLine();
-            if (cyclesToCountOn.Contains(cycle)) cycleAmount += x * cycle;
-            
+            if (CyclesToCountOn.Contains(cycle)) cycleAmount += x * cycle;
+
             if (!numberQueue.Any())
             {
                 var line = inp[i];

@@ -46,5 +46,5 @@ public class Day7
     {
         var spaceNeeded = inp["home"] - 4e7;
         return inp.Values.Where(l => l >= spaceNeeded).Order().First();
-    } 
+    }
 }

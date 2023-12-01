@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2015;
 /*
  * I completely admit my loss on this
  * I took the solution from: https://github.com/encse/adventofcode/blob/master/2015/Day22/Solution.cs
- * and then modified it to use Records 
+ * and then modified it to use Records
  */
 [Day(2015, 22, "Wizard Simulator 20XX")]
 public class Day22

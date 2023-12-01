@@ -11,12 +11,16 @@ public class Day1
     [Answer(1016619)]
     public static long Part1(int[] inp)
     {
-        return (from i in inp let n = 2020 - i where inp.Contains(n) select i * n).First();
+        return inp.Select(i => (i, n: 2020 - i)).Where(t => inp.Contains(t.n))
+            .Select(t => t.i * t.n).First();
     }
 
     [Answer(218767230)]
     public static long Part2(int[] inp)
     {
-        return (from i in inp from j in inp let n = 2020 - i - j where inp.Contains(n) select i * j * n).First();
+        return inp.SelectMany(i => inp, (i, j) => (i, j))
+            .Select(t => ( t, n: 2020 - t.i - t.j ))
+            .Where(t => inp.Contains(t.n))
+            .Select(t => t.t.i * t.t.j * t.n).First();
     }
 }

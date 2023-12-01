@@ -80,7 +80,8 @@ public class Day18
             .Replace(
                 Regex.Replace(
                     new[] { '+', '*', '(', ')' }.Aggregate(rawEquation,
-                        (current, c) => current.Replace($"{c}", $" {c} ")), @"([ ]{2,})", " "), @"(^ | $)", string.Empty)
+                        (current, c) => current.Replace($"{c}", $" {c} ")), @"([ ]{2,})", " "), @"(^ | $)",
+                string.Empty)
             .Split(" ").ToList(), isPart1);
     }
 }

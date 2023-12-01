@@ -98,10 +98,11 @@ public class Day14
             y++;
             if (part2)
             {
-                if (y + 1 < map.size.h) continue;
+                if (y + 1 < map.Size.h) continue;
                 return map[x, y] = true;
-            } 
-            if (y + 1 >= map.size.h) return false;
+            }
+
+            if (y + 1 >= map.Size.h) return false;
         }
     }
 }

@@ -8,7 +8,7 @@ public class Day12
 {
     public class Node
     {
-        public List<string> connections = new();
+        public List<string> Connections = new();
     }
 
     public static long Part1(string inp)
@@ -20,8 +20,8 @@ public class Day12
             var (a, b) = (split[0], split[1]);
             if (!nodes.ContainsKey(a)) nodes.Add(a, new Node());
             if (!nodes.ContainsKey(b)) nodes.Add(b, new Node());
-            nodes[a].connections.Add(b);
-            nodes[b].connections.Add(a);
+            nodes[a].Connections.Add(b);
+            nodes[b].Connections.Add(a);
         }
 
         // List<string> Trace(List<string> build, string building, string start, string last, out bool dead)

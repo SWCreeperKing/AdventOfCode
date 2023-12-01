@@ -179,7 +179,7 @@ public class Day16
             }
         }
 
-        var n = distances.size.w;
+        var n = distances.Size.w;
         var done = false;
         while (!done)
         {

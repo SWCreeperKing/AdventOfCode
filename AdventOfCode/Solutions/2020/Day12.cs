@@ -16,8 +16,8 @@ public class Day12
     [Answer(759)]
     public static long Part1((char, int)[] inp)
     {
-        var dir = new[] {(0, 1), (1, 0), (0, -1), (-1, 0)};
-        var ship = new[] {0, 0};
+        var dir = new[] { (0, 1), (1, 0), (0, -1), (-1, 0) };
+        var ship = new[] { 0, 0 };
         var rot = 1;
 
         foreach (var (c, i) in inp)
@@ -31,7 +31,7 @@ public class Day12
                     ship[c == 'S' ? 1 : 0] -= i;
                     break;
                 case 'F':
-                    ship = new[] {ship[0] + dir[rot].Item1 * i, ship[1] + dir[rot].Item2 * i};
+                    ship = new[] { ship[0] + dir[rot].Item1 * i, ship[1] + dir[rot].Item2 * i };
                     break;
                 case 'R' or 'L':
                     rot = (c == 'R' ? rot + i / 90 : Math.Abs(rot + (4 - i / 90))) % 4;
@@ -45,8 +45,8 @@ public class Day12
     [Answer(45763)]
     public static long Part2((char, int)[] inp)
     {
-        var ship = new[] {0, 0};
-        var waypoint = new[] {10, -1};
+        var ship = new[] { 0, 0 };
+        var waypoint = new[] { 10, -1 };
 
         foreach (var (c, i) in inp)
         {
@@ -59,11 +59,11 @@ public class Day12
                     waypoint[c == 'E' ? 0 : 1] += i;
                     break;
                 case 'F':
-                    ship = new[] {ship[0] + waypoint[0] * i, ship[1] += waypoint[1] * i};
+                    ship = new[] { ship[0] + waypoint[0] * i, ship[1] += waypoint[1] * i };
                     break;
                 case 'R' or 'L':
                     for (var j = 0; j < i / 90; j++)
-                        waypoint = c == 'R' ? new[] {-waypoint[1], waypoint[0]} : new[] {waypoint[1], -waypoint[0]};
+                        waypoint = c == 'R' ? new[] { -waypoint[1], waypoint[0] } : new[] { waypoint[1], -waypoint[0] };
                     break;
             }
         }

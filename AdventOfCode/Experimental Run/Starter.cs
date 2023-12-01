@@ -11,28 +11,49 @@ namespace AdventOfCode.Experimental_Run;
 
 public static class Starter
 {
-    public static readonly Dictionary<int, string> inputCache = new();
-    public static readonly Dictionary<int, Dictionary<int, (DayAttribute att, Type type)>> puzzleTypes = new();
+    public static readonly Dictionary<int, string> InputCache = new();
+    public static readonly Dictionary<int, Dictionary<int, (DayAttribute att, Type type)>> PuzzleTypes = new();
 
-    private static readonly Stopwatch sw = new();
-    private static int selectedYear;
+    private static readonly Stopwatch Sw = new();
+    private static int SelectedYear;
 
     public static void Start()
     {
         var types = Assembly.GetCallingAssembly().GetTypes()
             .Where(t => t.IsClass && t.GetCustomAttributes<DayAttribute>().Any());
+
+        List<(int year, int day)> runners = new();
+
         types.ForEach(t =>
         {
             var att = t.GetCustomAttributes<DayAttribute>().First();
-            if (!puzzleTypes.ContainsKey(att.year))
+            if (!PuzzleTypes.TryGetValue(att.Year, out var value))
             {
-                puzzleTypes.Add(att.year, new Dictionary<int, (DayAttribute att, Type type)>());
+                value = new Dictionary<int, (DayAttribute att, Type type)>();
+                PuzzleTypes.Add(att.Year, value);
             }
 
-            puzzleTypes[att.year].Add(att.day, (att, t));
+            value.Add(att.Day, (att, t));
+
+            if (t.GetCustomAttributes<RunAttribute>().Any())
+            {
+                runners.Add((att.Year, att.Day));
+            }
         });
 
-        SwitchYear(puzzleTypes.Keys.Max());
+        if (runners.Count > 0)
+        {
+            foreach (var runner in runners)
+            {
+                SwitchYear(runner.year);
+                RunDay(runner.day, true);
+                
+                Console.WriteLine("Press any key to continue . . . ");
+                Console.ReadKey(true);
+            }
+        }
+
+        SwitchYear(PuzzleTypes.Keys.Max());
         RunInput();
     }
 
@@ -41,14 +62,14 @@ public static class Starter
     {
         var days = GetDayList();
 
-        Console.WriteLine($"Selecting Year: {selectedYear}");
+        Console.WriteLine($"Selecting Year: {SelectedYear}");
         int selected;
         while ((selected = ListView(days)) != days.Length - 1)
         {
             Console.Clear();
             if (selected == days.Length - 3)
             {
-                inputCache.Keys.ForEach(i =>
+                InputCache.Keys.ForEach(i =>
                 {
                     WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
                     RunDay(i, true);
@@ -58,31 +79,31 @@ public static class Starter
             }
             else if (selected == days.Length - 2)
             {
-                var keys = puzzleTypes.Keys.ToArray();
+                var keys = PuzzleTypes.Keys.ToArray();
                 Console.WriteLine("Switch Year");
                 SwitchYear(keys[ListView(keys.Select(i => $"{i}").ToArray())]);
                 days = GetDayList();
             }
-            else RunDay(Math.Abs(inputCache.Count - selected));
+            else RunDay(Math.Abs(InputCache.Count - selected));
 
             Console.Clear();
-            Console.WriteLine($"Selecting Year: {selectedYear}");
+            Console.WriteLine($"Selecting Year: {SelectedYear}");
         }
     }
 
     public static string[] GetDayList()
     {
-        return inputCache.Keys.OrderDescending().Select(i =>
+        return InputCache.Keys.OrderDescending().Select(i =>
         {
-            var att = puzzleTypes[selectedYear][i].att;
-            return $"[#darkblue]{i}[#r]. [#darkyellow]{att.name}[#r]";
+            var att = PuzzleTypes[SelectedYear][i].att;
+            return $"[#darkblue]{i}[#r]. [#darkyellow]{att.Name}[#r]";
         }).Concat(new[] { "Run All", "Switch Year", "Exit" }).ToArray();
     }
 
     public static void RunDay(int day, bool runAll = false)
     {
-        var input = inputCache[day];
-        var dayType = puzzleTypes[selectedYear][day].type;
+        var input = InputCache[day];
+        var dayType = PuzzleTypes[SelectedYear][day].type;
         List<string> run = new();
         if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part1")) run.Add("Part 1");
         if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part2")) run.Add("Part 2");
@@ -98,7 +119,7 @@ public static class Starter
         }
 
         if (run.Count == 2) run.Add("Both");
-        run.Add($"Back to {selectedYear}");
+        run.Add($"Back to {SelectedYear}");
 
         int selected;
         WriteLine($"=== Day [#darkyellow]{day}[#r] ===");
@@ -136,17 +157,17 @@ public static class Starter
 
             var partMethod = methods.First(m => m.Name.ToLower() == $"part{part}");
             var hasAnswer = partMethod.GetCustomAttributes<AnswerAttribute>().Any();
-            var realAnswer = hasAnswer ? partMethod.GetCustomAttributes<AnswerAttribute>().First().answer : null;
-            sw.Restart();
-            sw.Start();
+            var realAnswer = hasAnswer ? partMethod.GetCustomAttributes<AnswerAttribute>().First().Answer : null;
+            Sw.Restart();
+            Sw.Start();
             var answer = partMethod.Invoke(null, new[] { modified ?? inp });
-            sw.Stop();
+            Sw.Stop();
 
             void Answer(bool isRight)
             {
                 WriteLine(isRight
-                    ? $"[#green]Answer: [{answer}] | Took [{sw.Time()}]"
-                    : $"[#red]Incorrect Answer: [{answer}] | The correct answer is [#blue][{realAnswer}][#r] | Took [{sw.Time()}]");
+                    ? $"[#green]Answer: [{answer}] | Took [{Sw.Time()}]"
+                    : $"[#red]Incorrect Answer: [{answer}] | The correct answer is [#blue][{realAnswer}][#r] | Took [{Sw.Time()}]");
             }
 
             if (realAnswer is not null)
@@ -199,14 +220,14 @@ public static class Starter
 
     public static void SwitchYear(int year)
     {
-        if (selectedYear == year) return;
-        selectedYear = year;
-        inputCache.Clear();
-        puzzleTypes[year].Keys.ForEach(LoadFile);
+        if (SelectedYear == year) return;
+        SelectedYear = year;
+        InputCache.Clear();
+        PuzzleTypes[year].Keys.ForEach(LoadFile);
     }
 
     public static void LoadFile(int day)
     {
-        inputCache.Add(day, File.ReadAllText($"Input/{selectedYear}/{day}.txt").Replace("\r", string.Empty));
+        InputCache.Add(day, File.ReadAllText($"Input/{SelectedYear}/{day}.txt").Replace("\r", string.Empty));
     }
 }

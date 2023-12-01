@@ -11,13 +11,13 @@ namespace AdventOfCode.Solutions._2022;
 [Day(2022, 9, "Rope Bridge")]
 public class Day9
 {
-    private static readonly Dictionary<char, Direction> _directionParse = new()
+    private static readonly Dictionary<char, Direction> DirectionParse = new()
         { ['U'] = Up, ['R'] = Right, ['D'] = Down, ['L'] = Left };
 
     [ModifyInput]
     public static (Direction, int)[] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s => (_directionParse[s[0]], int.Parse(s[2..]))).ToArray();
+        return inp.Split('\n').Select(s => (DirectionParse[s[0]], int.Parse(s[2..]))).ToArray();
     }
 
     [Answer(5695)] public static long Part1((Direction, int)[] inp) => PlaySnake(inp);

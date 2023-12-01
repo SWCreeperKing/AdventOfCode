@@ -42,7 +42,7 @@ public class Day5
 
         return dict.Count(kv => kv.Value > 1);
     }
-        
+
     private static void AddLoop(int a1, int a2, int b, IDictionary<(int x, int y), int> dict, bool n = true)
     {
         for (var a = Math.Min(a1, a2); a <= Math.Max(a1, a2); a++)

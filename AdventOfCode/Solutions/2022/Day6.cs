@@ -11,5 +11,5 @@ public class Day6
     private static int Find(string inp, int c = 4)
     {
         return inp.Window(c).FirstIndexWhere(carr => carr.Unique() == c) + c;
-    } 
+    }
 }

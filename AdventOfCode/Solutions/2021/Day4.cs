@@ -40,12 +40,12 @@ public class Day4
         return inp.cards[0].Calc();
     }
 }
-    
+
 public class Card
 {
-    public bool[,] marked = new bool[5, 5];
-    public Dictionary<int, (int x, int y)> board = new();
-    public int lastNumber;
+    public bool[,] Marked = new bool[5, 5];
+    public Dictionary<int, (int x, int y)> Board = new();
+    public int LastNumber;
 
     public Card(string board)
     {
@@ -53,25 +53,25 @@ public class Card
         for (var i = 0; i < lines.Length; i++)
         {
             var split = lines[i].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            for (var j = 0; j < split.Length; j++) this.board[int.Parse(split[j])] = (j, i);
+            for (var j = 0; j < split.Length; j++) this.Board[int.Parse(split[j])] = (j, i);
         }
     }
 
     public void Mark(int i)
     {
-        if (!board.ContainsKey(i)) return;
-        var (x, y) = board[lastNumber = i];
-        marked[x, y] = true;
+        if (!Board.ContainsKey(i)) return;
+        var (x, y) = Board[LastNumber = i];
+        Marked[x, y] = true;
     }
 
     public bool Check()
     {
         for (var i = 0; i < 5; i++)
-            if (marked[i, 0] && marked[i, 1] && marked[i, 2] && marked[i, 3] && marked[i, 4] ||
-                marked[0, i] && marked[1, i] && marked[2, i] && marked[3, i] && marked[4, i])
+            if (Marked[i, 0] && Marked[i, 1] && Marked[i, 2] && Marked[i, 3] && Marked[i, 4] ||
+                Marked[0, i] && Marked[1, i] && Marked[2, i] && Marked[3, i] && Marked[4, i])
                 return true;
         return false;
     }
 
-    public int Calc() => board.Sum(kv => marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * lastNumber;
+    public int Calc() => Board.Sum(kv => Marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * LastNumber;
 }

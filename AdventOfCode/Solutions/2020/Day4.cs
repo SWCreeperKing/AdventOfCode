@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 4, "Passport Processing")]
 public class Day4
 {
-    static Dictionary<string, string> regex = new()
+    static Dictionary<string, string> Regex = new()
     {
         { "byr", "19[2-9][0-9]|200[0-2]" },
         { "iyr", "201[0-9]|2020" },
@@ -37,8 +37,8 @@ public class Day4
         return inp.Select(masterS => masterS.All(s =>
             {
                 var split = s.Split(":");
-                return !regex.ContainsKey(split[0]) || Regex.IsMatch(split[1], $"^({regex[split[0]]})$");
-            }) && Regex.IsMatch(masterS.Join(" "), @"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}"))
+                return !Regex.ContainsKey(split[0]) || System.Text.RegularExpressions.Regex.IsMatch(split[1], $"^({Regex[split[0]]})$");
+            }) && System.Text.RegularExpressions.Regex.IsMatch(masterS.Join(" "), @"((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}"))
             .Count(doesCount => doesCount);
     }
 }

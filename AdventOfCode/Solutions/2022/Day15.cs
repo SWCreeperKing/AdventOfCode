@@ -7,17 +7,20 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 15, "Beacon Exclusion Zone")]
-public class Day15
+public partial class Day15
 {
-    public static readonly Regex inputRegex =
-        new(@"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)", RegexOptions.Compiled);
+    [GeneratedRegex(@"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
+        RegexOptions.Compiled)]
+    private static partial Regex InputRegexRaw();
+
+    private static readonly Regex InputRegex = InputRegexRaw();
 
     [ModifyInput]
     public static (int x1, int y1, int x2, int y2)[] ProcessInput(string inp)
     {
         var inputSplit = inp.Split('\n');
         var outArr = new (int x1, int y1, int x2, int y2)[inputSplit.Length];
-        var fullInputSplit = inputSplit.Select(s => inputRegex.Match(s)).ToArray();
+        var fullInputSplit = inputSplit.Select(s => InputRegex.Match(s)).ToArray();
         for (var i = 0; i < fullInputSplit.Length; i++)
         {
             var groups = fullInputSplit[i].Groups.Range(1..4).ToIntArr();
@@ -28,7 +31,7 @@ public class Day15
     }
 
     [Answer(5607466)]
-    public static long Part1((int x1, int y1, int x2, int y2)[] inp)
+    public static long Part1(IEnumerable<(int x1, int y1, int x2, int y2)> inp)
     {
         List<int> ranges = new();
         foreach (var (x1, y1, x2, y2) in inp)
@@ -43,7 +46,7 @@ public class Day15
     }
 
     [Answer(12543202766584)]
-    public static ulong Part2((int x1, int y1, int x2, int y2)[] inp)
+    public static ulong Part2(IEnumerable<(int x1, int y1, int x2, int y2)> inp)
     {
         Dictionary<int, List<Range>> ranges = new();
         foreach (var (x1, y1, x2, y2) in inp)

@@ -48,11 +48,11 @@ public class Day17
     public static int Part2(string[] inp)
     {
         Array4D dim = new();
-            
+
         for (var y = 0; y < inp.Length; y++)
         for (var x = 0; x < inp[y].Length; x++)
             dim[x, y, 0, 0] = inp[y][x] == '#';
-            
+
         for (var i = 0; i < 6; i++)
         {
             var old = (Array4D) dim.Clone();
@@ -80,105 +80,112 @@ public class Day17
     }
 }
 
-    public class Array3D : ICloneable
+public class Array3D : ICloneable
+{
+    public Dictionary<(int, int, int), bool> Dim = new();
+
+    public int GetAllBoxes() => Dim.Values.Count(b => b);
+
+    public int AroundTown(int x, int y, int z)
     {
-        public Dictionary<(int, int, int), bool> dim = new();
-
-        public int GetAllBoxes() => dim.Values.Count(b => b);
-
-        public int AroundTown(int x, int y, int z)
+        var counter = 0;
+        for (var nZ = -1; nZ < 2; nZ++)
+        for (var nX = -1; nX < 2; nX++)
+        for (var nY = -1; nY < 2; nY++)
         {
-            var counter = 0;
-            for (var nZ = -1; nZ < 2; nZ++)
-            for (var nX = -1; nX < 2; nX++)
-            for (var nY = -1; nY < 2; nY++)
-            {
-                if (nZ == 0 && nX == 0 && nY == 0) continue;
-                if (this[x + nX, y + nY, z + nZ]) counter++;
-            }
-
-            return counter;
+            if (nZ == 0 && nX == 0 && nY == 0) continue;
+            if (this[x + nX, y + nY, z + nZ]) counter++;
         }
 
-        public ((int, int, int), (int, int, int)) GetSize()
-        {
-            int minX = int.MaxValue, minY = int.MaxValue, minZ = int.MaxValue, maxX = 0, maxY = 0, maxZ = 0;
-            foreach (var (x, y, z) in dim.Keys.ToArray())
-            {
-                minX = Math.Min(minX, x);
-                minY = Math.Min(minY, y);
-                minZ = Math.Min(minZ, z);
-                maxX = Math.Max(maxX, x);
-                maxY = Math.Max(maxY, y);
-                maxZ = Math.Max(maxZ, z);
-            }
-
-            return ((minX, minY, minZ), (maxX, maxY, maxZ));
-        }
-
-        public bool this[int x, int y, int z]
-        {
-            get
-            {
-                if (!dim.ContainsKey((x, y, z))) dim.Add((x, y, z), false);
-                return dim[(x, y, z)];
-            }
-
-            set => dim[(x, y, z)] = value;
-        }
-
-        public object Clone() => new Array3D {dim = new Dictionary<(int, int, int), bool>(dim)};
+        return counter;
     }
-        
-    public class Array4D : ICloneable
+
+    public ((int, int, int), (int, int, int)) GetSize()
     {
-        public Dictionary<(int, int, int, int), bool> dim = new();
-
-        public int GetAllBoxes() => dim.Values.Count(b => b);
-
-        public int AroundTown(int x, int y, int z, int w)
+        int minX = int.MaxValue, minY = int.MaxValue, minZ = int.MaxValue, maxX = 0, maxY = 0, maxZ = 0;
+        foreach (var (x, y, z) in Dim.Keys.ToArray())
         {
-            var counter = 0;
-            for (var nW = -1; nW < 2; nW++)
-            for (var nZ = -1; nZ < 2; nZ++)
-            for (var nX = -1; nX < 2; nX++)
-            for (var nY = -1; nY < 2; nY++)
-            {
-                if (nZ == 0 && nX == 0 && nY == 0 && nW == 0) continue;
-                if (this[x + nX, y + nY, z + nZ, w + nW]) counter++;
-            }
-
-            return counter;
+            minX = Math.Min(minX, x);
+            minY = Math.Min(minY, y);
+            minZ = Math.Min(minZ, z);
+            maxX = Math.Max(maxX, x);
+            maxY = Math.Max(maxY, y);
+            maxZ = Math.Max(maxZ, z);
         }
 
-        public ((int, int, int, int), (int, int, int, int)) GetSize()
-        {
-            int minX = int.MaxValue, minY = int.MaxValue, minZ = int.MaxValue, minW = int.MaxValue, maxX = 0, maxY = 0, maxZ = 0, maxW = 0;
-            foreach (var (x, y, z, w) in dim.Keys.ToArray())
-            {
-                minX = Math.Min(minX, x);
-                minY = Math.Min(minY, y);
-                minZ = Math.Min(minZ, z);
-                minW = Math.Min(minW, w);
-                maxX = Math.Max(maxX, x);
-                maxY = Math.Max(maxY, y);
-                maxZ = Math.Max(maxZ, z);
-                maxW = Math.Max(maxW, w);
-            }
-
-            return ((minX, minY, minZ, minW), (maxX, maxY, maxZ, maxW));
-        }
-
-        public bool this[int x, int y, int z, int w]
-        {
-            get
-            {
-                if (!dim.ContainsKey((x, y, z, w))) dim.Add((x, y, z, w), false);
-                return dim[(x, y, z, w)];
-            }
-
-            set => dim[(x, y, z, w)] = value;
-        }
-
-        public object Clone() => new Array4D {dim = new Dictionary<(int, int, int, int), bool>(dim)};
+        return ((minX, minY, minZ), (maxX, maxY, maxZ));
     }
+
+    public bool this[int x, int y, int z]
+    {
+        get
+        {
+            if (!Dim.ContainsKey((x, y, z))) Dim.Add((x, y, z), false);
+            return Dim[(x, y, z)];
+        }
+
+        set => Dim[(x, y, z)] = value;
+    }
+
+    public object Clone() => new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) };
+}
+
+public class Array4D : ICloneable
+{
+    public Dictionary<(int, int, int, int), bool> Dim = new();
+
+    public int GetAllBoxes() => Dim.Values.Count(b => b);
+
+    public int AroundTown(int x, int y, int z, int w)
+    {
+        var counter = 0;
+        for (var nW = -1; nW < 2; nW++)
+        for (var nZ = -1; nZ < 2; nZ++)
+        for (var nX = -1; nX < 2; nX++)
+        for (var nY = -1; nY < 2; nY++)
+        {
+            if (nZ == 0 && nX == 0 && nY == 0 && nW == 0) continue;
+            if (this[x + nX, y + nY, z + nZ, w + nW]) counter++;
+        }
+
+        return counter;
+    }
+
+    public ((int, int, int, int), (int, int, int, int)) GetSize()
+    {
+        int minX = int.MaxValue,
+            minY = int.MaxValue,
+            minZ = int.MaxValue,
+            minW = int.MaxValue,
+            maxX = 0,
+            maxY = 0,
+            maxZ = 0,
+            maxW = 0;
+        foreach (var (x, y, z, w) in Dim.Keys.ToArray())
+        {
+            minX = Math.Min(minX, x);
+            minY = Math.Min(minY, y);
+            minZ = Math.Min(minZ, z);
+            minW = Math.Min(minW, w);
+            maxX = Math.Max(maxX, x);
+            maxY = Math.Max(maxY, y);
+            maxZ = Math.Max(maxZ, z);
+            maxW = Math.Max(maxW, w);
+        }
+
+        return ((minX, minY, minZ, minW), (maxX, maxY, maxZ, maxW));
+    }
+
+    public bool this[int x, int y, int z, int w]
+    {
+        get
+        {
+            if (!Dim.ContainsKey((x, y, z, w))) Dim.Add((x, y, z, w), false);
+            return Dim[(x, y, z, w)];
+        }
+
+        set => Dim[(x, y, z, w)] = value;
+    }
+
+    public object Clone() => new Array4D { Dim = new Dictionary<(int, int, int, int), bool>(Dim) };
+}

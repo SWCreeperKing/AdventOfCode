@@ -24,16 +24,18 @@ public static class Helper
     public static string[] SplitSpace(this string text) => text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
     public static bool IsAllNumbers(this string text) => NumberOnlyRegex.IsMatch(text);
     public static string Repeat(this string pattern, int i) => Enumerable.Repeat(pattern, i).Join();
-    public static int FindIndexOf<T>(this T[] arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
-    public static int FindLastIndexOf<T>(this T[] arr, T find) => arr.ToList().FindLastIndex(t => t.Equals(find));
+    public static int FindIndexOf<T>(this IEnumerable<T> arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
     public static T Multi<T>(this IEnumerable<T> arr) where T : INumber<T> => arr.Aggregate((l1, l2) => l1 * l2);
     public static IEnumerable<T> EvenIndexes<T>(this IEnumerable<T> arr) => arr.Where((_, i) => i % 2 == 0);
     public static IEnumerable<T> OddIndexes<T>(this IEnumerable<T> arr) => arr.Where((_, i) => i % 2 == 1);
+    public static int ToInt(this JsonNode node) => node.GetValue<int>();
+    public static string ToStr<T>(this IEnumerable<T> obj) => $"[{string.Join(",", obj)}]";
+
+    public static int FindLastIndexOf<T>(this IEnumerable<T> arr, T find)
+        => arr.ToList().FindLastIndex(t => t.Equals(find));
 
     public static string Remove(this string text, params string[] pattern)
-    {
-        return pattern.Aggregate(text, (s, p) => s.Remove(p));
-    }
+        => pattern.Aggregate(text, (s, p) => s.Remove(p));
 
     public static string[] Range(this GroupCollection gc, Range range)
     {
@@ -42,10 +44,8 @@ public static class Helper
         return arr;
     }
 
-    public static Dictionary<K, V> ToDictionary<K, V>(this IEnumerable<KeyValuePair<K, V>> pair)
-    {
-        return pair.ToDictionary(kv => kv.Key, kv => kv.Value);
-    }
+    public static Dictionary<TK, TV> ToDictionary<TK, TV>(this IEnumerable<KeyValuePair<TK, TV>> pair)
+        => pair.ToDictionary(kv => kv.Key, kv => kv.Value);
 
     public static void ForEach<T>(this IEnumerable<T> arr, Action<T> action)
     {
@@ -87,16 +87,12 @@ public static class Helper
     }
 
     public static T[] SubArr<T>(this IEnumerable<T> arr, int start, int end)
-    {
-        return arr.Skip(start).Take(end - start).ToArray();
-    }
+        => arr.Skip(start).Take(end - start).ToArray();
 
     public static int[] FindAllIndexesOf<T>(this IEnumerable<T> arr, T search)
-    {
-        return arr.Select((o, i) => Equals(search, o) ? i : -1).Where(i => i != -1).ToArray();
-    }
+        => arr.Select((o, i) => Equals(search, o) ? i : -1).Where(i => i != -1).ToArray();
 
-    public static T[] Append<T>(this T[] arr, T[] appender)
+    public static T[] Append<T>(this IEnumerable<T> arr, IEnumerable<T> appender)
     {
         var l = arr.ToList();
         l.AddRange(appender);
@@ -123,9 +119,7 @@ public static class Helper
     public static string Join<T>(this IEnumerable<T> carr, char join) => string.Join(join, carr);
 
     public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense)
-    {
-        return arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr[i..(i + grouping)]));
-    }
+        => arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr[i..(i + grouping)]));
 
     public static IEnumerable<IEnumerable<T>> Window<T>(this IEnumerable<T> arr, int grouping, bool before = false)
     {
@@ -137,34 +131,26 @@ public static class Helper
     }
 
     public static int FirstIndexWhere<T>(this IEnumerable<T> arr, Func<T, bool> where)
-    {
-        return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
-    }
+        => arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
 
     public static int Unique<T>(this IEnumerable<T> arr) => arr.Distinct().Count();
 
     public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1)
-    {
-        return leng == 1
+        => leng == 1
             ? list.Select(t => new[] { t })
             : GetPermutations(list, (leng == -1 ? list.Count() : leng) - 1)
                 .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }));
-    }
 
     public static T[][] GetPermutationsArr<T>(this IEnumerable<T> list, int leng = -1)
-    {
-        return leng == 1
+        => leng == 1
             ? list.Select(t => new[] { t }).ToArray()
             : GetPermutationsArr(list, (leng == -1 ? list.Count() : leng) - 1)
                 .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }).ToArray())
                 .ToArray();
-    }
 
     public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key,
         TValue def = default)
-    {
-        return dict.ContainsKey(key) ? dict[key] : def;
-    }
+        => dict.TryGetValue(key, out var value) ? value : def;
 
     public static IEnumerable<IReadOnlyList<bool>> SwitchingBool(int arrLeng, int maxAmount = -1, int minAmount = 0)
     {
@@ -202,38 +188,28 @@ public static class Helper
         if (elapsed.Seconds > 0) sb.Append(elapsed.Seconds).Append("sec ");
         if (elapsed.Milliseconds > 0) sb.Append(elapsed.Milliseconds).Append("ms ");
 
-        var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000) / 100 / 10f;
+        var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000f) / 100 / 10f;
         if (ns > 0) sb.Append($"{ns:###.#}µs");
         return sb.ToString().TrimEnd();
     }
 
     public static string String<T>(this IEnumerable<T> arr) => $"[{arr.Join(',')}]";
 
-    public static string String<T, K>(this IEnumerable<T> arr, Func<T, K> select)
-    {
-        return $"[{arr.Select(select).Join(',')}]";
-    }
+    public static string String<T, TK>(this IEnumerable<T> arr, Func<T, TK> select)
+        => $"[{arr.Select(select).Join(',')}]";
 
     public static string InterceptSelf(this IEnumerable<string> arr)
-    {
-        return arr.Aggregate((s1, s2) => s1.Intersect(s2).Join());
-    }
+        => arr.Aggregate((s1, s2) => s1.Intersect(s2).Join());
 
     public static IEnumerable<char> InterceptSelf(this IEnumerable<IEnumerable<char>> arr)
-    {
-        return arr.Aggregate((carr1, carr2) => carr1.Intersect(carr2));
-    }
+        => arr.Aggregate((carr1, carr2) => carr1.Intersect(carr2));
 
     public static bool IsInRange(this Range r1, Range r2)
-    {
-        return r1.Start.Value >= r2.Start.Value && r1.End.Value <= r2.End.Value;
-    }
+        => r1.Start.Value >= r2.Start.Value && r1.End.Value <= r2.End.Value;
 
     public static bool IsOverlapping(this Range r1, Range r2)
-    {
-        return (r1.Start.Value <= r2.Start.Value && r1.End.Value >= r2.Start.Value)
-               || (r1.Start.Value <= r2.End.Value && r1.End.Value >= r2.End.Value);
-    }
+        => (r1.Start.Value <= r2.Start.Value && r1.End.Value >= r2.Start.Value)
+           || (r1.Start.Value <= r2.End.Value && r1.End.Value >= r2.End.Value);
 
     public static IEnumerable<IEnumerable<T>> GetCombinations<T>(this IEnumerable<T> arr, int k) where T : IComparable
     {
@@ -243,29 +219,56 @@ public static class Helper
     }
 
     public static T[] SuperSplit<T>(this string str, string split1, string split2, Func<string[], T> select)
-    {
-        return str.Split(split1).Select(s => s.Split(split2)).Select(select).ToArray();
-    }
+        => str.Split(split1).Select(s => s.Split(split2)).Select(select).ToArray();
 
     public static string[][] SuperSplit(this string str, string split1, string split2)
-    {
-        return str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
-    }
+        => str.Split(split1).Select(s => s.Split(split2).ToArray()).ToArray();
 
     public static string[][] SuperSplit(this string str, char split1, char split2)
-    {
-        return str.SuperSplit($"{split1}", $"{split2}");
-    }
+        => str.SuperSplit($"{split1}", $"{split2}");
 
     public static string[][] SuperSplit(this string str, string split1, char split2)
-    {
-        return str.SuperSplit(split1, $"{split2}");
-    }
+        => str.SuperSplit(split1, $"{split2}");
 
     public static string[][] SuperSplit(this string str, char split1, string split2)
+        => str.SuperSplit($"{split1}", split2);
+
+    public static int SizeOfPlane<T>(this Dictionary<(int x, int y), T> map)
+        => map.Keys.Max(kv => Math.Max(Math.Abs(kv.x), Math.Abs(kv.y)));
+
+    public static (int x, int y) GetOffsets<T>(this Dictionary<(int x, int y), T> map)
+        => (Math.Abs(map.Min(kv => kv.Key.x)), Math.Abs(map.Min(kv => kv.Key.y)));
+
+    public static (int x, int y) GetSizes<T>(this Dictionary<(int x, int y), T> map)
+        => (map.Max(kv => kv.Key.x), map.Max(kv => kv.Key.y));
+
+    public static T[,] GenerateMap<T>(this Dictionary<(int x, int y), T> map)
     {
-        return str.SuperSplit($"{split1}", split2);
+        var (xSize, ySize) = map.GetSizes();
+        var (xOff, yOff) = map.GetOffsets();
+        var matrix = new T[xSize + xOff + 1, ySize + yOff + 1];
+
+        foreach (var ((x, y), v) in map)
+        {
+            matrix[x + xOff, y + yOff] = v;
+        }
+
+        return matrix;
     }
 
-    public static int ToInt(this JsonNode node) => node.GetValue<int>();
+    public static string ToStr<T>(this T[,] map, Func<T, string> toStr)
+    {
+        StringBuilder sb = new();
+        for (var y = map.GetLength(1) - 1; y >= 0; y--)
+        {
+            for (var x = 0; x < map.GetLength(0); x++)
+            {
+                sb.Append(toStr(map[x, y]));
+            }
+
+            sb.Append('\n');
+        }
+
+        return sb.ToString();
+    }
 }

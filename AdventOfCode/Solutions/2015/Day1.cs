@@ -17,7 +17,7 @@ public static class Day1
         {
             if ((floor += inp[i] is '(' ? 1 : -1) == -1) return i + 1;
         }
-        
+
         return floor;
     }
 }

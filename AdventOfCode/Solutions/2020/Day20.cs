@@ -69,17 +69,17 @@ public class Day20
 
     public class Tile
     {
-        public int id;
-        public string rawData;
-        public string[] sides;
-        public string[] sidesFlipped;
+        public int Id;
+        public string RawData;
+        public string[] Sides;
+        public string[] SidesFlipped;
 
         public Tile(int id, string rawData)
         {
-            (this.id, this.rawData) = (id, rawData);
+            (this.Id, this.RawData) = (id, rawData);
             var data = rawData.Split('\n');
-            sides = new[] { data[0], data.Select(s => s[^1]).Join(), data[^1], data.Select(s => s[0]).Join() };
-            sidesFlipped = sides.Select(s => s.Reverse().Join()).ToArray();
+            Sides = new[] { data[0], data.Select(s => s[^1]).Join(), data[^1], data.Select(s => s[0]).Join() };
+            SidesFlipped = Sides.Select(s => s.Reverse().Join()).ToArray();
         }
     }
 

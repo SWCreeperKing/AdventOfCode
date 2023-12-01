@@ -11,7 +11,7 @@ namespace AdventOfCode.Solutions._2022;
 [Day(2022, 12, "Hill Climbing Algorithm")]
 public class Day12
 {
-    public static readonly ImmutableList<(int x, int y)> search = new List<(int x, int y)>
+    public static readonly ImmutableList<(int x, int y)> Search = new List<(int x, int y)>
     {
         (0, -1), (-1, 0), (1, 0), (0, 1)
     }.ToImmutableList();
@@ -68,33 +68,33 @@ public class Day12
 
 public class MapNode : Node<int, int>
 {
-    public (int x, int y) position;
-    public (int x, int y) dest;
-    public Matrix2d<int> map;
-    public bool isPart2;
+    public (int x, int y) Position;
+    public (int x, int y) Dest;
+    public Matrix2d<int> Map;
+    public bool IsPart2;
 
     public MapNode(int x, int y, Matrix2d<int> map, (int x, int y) dest, bool isPart2 = false)
     {
-        position = (x, y);
-        this.dest = dest;
-        this.map = map;
-        this.isPart2 = isPart2;
+        Position = (x, y);
+        this.Dest = dest;
+        this.Map = map;
+        this.IsPart2 = isPart2;
     }
 
     public override bool Equals(Node<int, int> other)
     {
-        var otherPos = ((MapNode) other).position;
-        return position.x == otherPos.x && position.y == otherPos.y;
+        var otherPos = ((MapNode) other).Position;
+        return Position.x == otherPos.x && Position.y == otherPos.y;
     }
 
-    public override int GetHashCode() => position.GetHashCode();
+    public override int GetHashCode() => Position.GetHashCode();
 
     public override bool IsFinal
     {
         get
         {
-            if (isPart2) return map[position.x, position.y] == 1;
-            return dest.x == position.x && dest.y == position.y;
+            if (IsPart2) return Map[Position.x, Position.y] == 1;
+            return Dest.x == Position.x && Dest.y == Position.y;
         }
     }
 
@@ -104,18 +104,18 @@ public class MapNode : Node<int, int>
         {
             List<Edge<int, int>> nodes = new();
 
-            var thisAltitude = map[position.x, position.y];
-            var (w, h) = map.size;
+            var thisAltitude = Map[Position.x, Position.y];
+            var (w, h) = Map.Size;
 
-            foreach (var (addX, addY) in search)
+            foreach (var (addX, addY) in Search)
             {
-                var (newX, newY) = (position.x + addX, position.y + addY);
+                var (newX, newY) = (Position.x + addX, Position.y + addY);
                 if (newX < 0 || newX >= w || newY < 0 || newY >= h) continue;
 
-                if (!map[newX, newY].IsInRange(0, thisAltitude + 1) && !isPart2) continue;
-                if (!(thisAltitude - 1).IsInRange(0, map[newX, newY]) && isPart2) continue;
+                if (!Map[newX, newY].IsInRange(0, thisAltitude + 1) && !IsPart2) continue;
+                if (!(thisAltitude - 1).IsInRange(0, Map[newX, newY]) && IsPart2) continue;
 
-                nodes.Add(new Edge<int, int>(1, 0, new MapNode(newX, newY, map, dest, isPart2)));
+                nodes.Add(new Edge<int, int>(1, 0, new MapNode(newX, newY, Map, Dest, IsPart2)));
             }
 
             return nodes;

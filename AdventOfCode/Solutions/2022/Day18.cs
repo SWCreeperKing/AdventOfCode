@@ -1,14 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 18, "")]
+[Day(2022, 18, "Boiling Boulders")]
 public class Day18
 {
-    [ModifyInput] public static int[][] ProcessInput(string inp) => inp.SuperSplit("\n", ",", s => s.ToIntArr());
+    [ModifyInput]
+    public static int[][] ProcessInput(string inp)
+    {
+        return inp.SuperSplit("\n", ",", s => s.ToIntArr());
+    }
 
     [Answer(4460)]
     public static long Part1(int[][] inp)
@@ -52,11 +55,11 @@ public class Day18
         {
             var (x, y, z) = (xyz[0], xyz[1], xyz[2]);
 
-            map[x, y, z] = new Cube { x = x, y = y, z = z };
+            map[x, y, z] = new Cube { X = x, Y = y, Z = z };
             normal.Add(map[x, y, z]);
         }
 
-        map[maxX, maxY, maxZ] = new Cube { x = maxX + 1, y = maxY + 1, z = maxZ + 1, isLava = true };
+        map[maxX, maxY, maxZ] = new Cube { X = maxX + 1, Y = maxY + 1, Z = maxZ + 1, IsLava = true };
         lava.Enqueue(map[maxX, maxY, maxZ]);
 
         bool CanMove(int fx, int fy, int fz)
@@ -71,7 +74,7 @@ public class Day18
         {
             if (!CanMove(fx, fy, fz)) return;
             if (map[fx, fy, fz] is not null) return;
-            map[fx, fy, fz] = new Cube { x = fx, y = fy, z = fz, isLava = true };
+            map[fx, fy, fz] = new Cube { X = fx, Y = fy, Z = fz, IsLava = true };
             lava.Enqueue(map[fx, fy, fz]);
         }
 
@@ -79,7 +82,7 @@ public class Day18
         {
             if (!CanMove(fx, fy, fz)) return;
             if (map[fx, fy, fz] is null) SpreadLava(fx, fy, fz);
-            else if (!map[fx, fy, fz].isLava) map[fx, fy, fz].UpdateTouch(c);
+            else if (!map[fx, fy, fz].IsLava) map[fx, fy, fz].UpdateTouch(c);
         }
 
         while (lava.Any())
@@ -95,38 +98,38 @@ public class Day18
             UpdateLava(l, lx, ly, lz - 1);
         }
 
-        return normal.Sum(c => c.touching.Count(b => b));
+        return normal.Sum(c => c.Touching.Count(b => b));
     }
 }
 
 public class Cube
 {
-    public required int x, y, z;
+    public required int X, Y, Z;
 
-    public bool isLava;
+    public bool IsLava;
 
     //                           x+1, x-1,     y+1, y-1      z+1, z-1
-    public bool[] touching = { false, false, false, false, false, false };
+    public bool[] Touching = { false, false, false, false, false, false };
 
     public void UpdateTouch(Cube c)
     {
-        if (c.IsSamePosition(x + 1, y, z)) touching[0] = true;
-        else if (c.IsSamePosition(x - 1, y, z)) touching[1] = true;
-        else if (c.IsSamePosition(x, y + 1, z)) touching[2] = true;
-        else if (c.IsSamePosition(x, y - 1, z)) touching[3] = true;
-        else if (c.IsSamePosition(x, y, z + 1)) touching[4] = true;
-        else if (c.IsSamePosition(x, y, z - 1)) touching[5] = true;
+        if (c.IsSamePosition(X + 1, Y, Z)) Touching[0] = true;
+        else if (c.IsSamePosition(X - 1, Y, Z)) Touching[1] = true;
+        else if (c.IsSamePosition(X, Y + 1, Z)) Touching[2] = true;
+        else if (c.IsSamePosition(X, Y - 1, Z)) Touching[3] = true;
+        else if (c.IsSamePosition(X, Y, Z + 1)) Touching[4] = true;
+        else if (c.IsSamePosition(X, Y, Z - 1)) Touching[5] = true;
     }
 
     public bool IsSamePosition(int x, int y, int z)
     {
-        return this.x == x && this.y == y && this.z == z;
+        return this.X == x && this.Y == y && this.Z == z;
     }
 
     public void Deconstruct(out int x, out int y, out int z)
     {
-        x = this.x;
-        y = this.y;
-        z = this.z;
+        x = this.X;
+        y = this.Y;
+        z = this.Z;
     }
 }

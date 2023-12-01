@@ -8,10 +8,10 @@ namespace AdventOfCode.Solutions._2019;
 public static class Day1
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
-    [Answer(3465245)] public static long Part1(int[] inp) => inp.Select(i => i / 3 - 2).Sum();
+    [Answer(3465245)] public static long Part1(IEnumerable<int> inp) => inp.Select(i => i / 3 - 2).Sum();
 
     [Answer(5194970)]
-    public static long Part2(int[] inp)
+    public static long Part2(IEnumerable<int> inp)
     {
         return inp.Select(i =>
         {

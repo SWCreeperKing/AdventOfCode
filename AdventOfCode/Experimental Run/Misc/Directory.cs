@@ -6,23 +6,23 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Directory<T>
 {
-    public Stack<string> path = new();
-    public Dictionary<string, List<T>> data = new();
+    public Stack<string> PathStack = new();
+    public Dictionary<string, List<T>> Data = new();
 
     public Directory()
     {
-        path.Push("home");
-        data.Add("home", new List<T>());
+        PathStack.Push("home");
+        Data.Add("home", new List<T>());
     }
 
-    public string Path() => path.Reverse().Join('/');
-    public void AddData(T t) => data[Path()].Add(t);
+    public string Path() => PathStack.Reverse().Join('/');
+    public void AddData(T t) => Data[Path()].Add(t);
 
     public void AddPath(string dir)
     {
-        path.Push(dir);
-        data.Add(Path(), new List<T>());
-        path.Pop();
+        PathStack.Push(dir);
+        Data.Add(Path(), new List<T>());
+        PathStack.Pop();
     }
 
     public void Cd(string cd)
@@ -30,33 +30,33 @@ public class Directory<T>
         switch (cd)
         {
             case "..":
-                path.Pop();
+                PathStack.Pop();
                 break;
             case "/":
-                path.Clear();
-                path.Push("home");
+                PathStack.Clear();
+                PathStack.Push("home");
                 break;
             default:
-                path.Push(cd);
+                PathStack.Push(cd);
                 break;
         }
     }
 
-    public Dictionary<string, R> FlattenDirectory<R>(Func<List<T>, R> func)
+    public Dictionary<string, TR> FlattenDirectory<TR>(Func<List<T>, TR> func)
     {
-        Dictionary<string, R> built = new();
-        foreach (var (path, files) in data) built.Add(path, func(files));
+        Dictionary<string, TR> built = new();
+        foreach (var (path, files) in Data) built.Add(path, func(files));
         return built;
     }
 
     /// <summary>
     /// make the directories aware of their children
     /// </summary>
-    public Dictionary<string, R> AwareAndFlattenDirectory<R>(Func<List<T>, R> func, Func<R, R, R> merge)
+    public Dictionary<string, TR> AwareAndFlattenDirectory<TR>(Func<List<T>, TR> func, Func<TR, TR, TR> merge)
     {
-        Dictionary<string, R> built = new();
+        Dictionary<string, TR> built = new();
 
-        foreach (var (path, files) in data)
+        foreach (var (path, files) in Data)
         {
             var rFunc = func(files);
             var pathing = path;
@@ -65,7 +65,7 @@ public class Directory<T>
                 if (built.ContainsKey(pathing)) built[pathing] = merge(built[pathing], rFunc);
                 else built.Add(pathing, rFunc);
                 if (pathing == "home") break;
-                pathing = pathing[..pathing.LastIndexOf("/")];
+                pathing = pathing[..pathing.LastIndexOf("/", StringComparison.Ordinal)];
             }
         }
 

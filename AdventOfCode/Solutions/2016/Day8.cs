@@ -10,7 +10,7 @@ public class Day8
 {
     [ModifyInput]
     public static string[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.Split(' ')).ToArray();
-    
+
     [Answer(106)]
     public static long Part1(string[][] inp)
     {

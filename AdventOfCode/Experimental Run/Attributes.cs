@@ -3,30 +3,27 @@ using System;
 namespace AdventOfCode.Experimental_Run;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class DayAttribute : Attribute
+public class DayAttribute(int year, int day, string name) : Attribute
 {
-    public int year;
-    public int day;
-    public string name;
-
-    public DayAttribute(int year, int day, string name)
-    {
-        this.year = year;
-        this.day = day;
-        this.name = name;
-    }
+    public int Year = year;
+    public int Day = day;
+    public string Name = name;
 }
 
 [AttributeUsage(AttributeTargets.Method)]
 public class AnswerAttribute : Attribute
 {
-    public object answer;
+    public object Answer;
 
-    public AnswerAttribute(object answer) => this.answer = answer;
+    public AnswerAttribute(object answer) => this.Answer = answer;
 }
 
 [AttributeUsage(AttributeTargets.Method)]
 public class ModifyInputAttribute : Attribute
 {
-    
 }
+
+[AttributeUsage(AttributeTargets.Class)]
+public class RunAttribute : Attribute
+{
+} 

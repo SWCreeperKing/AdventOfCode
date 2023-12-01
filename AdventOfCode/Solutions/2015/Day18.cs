@@ -85,6 +85,6 @@ public static class Day18
         return on;
     }
 
-    private static bool? Get(bool[] arr, int x, int y) =>
-        y is < 0 or >= 100 || x is < 0 or >= 100 ? null : arr[y * 100 + x];
+    private static bool? Get(bool[] arr, int x, int y)
+        => y is < 0 or >= 100 || x is < 0 or >= 100 ? null : arr[y * 100 + x];
 }

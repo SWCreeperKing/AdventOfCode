@@ -25,19 +25,19 @@ public class Day11
             var operation = monkey[1].Split(' ').Skip(5).ToArray();
             Monkey newMonkey = new()
             {
-                startingItems = monkey[0].Remove("Starting items: ").Trim()
+                StartingItems = monkey[0].Remove("Starting items: ").Trim()
                     .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
-                operation = new()
+                Operation = new()
                 {
-                    isAddOrMulti = operation[1] == "+",
-                    op = new[]
+                    IsAddOrMulti = operation[1] == "+",
+                    Op = new[]
                     {
                         operation[0] == "old" ? 0 : int.Parse(operation[0]),
                         operation[2] == "old" ? 0 : int.Parse(operation[2])
                     }
                 },
-                testDivisibility = int.Parse(monkey[2].Split(' ').Last()),
-                throwTo = new[] { int.Parse(monkey[3].Split(' ').Last()), int.Parse(monkey[4].Split(' ').Last()) }
+                TestDivisibility = int.Parse(monkey[2].Split(' ').Last()),
+                ThrowTo = new[] { int.Parse(monkey[3].Split(' ').Last()), int.Parse(monkey[4].Split(' ').Last()) }
             };
             monkeys.Add(newMonkey);
         }
@@ -50,15 +50,15 @@ public class Day11
             {
                 var monkey = monkeys[m];
 
-                foreach (var item in monkey.startingItems)
+                foreach (var item in monkey.StartingItems)
                 {
                     inspections[m]++;
-                    var newWorry = (long) Math.Floor(monkey.operation.RunOp(item) / 3f);
-                    var toThrowTo = newWorry % monkey.testDivisibility == 0 ? monkey.throwTo[0] : monkey.throwTo[1];
-                    monkeys[toThrowTo].startingItems.Add(newWorry);
+                    var newWorry = (long) Math.Floor(monkey.Operation.RunOp(item) / 3f);
+                    var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
+                    monkeys[toThrowTo].StartingItems.Add(newWorry);
                 }
 
-                monkey.startingItems.Clear();
+                monkey.StartingItems.Clear();
             }
         }
 
@@ -77,25 +77,25 @@ public class Day11
             var operation = monkey[1].Split(' ').Skip(5).ToArray();
             Monkey newMonkey = new()
             {
-                startingItems = monkey[0].Remove("Starting items: ").Trim()
+                StartingItems = monkey[0].Remove("Starting items: ").Trim()
                     .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
-                operation = new()
+                Operation = new()
                 {
-                    isAddOrMulti = operation[1] == "+",
-                    op = new[]
+                    IsAddOrMulti = operation[1] == "+",
+                    Op = new[]
                     {
                         operation[0] == "old" ? 0 : int.Parse(operation[0]),
                         operation[2] == "old" ? 0 : int.Parse(operation[2])
                     }
                 },
-                testDivisibility = int.Parse(monkey[2].Split(' ').Last()),
-                throwTo = new[] { int.Parse(monkey[3].Split(' ').Last()), int.Parse(monkey[4].Split(' ').Last()) }
+                TestDivisibility = int.Parse(monkey[2].Split(' ').Last()),
+                ThrowTo = new[] { int.Parse(monkey[3].Split(' ').Last()), int.Parse(monkey[4].Split(' ').Last()) }
             };
             monkeys.Add(newMonkey);
         }
 
         var inspections = new long[monkeys.Count];
-        var multiDivide = monkeys.Select(m => m.testDivisibility).Multi();
+        var multiDivide = monkeys.Select(m => m.TestDivisibility).Multi();
 
         for (var i = 0; i < 10000; i++)
         {
@@ -103,15 +103,15 @@ public class Day11
             {
                 var monkey = monkeys[m];
 
-                foreach (var item in monkey.startingItems)
+                foreach (var item in monkey.StartingItems)
                 {
                     inspections[m]++;
-                    var newWorry = monkey.operation.RunOp(item) % multiDivide;
-                    var toThrowTo = newWorry % monkey.testDivisibility == 0 ? monkey.throwTo[0] : monkey.throwTo[1];
-                    monkeys[toThrowTo].startingItems.Add(newWorry);
+                    var newWorry = monkey.Operation.RunOp(item) % multiDivide;
+                    var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
+                    monkeys[toThrowTo].StartingItems.Add(newWorry);
                 }
 
-                monkey.startingItems.Clear();
+                monkey.StartingItems.Clear();
             }
         }
 
@@ -125,22 +125,22 @@ public class Day11
 
 public class Monkey
 {
-    public Operation operation;
-    public int testDivisibility;
-    public List<long> startingItems = new();
-    public int[] throwTo = new int[2];
+    public Operation Operation;
+    public int TestDivisibility;
+    public List<long> StartingItems = new();
+    public int[] ThrowTo = new int[2];
 }
 
 public class Operation
 {
-    public bool isAddOrMulti = true;
-    public int[] op = new int[2];
+    public bool IsAddOrMulti = true;
+    public int[] Op = new int[2];
 
     public long RunOp(long old)
     {
-        var first = op[0] == 0 ? old : op[0];
-        var second = op[1] == 0 ? old : op[1];
-        if (isAddOrMulti) return first + second;
+        var first = Op[0] == 0 ? old : Op[0];
+        var second = Op[1] == 0 ? old : Op[1];
+        if (IsAddOrMulti) return first + second;
         return first * second;
     }
 }

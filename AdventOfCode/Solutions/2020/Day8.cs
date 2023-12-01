@@ -47,8 +47,8 @@ public static class Day8
             var oldInst = inp[i];
             inp[i] = oldInst[0] switch
             {
-                "nop" => new[] {"jmp", $"{oldInst[1]}"},
-                "jmp" => new[] {"nop", $"{oldInst[1]}"},
+                "nop" => new[] { "jmp", $"{oldInst[1]}" },
+                "jmp" => new[] { "nop", $"{oldInst[1]}" },
                 _ => oldInst
             };
 

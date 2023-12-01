@@ -15,8 +15,7 @@ public static class Day7
             .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
     }
 
-    [Answer(956)]
-    public static long Part1(Dictionary<string, string[]> inp) => FollowWire("a", inp);
+    [Answer(956)] public static long Part1(Dictionary<string, string[]> inp) => FollowWire("a", inp);
 
     [Answer(40149)]
     public static long Part2(Dictionary<string, string[]> inp)
@@ -35,7 +34,7 @@ public static class Day7
     {
         if (wire.IsAllNumbers()) return long.Parse(wire);
         if (cache.TryGetValue(wire, out var cachedVar)) return cachedVar;
-        
+
         var instruction = instructionSets[wire];
         long Follow(string wire) => FollowWire(wire, instructionSets, cache);
 

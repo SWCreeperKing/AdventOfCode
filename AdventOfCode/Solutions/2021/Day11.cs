@@ -22,7 +22,7 @@ public class Day11
     public static long Part1(Dictionary<(int, int), int> inp)
     {
         var flashes = 0;
-            
+
         for (var i = 0; i < 100; i++)
         {
             foreach (var ((y, x), _) in inp) inp[(y, x)]++;
@@ -52,6 +52,7 @@ public class Day11
                     flashes++;
                     Flash(y, x, inp);
                 }
+
             i++;
             if (flashes == 100) return i;
             flashes = 0;

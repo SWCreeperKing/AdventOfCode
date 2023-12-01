@@ -7,7 +7,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 11, "Seating System")]
 public static class Day11
 {
-    private static (int, int)[] area = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1) };
+    private static (int, int)[] Area = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1) };
     private static bool IsOccupied(char c) => c == '#';
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
 
@@ -25,7 +25,7 @@ public static class Day11
 
         bool Surround(int i, int j, char c = 'L')
         {
-            var counter = area.Count(a => Look(i + a.Item1, j + a.Item2) == '#');
+            var counter = Area.Count(a => Look(i + a.Item1, j + a.Item2) == '#');
             return c == '#' && counter == 0 || c == 'L' && counter >= 4;
         }
 
@@ -78,7 +78,7 @@ public static class Day11
 
         bool Surround(int i, int j, char c = 'L')
         {
-            var counter = area.Count(a => Look(i, j, a.Item1, a.Item2) == '#');
+            var counter = Area.Count(a => Look(i, j, a.Item1, a.Item2) == '#');
             return c == '#' && counter == 0 || c == 'L' && counter > 4;
         }
 
