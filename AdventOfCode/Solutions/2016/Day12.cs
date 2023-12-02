@@ -7,7 +7,6 @@ namespace AdventOfCode.Solutions._2016;
 public class Day12
 {
     [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
-
     [Answer(318003)] public static long Part1(string[][] inp) => Solve(inp);
     [Answer(9227657)] public static long Part2(string[][] inp) => Solve(inp, 1);
 

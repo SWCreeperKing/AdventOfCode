@@ -69,14 +69,10 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
 }
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ModifyInputAttribute : Attribute
-{
-}
+public class ModifyInputAttribute : Attribute;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class RunAttribute : Attribute
-{
-}
+public class RunAttribute : Attribute;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class TestAttribute(string testInput) : Attribute
