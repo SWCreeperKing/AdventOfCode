@@ -19,6 +19,13 @@ public class Program
         MessageId = "type: System.Int64[]")]
     public static void Main()
     {
+        InitHttpClient();
+        Console.CursorVisible = false;
+        Starter.Start();
+    }
+
+    public static void InitHttpClient()
+    {
         Uri address = new("https://adventofcode.com");
         CookieContainer cookieContainer = new();
         cookieContainer.Add(address, new Cookie("session", Token.AoCToken));
@@ -27,26 +34,14 @@ public class Program
         {
             BaseAddress = address
         };
-        
-        Console.CursorVisible = false;
-        Starter.Start();
     }
-
+    
     public static string SaveInput(int year, int day)
     {
-        var input = client.GetStringAsync($"/{year}/day/{day}/input").GetAwaiter().GetResult();
+        var input = client.GetStringAsync($"/{year}/day/{day}/input")
+            .GetAwaiter().GetResult();
         if (!Directory.Exists($"Input/{year}")) Directory.CreateDirectory($"Input/{year}");
         File.WriteAllText($"Input/{year}/{day}.txt", input);
         return input;
     }
-
-    // public static async Task StartFetcher()
-    // {
-    //     Uri address = new("https://adventofcode.com");
-    //     CookieContainer cookieContainer = new();
-    //     cookieContainer.Add(address, new Cookie("Cookie", Token.AoCToken));
-    //     HttpClient client = new(new HttpClientHandler{CookieContainer = cookieContainer});
-    //     var request = await client.GetAsync("/2023/day/1/input");
-    //     ClrCnsl.Write(await request.Content.ReadAsStringAsync());
-    // }
 }

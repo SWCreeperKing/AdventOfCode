@@ -8,7 +8,7 @@ using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 22, "")]
+[Day(2022, 22, "Monkey Map")]
 public class Day22
 {
     [ModifyInput]

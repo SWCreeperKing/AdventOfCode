@@ -30,15 +30,8 @@ public class Day16
         }).ToArray();
     }
 
-    public static long Part1((string valve, int rate, string[] leadTo)[] inp)
-    {
-        return Solve(inp, true, 30);
-    }
-
-    public static long Part2((string valve, int rate, string[] leadTo)[] inp)
-    {
-        return Solve(inp, false, 26);
-    }
+    [Answer(2059)] public static long Part1((string valve, int rate, string[] leadTo)[] inp) => Solve(inp, true, 30);
+    [Answer(2790)] public static long Part2((string valve, int rate, string[] leadTo)[] inp) => Solve(inp, false, 26);
 
     private static int Solve((string valve, int rate, string[] leadTo)[] inp, bool singlePlayer, int time)
     {

@@ -3,7 +3,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 20, "")]
+[Day(2022, 20, "Grove Positioning System")]
 public class Day20
 {
     [ModifyInput] public static int[] ProcessInput(string inp) => inp.Split('\n').ToIntArr();
@@ -40,7 +40,7 @@ public class Day20
         return sum;
     }
 
-    public static long Part2(string inp)
+    public static long Part2(int[] inp)
     {
         return 0;
     }

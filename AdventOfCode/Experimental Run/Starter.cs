@@ -173,7 +173,7 @@ public static class Starter
 
             if (!hasAnswer)
             {
-                WriteLine($"[#darkyellow]Possible Answer: [{answer}]");
+                WriteLine($"[#darkyellow]Possible Answer: [{answer}][#r] | Took [{Sw.Time()}]");
             }
             else
             {

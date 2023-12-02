@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 21, "")]
+[Day(2022, 21, "Monkey Math")]
 public class Day21
 {
     [ModifyInput]
