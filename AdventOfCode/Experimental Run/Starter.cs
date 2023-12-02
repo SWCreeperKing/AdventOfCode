@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using static AdventOfCode.Experimental_Run.ClrCnsl;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
@@ -153,12 +152,14 @@ public static class Starter
             var hasModify = methods.Any(m => m.GetCustomAttributes<ModifyInputAttribute>().Any());
             var modifyAtt = hasModify ? methods.First(m => m.GetCustomAttributes<ModifyInputAttribute>().Any()) : null;
 
-            var inp = $"{input}"; // copy string
-            object modified = null;
-            if (modifyAtt is not null) modified = modifyAtt.Invoke(null, new[] { inp });
-
             var partMethod =
                 methods.First(m => m.Name.Equals($"part{part}", StringComparison.CurrentCultureIgnoreCase));
+            var testAtt = partMethod.GetCustomAttributes<TestAttribute>();
+
+            var inp = testAtt.Any() ? testAtt.First().TestInput : $"{input}"; // copy string
+
+            object modified = null;
+            if (modifyAtt is not null) modified = modifyAtt.Invoke(null, new[] { inp });
 
             var answerAttributes = partMethod.GetCustomAttributes<AnswerAttribute>();
             var hasAnswer = answerAttributes.Any();
@@ -182,7 +183,8 @@ public static class Starter
 
                 var extra = $"[#r]| Took [{Sw.Time()}]";
                 var correct = answerAttributes.Where(att => att.State is AnswerState.Correct);
-                if (correct.Any(att => att.State is not AnswerState.Correct))
+                if (states.Any(state => state is not AnswerState.Correct) &&
+                    correct.Any(att => att.State is AnswerState.Correct))
                 {
                     extra = $"[#r]| The correct answer is [#blue][{realAnswer}] {extra}";
                 }

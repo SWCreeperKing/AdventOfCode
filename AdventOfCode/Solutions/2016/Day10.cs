@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2016;
@@ -7,56 +8,184 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 10, "Balance Bots")]
 public class Day10
 {
+    public static readonly Regex ValueRegex = new(@"value (\d+?) goes to (.+)");
+    public static readonly Regex GiveRegex = new(@"(.+) gives low to (.+) and high to (.+)");
+
     [ModifyInput]
-    public static string[][] ProcessInput(string inp)
+    public static string[][][] ProcessInput(string inp)
     {
-        return inp.Replace("gives low to", "glt")
-            .Replace("and high to", "ght")
-            .SuperSplit('\n', ' ');
+        var rawInp = inp.Split('\n');
+        return new[]
+        {
+            rawInp.Where(s => s.StartsWith("value"))
+                .Select(s =>
+                {
+                    var groups = ValueRegex.Match(s).Groups;
+                    return new[] { groups[1].Value, groups[2].Value };
+                })
+                .ToArray(),
+            rawInp.Where(s => !s.StartsWith("value"))
+                .Select(s =>
+                {
+                    var groups = GiveRegex.Match(s).Groups;
+                    return new[] { groups[1].Value, groups[2].Value, groups[3].Value };
+                })
+                .ToArray()
+        };
     }
 
-    public static long Part1(string[][] inp)
+    [Answer(157)]
+    public static long Part1(string[][][] inp)
     {
-        Dictionary<string, List<int>> chipHolders = new()
-        {
-            ["bot 1"] = new List<int> { 3 }, ["bot 2"] = new List<int> { 2 }
-        };
+        int[] compareDesire = { 61, 17 };
+        Dictionary<int, List<int>> outputs = new();
+        Dictionary<string, Bot> bots = new();
 
-        foreach (var line in inp.OrderBy(s => s[0] == "value" ? 0 : 1))
+        foreach (var botInstruction in inp[1])
         {
-            switch (line)
+            var hander = GetBot(bots, botInstruction[0]);
+
+            if (botInstruction[1].Contains("output"))
             {
-                case ["value", var val, "goes", _, .. var holder]:
-                    var fullHolderName = holder.Join(' ');
-                    if (!chipHolders.ContainsKey(fullHolderName)) chipHolders.Add(fullHolderName, new List<int>());
-                    chipHolders[fullHolderName].Add(int.Parse(val));
-                    break;
-                case
-                [
-                    var holderName1, var holderNumber1, "glt", var holderName2, var holderNumber2,
-                    "ght", .. var holderRaw3
-                ]:
-                    var holder1 = $"{holderName1} {holderNumber1}";
-                    var holder2 = $"{holderName2} {holderNumber2}";
-                    var holder3 = holderRaw3.Join(' ');
-                    if (!chipHolders.ContainsKey(holder2)) chipHolders.Add(holder2, new List<int>());
-                    if (!chipHolders.ContainsKey(holder3)) chipHolders.Add(holder3, new List<int>());
-                    var min = chipHolders[holder1].Min();
-                    var max = chipHolders[holder1].Max();
-                    if (min == 17 && max == 61) return int.Parse(holderNumber1);
-                    chipHolders[holder1].Remove(min);
-                    chipHolders[holder1].Remove(max);
-                    chipHolders[holder2].Add(min);
-                    chipHolders[holder3].Add(max);
-                    break;
+                hander.GiveLowerOutput = int.Parse(botInstruction[1].Split(' ')[^1]);
+            }
+            else
+            {
+                hander.GiveLowerBot = GetBot(bots, botInstruction[1]);
+            }
+
+            if (botInstruction[2].Contains("output"))
+            {
+                hander.GiveHigherOutput = int.Parse(botInstruction[2].Split(' ')[^1]);
+            }
+            else
+            {
+                hander.GiveHigherBot = GetBot(bots, botInstruction[2]);
             }
         }
 
-        return 0;
+        var botList = bots.Values.ToList();
+        foreach (var giveInstruction in inp[0])
+        {
+            var value = int.Parse(giveInstruction[0]);
+            var bot = bots[giveInstruction[1]];
+            bot.Inventory.Add(value);
+
+            while (botList.Any(b => b.IsInventoryFull()))
+            {
+                var fullInvBot = botList.First(b => b.IsInventoryFull());
+                var output = fullInvBot.GiveOutput(outputs, compareDesire);
+                if (output != -1) return output;
+            }
+        }
+
+        return -1;
     }
 
-    public static long Part2(string[][] inp)
+    [Answer(1085)]
+    public static long Part2(string[][][] inp)
     {
-        return 0;
+        Dictionary<int, List<int>> outputs = new();
+        Dictionary<string, Bot> bots = new();
+
+        foreach (var botInstruction in inp[1])
+        {
+            var hander = GetBot(bots, botInstruction[0]);
+
+            if (botInstruction[1].Contains("output"))
+            {
+                hander.GiveLowerOutput = int.Parse(botInstruction[1].Split(' ')[^1]);
+            }
+            else
+            {
+                hander.GiveLowerBot = GetBot(bots, botInstruction[1]);
+            }
+
+            if (botInstruction[2].Contains("output"))
+            {
+                hander.GiveHigherOutput = int.Parse(botInstruction[2].Split(' ')[^1]);
+            }
+            else
+            {
+                hander.GiveHigherBot = GetBot(bots, botInstruction[2]);
+            }
+        }
+
+        var botList = bots.Values.ToList();
+        foreach (var giveInstruction in inp[0])
+        {
+            var value = int.Parse(giveInstruction[0]);
+            var bot = bots[giveInstruction[1]];
+            bot.Inventory.Add(value);
+
+            while (botList.Any(b => b.IsInventoryFull()))
+            {
+                var fullInvBot = botList.First(b => b.IsInventoryFull());
+                fullInvBot.GiveOutput(outputs);
+            }
+        }
+
+        return outputs[0][0] * outputs[1][0] * outputs[2][0];
+    }
+
+    public static Bot GetBot(Dictionary<string, Bot> bots, string botId)
+    {
+        if (!bots.TryGetValue(botId, out var bot))
+        {
+            bots[botId] = bot = new Bot(int.Parse(botId.Split(' ')[^1]));
+        }
+
+        return bot;
+    }
+}
+
+public class Bot(int id)
+{
+    public readonly int Id = id;
+    public readonly List<int> Inventory = new();
+    public Bot GiveLowerBot;
+    public int GiveLowerOutput;
+    public Bot GiveHigherBot;
+    public int GiveHigherOutput;
+
+    public bool IsInventoryFull() => Inventory.Count >= 2;
+
+    public int GiveOutput(Dictionary<int, List<int>> outputs, params int[] getBotIdWith)
+    {
+        if (getBotIdWith.Length > 0 && getBotIdWith.All(v => Inventory.Contains(v))) return Id;
+        // possible recursion is required if answer doesn't work
+        var lower = Inventory.Min();
+        var higher = Inventory.Max();
+
+        if (GiveLowerBot is null)
+        {
+            GiveOutputValue(outputs, GiveLowerOutput, lower);
+        }
+        else
+        {
+            GiveLowerBot.Inventory.Add(lower);
+        }
+
+        if (GiveHigherBot is null)
+        {
+            GiveOutputValue(outputs, GiveHigherOutput, higher);
+        }
+        else
+        {
+            GiveHigherBot.Inventory.Add(higher);
+        }
+
+        Inventory.Clear();
+        return -1;
+    }
+
+    private void GiveOutputValue(Dictionary<int, List<int>> outputs, int output, int value)
+    {
+        if (!outputs.TryGetValue(output, out var outputList))
+        {
+            outputs[output] = outputList = new List<int>();
+        }
+
+        outputList.Add(value);
     }
 }

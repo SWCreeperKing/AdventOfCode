@@ -256,7 +256,7 @@ public static class Helper
         return matrix;
     }
 
-    public static string ToStr<T>(this T[,] map, Func<T, string> toStr)
+    public static string String<T>(this T[,] map, Func<T, string> toStr)
     {
         StringBuilder sb = new();
         for (var y = map.GetLength(1) - 1; y >= 0; y--)
@@ -270,5 +270,17 @@ public static class Helper
         }
 
         return sb.ToString();
+    }
+
+    public static string LoopReplace(this string str, params string[] arr)
+    {
+        if (arr.Length % 2 != 0) throw new ArgumentException("the string array is not even");
+        var replacedStr = str;
+        for (var i = 0; i < arr.Length; i += 2)
+        {
+            replacedStr = replacedStr.Replace(arr[i], arr[i + 1]);
+        }
+
+        return replacedStr;
     }
 }

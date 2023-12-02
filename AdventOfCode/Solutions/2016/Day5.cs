@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode.Experimental_Run;
+using static System.Text.Encoding;
 
 namespace AdventOfCode.Solutions._2016;
 
@@ -19,52 +21,41 @@ public static class Day5
     [Answer("c6697b55")]
     public static string Part1(string input)
     {
-        StringBuilder sb = new();
-        foreach (var hash in Hashes(input))
+        var counter = 0l;
+        List<string> col = new();
+
+        using var md5 = MD5.Create();
+        while (col.Count < 8)
         {
-            sb.Append(hash[2].ToString("x"));
-            if (sb.Length == 8) break;
+            var hash = Hash(md5, $"{input}{counter++}");
+            if (hash.StartsWith("00000"))
+            {
+                col.Add(hash.Substring(5, 1));
+            }
         }
 
-        return sb.ToString();
+        return col.Join(string.Empty).ToLower();
     }
 
     [Answer("8c35d1ab")]
     public static string Part2(string input)
     {
-        var chars = Enumerable.Range(0, 8).Select(_ => (char) 255).ToArray();
-        var found = 0;
-        foreach (var hash in Hashes(input))
+        var counter = 0l;
+        List<char[]> col = new();
+
+        using var md5 = MD5.Create();
+        while (col.Count < 8)
         {
-            if (hash[2] >= 8) continue;
-            var i = hash[2];
-            if (chars[i] != 255) continue;
-            chars[i] = hash[3].ToString("x2")[0];
-            found++;
-            if (found == 8) break;
+            var hash = Hash(md5, $"{input}{counter++}");
+            if (hash.StartsWith("00000") && hash[5] >= '0' && hash[5] < '8' && col.All(x => x[0] != hash[5]))
+            {
+                col.Add(new[] { hash[5], hash[6] });
+            }
         }
 
-        return chars.Join();
+        return col.OrderBy(x => x[0]).Select(x => x[1]).Join(string.Empty).ToLower();
     }
 
-    private static IEnumerable<byte[]> Hashes(string input)
-    {
-        for (var i = 0; i < int.MaxValue; i++)
-        {
-            var q = new ConcurrentQueue<(int i, byte[] hash)>();
-            Parallel.ForEach(Enumerable.Range(i, int.MaxValue - i), MD5.Create, (i, state, md5) =>
-                {
-                    var hash = md5.ComputeHash(Encoding.ASCII.GetBytes(input + i));
-                    if (hash[0] != 0 || hash[1] != 0 || hash[2] >= 16) return md5;
-                    q.Enqueue((i, hash));
-                    state.Stop();
-                    return md5;
-                },
-                _ => { }
-            );
-            var item = q.MinBy(x => x.i);
-            i = item.i;
-            yield return item.hash;
-        }
-    }
+    private static string Hash(HashAlgorithm md5, string s)
+        => BitConverter.ToString(md5.ComputeHash(UTF8.GetBytes(s))).Replace("-", "");
 }
