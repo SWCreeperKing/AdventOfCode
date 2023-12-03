@@ -274,4 +274,15 @@ public static class Helper
 
     public static string LoopReplace(this string str, params (string search, string replace)[] arr)
         => arr.Aggregate(str, (current, replacement) => current.Replace(replacement.search, replacement.replace));
+
+    public static T[] GetRange<T>(this T[] arr, Range range)
+    {
+        List<T> list = new();
+        for (var i = range.Start.Value; i < range.End.Value; i++)
+        {
+            list.Add(arr[i]);
+        }
+
+        return list.ToArray();
+    }
 }

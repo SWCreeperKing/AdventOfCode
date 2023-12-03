@@ -65,7 +65,7 @@ public class Day9
 
     private static bool IsTailBehind(Vector2 front, Vector2 end)
     {
-        return Surround.Any(xy => end.X + xy.x == front.X && end.Y + xy.y == front.Y);
+        return SurroundDiagonal.Any(xy => end.X + xy.x == front.X && end.Y + xy.y == front.Y);
     }
 
     private static Vector2 Move(Vector2 pos, Direction dir)

@@ -2,8 +2,11 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Enums
 {
-    public static readonly (int x, int y)[] Surround =
+    public static readonly (int x, int y)[] SurroundDiagonal =
         { (0, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1) };
+
+    public static readonly (int x, int y)[] Surround =
+        { (0, 0), (-1, 0), (0, -1), (1, 0), (0, 1) };
 
     public enum Direction
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdventOfCode.Solutions._2022;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
 using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 
@@ -48,13 +49,43 @@ public class Matrix2d<T>
             yield return (x, y, this[x, y]);
     }
 
-    public bool AnyAllCircularMarch(int x, int y, Func<T, bool> allConditional, int ring = 1)
+    public bool PositionExists(int x, int y) => x >= 0 && y >= 0 && x < Size.w && y < Size.h;
+
+    public (int x, int y)[] WhereInCircle(int x, int y, Predicate<T> condition, bool corners = true)
     {
-        return March(x, y - ring, Up).All(allConditional)
-               || March(x + ring, y, Right).All(allConditional)
-               || March(x, y + ring, Down).All(allConditional)
-               || March(x - ring, y, Left).All(allConditional);
+        List<(int x, int y)> cords = new();
+        foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
+        {
+            var nX = x + xOff;
+            var nY = y + yOff;
+            if (!PositionExists(nX, nY) || !condition(this[nX, nY])) continue;
+            cords.Add((nX, nY));
+        }
+
+        return cords.ToArray();
     }
+
+    public bool[] MatchInCircle(int x, int y, Predicate<T> condition, bool corners = true)
+    {
+        List<bool> bools = new();
+        foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
+        {
+            var nX = x + xOff;
+            var nY = y + yOff;
+            bools.Add(PositionExists(nX, nY) && condition(this[nX, nY]));
+        }
+
+        return bools.ToArray();
+    }
+
+    public bool AnyTrueMatchInCircle(int x, int y, Predicate<T> condition, bool corners = true)
+        => MatchInCircle(x, y, condition, corners).Any(b => b);
+
+    public bool AnyAllCircularMarch(int x, int y, Func<T, bool> allConditional, int ring = 1)
+        => March(x, y - ring, Up).All(allConditional)
+           || March(x + ring, y, Right).All(allConditional)
+           || March(x, y + ring, Down).All(allConditional)
+           || March(x - ring, y, Left).All(allConditional);
 
     public long[] CircularMarchAndCountWhile(int x, int y, Func<T, bool> count, int ring = 1)
     {
@@ -77,6 +108,19 @@ public class Matrix2d<T>
         }
 
         return counter;
+    }
+
+    public IEnumerable<T> MarchRange(int x, int y, int end, Direction direction)
+    {
+        var isVertical = (int) direction % 2 == 0;
+        var length = end - (isVertical ? y : x);
+
+        foreach (var t in March(x, y, direction))
+        {
+            if (length == 0) yield break;
+            length--;
+            yield return t;
+        }
     }
 
     public IEnumerable<T> March(int x, int y, Direction direction)
