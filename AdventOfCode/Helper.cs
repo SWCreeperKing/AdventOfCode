@@ -272,15 +272,6 @@ public static class Helper
         return sb.ToString();
     }
 
-    public static string LoopReplace(this string str, params string[] arr)
-    {
-        if (arr.Length % 2 != 0) throw new ArgumentException("the string array is not even");
-        var replacedStr = str;
-        for (var i = 0; i < arr.Length; i += 2)
-        {
-            replacedStr = replacedStr.Replace(arr[i], arr[i + 1]);
-        }
-
-        return replacedStr;
-    }
+    public static string LoopReplace(this string str, params (string search, string replace)[] arr)
+        => arr.Aggregate(str, (current, replacement) => current.Replace(replacement.search, replacement.replace));
 }

@@ -4,18 +4,14 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 2, "WIP"), Run]
+[Day(2023, 2, "Cube Conundrum")]
 public class Day2
 {
     [ModifyInput]
     public static (int r, int g, int b)[][] ProcessInput(string input)
-        => input.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-            .Select(line => line.Split(':')[1]
-                .Split(';')
-                .Select(session => session.Split(','))
-                .Select(pulls
-                    => (ReadValue(pulls, "red"), ReadValue(pulls, "green"), ReadValue(pulls, "blue")))
-                .ToArray()).ToArray();
+        => input.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(line => line
+            .Split(':')[1].Split(';').Select(session => session.Split(','))
+            .Select(ToColor).ToArray()).ToArray();
 
     [Answer(2268)]
     public static long Part1((int r, int g, int b)[][] inp)
@@ -27,6 +23,9 @@ public class Day2
         => inp.Select(arr => arr.Aggregate((a, b)
                 => (Math.Max(a.r, b.r), Math.Max(a.g, b.g), Math.Max(a.b, b.b))))
             .Sum(color => color.r * color.g * color.b);
+
+    private static (int r, int g, int b) ToColor(string[] pulls)
+        => (ReadValue(pulls, "red"), ReadValue(pulls, "green"), ReadValue(pulls, "blue"));
 
     private static int ReadValue(string[] str, string name)
     {
