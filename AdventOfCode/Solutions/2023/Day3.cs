@@ -7,14 +7,13 @@ using Range = System.Range;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 3, "WIP"), Run]
+[Day(2023, 3, "Gear Ratios")]
 public class Day3
 {
     [ModifyInput]
     public static ((int line, int number, Range range)[] numbs, Matrix2d<char> map) ProcessInput(string input)
     {
-        var inp = new Matrix2d<char>(input.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.ToCharArray()).ToArray());
+        var inp = new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
         List<(int line, int number, Range range)> ranges = new();
         var (w, h) = inp.Size;

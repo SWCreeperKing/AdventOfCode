@@ -9,7 +9,7 @@ public static class Day11
 {
     private static (int, int)[] Area = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1) };
     private static bool IsOccupied(char c) => c == '#';
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
 
     [Answer(2275)]
     public static int Part1(string[] inp)

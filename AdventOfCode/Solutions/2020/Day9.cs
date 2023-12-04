@@ -6,7 +6,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 9, "Encoding Error")]
 public static class Day9
 {
-    [ModifyInput] public static long[] ProcessInput(string input) => input.Split("\n").Select(long.Parse).ToArray();
+    [ModifyInput] public static long[] ProcessInput(string input) => input.Split('\n').Select(long.Parse).ToArray();
 
     [Answer(552655238)]
     public static long Part1(long[] inp)

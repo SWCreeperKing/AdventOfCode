@@ -10,7 +10,7 @@ public class Day12
     [ModifyInput]
     public static (char, int)[] ProcessInput(string input)
     {
-        return input.Split("\n").Select(s => (s[0], int.Parse(s[1..]))).ToArray();
+        return input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
     }
 
     [Answer(759)]

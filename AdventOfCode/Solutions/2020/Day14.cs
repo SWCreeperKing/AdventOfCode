@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 14, "Docking Data")]
 public class Day14
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Remove(" ").Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Remove(" ").Split('\n');
 
     [Answer(17765746710228)]
     public static long Part1(string[] inp)

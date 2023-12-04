@@ -18,7 +18,7 @@ public static class Day5
     [Answer("c6697b55")]
     public static string Part1(string input)
     {
-        var counter = 0l;
+        var counter = 0L;
         List<string> col = new();
 
         using var md5 = MD5.Create();
@@ -37,7 +37,7 @@ public static class Day5
     [Answer("8c35d1ab")]
     public static string Part2(string input)
     {
-        var counter = 0l;
+        var counter = 0L;
         List<char[]> col = new();
 
         using var md5 = MD5.Create();

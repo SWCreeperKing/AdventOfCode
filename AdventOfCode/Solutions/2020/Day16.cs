@@ -13,13 +13,13 @@ public class Day16
     public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
-        return (inp, inp[2].Split("\n")[1..]);
+        return (inp, inp[2].Split('\n')[1..]);
     }
 
     [Answer(29878)]
     public static long Part1((string[] inp, string[] nearbyTickets) inp)
     {
-        var rules = inp.inp[0].Split("\n");
+        var rules = inp.inp[0].Split('\n');
         List<Func<int, bool>> requirements = new();
 
         foreach (var r in rules)
@@ -38,10 +38,10 @@ public class Day16
     [Answer(855438643439)]
     public static long Part2((string[] inp, string[] nearbyTickets) inp)
     {
-        var myTicket = inp.inp[1].Split("\n")[^1].Split(",");
+        var myTicket = inp.inp[1].Split('\n')[^1].Split(",");
         Dictionary<string, Func<int, bool>> requirementsRaw = new();
 
-        foreach (var r in inp.inp[0].Split("\n"))
+        foreach (var r in inp.inp[0].Split('\n'))
         {
             var reg = Regex.Match(r, @"(.*): ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
             var (one, two, three, four) = (int.Parse(reg[2].Value), int.Parse(reg[3].Value),

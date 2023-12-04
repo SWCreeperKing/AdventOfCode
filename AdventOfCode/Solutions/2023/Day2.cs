@@ -9,7 +9,7 @@ public class Day2
 {
     [ModifyInput]
     public static (int r, int g, int b)[][] ProcessInput(string input)
-        => input.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(line => line
+        => input.Split('\n').Select(line => line
             .Split(':')[1].Split(';').Select(session => session.Split(','))
             .Select(ToColor).ToArray()).ToArray();
 

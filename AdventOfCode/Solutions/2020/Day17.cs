@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 17, "Conway Cubes")]
 public class Day17
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
 
     [Answer(295)]
     public static int Part1(string[] inp)

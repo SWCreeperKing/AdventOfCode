@@ -15,7 +15,7 @@ public static partial class Day9
     [ModifyInput]
     public static Dictionary<(string, string), int> ProcessInput(string input)
     {
-        return input.Split("\n").SelectMany(s =>
+        return input.Split('\n').SelectMany(s =>
         {
             var reg = InputRegex().Match(s).Groups;
             var (from, to, dist) = (reg[1].Value, reg[2].Value, int.Parse(reg[3].Value));

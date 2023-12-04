@@ -18,7 +18,7 @@ public static class Day19
     public static (string[] inp, string[] rules, string[] realIn) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
-        return (inp, inp[0].Split("\n"), inp[1].Split("\n"));
+        return (inp, inp[0].Split('\n'), inp[1].Split('\n'));
     }
 
     [Answer(122)]

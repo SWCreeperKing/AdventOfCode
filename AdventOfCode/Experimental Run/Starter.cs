@@ -238,6 +238,10 @@ public static class Starter
         SelectedYear = year;
         InputCache.Clear();
         PuzzleTypes[year].Keys.ForEach(LoadFile);
+        foreach (var key in InputCache.Keys)
+        {
+            InputCache[key] = InputCache[key].TrimEnd('\n');
+        }
     }
 
     public static void LoadFile(int day)

@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 18, "Operation Order")]
 public class Day18
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n");
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
     [Answer(12956356593940)] public static long Part1(string[] inp) => inp.Sum(s => CalculateStart(s));
     [Answer(94240043727614)] public static long Part2(string[] inp) => inp.Sum(s => CalculateStart(s, false));
 

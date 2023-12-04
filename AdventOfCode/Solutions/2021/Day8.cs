@@ -12,14 +12,14 @@ public class Day8
     [Answer(375)]
     public static long Part1(string inp)
     {
-        return inp.Split("\n").Select(s => s.Split(" | ")[^1].Split(' '))
+        return inp.Split('\n').Select(s => s.Split(" | ")[^1].Split(' '))
             .Select(s => s.Select(ss => ss.Length is 2 or 3 or 4 or 7).Count(b => b)).Sum();
     }
 
     [Answer(1019355)]
     public static long Part2(string inp)
     {
-        var n = inp.Split("\n").Select(s =>
+        var n = inp.Split('\n').Select(s =>
         {
             var split = s.Split(" | ");
             return (split[0].Split(' '), split[1].Split());

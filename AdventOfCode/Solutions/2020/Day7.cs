@@ -13,7 +13,7 @@ public static class Day7
     {
         Dictionary<string, List<(int, string)>> realBags = new();
 
-        foreach (var l in input.Split("\n"))
+        foreach (var l in input.Split('\n'))
         {
             var key = Regex.Match(l, @"^[a-z]+ [a-z]+ bag").Value.Remove(" bag");
             var value = Regex.Matches(l, "(\\d+) ([a-z]+ [a-z]+ bag)")
