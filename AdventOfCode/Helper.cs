@@ -12,6 +12,7 @@ namespace AdventOfCode;
 public static class Helper
 {
     public static Regex NumberOnlyRegex = new(@"^\d+$", RegexOptions.Compiled);
+    public static Regex SpaceRegex = new(@"\s+", RegexOptions.Compiled);
 
     public static char ToChar(this int i, int offset = 97) => (char) (i + offset);
     public static bool IsInRange(this int i, int min, int max) => min <= i && max >= i;
@@ -21,7 +22,7 @@ public static class Helper
     public static long[] ToLongArr(this IEnumerable<string> texts) => texts.Select(long.Parse).ToArray();
     public static string ReplaceWithSpace(this string text, string pattern) => text.Replace(pattern, " ");
     public static string Remove(this string text, string pattern) => text.Replace(pattern, string.Empty);
-    public static string[] SplitSpace(this string text) => text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+    public static string[] SplitSpace(this string text) => text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     public static bool IsAllNumbers(this string text) => NumberOnlyRegex.IsMatch(text);
     public static string Repeat(this string pattern, int i) => Enumerable.Repeat(pattern, i).Join();
     public static int FindIndexOf<T>(this IEnumerable<T> arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
@@ -40,9 +41,11 @@ public static class Helper
     public static string[] Range(this GroupCollection gc, Range range)
     {
         var arr = new string[range.End.Value - (range.Start.Value - 1)];
-        for (int i = range.Start.Value, j = 0; i < arr.Length + 1; i++, j++) arr[j] = gc[i].Value;
+        for (int i = range.Start.Value, j = 0; j < arr.Length; i++, j++) arr[j] = gc[i].Value;
         return arr;
     }
+
+    public static string[] Range(this Match match, Range range) => match.Groups.Range(range);
 
     public static Dictionary<TK, TV> ToDictionary<TK, TV>(this IEnumerable<KeyValuePair<TK, TV>> pair)
         => pair.ToDictionary(kv => kv.Key, kv => kv.Value);
@@ -285,4 +288,6 @@ public static class Helper
 
         return list.ToArray();
     }
+
+    public static string CleanSpaces(this string str) => SpaceRegex.Replace(str, " ");
 }

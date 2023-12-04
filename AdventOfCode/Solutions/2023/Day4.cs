@@ -1,67 +1,38 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 4, "WIP"), Run]
+[Day(2023, 4, "Scratchcards")]
 public class Day4
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public static Regex CardMatch = new(@"Card *(\d+): ((?: *[\d]+)+) \| ((?: *[\d]+)+)", RegexOptions.Compiled);
 
-    // [Test("")]
-    public static long Part1(string inp)
+    [ModifyInput]
+    public static (int, int)[] ProcessInput(string input)
+        => input.Split('\n').Select(s => CardMatch.Match(s.CleanSpaces()).Range(1..3))
+            .Select(arr => (int.Parse(arr[0]), arr.Skip(1).Select(s => s.Split(' '))
+                .Aggregate((arr1, arr2) => arr1.Intersect(arr2).ToArray()).Length))
+            .ToArray();
+
+    [Answer(27845)]
+    public static long Part1((int, int)[] inp) => inp.Where(t => t.Item2 != 0).Sum(t => (int) Math.Pow(2, t.Item2 - 1));
+
+    [Answer(9496801)]
+    public static long Part2((int, int)[] inp)
     {
-        var nlInp = inp.Split('\n');
+        var cards = inp.ToDictionary(t => t.Item1, _ => 1);
 
-        var score = 0;
-        foreach (var line in nlInp)
+        foreach (var (cardNumber, matchCount) in inp)
         {
-            var split = line.Split(':');
-            var card = split[1].Split('|');
-            var winning = card[0].Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s => int.Parse(s.Trim()));
-            var holding = card[1].Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s => int.Parse(s.Trim()));
-            var matching = winning.Intersect(holding);
-            if (!matching.Any()) continue;
-            score += (int) Math.Pow(2, matching.Count() - 1);
-        }
-
-        return score;
-    }
-
-    [Answer(899, Enums.AnswerState.Not)]
-    public static long Part2(string inp)
-    {
-        var nlInp = inp.Split('\n');
-
-        Dictionary<int, int> cards = new() { {1, 1}};
-
-        foreach (var line in nlInp)
-        {
-            var split = line.Split(':');
-            var cardNumber = int.Parse(split[0].Split(' ', StringSplitOptions.RemoveEmptyEntries)[1]);
-            var card = split[1].Split('|');
-            var winning = card[0].Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s => int.Parse(s.Trim()));
-            var holding = card[1].Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s => int.Parse(s.Trim()));
-            var matching = winning.Intersect(holding);
-            
-            if (!cards.ContainsKey(cardNumber)) cards[cardNumber] = 1;
-            
-            for (var i = 0; i < matching.Count(); i++)
+            for (var i = 0; i < matchCount; i++)
             {
-                var key = cardNumber + 1 + i;
-                if (!cards.TryGetValue(key, out _))
-                {
-                    cards[key] = 1 + cards[cardNumber];
-                    continue;
-                }
-
-                cards[key] += cards[cardNumber];
+                cards[cardNumber + 1 + i] += cards[cardNumber];
             }
         }
-        
+
         return cards.Values.Sum();
     }
 }
