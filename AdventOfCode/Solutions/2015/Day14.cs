@@ -16,10 +16,8 @@ public static partial class Day14
 
     [ModifyInput]
     public static Dictionary<string, Flight> ProcessInput(string input)
-    {
-        return input.Split('\n').Select(l => InputRegex().Match(l).Groups.Range(1..4)).ToDictionary(match => match[0],
+        => input.Split('\n').Select(l => InputRegex().Match(l).Range(1..4)).ToDictionary(match => match[0],
             match => new Flight(int.Parse(match[1]), int.Parse(match[2]), int.Parse(match[3])));
-    }
 
     [Answer(2660)]
     public static long Part1(Dictionary<string, Flight> inp)
@@ -46,10 +44,10 @@ public static partial class Day14
         {
             foreach (var deer in inp.Keys)
             {
-                if (!canMove.ContainsKey(deer)) canMove[deer] = 0;
+                canMove.TryAdd(deer, 0);
                 if (canMove[deer] >= time) continue;
                 var (speed, sec, rest) = inp[deer];
-                if (!distance.ContainsKey(deer)) distance[deer] = 0;
+                distance.TryAdd(deer, 0);
                 distance[deer] += speed;
                 if (canMove[deer] + sec == time) canMove[deer] += sec + rest;
             }
@@ -59,8 +57,8 @@ public static partial class Day14
 
             foreach (var winner in winners)
             {
-                if (!points.ContainsKey(winner)) points[winner] = 1;
-                else points[winner]++;
+                if (!points.TryGetValue(winner, out var value)) points[winner] = 1;
+                else points[winner] = ++value;
             }
         }
 

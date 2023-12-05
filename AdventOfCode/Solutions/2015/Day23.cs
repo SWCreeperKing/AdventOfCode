@@ -9,21 +9,11 @@ public static class Day23
 {
     [ModifyInput]
     public static string[][] ProcessInput(string inp)
-    {
-        return inp.Split('\n').Select(s => s.Replace(",", string.Empty).Split(' ').ToArray()).ToArray();
-    }
+        => inp.Split('\n').Select(s => s.Replace(",", string.Empty).Split(' ').ToArray()).ToArray();
 
-    [Answer(184)]
-    public static long Part1(string[][] inp)
-    {
-        return RunComputer(new() { ["a"] = 0, ["b"] = 0 }, inp)["b"];
-    }
+    [Answer(184)] public static long Part1(string[][] inp) => RunComputer(new() { ["a"] = 0, ["b"] = 0 }, inp)["b"];
 
-    [Answer(231)]
-    public static long Part2(string[][] inp)
-    {
-        return RunComputer(new() { ["a"] = 1, ["b"] = 0 }, inp)["b"];
-    }
+    [Answer(231)] public static long Part2(string[][] inp) => RunComputer(new() { ["a"] = 1, ["b"] = 0 }, inp)["b"];
 
     public static Dictionary<string, long> RunComputer(Dictionary<string, long> register, string[][] inp)
     {

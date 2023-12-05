@@ -24,17 +24,15 @@ public static class Day18
         {
             var copy = inp.ToArray();
             for (var y = 0; y < 100; y++)
+            for (var x = 0; x < 100; x++)
             {
-                for (var x = 0; x < 100; x++)
+                var around = GetSurroundings(inp, x, y);
+                copy[y * 100 + x] = inp[y * 100 + x] switch
                 {
-                    var around = GetSurroundings(inp, x, y);
-                    copy[y * 100 + x] = inp[y * 100 + x] switch
-                    {
-                        true when around is not (2 or 3) => false,
-                        false when around is 3 => true,
-                        _ => inp[y * 100 + x]
-                    };
-                }
+                    true when around is not (2 or 3) => false,
+                    false when around is 3 => true,
+                    _ => inp[y * 100 + x]
+                };
             }
 
             inp = copy;
@@ -51,17 +49,15 @@ public static class Day18
             inp[0] = inp[99] = inp[9900] = inp[9999] = true;
             var copy = inp.ToArray();
             for (var y = 0; y < 100; y++)
+            for (var x = 0; x < 100; x++)
             {
-                for (var x = 0; x < 100; x++)
+                var around = GetSurroundings(inp, x, y);
+                copy[y * 100 + x] = inp[y * 100 + x] switch
                 {
-                    var around = GetSurroundings(inp, x, y);
-                    copy[y * 100 + x] = inp[y * 100 + x] switch
-                    {
-                        true when around is not (2 or 3) => false,
-                        false when around is 3 => true,
-                        _ => inp[y * 100 + x]
-                    };
-                }
+                    true when around is not (2 or 3) => false,
+                    false when around is 3 => true,
+                    _ => inp[y * 100 + x]
+                };
             }
 
             inp = copy;

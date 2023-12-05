@@ -11,9 +11,7 @@ public static class Day1
 {
     [ModifyInput]
     public static (bool, int)[] ProcessInput(string input)
-    {
-        return input.Split(", ").Select(s => (s[0] == 'L', int.Parse(s[1..]))).ToArray();
-    }
+        => input.Split(", ").Select(s => (s[0] == 'L', int.Parse(s[1..]))).ToArray();
 
     [Answer(230)]
     public static long Part1((bool, int)[] inp)

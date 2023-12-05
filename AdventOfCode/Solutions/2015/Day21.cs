@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using static AdventOfCode.Helper;
 
 namespace AdventOfCode.Solutions._2015;
 
@@ -25,87 +24,74 @@ public class Day21
     };
 
     [ModifyInput]
-    public static Entity ProcessInput(string input)
+    public static (Entity, List<Player> playerStates) ProcessInput(string input)
     {
+        var playerStates = Weapons.Select(weapon => new Player(100, weapon.Damage, 0, weapon.Cost)).ToList();
+        var cachedStates = playerStates.ToArray();
+        foreach (var armor in Armors)
+        {
+            playerStates.AddRange(cachedStates.Select(playerState => playerState + armor));
+        }
+
+        List<Item> ringCombos = new();
+        ringCombos.AddRange(Rings);
+
+        for (var i = 0; i < Rings.Count; i++)
+        {
+            ringCombos.AddRange(Rings.Where((_, j) => i != j).Select(t => Rings[i] + t));
+        }
+
+        cachedStates = playerStates.ToArray();
+        foreach (var ringCombo in ringCombos)
+        {
+            playerStates.AddRange(cachedStates.Select(playerState => playerState + ringCombo));
+        }
+
         var arr = input.Split('\n').Select(s => s.Split(": ")[1]).Select(int.Parse).ToArray();
-        return new Entity(arr[0], arr[1], arr[2]);
+        return (new Entity(arr[0], arr[1], arr[2]), playerStates);
     }
 
     [Answer(78)]
-    public static int Part1(Entity inp)
-    {
-        List<int> costs = new();
-
-        foreach (var (weapon, armor, ring) in Iterate())
-        {
-            var items = Weapons.GetFrom(weapon).Concat(Armors.GetFrom(armor)).Concat(Rings.GetFrom(ring));
-            var player = new Entity(100, items.Sum(i => i.Damage), items.Sum(i => i.Armor));
-            var enemy = inp;
-
-            while (player.Hp > 0 && enemy.Hp > 0)
-            {
-                var playerDamage = Math.Max(player.Damage - enemy.Armor, 1);
-                var enemyDamage = Math.Max(enemy.Damage - player.Armor, 1);
-                enemy = enemy with { Hp = enemy.Hp - playerDamage };
-                if (enemy.Hp <= 0) break;
-                player = player with { Hp = player.Hp - enemyDamage };
-            }
-
-            if (player.Hp <= 0) continue;
-            costs.Add(items.Sum(i => i.Cost));
-        }
-
-        return costs.Min();
-    }
+    public static int Part1((Entity, List<Player> playerStates) inp)
+        => inp.playerStates.Where(ps => Fight(ps, inp.Item1)).Min(ps => ps.MoneySpent);
 
     [Answer(148)]
-    public static int Part2(Entity inp)
-    {
-        List<int> costs = new();
+    public static int Part2((Entity, List<Player> playerStates) inp)
+        => inp.playerStates.Where(ps => !Fight(ps, inp.Item1)).Max(ps => ps.MoneySpent);
 
-        foreach (var (weapon, armor, ring) in Iterate())
+    public static bool Fight(Player player, Entity boss)
+    {
+        if (boss.Hp <= 0) return true;
+        if (player.Hp <= 0) return false;
+        return Fight(player with
         {
-            var items = Weapons.GetFrom(weapon).Concat(Armors.GetFrom(armor)).Concat(Rings.GetFrom(ring));
-            var player = new Entity(100, items.Sum(i => i.Damage), items.Sum(i => i.Armor));
-            var enemy = inp;
-
-            while (player.Hp > 0 && enemy.Hp > 0)
-            {
-                var playerDamage = Math.Max(player.Damage - enemy.Armor, 1);
-                var enemyDamage = Math.Max(enemy.Damage - player.Armor, 1);
-                enemy = enemy with { Hp = enemy.Hp - playerDamage };
-                if (enemy.Hp <= 0) break;
-                player = player with { Hp = player.Hp - enemyDamage };
-            }
-
-            if (player.Hp > 0) continue;
-            costs.Add(items.Sum(i => i.Cost));
-        }
-
-        return costs.Max();
-    }
-
-    private static IEnumerable<(IReadOnlyList<bool>, IReadOnlyList<bool>, IReadOnlyList<bool>)> Iterate()
-    {
-        return from weapon in SwitchingBool(Weapons.Count, 1, 1)
-            from armor in SwitchingBool(Armors.Count, 1)
-            from ring in SwitchingBool(Rings.Count, 2)
-            select (weapon, armor, ring);
+            Hp = player.Hp - Math.Max(1, boss.Damage - player.Armor)
+        }, boss with
+        {
+            Hp = boss.Hp - Math.Max(1, player.Damage - boss.Armor)
+        });
     }
 }
 
-public readonly struct Item
+public readonly struct Item(int cost = 0, int damage = 0, int armor = 0)
 {
-    public readonly int Cost;
-    public readonly int Damage;
-    public readonly int Armor;
+    public readonly int Cost = cost;
+    public readonly int Damage = damage;
+    public readonly int Armor = armor;
 
-    public Item(int cost = 0, int damage = 0, int armor = 0)
-    {
-        this.Cost = cost;
-        this.Damage = damage;
-        this.Armor = armor;
-    }
+    public static Item operator +(Item i1, Item i2)
+        => new(i1.Cost + i2.Cost, i1.Damage + i2.Damage, i1.Armor + i2.Armor);
+}
+
+public record Player(int Hp, int Damage, int Armor, int MoneySpent)
+{
+    public static Player operator +(Player player, Item i)
+        => player with
+        {
+            MoneySpent = player.MoneySpent + i.Cost,
+            Armor = player.Armor + i.Armor,
+            Damage = player.Damage + i.Damage
+        };
 }
 
 public record Entity(int Hp, int Damage, int Armor);

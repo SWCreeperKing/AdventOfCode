@@ -14,14 +14,12 @@ public static class Day17
     [Answer(17)]
     public static long Part2(int[] inp)
     {
-        var viableMatches = ContainerCombination(inp).Where(arr => arr.Sum() == 150);
+        var viableMatches = ContainerCombination(inp).Where(arr => arr.Sum() == 150).ToArray();
         var minCount = viableMatches.Select(arr => arr.Length).Min();
         return viableMatches.Count(arr => arr.Length == minCount);
     }
 
     private static IEnumerable<int[]> ContainerCombination(IReadOnlyList<int> containers)
-    {
-        return SwitchingBool(containers.Count).Select(boolArr =>
+        => SwitchingBool(containers.Count).Select(boolArr =>
             boolArr.Select((b, i) => (b, i)).Where(bi => bi.b).Select(bi => containers[bi.i]).ToArray()).ToList();
-    }
 }

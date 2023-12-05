@@ -9,7 +9,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 9, "All in a Single Night")]
 public static partial class Day9
 {
-    [GeneratedRegex(@"(.*) to (.*) = (.*)")]
+    [GeneratedRegex("(.*) to (.*) = (.*)")]
     private static partial Regex InputRegex();
 
     [ModifyInput]
@@ -17,8 +17,8 @@ public static partial class Day9
     {
         return input.Split('\n').SelectMany(s =>
         {
-            var reg = InputRegex().Match(s).Groups;
-            var (from, to, dist) = (reg[1].Value, reg[2].Value, int.Parse(reg[3].Value));
+            var reg = InputRegex().Match(s).Range(1..3);
+            var (from, to, dist) = (reg[0], reg[1], int.Parse(reg[2]));
             return new[] { ((from, to), dist), ((to, from), dist) };
         }).ToDictionary(ssi => ssi.Item1, ssi => ssi.Item2);
     }
@@ -52,7 +52,10 @@ public static partial class Day9
     private static void Permute(string[] core, int start, int end, ICollection<string[]> permutations)
     {
         if (start == end) permutations.Add(core);
-        for (var i = start; i <= end; i++) Permute(core.Swap(start, i), start + 1, end, permutations);
+        for (var i = start; i <= end; i++)
+        {
+            Permute(core.Swap(start, i), start + 1, end, permutations);
+        }
     }
 
     private static void Iterate(IReadOnlyDictionary<(string, string), int> inp, IEnumerable<string[]> permutations,
@@ -61,7 +64,11 @@ public static partial class Day9
         foreach (var longer in permutations)
         {
             var total = 0;
-            for (var i = 1; i < longer.Length; i++) total += inp[(longer[i - 1], longer[i])];
+            for (var i = 1; i < longer.Length; i++)
+            {
+                total += inp[(longer[i - 1], longer[i])];
+            }
+
             finalizer(total);
         }
     }

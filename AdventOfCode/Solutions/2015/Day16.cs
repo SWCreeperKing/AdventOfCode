@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
@@ -21,7 +22,7 @@ public static class Day16
         for (var i = 0; i < sues.Length; i++)
         {
             sues[i] = new Dictionary<string, int>();
-            split[i][(split[i].IndexOf(": ") + 2)..].Split(", ").ForEach(s =>
+            split[i][(split[i].IndexOf(": ", StringComparison.Ordinal) + 2)..].Split(", ").ForEach(s =>
             {
                 var ssplit = s.Split(": ");
                 sues[i][ssplit[0]] = int.Parse(ssplit[1]);
@@ -36,14 +37,10 @@ public static class Day16
     {
         var searchForKeysWithZero = SearchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 
-        var scores = inp.Select((arr, i) =>
-        {
-            var sum = arr.Select(kv => SearchFor.ContainsKey(kv.Key) ? SearchFor[kv.Key] == kv.Value ? 1 : 0 : 0).Sum();
-            var missing = arr.Count(kv => searchForKeysWithZero.Contains(kv.Key) && kv.Value != 0);
-            return (i, sum - missing);
-        });
-
-        return scores.MaxBy(score => score.Item2).i + 1;
+        return inp.Select((arr, i) => (i,
+                arr.Select(kv => SearchFor.TryGetValue(kv.Key, out var value) ? value == kv.Value ? 1 : 0 : 0).Sum()
+                - arr.Count(kv => searchForKeysWithZero.Contains(kv.Key) && kv.Value != 0)))
+            .MaxBy(score => score.Item2).i + 1;
     }
 
     [Answer(260)]
@@ -51,18 +48,14 @@ public static class Day16
     {
         var searchForKeysWithZero = SearchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 
-        var scores = inp.Select((arr, i) =>
-        {
-            var sum = arr.Select(kv =>
-            {
-                if (kv.Key is "cats" or "tree") return SearchFor[kv.Key] < kv.Value ? 1 : 0;
-                if (kv.Key is "pomeranians" or "goldfish") return SearchFor[kv.Key] > kv.Value ? 1 : 0;
-                return SearchFor.ContainsKey(kv.Key) ? SearchFor[kv.Key] == kv.Value ? 1 : 0 : 0;
-            }).Sum();
-            var missing = arr.Count(kv => searchForKeysWithZero.Contains(kv.Key) && kv.Value != 0);
-            return (i, sum - missing);
-        });
-
-        return scores.MaxBy(score => score.Item2).i + 1;
+        return inp.Select((arr, i) => (i, arr.Select(kv => kv.Key switch
+                                          {
+                                              "cats" or "tree" => SearchFor[kv.Key] < kv.Value ? 1 : 0,
+                                              "pomeranians" or "goldfish" => SearchFor[kv.Key] > kv.Value ? 1 : 0,
+                                              _ => SearchFor.TryGetValue(kv.Key, out var value)
+                                                  ? value == kv.Value ? 1 : 0 : 0
+                                          }).Sum()
+                                          - arr.Count(kv => searchForKeysWithZero.Contains(kv.Key) && kv.Value != 0)))
+            .MaxBy(score => score.Item2).i + 1;
     }
 }

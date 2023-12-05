@@ -16,7 +16,10 @@ public static class Day20
         for (var elf = 1; elf < houses.Length; elf++)
         {
             int house = 0, visits = 0;
-            while (house + elf < houses.Length && visits++ < maxHousesPerElf) houses[house += elf] += mul * elf;
+            while (house + elf < houses.Length && visits++ < maxHousesPerElf)
+            {
+                houses[house += elf] += mul * elf;
+            }
         }
 
         return houses.FindIndexOf(houses.First(i => i >= presents));

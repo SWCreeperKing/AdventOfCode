@@ -13,14 +13,11 @@ public static partial class Day6
 
     [ModifyInput]
     public static (string Value, (int, int), (int, int))[] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(s =>
+        => input.Split('\n').Select(s =>
         {
-            var reg = Reg().Match(s.Remove("turn ")).Groups;
-            return (reg[1].Value, (int.Parse(reg[3].Value), int.Parse(reg[4].Value)),
-                (int.Parse(reg[5].Value), int.Parse(reg[6].Value)));
+            var reg = Reg().Match(s.Remove("turn ")).Range(1..6);
+            return (reg[0], (int.Parse(reg[2]), int.Parse(reg[3])), (int.Parse(reg[4]), int.Parse(reg[5])));
         }).ToArray();
-    }
 
     [Answer(543903)]
     public static int Part1((string Value, (int, int), (int, int))[] inp)

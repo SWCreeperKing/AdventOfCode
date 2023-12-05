@@ -13,27 +13,24 @@ public class Day2
 
     [Answer("19636")]
     public static string Part1(char[][] inp)
-    {
-        var map = MakeMap("""
-                          123
-                          456
-                          789
-                          """);
-        List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
-        foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
-        return code.Skip(1).Select(v2 => map[v2]).Join();
-    }
+        => Solve(inp, MakeMap("""
+                              123
+                              456
+                              789
+                              """));
 
     [Answer("3CC43")]
     public static string Part2(char[][] inp)
+        => Solve(inp, MakeMap("""
+                                1
+                               234
+                              56789
+                               ABC
+                                D
+                              """));
+
+    public static string Solve(char[][] inp, Dictionary<Vector2, char> map)
     {
-        var map = MakeMap("""
-                            1
-                           234
-                          56789
-                           ABC
-                            D
-                          """);
         List<Vector2> code = new() { map.First(kv => kv.Value == '5').Key };
         foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
         return code.Skip(1).Select(v2 => map[v2]).Join();

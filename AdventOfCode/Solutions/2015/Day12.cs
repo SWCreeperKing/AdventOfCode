@@ -14,9 +14,7 @@ public partial class Day12
 
     [Answer(111754)]
     public static long Part1(string input)
-    {
-        return NegativeRegex().Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
-    }
+        => NegativeRegex().Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
 
     [Answer(65402)] public static long Part2(string input) => SearchWithoutRed(input);
 

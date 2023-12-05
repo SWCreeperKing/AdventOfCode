@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode.Solutions._2022;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
 using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 

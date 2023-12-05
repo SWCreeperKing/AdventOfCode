@@ -13,10 +13,8 @@ public static partial class Day3
 
     [ModifyInput]
     public static int[][] ProcessInput(string inp)
-    {
-        return inp.Split('\n').Select(s => InputRegex().Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
+        => inp.Split('\n').Select(s => InputRegex().Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
             .ToArray();
-    }
 
     [Answer(1032)]
     public static long Part1(int[][] inp)

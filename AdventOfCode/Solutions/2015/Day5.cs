@@ -19,10 +19,8 @@ public static partial class Day5
 
     [Answer(236)]
     public static int Part1(string[] inp)
-    {
-        return inp.Count(s =>
-            AeiouRegex().Matches(s).Count >= 3 && AToZRegex().IsMatch(s) && !AbcdpqxyRegex().IsMatch(s));
-    }
+        => inp.Count(s => AeiouRegex().Matches(s).Count >= 3 && AToZRegex()
+            .IsMatch(s) && !AbcdpqxyRegex().IsMatch(s));
 
     [Answer(51)]
     public static int Part2(string[] inp) => inp.Count(s => CharPairRegex().IsMatch(s) && PairRegex().IsMatch(s));

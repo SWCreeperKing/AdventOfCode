@@ -10,24 +10,17 @@ public static class Day7
 {
     [ModifyInput]
     public static Dictionary<string, string[]> ProcessInput(string input)
-    {
-        return input.Split('\n').Select(instruction => instruction.Split(" -> "))
+        => input.Split('\n').Select(instruction => instruction.Split(" -> "))
             .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
-    }
 
     [Answer(956)] public static long Part1(Dictionary<string, string[]> inp) => FollowWire("a", inp);
 
     [Answer(40149)]
     public static long Part2(Dictionary<string, string[]> inp)
-    {
-        var a = FollowWire("a", inp);
-        return FollowWire("a", inp, new Dictionary<string, long> { ["b"] = a });
-    }
+        => FollowWire("a", inp, new Dictionary<string, long> { ["b"] = FollowWire("a", inp) });
 
     private static long FollowWire(string wire, Dictionary<string, string[]> instructionSets)
-    {
-        return FollowWire(wire, instructionSets, new Dictionary<string, long>());
-    }
+        => FollowWire(wire, instructionSets, new Dictionary<string, long>());
 
     private static long FollowWire(string wire, IReadOnlyDictionary<string, string[]> instructionSets,
         IDictionary<string, long> cache)

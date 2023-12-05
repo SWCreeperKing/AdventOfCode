@@ -12,15 +12,11 @@ public class Day24
 
     [Answer(11846773891)]
     public static long Part1(long[] inp)
-    {
-        return GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 2 != sum || rSum / 2f % 1 != 0 || rSum % 2 != 0);
-    }
+        => GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 2 != sum || rSum / 2f % 1 != 0 || rSum % 2 != 0);
 
     [Answer(80393059)]
     public static long Part2(long[] inp)
-    {
-        return GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 3 != sum || rSum / 3f % 1 != 0 || rSum % 3 != 0);
-    }
+        => GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 3 != sum || rSum / 3f % 1 != 0 || rSum % 3 != 0);
 
     public static long GetPossibilitiesAndLowEq(long[] arr, Func<long, long, bool> continueFunc)
     {
