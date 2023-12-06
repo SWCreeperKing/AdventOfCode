@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 5, "WIP"), Run]
+[Day(2023, 5, "If You Give A Seed A Fertilizer")]
 public class Day5
 {
     [ModifyInput]
