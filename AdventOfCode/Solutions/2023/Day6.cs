@@ -3,7 +3,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 6, "WIP"), Run]
+[Day(2023, 6, "Wait For It")]
 public class Day6
 {
     [ModifyInput]
