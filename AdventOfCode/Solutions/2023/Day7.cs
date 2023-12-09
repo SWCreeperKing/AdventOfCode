@@ -35,7 +35,6 @@ public record Hand(int[] Values, int Bid, bool pt2 = false) : IComparable<Hand>
 {
     public int CompareTo(Hand other)
     {
-        // -1 = higher
         if (ReferenceEquals(this, other)) return 0;
         if (ReferenceEquals(null, other)) return 1;
         var kindRank = Kind().CompareTo(other.Kind());
@@ -45,7 +44,7 @@ public record Hand(int[] Values, int Bid, bool pt2 = false) : IComparable<Hand>
             if (Values[i] == other.Values[i]) continue;
             return -Values[i].CompareTo(other.Values[i]);
         }
-
+        
         return 0;
     }
 

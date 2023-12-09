@@ -153,7 +153,7 @@ public static class Helper
 
     public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key,
         TValue def = default)
-        => dict.TryGetValue(key, out var value) ? value : def;
+        => dict.GetValueOrDefault(key, def);
 
     public static IEnumerable<IReadOnlyList<bool>> SwitchingBool(int arrLeng, int maxAmount = -1, int minAmount = 0)
     {
@@ -278,16 +278,19 @@ public static class Helper
     public static string LoopReplace(this string str, params (string search, string replace)[] arr)
         => arr.Aggregate(str, (current, replacement) => current.Replace(replacement.search, replacement.replace));
 
-    public static T[] GetRange<T>(this T[] arr, Range range)
+    public static string CleanSpaces(this string str) => SpaceRegex.Replace(str, " ");
+    
+    public static long GCD(this long a, long b)
     {
-        List<T> list = new();
-        for (var i = range.Start.Value; i < range.End.Value; i++)
+        while (b != 0)
         {
-            list.Add(arr[i]);
+            var temp = b;
+            b = a % b;
+            a = temp;
         }
 
-        return list.ToArray();
+        return a;
     }
 
-    public static string CleanSpaces(this string str) => SpaceRegex.Replace(str, " ");
+    public static long LCM(this long a, long b) => a / a.GCD(b) * b;
 }

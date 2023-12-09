@@ -76,7 +76,7 @@ public class Day20
 
         public Tile(int id, string rawData)
         {
-            (this.Id, this.RawData) = (id, rawData);
+            (Id, RawData) = (id, rawData);
             var data = rawData.Split('\n');
             Sides = new[] { data[0], data.Select(s => s[^1]).Join(), data[^1], data.Select(s => s[0]).Join() };
             SidesFlipped = Sides.Select(s => s.Reverse().Join()).ToArray();

@@ -53,7 +53,7 @@ public class Card
         for (var i = 0; i < lines.Length; i++)
         {
             var split = lines[i].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            for (var j = 0; j < split.Length; j++) this.Board[int.Parse(split[j])] = (j, i);
+            for (var j = 0; j < split.Length; j++) Board[int.Parse(split[j])] = (j, i);
         }
     }
 

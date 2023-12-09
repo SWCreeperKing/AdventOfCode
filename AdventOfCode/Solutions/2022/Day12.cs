@@ -20,13 +20,13 @@ public class Day12
     public static ((int x, int y) start, (int x, int y) end, Matrix2d<int> map) ProcessInput(string inp)
     {
         var matrix = new Matrix2d<int>(inp.Split('\n')
-            .Select(s =>
-                s.ToCharArray()
-                    .Select(c => c is >= 'a' and <= 'z'
-                        ? c - 'a' + 1
-                        : c == 'S'
-                            ? 0
-                            : -1).ToArray()).ToArray());
+            .Select(s => s.ToCharArray()
+                .Select(c => c switch
+                {
+                    >= 'a' and <= 'z' => c - 'a' + 1,
+                    'S' => 0,
+                    _ => -1
+                }).ToArray()).ToArray());
 
         (int x, int y) start = (0, 0);
         (int x, int y) end = (0, 0);
@@ -70,15 +70,15 @@ public class MapNode : Node<int, int>
 {
     public (int x, int y) Position;
     public (int x, int y) Dest;
-    public Matrix2d<int> Map;
-    public bool IsPart2;
+    public readonly Matrix2d<int> Map;
+    public readonly bool IsPart2;
 
     public MapNode(int x, int y, Matrix2d<int> map, (int x, int y) dest, bool isPart2 = false)
     {
         Position = (x, y);
-        this.Dest = dest;
-        this.Map = map;
-        this.IsPart2 = isPart2;
+        Dest = dest;
+        Map = map;
+        IsPart2 = isPart2;
     }
 
     public override bool Equals(Node<int, int> other)

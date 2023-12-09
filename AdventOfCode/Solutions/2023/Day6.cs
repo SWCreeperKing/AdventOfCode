@@ -8,7 +8,7 @@ public class Day6
 {
     [ModifyInput]
     public static string[] ProcessInput(string input)
-        => input.Split('\n').Select(s => s.CleanSpaces().Remove("Time:").Remove("Distance:").Trim()).ToArray();
+        => input.Split('\n').Select(s => s.CleanSpaces().Remove("Time:", "Distance:").Trim()).ToArray();
 
     [Answer(4811940)]
     public static long Part1(string[] inp)

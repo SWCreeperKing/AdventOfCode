@@ -123,13 +123,13 @@ public class Cube
 
     public bool IsSamePosition(int x, int y, int z)
     {
-        return this.X == x && this.Y == y && this.Z == z;
+        return X == x && Y == y && Z == z;
     }
 
     public void Deconstruct(out int x, out int y, out int z)
     {
-        x = this.X;
-        y = this.Y;
-        z = this.Z;
+        x = X;
+        y = Y;
+        z = Z;
     }
 }
