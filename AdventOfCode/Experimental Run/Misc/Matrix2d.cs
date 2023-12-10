@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
 using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 
@@ -27,12 +28,12 @@ public class Matrix2d<T>
         Array = new T[size.w * size.h];
     }
 
-    public Matrix2d(T[][] inArray)
+    public Matrix2d(IReadOnlyList<T[]> inArray)
     {
-        Size = (inArray.Max(t => t.Length), inArray.Length);
+        Size = (inArray.Max(t => t.Length), inArray.Count);
         Array = new T[Size.w * Size.h];
 
-        for (var y = 0; y < inArray.Length; y++)
+        for (var y = 0; y < inArray.Count; y++)
         {
             for (var x = 0; x < inArray[y].Length; x++)
             {
@@ -143,6 +144,12 @@ public class Matrix2d<T>
         }
     }
 
+    public (int x, int y) Find(T t)
+    {
+        var index = Array.FirstIndexWhere(tt => tt.Equals(t));
+        return (index % Size.w, index / Size.h);
+    }
+
     public T this[int index]
     {
         get => Array[index];
@@ -156,4 +163,20 @@ public class Matrix2d<T>
     }
 
     public static implicit operator T[](Matrix2d<T> matrix2d) => matrix2d.Array;
+
+    public override string ToString()
+    {
+        StringBuilder sb = new();
+        for (var y = 0; y < Size.h; y++)
+        {
+            for (var x = 0; x < Size.w; x++)
+            {
+                sb.Append(this[x, y]);
+            }
+
+            sb.Append('\n');
+        }
+
+        return sb.ToString();
+    }
 }
