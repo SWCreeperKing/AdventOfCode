@@ -46,7 +46,7 @@ public class Day10
     [Answer(1685293086)]
     public static long Part2(string inp)
     {
-        List<long> incomplete = new();
+        List<long> incomplete = [];
         foreach (var line in inp.Split('\n'))
         {
             Stack<char> groups = new();

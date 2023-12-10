@@ -6,32 +6,23 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 10, "Balance Bots")]
-public class Day10
+public partial class Day10
 {
-    public static readonly Regex ValueRegex = new(@"value (\d+?) goes to (.+)");
-    public static readonly Regex GiveRegex = new(@"(.+) gives low to (.+) and high to (.+)");
+    [GeneratedRegex(@"value (\d+?) goes to (.+)")]
+    private static partial Regex ValueRegex();
+
+    [GeneratedRegex("(.+) gives low to (.+) and high to (.+)")]
+    private static partial Regex GiveRegex();
 
     [ModifyInput]
     public static string[][][] ProcessInput(string inp)
     {
         var rawInp = inp.Split('\n');
-        return new[]
-        {
-            rawInp.Where(s => s.StartsWith("value"))
-                .Select(s =>
-                {
-                    var groups = ValueRegex.Match(s).Groups;
-                    return new[] { groups[1].Value, groups[2].Value };
-                })
-                .ToArray(),
-            rawInp.Where(s => !s.StartsWith("value"))
-                .Select(s =>
-                {
-                    var groups = GiveRegex.Match(s).Groups;
-                    return new[] { groups[1].Value, groups[2].Value, groups[3].Value };
-                })
-                .ToArray()
-        };
+        return
+        [
+            rawInp.Where(s => s.StartsWith("value")).Select(s => ValueRegex().Match(s).Range(1..2)).ToArray(),
+            rawInp.Where(s => !s.StartsWith("value")).Select(s => GiveRegex().Match(s).Range(1..3)).ToArray()
+        ];
     }
 
     [Answer(157)]
@@ -142,7 +133,7 @@ public class Day10
 public class Bot(int id)
 {
     public readonly int Id = id;
-    public readonly List<int> Inventory = new();
+    public readonly List<int> Inventory = [];
     public Bot GiveLowerBot;
     public int GiveLowerOutput;
     public Bot GiveHigherBot;
@@ -183,7 +174,7 @@ public class Bot(int id)
     {
         if (!outputs.TryGetValue(output, out var outputList))
         {
-            outputs[output] = outputList = new List<int>();
+            outputs[output] = outputList = [];
         }
 
         outputList.Add(value);

@@ -12,7 +12,7 @@ public class Directory<T>
     public Directory()
     {
         PathStack.Push("home");
-        Data.Add("home", new List<T>());
+        Data.Add("home", []);
     }
 
     public string Path() => PathStack.Reverse().Join('/');
@@ -21,7 +21,7 @@ public class Directory<T>
     public void AddPath(string dir)
     {
         PathStack.Push(dir);
-        Data.Add(Path(), new List<T>());
+        Data.Add(Path(), []);
         PathStack.Pop();
     }
 

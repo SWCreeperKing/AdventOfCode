@@ -16,7 +16,7 @@ public class Day8
     public static long Part1(string[][] inp)
     {
         var display = false;
-        var map = new bool[50 * 6];
+        var map = new bool[300];
 
         var (cL, cT) = Console.GetCursorPosition();
         foreach (var inst in inp)

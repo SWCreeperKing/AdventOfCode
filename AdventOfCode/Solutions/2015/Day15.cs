@@ -27,7 +27,7 @@ public static class Day15
 
     private static IEnumerable<int[]> AllocateTeaspoons(int teaspoonAmount, int count)
     {
-        List<int[]> teaspoons = new();
+        List<int[]> teaspoons = [];
         if (count == 1) teaspoons.Add(new[] { teaspoonAmount });
         else
         {

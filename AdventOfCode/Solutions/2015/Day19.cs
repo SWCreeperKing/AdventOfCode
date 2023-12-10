@@ -23,7 +23,7 @@ public static class Day19
     [Answer(535)]
     public static long Part1((string, List<(string, string)>) inp)
     {
-        List<string> replaced = new();
+        List<string> replaced = [];
         var replaceString = inp.Item1;
         foreach (var (inString, outString) in inp.Item2)
         {

@@ -9,19 +9,19 @@ public class Day17
 {
     [ModifyInput] public static bool[] ProcessInput(string inp) => inp.ToCharArray().Select(c => c is '<').ToArray();
 
-    public static readonly List<(int x, int y)[]> Pieces = new()
-    {
+    public static readonly List<(int x, int y)[]> Pieces =
+    [
         new[] { (0, 0), (1, 0), (2, 0), (3, 0) },
         new[] { (1, 0), (0, 1), (2, 1), (1, 2) },
         new[] { (2, 2), (2, 1), (0, 0), (1, 0), (2, 0) },
         new[] { (0, 0), (0, 1), (0, 2), (0, 3) },
         new[] { (0, 0), (1, 0), (0, 1), (1, 1) }
-    };
+    ];
 
     [Answer(3124)]
     public static long Part1(bool[] inp)
     {
-        List<int>[] positions = { new(), new(), new(), new(), new(), new(), new() };
+        List<int>[] positions = { [], [], [], [], [], [], [] };
 
         var y = 3;
         var x = 2;
@@ -88,7 +88,7 @@ public class Day17
             new[] { "#", "#", "#", "#" }, new[] { "##", "##" }
         };
 
-        private readonly List<char[]> Lines = new();
+        private readonly List<char[]> Lines = [];
         private readonly int LinesToStore;
         private readonly bool[] Jets;
 

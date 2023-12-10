@@ -8,20 +8,16 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 21, "RPG Simulator 20XX")]
 public class Day21
 {
-    private static readonly List<Item> Weapons = new()
-    {
-        new Item(8, 4), new Item(10, 5), new Item(25, 6), new Item(40, 7), new Item(74, 8)
-    };
+    private static readonly List<Item> Weapons =
+        [new Item(8, 4), new Item(10, 5), new Item(25, 6), new Item(40, 7), new Item(74, 8)];
 
-    private static readonly List<Item> Armors = new()
-    {
-        new Item(13, 0, 1), new Item(31, 0, 2), new Item(53, 0, 3), new Item(75, 0, 4), new Item(102, 0, 5)
-    };
+    private static readonly List<Item> Armors =
+        [new Item(13, 0, 1), new Item(31, 0, 2), new Item(53, 0, 3), new Item(75, 0, 4), new Item(102, 0, 5)];
 
-    private static readonly List<Item> Rings = new()
-    {
+    private static readonly List<Item> Rings =
+    [
         new Item(25, 1), new Item(50, 2), new Item(100, 3), new Item(20, 0, 1), new Item(40, 0, 2), new Item(80, 0, 3)
-    };
+    ];
 
     [ModifyInput]
     public static (Entity, List<Player> playerStates) ProcessInput(string input)
@@ -33,7 +29,7 @@ public class Day21
             playerStates.AddRange(cachedStates.Select(playerState => playerState + armor));
         }
 
-        List<Item> ringCombos = new();
+        List<Item> ringCombos = [];
         ringCombos.AddRange(Rings);
 
         for (var i = 0; i < Rings.Count; i++)

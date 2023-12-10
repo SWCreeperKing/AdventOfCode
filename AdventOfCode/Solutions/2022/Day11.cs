@@ -127,7 +127,7 @@ public class Monkey
 {
     public Operation Operation;
     public int TestDivisibility;
-    public List<long> StartingItems = new();
+    public List<long> StartingItems = [];
     public int[] ThrowTo = new int[2];
 }
 

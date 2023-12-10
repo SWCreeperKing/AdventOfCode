@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 9, "Explosives in Cyberspace")]
-public static partial class Day9
+public partial class Day9
 {
     [GeneratedRegex(@"\((\d+)x(\d+)\)")] public static partial Regex ParaFind();
 
@@ -31,7 +31,7 @@ public static partial class Day9
             if (recurse)
             {
                 var subString = str[end..(end + data[0])].ToString();
-                counter += CountData(subString, recurse) * data[1];
+                counter += CountData(subString, true) * data[1];
             }
             else counter += data.Multi();
         }

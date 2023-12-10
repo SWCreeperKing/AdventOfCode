@@ -15,7 +15,7 @@ public static class Day1
     {
         return inp.Select(i =>
         {
-            List<int> ints = new();
+            List<int> ints = [];
             var hold = i;
             while ((hold = hold / 3 - 2) > 0) ints.Add(hold);
             return ints.Sum();

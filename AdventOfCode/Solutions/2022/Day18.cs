@@ -49,7 +49,7 @@ public class Day18
         var map = new Cube[maxX + 2, maxY + 2, maxZ + 2];
 
         Queue<Cube> lava = new();
-        List<Cube> normal = new();
+        List<Cube> normal = [];
 
         foreach (var xyz in inp)
         {

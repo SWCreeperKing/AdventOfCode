@@ -16,7 +16,7 @@ public static class Day3
     [Answer(2592)]
     public static int Part1(Vector2[] inp)
     {
-        List<Vector2> presents = new() { Vector2.Zero };
+        List<Vector2> presents = [Vector2.Zero];
         inp.Aggregate(Vector2.Zero, (move, pos) => presents.AddReturn(pos + move));
         return presents.Distinct().Count();
     }
@@ -24,7 +24,7 @@ public static class Day3
     [Answer(2360)]
     public static int Part2(Vector2[] inp)
     {
-        List<Vector2> presents = new() { Vector2.Zero };
+        List<Vector2> presents = [Vector2.Zero];
         inp.EvenIndexes().Aggregate(Vector2.Zero, (pos, move) => presents.AddReturn(pos + move));
         inp.OddIndexes().Aggregate(Vector2.Zero, (pos, move) => presents.AddReturn(pos + move));
         return presents.Distinct().Count();

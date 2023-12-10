@@ -5,11 +5,11 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 5, "Doesn't He Have Intern-Elves For This?")]
-public static partial class Day5
+public partial class Day5
 {
-    [GeneratedRegex(@"[aeiou]")] private static partial Regex AeiouRegex();
+    [GeneratedRegex("[aeiou]")] private static partial Regex AeiouRegex();
     [GeneratedRegex(@"([a-z])\1{1,}")] private static partial Regex AToZRegex();
-    [GeneratedRegex(@"(ab|cd|pq|xy)")] private static partial Regex AbcdpqxyRegex();
+    [GeneratedRegex("(ab|cd|pq|xy)")] private static partial Regex AbcdpqxyRegex();
     [GeneratedRegex(@"([a-z])[a-z]\1")] private static partial Regex CharPairRegex();
 
     [GeneratedRegex(@"([a-z]{2})[a-z]*\1")]

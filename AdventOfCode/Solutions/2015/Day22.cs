@@ -15,22 +15,14 @@ public class Day22
 {
     [ModifyInput]
     public static GameState ProcessInput(string input)
-    {
-        var split = input.Split('\n').Select(s => s[(s.IndexOf(':') + 2)..]).Select(int.Parse).ToArray();
-        return new GameState(split[0], split[1], 50, 500);
-    }
+        => input.Split('\n').Select(s => s[(s.IndexOf(':') + 2)..]).Select(int.Parse).ToArray()
+            .Flatten(arr => new GameState(arr[0], arr[1], 50, 500));
 
     [Answer(1269)]
-    public static long Part1(GameState inp)
-    {
-        return BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), false));
-    }
+    public static long Part1(GameState inp) => BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), false));
 
     [Answer(1309)]
-    public static long Part2(GameState inp)
-    {
-        return BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), true));
-    }
+    public static long Part2(GameState inp) => BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), true));
 
     private static int BinarySearch(Func<int, bool> f)
     {
@@ -65,8 +57,17 @@ public class Day22
     }
 }
 
-public record GameState(int BossHp, int BossDamage, int PlayerHp, int PlayerMana, int PlayerArmor = 0,
-    int ManaLimit = 0, int UsedMana = 0, int ShieldTurns = 0, int PoisonTurns = 0, int RechargeTurns = 0);
+public record GameState(
+    int BossHp,
+    int BossDamage,
+    int PlayerHp,
+    int PlayerMana,
+    int PlayerArmor = 0,
+    int ManaLimit = 0,
+    int UsedMana = 0,
+    int ShieldTurns = 0,
+    int PoisonTurns = 0,
+    int RechargeTurns = 0);
 
 public static class Runner
 {
@@ -100,16 +101,12 @@ public static class Runner
     }
 
     public static GameState Damage(this GameState gs, int damage)
-    {
-        return gs.PlayerHp <= 0 || gs.BossHp <= 0 ? gs : gs with { PlayerHp = gs.PlayerHp - damage };
-    }
+        => gs.PlayerHp <= 0 || gs.BossHp <= 0 ? gs : gs with { PlayerHp = gs.PlayerHp - damage };
 
     public static GameState BossStep(this GameState gs)
-    {
-        return gs.PlayerHp <= 0 || gs.BossHp <= 0
+        => gs.PlayerHp <= 0 || gs.BossHp <= 0
             ? gs
             : gs with { PlayerHp = gs.PlayerHp - Math.Max(1, gs.BossDamage - gs.PlayerArmor) };
-    }
 
     public static IEnumerable<GameState> PlayerSteps(this GameState gs)
     {
@@ -147,7 +144,5 @@ public static class Runner
     }
 
     private static GameState UseMana(this GameState gs, int mana)
-    {
-        return gs with { PlayerMana = gs.PlayerMana - mana, UsedMana = gs.UsedMana + mana };
-    }
+        => gs with { PlayerMana = gs.PlayerMana - mana, UsedMana = gs.UsedMana + mana };
 }

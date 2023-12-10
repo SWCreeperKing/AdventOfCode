@@ -53,25 +53,18 @@ public class Day14
     }
 
     private static string Mask(long num, string mask, bool keepX = true)
-    {
-        return mask.ToArray()
+        => mask.ToArray()
             .Combine(Stringify(num).ToArray(), (c, c1) => c == '1' || c == (keepX ? 'X' : '0') ? c : c1)
             .Join();
-    }
 
     private static long BinaryConvert(string arr, int i = 0)
-    {
-        return (long) arr.Select(c => c == '1' ? Math.Pow(2, i++) : 0 * i++).Sum();
-    }
+        => (long) arr.Select(c => c == '1' ? Math.Pow(2, i++) : 0 * i++).Sum();
 
-    private static long Update(long number, string mask)
-    {
-        return BinaryConvert(Mask(number, mask, false).Reverse().Join());
-    }
+    private static long Update(long number, string mask) => BinaryConvert(Mask(number, mask, false).Reverse().Join());
 
     private static IEnumerable<string> Brancher(string initMask)
     {
-        List<string> arr = new();
+        List<string> arr = [];
         var indx = initMask.IndexOf('X');
         var coreMask = initMask.Remove(indx, 1);
         arr.AddRange(new[] { coreMask.Insert(indx, "0"), coreMask.Insert(indx, "1") });

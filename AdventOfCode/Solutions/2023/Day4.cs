@@ -26,7 +26,8 @@ public class Day4
         var cards = inp.ToDictionary(t => t.Item1, _ => 1);
 
         foreach (var (cardNumber, matchCount) in inp)
-        { for (var i = 0; i < matchCount; i++)
+        {
+            for (var i = 0; i < matchCount; i++)
             {
                 cards[cardNumber + 1 + i] += cards[cardNumber];
             }

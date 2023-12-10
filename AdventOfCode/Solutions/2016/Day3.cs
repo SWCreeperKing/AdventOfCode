@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 3, "Squares With Three Sides")]
-public static partial class Day3
+public partial class Day3
 {
     [GeneratedRegex(@"\s+(\d+)\s+(\d+)\s+(\d+)")]
     public static partial Regex InputRegex();
@@ -33,7 +33,7 @@ public static partial class Day3
     [Answer(1838)]
     public static long Part2(int[][] inp)
     {
-        List<int[]> triangles = new();
+        List<int[]> triangles = [];
 
         foreach (var arr in inp.Chunk(3))
         {

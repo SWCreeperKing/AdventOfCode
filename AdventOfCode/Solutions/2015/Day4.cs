@@ -9,7 +9,6 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 4, "The Ideal Stocking Stuffer")]
 public static class Day4
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
     [Answer(346386)] public static int Part1(string inp) => Hash(inp);
     [Answer(9958218)] public static int Part2(string inp) => Hash(inp, 0); // have not found a better solution
 

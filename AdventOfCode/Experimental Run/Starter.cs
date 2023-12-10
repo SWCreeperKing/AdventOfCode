@@ -23,7 +23,7 @@ public static class Starter
         var types = Assembly.GetCallingAssembly().GetTypes()
             .Where(t => t.IsClass && t.GetCustomAttributes<DayAttribute>().Any());
 
-        List<(int year, int day)> runners = new();
+        List<(int year, int day)> runners = [];
 
         types.ForEach(t =>
         {
@@ -105,7 +105,7 @@ public static class Starter
     {
         var input = InputCache[day];
         var dayType = PuzzleTypes[SelectedYear][day].type;
-        List<string> run = new();
+        List<string> run = [];
         if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part1")) run.Add("Part 1");
         if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part2")) run.Add("Part 2");
 

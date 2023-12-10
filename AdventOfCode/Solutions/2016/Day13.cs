@@ -14,7 +14,7 @@ public class Day13
     public static long Part1(int inp)
     {
         Dictionary<(int x, int y), Node> map = new();
-        List<Node> searchList = new();
+        List<Node> searchList = [];
         var startPosition = (x: 1, y: 1);
         var endPosition = (x: 31, y: 39);
 
@@ -48,7 +48,7 @@ public class Day13
             }
         }
 
-        List<Node> backTrackList = new() { lastNode };
+        List<Node> backTrackList = [lastNode];
 
         while (true)
         {
@@ -110,8 +110,8 @@ public class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
 
     public int X { get; } = x;
     public int Y { get; } = y;
-    public int FCost { get; set; } = CalculateFCost(x, y, gCost, endPos);
-    public int GCost { get; set; } = gCost;
+    public int FCost { get; } = CalculateFCost(x, y, gCost, endPos);
+    public int GCost { get; } = gCost;
 
     public bool Block { get; } =
         Convert.ToString(x * x + 3 * x + 2 * x * y + y + y * y + inp, 2).Count(c => c is '1') % 2 == 1;
@@ -121,7 +121,7 @@ public class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
 
     public List<Node> FindNeighbors()
     {
-        List<Node> newNodes = new();
+        List<Node> newNodes = [];
         for (var i = 0; i < 4; i++)
         {
             if (Neighbors[i] is not null) continue;

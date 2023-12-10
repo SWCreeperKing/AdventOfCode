@@ -25,7 +25,7 @@ public class Day9
 
     private static long PlaySnake((Direction, int)[] inp, int snakeLength = 1)
     {
-        List<Vector2> tailPositions = new() { Vector2.Zero };
+        List<Vector2> tailPositions = [Vector2.Zero];
         var head = Vector2.Zero;
         var tail = new Vector2[snakeLength];
         Array.Fill(tail, Vector2.Zero);

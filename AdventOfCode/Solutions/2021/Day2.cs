@@ -8,9 +8,7 @@ public static class Day2
 {
     [ModifyInput]
     public static (char c, int i)[] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(s => (c: s[0], i: int.Parse(s.Split(' ')[^1]))).ToArray();
-    }
+        => input.Split('\n').Select(s => (c: s[0], i: int.Parse(s.Split(' ')[^1]))).ToArray();
 
     [Answer(2070300)]
     public static int Part1((char c, int i)[] inp)

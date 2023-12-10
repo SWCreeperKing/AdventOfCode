@@ -14,7 +14,7 @@ public static class Day1
     public static long Part2(long[] inp)
     {
         var finalFreq = 0L;
-        List<long> history = new() { finalFreq };
+        List<long> history = [finalFreq];
         var i = 0;
         while (true)
         {

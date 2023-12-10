@@ -19,7 +19,7 @@ public static class Day5
     public static string Part1(string input)
     {
         var counter = 0L;
-        List<string> col = new();
+        List<string> col = [];
 
         using var md5 = MD5.Create();
         while (col.Count < 8)
@@ -38,7 +38,7 @@ public static class Day5
     public static string Part2(string input)
     {
         var counter = 0L;
-        List<char[]> col = new();
+        List<char[]> col = [];
 
         using var md5 = MD5.Create();
         while (col.Count < 8)

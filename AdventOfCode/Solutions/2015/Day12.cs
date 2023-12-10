@@ -10,7 +10,6 @@ namespace AdventOfCode.Solutions._2015;
 public partial class Day12
 {
     [GeneratedRegex(@"[-\d]+")] private static partial Regex NegativeRegex();
-    [ModifyInput] public static string ProcessInput(string input) => input;
 
     [Answer(111754)]
     public static long Part1(string input)
@@ -24,15 +23,13 @@ public partial class Day12
         int JsonStuffJp(JsonProperty jp) => JsonStuff(jp.Value);
 
         int JsonStuff(JsonElement e)
-        {
-            return e.ValueKind switch
+            => e.ValueKind switch
             {
                 Object when e.EnumerateObject().All(JsonRed) => e.EnumerateObject().Select(JsonStuffJp).Sum(),
                 Array => e.EnumerateArray().Select(JsonStuff).Sum(),
                 Number => e.GetInt32(),
                 _ => 0
             };
-        }
 
         return JsonStuff(JsonDocument.Parse(inp).RootElement);
     }

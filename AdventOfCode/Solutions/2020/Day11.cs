@@ -7,7 +7,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 11, "Seating System")]
 public static class Day11
 {
-    private static (int, int)[] Area = { (1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1) };
+    private static (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
     private static bool IsOccupied(char c) => c == '#';
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
 
@@ -15,13 +15,11 @@ public static class Day11
     public static int Part1(string[] inp)
     {
         char Look(int i, int j)
-        {
-            return i >= inp.Length || i < 0
+            => i >= inp.Length || i < 0
                 ? '.'
                 : j >= inp[i].Length || j < 0
                     ? '.'
                     : inp[i][j];
-        }
 
         bool Surround(int i, int j, char c = 'L')
         {

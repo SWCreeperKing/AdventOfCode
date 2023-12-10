@@ -11,20 +11,17 @@ public class Day16
 {
     [ModifyInput]
     public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)
-    {
-        var inp = input.Split("\n\n");
-        return (inp, inp[2].Split('\n')[1..]);
-    }
+        => input.Split("\n\n").Flatten(arr => (arr, arr[2].Split('\n')[1..]));
 
     [Answer(29878)]
     public static long Part1((string[] inp, string[] nearbyTickets) inp)
     {
         var rules = inp.inp[0].Split('\n');
-        List<Func<int, bool>> requirements = new();
+        List<Func<int, bool>> requirements = [];
 
         foreach (var r in rules)
         {
-            var reg = Regex.Match(r, @".*: ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
+            var reg = Regex.Match(r, ".*: ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
             var (one, two, three, four) = (int.Parse(reg[1].Value), int.Parse(reg[2].Value),
                 int.Parse(reg[3].Value), int.Parse(reg[4].Value));
             requirements.Add(i => one <= i && i <= two || three <= i && i <= four);
@@ -58,7 +55,7 @@ public class Day16
         {
             for (var i = 0; i < split.Length; i++)
             {
-                if (restructure[i] is null) restructure[i] = new() { split[i] };
+                if (restructure[i] is null) restructure[i] = [split[i]];
                 else restructure[i].Add(split[i]);
             }
         }

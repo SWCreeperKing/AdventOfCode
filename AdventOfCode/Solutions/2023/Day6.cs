@@ -12,21 +12,18 @@ public class Day6
 
     [Answer(4811940)]
     public static long Part1(string[] inp)
-    {
-        var dists = inp[1].Split(' ').Select(int.Parse).ToArray();
-        return inp[0].Split(' ').Select(int.Parse).ToArray().Select((time, i) => (time, dists[i]))
-            .Aggregate(1L, (l, t) =>
+        => inp[0].Split(' ').Select(int.Parse)
+            .Zip(inp[1].Split(' ').Select(int.Parse), (time, dist) =>
             {
                 var wins = 0L;
-                for (var time = 1; time < t.time - 1; time++)
+                for (var t = 1; t < time - 1; t++)
                 {
-                    if (time * (t.time - time) < t.Item2) continue;
+                    if (t * (time - t) < dist) continue;
                     wins++;
                 }
 
-                return l * wins;
-            });
-    }
+                return wins;
+            }).Multi();
 
     [Answer(30077773)]
     public static long Part2(string[] inp)

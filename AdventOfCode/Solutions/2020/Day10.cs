@@ -28,7 +28,7 @@ public class EDay10
     [Answer(8099130339328)]
     public static long Part2(int[] inp)
     {
-        var numbers = new[] { 0 }.Concat(inp).ToList();
+        var numbers = inp.Prepend(0).ToList();
         numbers.Add(numbers.Max() + 3);
         Dictionary<int, long> combos = new() { { numbers.Count - 2, 1 } };
 

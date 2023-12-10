@@ -6,17 +6,15 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 25, "Let It Snow")]
-public static partial class Day25
+public partial class Day25
 {
     [GeneratedRegex(@"(?:\w+) row (\d+), column (\d+).")]
     public static partial Regex InputRegex();
 
     [ModifyInput]
     public static Vector2 ProcessInput(string inp)
-    {
-        var inpArr = InputRegex().Match(inp).Groups.Range(1..2).Select(int.Parse).ToArray();
-        return new Vector2(inpArr[1], inpArr[0]);
-    }
+        => InputRegex().Match(inp).Groups.Range(1..2).Select(int.Parse)
+            .Flatten(list => new Vector2(list.ElementAt(1), list.ElementAt(0)));
 
     [Answer(8997277)]
     public static long Part1(Vector2 inp)

@@ -9,7 +9,7 @@ public static class Day18
     [ModifyInput]
     public static bool[] ProcessInput(string input)
     {
-        var lights = new bool[100 * 100];
+        var lights = new bool[10000];
         var split = input.Split('\n');
         for (var y = 0; y < 100; y++)
         for (var x = 0; x < 100; x++)

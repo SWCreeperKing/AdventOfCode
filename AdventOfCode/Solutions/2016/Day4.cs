@@ -26,12 +26,7 @@ public class Day4
 
     [Answer(984)]
     public static long Part2((string[], int, string)[] inp)
-    {
-        return inp.Select(s =>
-        {
-            var realWords = s.Item1
-                .Select(str => str.Select(c => (char) ((c - 'a' + s.Item2) % 26 + 'a')).Join());
-            return (realWords.Join(' '), s.Item2);
-        }).First(s => s.Item1.Contains("northpole")).Item2;
-    }
+        => inp.Select(s => (s.Item1
+                .Select(str => str.Select(c => (char) ((c - 'a' + s.Item2) % 26 + 'a')).Join()).Join(' '), s.Item2))
+            .First(s => s.Item1.Contains("northpole")).Item2;
 }

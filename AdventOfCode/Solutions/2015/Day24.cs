@@ -20,17 +20,15 @@ public class Day24
 
     public static long GetPossibilitiesAndLowEq(long[] arr, Func<long, long, bool> continueFunc)
     {
-        List<(int count, long qe)> possibilities = new();
+        List<(int count, long qe)> possibilities = [];
 
         for (var i = 2;; i++)
         {
-            possibilities.AddRange(from group1 in arr.GetCombinations(i)
-                let group1Remainder = arr.Except(group1)
-                let group1Sum = group1.Sum()
-                let remainderSum = group1Remainder.Sum()
-                where !continueFunc(remainderSum, group1Sum)
-                select (group1.Count(), group1.Multi()));
-            if (possibilities.Any()) break;
+            possibilities.AddRange(arr.GetCombinations(i)
+                .Select(group => (group, remainderSum: arr.Except(group).Sum(), sum: group.Sum()))
+                .Where(t => !continueFunc(t.remainderSum, t.sum))
+                .Select(t => (t.group.Count(), t.group.Multi())));
+            if (possibilities.Count != 0) break;
         }
 
         var smallestCount = possibilities.Min(t => t.count);

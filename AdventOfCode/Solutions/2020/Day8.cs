@@ -8,17 +8,14 @@ namespace AdventOfCode.Solutions._2020;
 public static class Day8
 {
     [ModifyInput]
-    public static string[][] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(s => s.SplitSpace()).ToArray();
-    }
+    public static string[][] ProcessInput(string input) => input.Split('\n').Select(s => s.SplitSpace()).ToArray();
 
     [Answer(2058)]
     public static int Part1(string[][] inp)
     {
         var accumulator = 0;
 
-        List<int> history = new();
+        List<int> history = [];
         for (var i = 0; i < inp.Length;)
         {
             if (history.Contains(i)) return accumulator;
@@ -47,8 +44,8 @@ public static class Day8
             var oldInst = inp[i];
             inp[i] = oldInst[0] switch
             {
-                "nop" => new[] { "jmp", $"{oldInst[1]}" },
-                "jmp" => new[] { "nop", $"{oldInst[1]}" },
+                "nop" => ["jmp", $"{oldInst[1]}"],
+                "jmp" => ["nop", $"{oldInst[1]}"],
                 _ => oldInst
             };
 
@@ -63,7 +60,7 @@ public static class Day8
     private static (bool, int) Run(string[][] instructions)
     {
         var accumulator = 0;
-        List<int> history = new();
+        List<int> history = [];
         for (var i = 0; i < instructions.Length;)
         {
             if (history.Contains(i)) return (false, 0);

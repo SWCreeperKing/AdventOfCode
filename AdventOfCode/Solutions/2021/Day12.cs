@@ -8,7 +8,7 @@ public class Day12
 {
     public class Node
     {
-        public List<string> Connections = new();
+        public List<string> Connections = [];
     }
 
     public static long Part1(string inp)

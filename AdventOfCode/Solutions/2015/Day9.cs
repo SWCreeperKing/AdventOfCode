@@ -7,28 +7,26 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 9, "All in a Single Night")]
-public static partial class Day9
+public partial class Day9
 {
     [GeneratedRegex("(.*) to (.*) = (.*)")]
     private static partial Regex InputRegex();
 
     [ModifyInput]
     public static Dictionary<(string, string), int> ProcessInput(string input)
-    {
-        return input.Split('\n').SelectMany(s =>
+        => input.Split('\n').SelectMany(s =>
         {
             var reg = InputRegex().Match(s).Range(1..3);
             var (from, to, dist) = (reg[0], reg[1], int.Parse(reg[2]));
             return new[] { ((from, to), dist), ((to, from), dist) };
         }).ToDictionary(ssi => ssi.Item1, ssi => ssi.Item2);
-    }
 
     [Answer(141)]
     public static long Part1(Dictionary<(string, string), int> inp)
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 
-        List<string[]> permutations = new();
+        List<string[]> permutations = [];
         Permute(allPlaces, 0, allPlaces.Length - 1, permutations);
 
         var shorter = long.MaxValue;
@@ -41,7 +39,7 @@ public static partial class Day9
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 
-        List<string[]> permutations = new();
+        List<string[]> permutations = [];
         Permute(allPlaces, 0, allPlaces.Length - 1, permutations);
 
         var longest = 0L;

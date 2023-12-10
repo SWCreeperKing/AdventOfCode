@@ -38,7 +38,7 @@ public static class Day9
     public static long Part2(Dictionary<(int, int), int> inp)
     {
         return -1;
-        List<int> basins = new();
+        List<int> basins = [];
         foreach (var ((y, x), i) in inp)
         {
             if (inp.GetOrDefault((y - 1, x), 10) <= i) continue;
@@ -53,7 +53,7 @@ public static class Day9
 
     private static int FindBasin(Dictionary<(int, int), int> map, int x, int y)
     {
-        List<(int, int)> count = new();
+        List<(int, int)> count = [];
         var maxY = map.Select(kv => kv.Key.Item1).Max();
         var maxX = map.Select(kv => kv.Key.Item2).Max();
 

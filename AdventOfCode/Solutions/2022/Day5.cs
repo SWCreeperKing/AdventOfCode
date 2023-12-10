@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 5, "Supply Stacks")]
-public static partial class Day5
+public partial class Day5
 {
     [GeneratedRegex(@"move (\d+) from (\d+) to (\d+)")]
     public static partial Regex InputRegex();

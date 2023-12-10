@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 7, "Internet Protocol Version 7")]
-public static partial class Day7
+public partial class Day7
 {
     [GeneratedRegex(@"(\w{1})((?!\1)(\w{1})\3)\1")]
     public static partial Regex AbbaRegex();
@@ -21,8 +21,8 @@ public static partial class Day7
         return inp.Split('\n').Select(s =>
         {
             var str = s.AsSpan();
-            List<string> bracketString = new();
-            List<string> normalString = new();
+            List<string> bracketString = [];
+            List<string> normalString = [];
             int i = 0, j = 0;
             while ((i = s.IndexOf('[', i)) != -1)
             {
@@ -40,15 +40,12 @@ public static partial class Day7
 
     [Answer(118)]
     public static long Part1((string[] brackets, string[] normal)[] inp)
-    {
-        return inp.Count(s =>
+        => inp.Count(s =>
             !s.brackets.Any(s => AbbaRegex().IsMatch(s)) && s.normal.Any(s => AbbaRegex().IsMatch(s)));
-    }
 
     [Answer(260)]
     public static long Part2((string[] brackets, string[] normal)[] inp)
-    {
-        return inp.Count(s =>
+        => inp.Count(s =>
         {
             foreach (var str in s.brackets)
             {
@@ -57,7 +54,7 @@ public static partial class Day7
                 {
                     var match = AbaRegex().Match(str, i);
                     var groups = match.Groups;
-                    i = str.IndexOf(match.Value, i);
+                    i = str.IndexOf(match.Value, i, StringComparison.Ordinal);
                     var bab = $"{groups[2].Value}{groups[1].Value}{groups[2].Value}";
                     if (s.normal.Any(s => s.Contains(bab))) return true;
                     i++;
@@ -66,5 +63,4 @@ public static partial class Day7
 
             return false;
         });
-    }
 }

@@ -279,7 +279,7 @@ public static class Helper
         => arr.Aggregate(str, (current, replacement) => current.Replace(replacement.search, replacement.replace));
 
     public static string CleanSpaces(this string str) => SpaceRegex.Replace(str, " ");
-    
+
     public static long GCD(this long a, long b)
     {
         while (b != 0)
@@ -293,4 +293,17 @@ public static class Helper
     }
 
     public static long LCM(this long a, long b) => a / a.GCD(b) * b;
+
+    public static List<T> Rever<T>(this IEnumerable<T> arr)
+    {
+        var list = arr.ToList();
+        list.Reverse();
+        return list;
+    }
+
+    public static TR Flatten<T, TR>(this IEnumerable<T> list, Func<IEnumerable<T>, TR> flatten) => flatten(list);
+    public static TR Flatten<T, TR>(this List<T> list, Func<List<T>, TR> flatten) => flatten(list);
+    public static TR Flatten<T, TR>(this T[] list, Func<T[], TR> flatten) => flatten(list);
+
+    public static int ParseInt(this char c, int def = 0) => int.TryParse($"{c}", out var i) ? i : def;
 }

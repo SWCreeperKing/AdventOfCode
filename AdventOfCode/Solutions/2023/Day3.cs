@@ -15,7 +15,7 @@ public class Day3
     {
         var inp = new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
-        List<(int line, int number, Range range)> ranges = new();
+        List<(int line, int number, Range range)> ranges = [];
         var (w, h) = inp.Size;
         for (var y = 0; y < h; y++)
         {
@@ -64,7 +64,7 @@ public class Day3
             var (nX, nY) = inp.map.WhereInCircle(x, y, c => c == '*').First();
             if (!gears.TryGetValue((nY, nX), out var list))
             {
-                gears[(nY, nX)] = list = new List<int>();
+                gears[(nY, nX)] = list = [];
             }
 
             list.Add(number);

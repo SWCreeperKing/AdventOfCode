@@ -9,15 +9,13 @@ public class Day12
 {
     [ModifyInput]
     public static (char, int)[] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
-    }
+        => input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
 
     [Answer(759)]
     public static long Part1((char, int)[] inp)
     {
-        var dir = new[] { (0, 1), (1, 0), (0, -1), (-1, 0) };
-        var ship = new[] { 0, 0 };
+        (int, int)[] dir = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+        int[] ship = [0, 0];
         var rot = 1;
 
         foreach (var (c, i) in inp)
@@ -45,8 +43,8 @@ public class Day12
     [Answer(45763)]
     public static long Part2((char, int)[] inp)
     {
-        var ship = new[] { 0, 0 };
-        var waypoint = new[] { 10, -1 };
+        int[] ship = [ 0, 0 ];
+        int[] waypoint = [ 10, -1 ];
 
         foreach (var (c, i) in inp)
         {

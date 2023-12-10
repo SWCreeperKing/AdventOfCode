@@ -52,7 +52,7 @@ public class Matrix2d<T>
 
     public (int x, int y)[] WhereInCircle(int x, int y, Predicate<T> condition, bool corners = true)
     {
-        List<(int x, int y)> cords = new();
+        List<(int x, int y)> cords = [];
         foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
         {
             var nX = x + xOff;
@@ -66,7 +66,7 @@ public class Matrix2d<T>
 
     public bool[] MatchInCircle(int x, int y, Predicate<T> condition, bool corners = true)
     {
-        List<bool> bools = new();
+        List<bool> bools = [];
         foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
         {
             var nX = x + xOff;

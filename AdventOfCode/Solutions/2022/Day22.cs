@@ -30,7 +30,7 @@ public class Day22
             }
         }
 
-        List<Instruction> instructions = new();
+        List<Instruction> instructions = [];
         var numberBuilder = "";
         foreach (var c in rawInstructions)
         {

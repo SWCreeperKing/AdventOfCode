@@ -33,7 +33,7 @@ public class Day5
     [Answer(63179500)]
     public static long Part2((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
     {
-        List<long> seeds = new();
+        List<long> seeds = [];
 
         for (var i = 0; i < inp.seeds.Length; i += 2)
         {

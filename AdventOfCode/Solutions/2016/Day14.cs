@@ -9,24 +9,24 @@ using static System.Text.Encoding;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 14, "One-Time Pad")]
-public class Day14
+public partial class Day14
 {
-    public static Regex Match3 = new(@"(.)\1{2}", RegexOptions.Compiled);
-    public static Regex Match5 = new(@"(.)\1{4}", RegexOptions.Compiled);
+    [GeneratedRegex(@"(.)\1{2}", RegexOptions.Compiled)]
+    private static partial Regex Match3();
 
     [Test("abc")]
     public static long Part1(string inp)
     {
-        List<string> hashes = new();
-        List<(int Pos, string hash)> hashList = new();
-        List<(int pos, string hash)> hashPossibilities = new();
+        List<string> hashes = [];
+        List<(int Pos, string hash)> hashList = [];
+        List<(int pos, string hash)> hashPossibilities = [];
 
         using var md5 = MD5.Create();
         for (var i = 0; hashList.Count < 64; i++)
         {
             var salt = inp + i;
             var hash = Hash(md5, salt).ToLower();
-            if (Match3.IsMatch(hash))
+            if (Match3().IsMatch(hash))
             {
                 hashPossibilities.Add((i, hash));
             }
@@ -37,7 +37,7 @@ public class Day14
             {
                 var (pos, testHash) = hashPossibilities[0];
                 hashPossibilities.RemoveAt(0);
-                var chr = Match3.Match(testHash).Groups[1];
+                var chr = Match3().Match(testHash).Groups[1];
                 Regex match5 = new($"{chr}{{5}}", RegexOptions.Compiled);
                 for (var j = pos + 1; j < pos + 1000; j++)
                 {

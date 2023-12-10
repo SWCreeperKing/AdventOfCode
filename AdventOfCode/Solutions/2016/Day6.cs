@@ -12,10 +12,17 @@ public class Day6
     {
         var newInput = inp.Split('\n');
         var columns = new List<char>[newInput[0].Length];
-        for (var i = 0; i < columns.Length; i++) columns[i] = new List<char>();
+        for (var i = 0; i < columns.Length; i++)
+        {
+            columns[i] = [];
+        }
+
         foreach (var line in newInput)
         {
-            for (var i = 0; i < columns.Length; i++) columns[i].Add(line[i]);
+            for (var i = 0; i < columns.Length; i++)
+            {
+                columns[i].Add(line[i]);
+            }
         }
 
         return columns;
@@ -23,13 +30,9 @@ public class Day6
 
     [Answer("tsreykjj")]
     public static string Part1(List<char>[] inp)
-    {
-        return inp.Select(list => list.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key).Join();
-    }
+        => inp.Select(list => list.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key).Join();
 
     [Answer("hnfbujie")]
     public static string Part2(List<char>[] inp)
-    {
-        return inp.Select(list => list.GroupBy(c => c).OrderBy(g => g.Count()).First().Key).Join();
-    }
+        => inp.Select(list => list.GroupBy(c => c).OrderBy(g => g.Count()).First().Key).Join();
 }

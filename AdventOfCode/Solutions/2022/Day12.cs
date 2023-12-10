@@ -102,7 +102,7 @@ public class MapNode : Node<int, int>
     {
         get
         {
-            List<Edge<int, int>> nodes = new();
+            List<Edge<int, int>> nodes = [];
 
             var thisAltitude = Map[Position.x, Position.y];
             var (w, h) = Map.Size;

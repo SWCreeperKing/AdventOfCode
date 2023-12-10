@@ -33,7 +33,7 @@ public partial class Day15
     [Answer(5607466)]
     public static long Part1(IEnumerable<(int x1, int y1, int x2, int y2)> inp)
     {
-        List<int> ranges = new();
+        List<int> ranges = [];
         foreach (var (x1, y1, x2, y2) in inp)
         {
             var radius = Distance(x1, y1, x2, y2);
@@ -57,7 +57,7 @@ public partial class Day15
             {
                 var w = radius - Math.Abs(y - y1);
                 if (w <= 0) continue;
-                if (!ranges.ContainsKey(y)) ranges[y] = new List<Range>();
+                if (!ranges.ContainsKey(y)) ranges[y] = [];
                 ranges[y].Add(Math.Max(0, x1 - w)..(x1 + w));
             }
         }
