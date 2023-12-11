@@ -17,8 +17,9 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
     public readonly object Answer = answer;
     public readonly AnswerState State = state;
 
-    public AnswerState Evaluate(object possibleAnswer)
+    public AnswerState Evaluate(object possibleAnswer = null)
     {
+        if (possibleAnswer is null) return AnswerState.Possible;
         if (state is AnswerState.Possible) return state;
         switch (possibleAnswer)
         {
