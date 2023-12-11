@@ -70,8 +70,7 @@ public class Day3
             list.Add(number);
         });
 
-        var count = gears.Values.Where(arr => arr.Count == 2);
-        return count.Select(arr => arr.Multi()).Sum();
+        return gears.Values.Where(arr => arr.Count == 2).Select(arr => arr.Multi()).Sum();
     }
 
     public static void Iterate((int line, int number, Range range)[] numbs, Matrix2d<char> map,

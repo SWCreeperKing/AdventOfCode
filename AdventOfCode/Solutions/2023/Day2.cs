@@ -28,8 +28,6 @@ public class Day2
         => (ReadValue(pulls, "red"), ReadValue(pulls, "green"), ReadValue(pulls, "blue"));
 
     private static int ReadValue(string[] str, string name)
-    {
-        var pull = str.FirstOrDefault(s => s.Contains(name));
-        return pull is null ? 0 : int.Parse(pull.Trim().Split(' ')[0]);
-    }
+        => str.FirstOrDefault(s => s.Contains(name))
+            .Inline(pull => pull is null ? 0 : int.Parse(pull.Trim().Split(' ')[0]));
 }

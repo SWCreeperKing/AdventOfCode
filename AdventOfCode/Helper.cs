@@ -304,6 +304,6 @@ public static class Helper
     public static TR Flatten<T, TR>(this IEnumerable<T> list, Func<IEnumerable<T>, TR> flatten) => flatten(list);
     public static TR Flatten<T, TR>(this List<T> list, Func<List<T>, TR> flatten) => flatten(list);
     public static TR Flatten<T, TR>(this T[] list, Func<T[], TR> flatten) => flatten(list);
-
     public static int ParseInt(this char c, int def = 0) => int.TryParse($"{c}", out var i) ? i : def;
+    public static TO Inline<T, TO>(this T t, Func<T, TO> func) => func(t);
 }

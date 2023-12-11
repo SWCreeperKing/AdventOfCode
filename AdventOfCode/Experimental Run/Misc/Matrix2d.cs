@@ -11,6 +11,7 @@ public class Matrix2d<T>
 {
     public readonly T[] Array;
     public readonly (int w, int h) Size;
+    public readonly int TrueSize;
 
     public Matrix2d(int wh) : this(wh, wh)
     {
@@ -19,19 +20,19 @@ public class Matrix2d<T>
     public Matrix2d(int w, int h)
     {
         Size = (w, h);
-        Array = new T[w * h];
+        Array = new T[TrueSize = w * h];
     }
 
     public Matrix2d((int w, int h) size)
     {
         Size = size;
-        Array = new T[size.w * size.h];
+        Array = new T[TrueSize = size.w * size.h];
     }
 
     public Matrix2d(IReadOnlyList<T[]> inArray)
     {
         Size = (inArray.Max(t => t.Length), inArray.Count);
-        Array = new T[Size.w * Size.h];
+        Array = new T[TrueSize = Size.w * Size.h];
 
         for (var y = 0; y < inArray.Count; y++)
         {
@@ -42,12 +43,51 @@ public class Matrix2d<T>
         }
     }
 
+    public Matrix2d(IReadOnlyCollection<T> inArray, int w, int h)
+    {
+        if (inArray.Count != w * h) throw new ArgumentException("width and height of array does not match");
+        Size = (w, h);
+        TrueSize = inArray.Count;
+        Array = inArray.ToArray();
+    }
+
     public IEnumerable<(int, int, T)> Iterate()
     {
         for (var y = 0; y < Size.h; y++)
         for (var x = 0; x < Size.w; x++)
             yield return (x, y, this[x, y]);
     }
+
+    public Matrix2d<T> Iterate(Action<Matrix2d<T>, T, int> action)
+    {
+        for (var i = 0; i < TrueSize; i++)
+        {
+            action(this, this[i], i);
+        }
+
+        return this;
+    }
+
+    public Matrix2d<T> Iterate(Action<Matrix2d<T>, T, int, int> action)
+    {
+        for (var i = 0; i < TrueSize; i++)
+        {
+            var (x, y) = TranslatePosition(i);
+            action(this, this[i], x, y);
+        }
+
+        return this;
+    }
+
+    public Matrix2d<TO> MatrixSelect<TO>(Func<Matrix2d<T>, T, int, TO> select)
+        => new(Array.Select((t, i) => select(this, t, i)).ToArray(), Size.w, Size.h);
+
+    public Matrix2d<TO> MatrixSelect<TO>(Func<Matrix2d<T>, T, int, int, TO> select)
+        => new(Array.Select((t, i) =>
+        {
+            var (x, y) = TranslatePosition(i);
+            return select(this, t, x, y);
+        }).ToArray(), Size.w, Size.h);
 
     public bool PositionExists(int x, int y) => x >= 0 && y >= 0 && x < Size.w && y < Size.h;
 
@@ -88,15 +128,13 @@ public class Matrix2d<T>
            || March(x - ring, y, Left).All(allConditional);
 
     public long[] CircularMarchAndCountWhile(int x, int y, Func<T, bool> count, int ring = 1)
-    {
-        return new[]
-        {
+        =>
+        [
             MarchAndCountWhile(x, y - ring, Up, count),
             MarchAndCountWhile(x + ring, y, Right, count),
             MarchAndCountWhile(x, y + ring, Down, count),
             MarchAndCountWhile(x - ring, y, Left, count)
-        };
-    }
+        ];
 
     public long MarchAndCountWhile(int x, int y, Direction direction, Func<T, bool> count)
     {
@@ -150,6 +188,10 @@ public class Matrix2d<T>
         return (index % Size.w, index / Size.h);
     }
 
+    public (int x, int y) TranslatePosition(int index) => (index % Size.w, index / Size.h);
+    public int TranslatePosition((int x, int y) pos) => TranslatePosition(pos.x, pos.y);
+    public int TranslatePosition(int x, int y) => y * Size.w + x;
+
     public T this[int index]
     {
         get => Array[index];
@@ -158,8 +200,14 @@ public class Matrix2d<T>
 
     public T this[int x, int y]
     {
-        get => Array[y * Size.w + x];
-        set => Array[y * Size.w + x] = value;
+        get => Array[TranslatePosition(x, y)];
+        set => Array[TranslatePosition(x, y)] = value;
+    }
+
+    public T this[(int x, int y) pos]
+    {
+        get => Array[TranslatePosition(pos)];
+        set => Array[TranslatePosition(pos)] = value;
     }
 
     public static implicit operator T[](Matrix2d<T> matrix2d) => matrix2d.Array;
