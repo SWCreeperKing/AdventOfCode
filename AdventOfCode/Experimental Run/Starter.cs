@@ -149,6 +149,8 @@ public static class Starter
         {
             Console.WriteLine($"Part {part}:");
             var methods = type.GetMethods();
+            var hasReset = methods.Any(m => m.GetCustomAttributes<ResetDataAttribute>().Any());
+            var reset = hasReset ? methods.First(m => m.GetCustomAttributes<ResetDataAttribute>().Any()) : null;
             var hasModify = methods.Any(m => m.GetCustomAttributes<ModifyInputAttribute>().Any());
             var modifyAtt = hasModify ? methods.First(m => m.GetCustomAttributes<ModifyInputAttribute>().Any()) : null;
 
@@ -166,6 +168,10 @@ public static class Starter
             var hasRealAnswer = answerAttributes.Any(att => att.State == AnswerState.Correct);
             var realAnswer = hasRealAnswer ? answerAttributes.First().Answer : null;
 
+            if (hasReset)
+            {
+                reset.Invoke(null, null);
+            }
             Sw.Restart();
             Sw.Start();
             var answer = partMethod.Invoke(null, new[] { modified ?? inp });

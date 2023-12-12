@@ -63,6 +63,7 @@ public record Hand(int[] Values, int Bid, bool pt2 = false) : IComparable<Hand>
     public int FindRank(IGrouping<int, int>[] same)
         => same.Length switch
         {
+            1 => 6,
             2 when same.Any(g => g.Count() == 4) => 5,
             2 when same.Any(g => g.Count() == 3) => 4,
             3 when same.Any(g => g.Count() == 3) => 3,

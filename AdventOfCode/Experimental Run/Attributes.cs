@@ -72,6 +72,9 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
 [AttributeUsage(AttributeTargets.Method)]
 public class ModifyInputAttribute : Attribute;
 
+[AttributeUsage(AttributeTargets.Method)]
+public class ResetDataAttribute : Attribute;
+
 [AttributeUsage(AttributeTargets.Class)]
 public class RunAttribute : Attribute;
 

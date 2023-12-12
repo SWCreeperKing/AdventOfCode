@@ -24,7 +24,6 @@ public static class Helper
     public static string Remove(this string text, string pattern) => text.Replace(pattern, string.Empty);
     public static string[] SplitSpace(this string text) => text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     public static bool IsAllNumbers(this string text) => NumberOnlyRegex.IsMatch(text);
-    public static string Repeat(this string pattern, int i) => Enumerable.Repeat(pattern, i).Join();
     public static int FindIndexOf<T>(this IEnumerable<T> arr, T find) => arr.ToList().FindIndex(t => t.Equals(find));
     public static T Multi<T>(this IEnumerable<T> arr) where T : INumber<T> => arr.Aggregate((l1, l2) => l1 * l2);
     public static IEnumerable<T> EvenIndexes<T>(this IEnumerable<T> arr) => arr.Where((_, i) => i % 2 == 0);
@@ -106,7 +105,11 @@ public static class Helper
     {
         var minLeng = Math.Min(core.Length, subCore.Length);
         var together = new T[minLeng];
-        for (var i = 0; i < minLeng; i++) together[i] = condition.Invoke(core[i], subCore[i]);
+        for (var i = 0; i < minLeng; i++)
+        {
+            together[i] = condition.Invoke(core[i], subCore[i]);
+        }
+
         return together;
     }
 
@@ -306,4 +309,25 @@ public static class Helper
     public static TR Flatten<T, TR>(this T[] list, Func<T[], TR> flatten) => flatten(list);
     public static int ParseInt(this char c, int def = 0) => int.TryParse($"{c}", out var i) ? i : def;
     public static TO Inline<T, TO>(this T t, Func<T, TO> func) => func(t);
+
+    public static long ManhattanDistance(this (long x, long y) xy, (long x, long y) xy2)
+        => Math.Abs(xy2.x - xy.x) + Math.Abs(xy2.y - xy.y);
+
+    public static IEnumerable<(T, T)> CombinationsUnique<T>(this IEnumerable<T> arr) => CombinationsUnique(arr, arr);
+
+    public static IEnumerable<(T1, T2)> CombinationsUnique<T1, T2>(this IEnumerable<T1> arr1, IEnumerable<T2> arr2)
+    {
+        for (var i = 0; i < arr1.Count(); i++)
+        {
+            for (var j = i + 1; j < arr2.Count(); j++)
+            {
+                yield return (arr1.ElementAt(i), arr2.ElementAt(j));
+            }
+        }
+    }
+
+    public static int[] GenRange(this int start, int count) => Enumerable.Range(start, count).ToArray();
+    public static string Repeat(this char c, int amount) => Enumerable.Repeat(c, amount).Join();
+    public static string Repeat(this string str, int amount) => Enumerable.Repeat(str, amount).Join();
+    public static string Repeat(this string str, int amount, char join) => Enumerable.Repeat(str, amount).Join(join);
 }
