@@ -7,12 +7,12 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 13, "WIP"), Run]
+[Day(2023, 13, "Point of Incidence"), Run]
 public class Day13
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
 
-    [Answer(35316, Enums.AnswerState.Not)]
+    [Answer(40006)]
     public static long Part1(string inp)
     {
         var count = 0;
@@ -38,9 +38,7 @@ public class Day13
         return count;
     }
 
-    // [Test(
-    //     "#.##..##.\n..#.##.#.\n##......#\n##......#\n..#.##.#.\n..##..##.\n#.#.##.#.\n\n#...##..#\n#....#..#\n..##..###\n#####.##.\n#####.##.\n..##..###\n#....#..#")]
-    // [Test("#...##..#\n#....#..#\n..##..###\n#####.##.\n#####.##.\n..##..###\n#....#..#")]
+    [Answer(28627)]
     public static long Part2(string inp)
     {
         var count = 0;
@@ -68,7 +66,7 @@ public class Day13
                 for (var j = 0; j < columns[i].Length; j++)
                 {
                     var variant = columns.ToList();
-                    variant[i] = variant[i].Remove(j, 1).Insert(j, variant[i][j] is '.' ? "#" : ".");
+                    variant[i] = variant[i].Remove(j, 1).Insert(j, columns[i][j] is '.' ? "#" : ".");
                     columnVariants.Add(variant);
                 }
             }
@@ -78,12 +76,12 @@ public class Day13
                 for (var j = 0; j < rows[i].Length; j++)
                 {
                     var variant = rows.ToList();
-                    variant[i] = variant[i].Remove(j, 1).Insert(j, variant[i][j] is '.' ? "#" : ".");
+                    variant[i] = variant[i].Remove(j, 1).Insert(j, rows[i][j] is '.' ? "#" : ".");
                     rowVariants.Add(variant);
                 }
             }
 
-            var original = CalcMap(columns, line.Split('\n').ToList());
+            var original = CalcMap(columns, rows);
             var possibility = CalcDoubleMap(columnVariants, rowVariants, original);
             if (possibility == -1) throw new Exception("EEEEE");
             count += possibility;
@@ -98,7 +96,7 @@ public class Day13
         return vertical != -1 ? vertical : Find(rows, true);
     }
 
-    public static int Find(List<string> section, bool multi)
+    public static int Find(List<string> section, bool multi, int original = -1)
     {
         for (var i = 0; i < section.Count - 1; i++)
         {
@@ -113,12 +111,14 @@ public class Day13
             }
 
             if (!pattern) continue;
-            return (i + 1) * (multi ? 100 : 1);
+            var n = (i + 1) * (multi ? 100 : 1);
+            if (n == original) continue;
+            return n;
         }
 
         return -1;
     }
-    
+
     public static int CalcDoubleMap(List<List<string>> doubleColumns, List<List<string>> doubleRows, int original)
     {
         var vertical = DoubleFind(doubleColumns, false, original);
@@ -128,15 +128,7 @@ public class Day13
     public static int DoubleFind(List<List<string>> sections, bool multi, int original)
     {
         var sectionsFound = sections.Select(section
-            => Find(section, multi)).Where(val => val != -1 && val != original).ToArray();
-
-        // if (sectionsFound.Length != 0)
-        // {
-        //     var sectionFound = sections.Select(section
-        //         => (section, Find(section, multi))).Where(v => v.Item2 != -1 && v.Item2 != original).ToArray();
-        //     Console.WriteLine(sectionsFound.String());
-        // }
-        
+            => Find(section, multi, original)).Where(val => val != -1 && val != original).ToArray();
         return sectionsFound.Length != 0 ? sectionsFound.First() : -1;
     }
 }
