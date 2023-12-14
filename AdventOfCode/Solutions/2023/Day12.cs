@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -31,14 +30,14 @@ public class Day12
                 ImmutableStack.CreateRange(Enumerable.Repeat(line.Item2, 5).SelectMany(arr => arr))))
             .Sum();
 
-    public static long Cache(string pattern, ImmutableStack<int> nums, string s = "")
+    public static long Cache(string pattern, ImmutableStack<int> nums)
     {
         var key = $"{pattern}|{nums.String()}";
-        if (!Cached.TryGetValue(key, out var value)) return Cached[key] = MakeCombos(pattern, nums, s);
+        if (!Cached.TryGetValue(key, out var value)) return Cached[key] = MakeCombos(pattern, nums);
         return value;
     }
 
-    public static long MakeCombos(string pattern, ImmutableStack<int> nums, string s = "")
+    public static long MakeCombos(string pattern, ImmutableStack<int> nums)
     {
         if (pattern.Length == 0) return !nums.IsEmpty ? 0 : 1;
         if (pattern.Count(c => c is '#') > nums.Sum()) return 0;
@@ -47,20 +46,17 @@ public class Day12
         {
             case '#':
                 var num = nums.Peek();
-                if (pattern.Length < num ||
-                    pattern.Length > num && pattern[num] == '#' || pattern[..num].Contains('.')) return 0;
-                if (pattern.Length == num && pattern.Contains('.')) return 0;
-                return
-                    pattern.Length == num ?
-                        Cache(pattern[num..], nums.Pop(), $"{s}{pattern.Replace('?', '#')}") :
-                        Cache(pattern[(num + 1)..], nums.Pop(), $"{s}{pattern[..num].Replace('?', '#')}.");
+                if (pattern.Length < num
+                    || pattern.Length > num && pattern[num] == '#'
+                    || pattern[..num].Contains('.')
+                    || (pattern.Length == num && pattern.Contains('.'))) return 0;
+                return Cache(pattern.Length == num ? pattern[num..] : pattern[(num + 1)..], nums.Pop());
             case '.':
-                return Cache(pattern[1..], nums, $"{s}{pattern[0]}");
+                return Cache(pattern[1..], nums);
             case '?':
-                return Cache($".{pattern[1..]}", nums, s)
-                       + Cache($"#{pattern[1..]}", nums, s);
+                return Cache($".{pattern[1..]}", nums) + Cache($"#{pattern[1..]}", nums);
+            default:
+                return 0;
         }
-
-        return 0;
     }
 }
