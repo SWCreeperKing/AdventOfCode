@@ -330,4 +330,16 @@ public static class Helper
     public static string Repeat(this char c, int amount) => Enumerable.Repeat(c, amount).Join();
     public static string Repeat(this string str, int amount) => Enumerable.Repeat(str, amount).Join();
     public static string Repeat(this string str, int amount, char join) => Enumerable.Repeat(str, amount).Join(join);
+
+    public static void AddOrReplace<T>(this List<T> list, T item, Predicate<T> indexOf)
+    {
+        var index = list.FindIndex(indexOf);
+        if (index == -1)
+        {
+            list.Add(item);
+            return;
+        }
+
+        list[index] = item;
+    }
 }

@@ -1,263 +1,116 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
+using AdventOfCode.Experimental_Run.Misc;
+using static AdventOfCode.Experimental_Run.Misc.Enums;
 
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 14, "Parabolic Reflector Dish")]
 public class Day14
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
+    [ModifyInput]
+    public static Matrix2d<char> ProcessInput(string input)
+        => new(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
     [Answer(102497)]
-    public static long Part1(string[] inp)
+    public static long Part1(Matrix2d<char> inp)
     {
-        List<List<char>> slides = [];
-        for (var i = 0; i < inp[0].Length; i++)
-        {
-            slides.Add([]);
-        }
-
-        foreach (var line in inp)
-        {
-            for (var i = 0; i < line.Length; i++)
-            {
-                slides[i].Add(line[i]);
-            }
-        }
-
-        var load = 0;
-        foreach (var slide in slides)
-        {
-            var empty = -1;
-            for (var i = 0; i < slides.Count; i++)
-            {
-                switch (slide[i])
-                {
-                    case '.':
-                        if (empty == -1)
-                        {
-                            empty = i;
-                        }
-
-                        continue;
-                    case '#':
-                        empty = i + 1;
-                        continue;
-                    case 'O':
-                        if (empty == -1) continue;
-                        (slide[i], slide[empty]) = (slide[empty], slide[i]);
-                        i = empty;
-                        empty = -1;
-                        break;
-                }
-            }
-        }
-
-        foreach (var slide in slides)
-        {
-            for (var i = 0; i < slides.Count; i++)
-            {
-                if (slide[i] is not 'O') continue;
-                load += slide.Count - i;
-            }
-        }
-
-        return load;
+        CycleSide(inp, Direction.Up);
+        return CalcLoad(inp);
     }
 
     [Answer(105008)]
-    public static long Part2(string[] inp)
+    public static long Part2(Matrix2d<char> inp)
     {
-        List<List<char>> slides = [];
-        for (var i = 0; i < inp[0].Length; i++)
-        {
-            slides.Add([]);
-        }
-
-        foreach (var line in inp)
-        {
-            for (var i = 0; i < line.Length; i++)
-            {
-                slides[i].Add(line[i]);
-            }
-        }
-
-        var load = 0;
-        var selected = "";
-        List<string> cache = new();
-        List<int> cacheNumbers = new();
+        List<string> cache = [];
+        List<Matrix2d<char>> cacheMaps = [];
         var hold = 0;
         for (var k = 0; k < 1000000000; k++)
         {
-            var cycle = Cycle(slides);
+            var cycle = Cycle(inp);
             if (cache.Contains(cycle))
             {
                 hold = cache.IndexOf(cycle);
                 break;
             }
 
-            var l = 0;
-            foreach (var slide in slides)
-            {
-                for (var i = 0; i < slides.Count; i++)
-                {
-                    if (slide[i] is not 'O') continue;
-                    l += slide.Count - i;
-                }
-            }
-
+            cacheMaps.Add(inp.Duplicate());
             cache.Add(cycle);
-            cacheNumbers.Add(l);
         }
 
-        var str = cache[hold + (1000000000 - hold) % (cache.Count - hold) - 1];
+        return CalcLoad(cacheMaps[hold + (1000000000 - hold) % (cache.Count - hold) - 1]);
+    }
 
-        foreach (var slide in str.Split('\n').Select(s => s.ToCharArray().ToList()).ToList())
+    public static long CalcLoad(Matrix2d<char> slides)
+    {
+        var load = 0;
+
+        for (var x = 0; x < slides.Size.w; x++)
+        for (var y = 0; y < slides.Size.h; y++)
         {
-            for (var i = 0; i < slides.Count; i++)
-            {
-                if (slide[i] is not 'O') continue;
-                load += slide.Count - i;
-            }
+            if (slides[x, y] is not 'O') continue;
+            load += slides.Size.h - y;
         }
 
         return load;
     }
 
-    public static string Stringify(List<List<char>> chars)
+    public static string Cycle(Matrix2d<char> slides)
     {
-        List<List<char>> slides = [];
-        for (var i = 0; i < chars[0].Count; i++)
-        {
-            slides.Add([]);
-        }
-
-        foreach (var line in chars)
-        {
-            for (var i = 0; i < line.Count; i++)
-            {
-                slides[i].Add(line[i]);
-            }
-        }
-
-        return slides.Select(s => s.Join()).Join('\n');
+        CycleSide(slides, Direction.Up);
+        CycleSide(slides, Direction.Left);
+        CycleSide(slides, Direction.Down);
+        CycleSide(slides, Direction.Right);
+        return slides.ToString();
     }
 
-    public static string Cycle(List<List<char>> slides)
+    public static void CycleSide(Matrix2d<char> slides, Direction direction)
     {
-        // north
-        foreach (var slide in slides)
+        var (inJ, jCondition) = direction switch
+        {
+            Direction.Up => (0, (Func<int, bool>) (y => y < slides.Size.h)),
+            Direction.Left => (0, x =>  x < slides.Size.w),
+            Direction.Down => (slides.Size.h - 1, y => y >= 0),
+            Direction.Right => (slides.Size.w - 1, x => x >= 0)
+        };
+
+        CycleMap(slides, inJ, jCondition, direction);
+    }
+
+    public static void CycleMap(Matrix2d<char> slides, int inJ, Func<int, bool> jCondition,
+        Direction direction)
+    {
+        var dir = (int) direction % 2 == 1;
+        var size = dir ? slides.Size.h : slides.Size.w;
+        for (var i = 0; i < size; i++)
         {
             var empty = -1;
-            for (var i = 0; i < slides.Count; i++)
+            for (var j = inJ; jCondition(j);)
             {
-                switch (slide[i])
+                var x = dir ? j : i;
+                var y = dir ? i : j;
+                switch (slides[x, y])
                 {
                     case '.':
-                        if (empty == -1)
-                        {
-                            empty = i;
-                        }
-
-                        continue;
+                        if (empty != -1) break;
+                        empty = j;
+                        break;
                     case '#':
-                        empty = i + 1;
-                        continue;
+                        empty = -1;
+                        break;
                     case 'O':
-                        if (empty == -1) continue;
-                        (slide[i], slide[empty]) = (slide[empty], slide[i]);
-                        i = empty;
+                        if (empty == -1) break;
+                        var emptyIndex = slides.TranslatePosition(dir ? (empty, y) : (x, empty));
+                        (slides[x, y], slides[emptyIndex]) = (slides[emptyIndex], slides[x, y]);
+                        j = empty;
                         empty = -1;
                         break;
                 }
+
+                j += direction is Direction.Right or Direction.Down ? -1 : 1;
             }
         }
-
-        // west
-        for (var j = 0; j < slides.Count; j++)
-        {
-            var empty = -1;
-            for (var i = 0; i < slides[0].Count; i++)
-            {
-                switch (slides[i][j])
-                {
-                    case '.':
-                        if (empty == -1)
-                        {
-                            empty = i;
-                        }
-
-                        continue;
-                    case '#':
-                        empty = i + 1;
-                        continue;
-                    case 'O':
-                        if (empty == -1) continue;
-                        (slides[i][j], slides[empty][j]) = (slides[empty][j], slides[i][j]);
-                        i = empty;
-                        empty = -1;
-                        break;
-                }
-            }
-        }
-
-        // south
-        foreach (var slide in slides)
-        {
-            var empty = -1;
-            for (var i = slides.Count - 1; i >= 0; i--)
-            {
-                switch (slide[i])
-                {
-                    case '.':
-                        if (empty == -1)
-                        {
-                            empty = i;
-                        }
-
-                        continue;
-                    case '#':
-                        empty = i - 1;
-                        continue;
-                    case 'O':
-                        if (empty == -1) continue;
-                        (slide[i], slide[empty]) = (slide[empty], slide[i]);
-                        i = empty;
-                        empty = -1;
-                        break;
-                }
-            }
-        }
-
-        // east
-        for (var j = 0; j < slides.Count; j++)
-        {
-            var empty = -1;
-            for (var i = slides[0].Count - 1; i >= 0; i--)
-            {
-                switch (slides[i][j])
-                {
-                    case '.':
-                        if (empty == -1)
-                        {
-                            empty = i;
-                        }
-
-                        continue;
-                    case '#':
-                        empty = i - 1;
-                        continue;
-                    case 'O':
-                        if (empty == -1) continue;
-                        (slides[i][j], slides[empty][j]) = (slides[empty][j], slides[i][j]);
-                        i = empty;
-                        empty = -1;
-                        break;
-                }
-            }
-        }
-
-        return slides.Select(s => s.Join()).Join('\n');
     }
 }

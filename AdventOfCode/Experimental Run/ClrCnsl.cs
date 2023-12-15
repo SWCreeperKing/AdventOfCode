@@ -125,4 +125,10 @@ public static class ClrCnsl
         if (foreground is not null) Console.ForegroundColor = foreground!.Value;
         if (background is not null) Console.BackgroundColor = background!.Value;
     }
+
+    public static void WaitForInput()
+    {
+        WriteLine("Press any key to continue . . . ");
+        Console.ReadKey(true);
+    }
 }

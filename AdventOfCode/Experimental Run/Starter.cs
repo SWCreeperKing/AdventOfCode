@@ -16,6 +16,7 @@ public static class Starter
     public static readonly Dictionary<int, Dictionary<int, (DayAttribute att, Type type)>> PuzzleTypes = new();
 
     private static readonly Stopwatch Sw = new();
+    private static readonly Stopwatch Sw2 = new();
     private static int SelectedYear;
 
     public static void Start()
@@ -48,9 +49,7 @@ public static class Starter
             {
                 SwitchYear(runner.year);
                 RunDay(runner.day, true);
-
-                Console.WriteLine("Press any key to continue . . . ");
-                Console.ReadKey(true);
+                WaitForInput();
             }
         }
 
@@ -70,13 +69,16 @@ public static class Starter
             Console.Clear();
             if (selected == days.Length - 3)
             {
-                InputCache.Keys.ForEach(i =>
+                Sw2.Restart();
+                Sw2.Start();
+                InputCache.Keys.Order().ForEach(i =>
                 {
                     WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
                     RunDay(i, true);
                 });
-                Console.WriteLine("Press any key to continue . . . ");
-                Console.ReadKey(true);
+                Sw2.Stop();
+                WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{Sw2.Time()}]\n");
+                WaitForInput();
             }
             else if (selected == days.Length - 2)
             {
@@ -233,8 +235,7 @@ public static class Starter
         }
 
         if (!toContinue) return;
-        Console.WriteLine("Press any key to continue . . . ");
-        Console.ReadKey(true);
+        WaitForInput();
         Console.Clear();
     }
 

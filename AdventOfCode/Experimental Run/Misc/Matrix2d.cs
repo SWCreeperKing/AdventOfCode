@@ -227,4 +227,6 @@ public class Matrix2d<T>
 
         return sb.ToString();
     }
+
+    public Matrix2d<T> Duplicate() => MatrixSelect((_, t, _) => t);
 }

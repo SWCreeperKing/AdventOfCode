@@ -6,19 +6,18 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 15, "WIP"), Run]
+[Day(2023, 15, "Lens Library")]
 public class Day15
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
-
-    [Answer(502139)] public static long Part1(string inp) => inp.Split(',').Select(HashString).Sum();
+    [ModifyInput] public static string[] ProcessInput(string input) => input.Split(',');
+    [Answer(502139)] public static long Part1(string[] inp) => inp.Select(HashString).Sum();
 
     [Answer(284132)]
-    public static long Part2(string inp)
+    public static long Part2(string[] inp)
     {
         Dictionary<int, List<(string, int)>> boxes = new();
 
-        foreach (var command in inp.Split(','))
+        foreach (var command in inp)
         {
             var isSub = command.Contains('-');
             var index = command.IndexOf(isSub ? '-' : '=');
@@ -35,22 +34,11 @@ public class Day15
                 continue;
             }
 
-            var indexOfAny = box.FindIndex(t => t.Item1 == label);
-            var lens = int.Parse(command[(index + 1)..]);
-            var t = (label, lens);
-            if (indexOfAny == -1)
-            {
-                box.Add(t);
-            }
-            else
-            {
-                box[indexOfAny] = (label, lens);
-            }
+            box.AddOrReplace((label, int.Parse(command[(index + 1)..])), t => t.Item1 == label);
         }
 
-        return boxes.Select((kv)
-            => kv.Value.Select((kv2, i)
-                => (kv.Key + 1) * (i + 1) * kv2.Item2).Sum()).Sum();
+        return boxes.Select(kv => kv.Value.Select((kv2, i)
+            => (kv.Key + 1) * (i + 1) * kv2.Item2).Sum()).Sum();
     }
 
     public static int HashString(string s) => s.Aggregate(0, Hash);
