@@ -44,18 +44,7 @@ public class Day14
     }
 
     public static long CalcLoad(Matrix2d<char> slides)
-    {
-        var load = 0;
-
-        for (var x = 0; x < slides.Size.w; x++)
-        for (var y = 0; y < slides.Size.h; y++)
-        {
-            if (slides[x, y] is not 'O') continue;
-            load += slides.Size.h - y;
-        }
-
-        return load;
-    }
+        => slides.Size.h.Inline(h => slides.Select((_, c, _, y) => c is not 'O' ? 0 : h - y).Sum());
 
     public static string Cycle(Matrix2d<char> slides)
     {
@@ -71,7 +60,7 @@ public class Day14
         var (inJ, jCondition) = direction switch
         {
             Direction.Up => (0, (Func<int, bool>) (y => y < slides.Size.h)),
-            Direction.Left => (0, x =>  x < slides.Size.w),
+            Direction.Left => (0, x => x < slides.Size.w),
             Direction.Down => (slides.Size.h - 1, y => y >= 0),
             Direction.Right => (slides.Size.w - 1, x => x >= 0)
         };

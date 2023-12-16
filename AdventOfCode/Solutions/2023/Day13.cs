@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +9,10 @@ namespace AdventOfCode.Solutions._2023;
 [Day(2023, 13, "Point of Incidence")]
 public class Day13
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
-
-    [Answer(40006)]
-    public static long Part1(string inp)
+    [ModifyInput]
+    public static (List<string> col, List<string> row)[] ProcessInput(string input)
     {
-        var count = 0;
-        foreach (var line in inp.Split("\n\n"))
+        return input.Split("\n\n").Select(line =>
         {
             Matrix2d<char> map = new(line.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
@@ -32,69 +28,37 @@ public class Day13
                 columns.Add(sb.ToString());
             }
 
-            count += CalcMap(columns, line.Split('\n').ToList());
-        }
-
-        return count;
+            return (columns, line.Split('\n').ToList());
+        }).ToArray();
     }
 
+    [Answer(40006)]
+    public static long Part1((List<string> col, List<string> row)[] inp)
+        => inp.Select(t => CalcMap(t.col, t.row)).Sum();
+
     [Answer(28627)]
-    public static long Part2(string inp)
+    public static long Part2((List<string> col, List<string> row)[] inp)
+        => inp.Select(t => CalcDoubleMap(MakeVariants(t.col), MakeVariants(t.row), CalcMap(t.col, t.row))).Sum();
+
+    public static List<List<string>> MakeVariants(List<string> list)
     {
-        var count = 0;
-        foreach (var line in inp.Split("\n\n"))
+        List<List<string>> variants = [];
+
+        for (var i = 0; i < list.Count; i++)
         {
-            Matrix2d<char> map = new(line.Split('\n').Select(s => s.ToCharArray()).ToArray());
-            List<string> columns = [];
-            var rows = line.Split('\n').ToList();
-            List<List<string>> columnVariants = [];
-            List<List<string>> rowVariants = [];
-
-            for (var xC = 0; xC < map.Size.w; xC++)
+            for (var j = 0; j < list[i].Length; j++)
             {
-                StringBuilder sb = new();
-                for (var yC = 0; yC < map.Size.h; yC++)
-                {
-                    sb.Append(map[xC, yC]);
-                }
-
-                columns.Add(sb.ToString());
+                var variant = list.ToList();
+                variant[i] = variant[i].Remove(j, 1).Insert(j, list[i][j] is '.' ? "#" : ".");
+                variants.Add(variant);
             }
-
-            for (var i = 0; i < columns.Count; i++)
-            {
-                for (var j = 0; j < columns[i].Length; j++)
-                {
-                    var variant = columns.ToList();
-                    variant[i] = variant[i].Remove(j, 1).Insert(j, columns[i][j] is '.' ? "#" : ".");
-                    columnVariants.Add(variant);
-                }
-            }
-
-            for (var i = 0; i < rows.Count; i++)
-            {
-                for (var j = 0; j < rows[i].Length; j++)
-                {
-                    var variant = rows.ToList();
-                    variant[i] = variant[i].Remove(j, 1).Insert(j, rows[i][j] is '.' ? "#" : ".");
-                    rowVariants.Add(variant);
-                }
-            }
-
-            var original = CalcMap(columns, rows);
-            var possibility = CalcDoubleMap(columnVariants, rowVariants, original);
-            if (possibility == -1) throw new Exception("EEEEE");
-            count += possibility;
         }
 
-        return count;
+        return variants;
     }
 
     public static int CalcMap(List<string> columns, List<string> rows)
-    {
-        var vertical = Find(columns, false);
-        return vertical != -1 ? vertical : Find(rows, true);
-    }
+        => Find(columns, false).Inline(vertical => vertical != -1 ? vertical : Find(rows, true));
 
     public static int Find(List<string> section, bool multi, int original = -1)
     {
@@ -120,15 +84,11 @@ public class Day13
     }
 
     public static int CalcDoubleMap(List<List<string>> doubleColumns, List<List<string>> doubleRows, int original)
-    {
-        var vertical = DoubleFind(doubleColumns, false, original);
-        return vertical != -1 ? vertical : DoubleFind(doubleRows, true, original);
-    }
+        => DoubleFind(doubleColumns, false, original)
+            .Inline(vertical => vertical != -1 ? vertical : DoubleFind(doubleRows, true, original));
 
     public static int DoubleFind(List<List<string>> sections, bool multi, int original)
-    {
-        var sectionsFound = sections.Select(section
-            => Find(section, multi, original)).Where(val => val != -1 && val != original).ToArray();
-        return sectionsFound.Length != 0 ? sectionsFound.First() : -1;
-    }
+        => sections.Select(section
+                => Find(section, multi, original)).Where(val => val != -1 && val != original)
+            .Inline(found => found.Any() ? found.First() : -1);
 }

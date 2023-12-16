@@ -18,36 +18,20 @@ public static class Day2
 
     [ModifyInput]
     public static (int, int)[] ProcessInput(string inp)
-    {
-        return inp.Split('\n').Select(s =>
-        {
-            var split = s.Split(' ');
-            return (RockPaperValue[split[0]], RockPaperValue[split[1]]);
-        }).ToArray();
-    }
+        => inp.Split('\n')
+            .Select(s => s.Split(' ')
+                .Inline(split => (RockPaperValue[split[0]], RockPaperValue[split[1]]))).ToArray();
 
     [Answer(9177)]
     public static long Part1((int, int)[] inp)
-    {
-        return inp.Select(t =>
-        {
-            var won = WinArray[t.Item1 - 1] == t.Item2 ? 6 : 0;
-            return t.Item2 + won + (t.Item1 == t.Item2 ? 3 : 0);
-        }).Sum();
-    }
+        => inp.Select(t => t.Item2 + (WinArray[t.Item1 - 1] == t.Item2 ? 6 : 0) + (t.Item1 == t.Item2 ? 3 : 0)).Sum();
 
     [Answer(12111)]
     public static long Part2((int, int)[] inp)
-    {
-        return inp.Select(t =>
+        => inp.Select(t => ConditionArray[t.Item2 - 1].Inline(select => select + select switch
         {
-            var select = ConditionArray[t.Item2 - 1];
-            return select + select switch
-            {
-                0 => LoseArray[t.Item1 - 1],
-                3 => t.Item1,
-                6 => WinArray[t.Item1 - 1]
-            };
-        }).Sum();
-    }
+            0 => LoseArray[t.Item1 - 1],
+            3 => t.Item1,
+            6 => WinArray[t.Item1 - 1]
+        })).Sum();
 }

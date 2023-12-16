@@ -10,17 +10,12 @@ public static class Day3
 
     [Answer(7903)]
     public static long Part1(string[] inp)
-    {
-        return inp.Select(s => s.Chunk(s.Length / 2))
+        => inp.Select(s => s.Chunk(s.Length / 2))
             .Select(carr => carr.InterceptSelf().First())
             .Select(Value).Sum();
-    }
 
     [Answer(2548)]
-    public static long Part2(string[] inp)
-    {
-        return inp.Chunk(3).Select(arr => Value(arr.InterceptSelf()[0])).Sum();
-    }
+    public static long Part2(string[] inp) => inp.Chunk(3).Select(arr => Value(arr.InterceptSelf()[0])).Sum();
 
     private static int Value(char c) => c is >= 'a' and <= 'z' ? c - 'a' + 1 : c - 'A' + 27;
 }

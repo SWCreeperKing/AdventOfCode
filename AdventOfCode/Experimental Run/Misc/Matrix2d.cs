@@ -89,6 +89,13 @@ public class Matrix2d<T>
             return select(this, t, x, y);
         }).ToArray(), Size.w, Size.h);
 
+    public IEnumerable<TO> Select<TO>(Func<Matrix2d<T>, T, int, int, TO> select)
+        => Array.Select((t, i) =>
+        {
+            var (x, y) = TranslatePosition(i);
+            return select(this, t, x, y);
+        });
+
     public bool PositionExists(int x, int y) => x >= 0 && y >= 0 && x < Size.w && y < Size.h;
 
     public (int x, int y)[] WhereInCircle(int x, int y, Predicate<T> condition, bool corners = true)
