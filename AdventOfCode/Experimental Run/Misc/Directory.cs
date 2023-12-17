@@ -6,8 +6,8 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Directory<T>
 {
-    public Stack<string> PathStack = new();
-    public Dictionary<string, List<T>> Data = new();
+    public readonly Stack<string> PathStack = new();
+    public readonly Dictionary<string, List<T>> Data = new();
 
     public Directory()
     {
@@ -45,7 +45,11 @@ public class Directory<T>
     public Dictionary<string, TR> FlattenDirectory<TR>(Func<List<T>, TR> func)
     {
         Dictionary<string, TR> built = new();
-        foreach (var (path, files) in Data) built.Add(path, func(files));
+        foreach (var (path, files) in Data)
+        {
+            built.Add(path, func(files));
+        }
+
         return built;
     }
 
@@ -62,10 +66,13 @@ public class Directory<T>
             var pathing = path;
             while (pathing != "")
             {
-                if (built.ContainsKey(pathing)) built[pathing] = merge(built[pathing], rFunc);
-                else built.Add(pathing, rFunc);
+                if (!built.TryAdd(pathing, rFunc))
+                {
+                    built[pathing] = merge(built[pathing], rFunc);
+                }
+
                 if (pathing == "home") break;
-                pathing = pathing[..pathing.LastIndexOf("/", StringComparison.Ordinal)];
+                pathing = pathing[..pathing.LastIndexOf('/')];
             }
         }
 

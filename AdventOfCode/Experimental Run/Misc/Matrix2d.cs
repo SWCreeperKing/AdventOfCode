@@ -236,4 +236,5 @@ public class Matrix2d<T>
     }
 
     public Matrix2d<T> Duplicate() => MatrixSelect((_, t, _) => t);
+    public Matrix2d<T> Duplicate(Func<T, T> dupeFunc) => MatrixSelect((_, t, _) => dupeFunc(t));
 }
