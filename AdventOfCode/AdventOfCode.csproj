@@ -5,8 +5,4 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>12</LangVersion>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="RT.Dijkstra" Version="1.0.16"/>
-    </ItemGroup>
 </Project>

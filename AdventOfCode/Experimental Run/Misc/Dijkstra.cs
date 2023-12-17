@@ -7,13 +7,13 @@ using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 namespace AdventOfCode.Experimental_Run.Misc;
 
 // remember: a < b = -1 | a == b = 0 | a > b = 1
-public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, IComparer<TCompare> comparer)
+public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare, int> comparer)
     where T : State<T, TM, TCompare>
 {
     public List<NodeDirection> MovingDirections = [Up, Right, Down, Left];
 
     private HashSet<string> Seen = [];
-    private PriorityQueue<T, TCompare> Check = new(comparer);
+    private PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
 
     public T Eval((int x, int y) dest, params T[] starters)
     {
@@ -28,12 +28,13 @@ public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, IComparer<TCompare> com
 
             var (x, y) = state.Position;
             if (!set.PositionExists(x, y)) continue;
-            if (state.IsFinal(state.Position, dest, state)) return state;
+            if (state.IsFinal(dest, state, set[x, y])) return state;
 
             foreach (var dir in MovingDirections)
             {
                 var (dx, dy) = dir.Positional();
-                if (!state.ValidState(set, dir, dx, dy) || !set.PositionExists(x + dx, y + dy)) continue;
+                if (!set.PositionExists(x + dx, y + dy)) continue;
+                if (!state.ValidState(set, dir, dx, dy)) continue;
 
                 var newState = state.MakeNewState(set, x + dx, y + dy, dir);
                 Check.Enqueue(newState, newState.GetValue(set[x + dx, y + dy]));
@@ -55,8 +56,13 @@ public abstract class State<T, TM, TCompare>((int x, int y) position, NodeDirect
 
     public virtual bool ValidState(Matrix2d<TM> map, NodeDirection dir, int dx, int dy) => true;
 
-    public virtual bool IsFinal((int x, int y) pos, (int x, int y) dest, State<T, TM, TCompare> state)
-        => dest.x == pos.x && dest.y == pos.y;
+    public virtual bool IsFinal((int x, int y) dest, State<T, TM, TCompare> state, TM val)
+        => dest.x == Position.x && dest.y == Position.y;
+}
+
+file class Comparer<T>(Func<T, T, int> compare) : IComparer<T>
+{
+    public int Compare(T x, T y) => compare(x, y);
 }
 
 [Flags]

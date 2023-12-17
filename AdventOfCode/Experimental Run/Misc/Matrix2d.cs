@@ -189,10 +189,19 @@ public class Matrix2d<T>
         }
     }
 
-    public (int x, int y) Find(T t)
+    public (int x, int y) Find(T t) => Find(tt => tt.Equals(t));
+
+    public (int x, int y) Find(Func<T, bool> find)
     {
-        var index = Array.FirstIndexWhere(tt => tt.Equals(t));
-        return (index % Size.w, index / Size.h);
+        for (var y = 0; y < Size.h; y++)
+        for (var x = 0; x < Size.w; x++)
+        {
+            var t = this[x, y];
+            if (!find(t)) continue;
+            return (x, y);
+        }
+
+        throw new ArgumentException("Could not find element");
     }
 
     public (int x, int y) TranslatePosition(int index) => (index % Size.w, index / Size.h);
