@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 15, "Beacon Exclusion Zone")]
-public partial class Day15
+ internal partial class Day15
 {
     [GeneratedRegex(@"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
         RegexOptions.Compiled)]

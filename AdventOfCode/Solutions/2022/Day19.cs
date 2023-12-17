@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 19, "Not Enough Minerals")]
-public class Day19
+file class Day19
 {
     public static readonly Regex InputRegex =
         new(

@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 13, "Knights of the Dinner Table")]
-public partial class Day13
+ internal partial class Day13
 {
     [GeneratedRegex(@"^(\w+) would (lose|gain) ([-\d]+) happiness units by sitting next to (\w+)\.")]
     private static partial Regex InputRegex();

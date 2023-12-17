@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 1, "Calorie Counting")]
-public static class Day1
+file class Day1
 {
     [ModifyInput]
     public static int[] ProcessInput(string input) => input.Split("\n\n")

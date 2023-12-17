@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 9, "All in a Single Night")]
-public partial class Day9
+ internal partial class Day9
 {
     [GeneratedRegex("(.*) to (.*) = (.*)")]
     private static partial Regex InputRegex();

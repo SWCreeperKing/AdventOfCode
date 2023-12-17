@@ -3,7 +3,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 23, "Unstable Diffusion")]
-public class Day23
+file class Day23
 {
     // [ModifyInput] public static string[] ProcessInput(string inp) => inp.Split('\n');
 

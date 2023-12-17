@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2018;
 
 [Day(2018, 1, "Chronal Calibration")]
-public static class Day1
+file class Day1
 {
     [ModifyInput] public static long[] ProcessInput(string input) => input.Split('\n').Select(long.Parse).ToArray();
     [Answer(497)] public static long Part1(long[] inp) => inp.Sum();

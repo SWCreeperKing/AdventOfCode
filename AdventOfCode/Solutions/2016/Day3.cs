@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 3, "Squares With Three Sides")]
-public partial class Day3
+ internal partial class Day3
 {
     [GeneratedRegex(@"\s+(\d+)\s+(\d+)\s+(\d+)")]
     public static partial Regex InputRegex();

@@ -13,7 +13,7 @@ namespace AdventOfCode.Solutions._2016;
 /// 
 /// </summary>
 [Day(2016, 5, "How About a Nice Game of Chess?")]
-public static class Day5
+file class Day5
 {
     [Answer("c6697b55")]
     public static string Part1(string input)

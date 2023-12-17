@@ -6,7 +6,7 @@ using static AdventOfCode.Helper;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 17, "No Such Thing as Too Much")]
-public static class Day17
+file class Day17
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
     [Answer(1638)] public static long Part1(int[] inp) => ContainerCombination(inp).Count(arr => arr.Sum() == 150);

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 6, "Custom Customs")]
-public static class Day6
+file class Day6
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split("\n\n");
 

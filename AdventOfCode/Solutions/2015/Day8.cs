@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 8, "Matchsticks")]
-public partial class Day8
+ internal partial class Day8
 {
     [GeneratedRegex("""^"(\\x..|\\.|.)*"$""")]
     private static partial Regex StringRegex();

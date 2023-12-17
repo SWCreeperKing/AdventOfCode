@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 17, "Pyroclastic Flow")]
-public class Day17
+file class Day17
 {
     [ModifyInput] public static bool[] ProcessInput(string inp) => inp.ToCharArray().Select(c => c is '<').ToArray();
 

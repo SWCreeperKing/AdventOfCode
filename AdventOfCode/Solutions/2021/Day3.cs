@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 3, "Binary Diagnostic")]
-public class Day3
+file class Day3
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
 

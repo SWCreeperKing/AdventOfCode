@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 5, "Hydrothermal Venture")]
-public class Day5
+file class Day5
 {
     [ModifyInput]
     public static (int x1, int x2, int y1, int y2)[] ProcessInput(string input)

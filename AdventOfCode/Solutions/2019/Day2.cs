@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 2, "Program Alarm")]
-public class Day2
+file class Day2
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
 

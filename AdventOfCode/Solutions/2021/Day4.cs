@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 4, "Giant Squid")]
-public class Day4
+file class Day4
 {
     [ModifyInput]
     public static (string[] arr, Card[] cards) ProcessInput(string input)
@@ -41,7 +41,7 @@ public class Day4
     }
 }
 
-public class Card
+file class Card
 {
     public bool[,] Marked = new bool[5, 5];
     public Dictionary<int, (int x, int y)> Board = new();

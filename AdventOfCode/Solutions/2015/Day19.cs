@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 19, "Medicine for Rudolph")]
-public static class Day19
+file class Day19
 {
     [ModifyInput]
     public static (string, List<(string, string)>) ProcessInput(string input)

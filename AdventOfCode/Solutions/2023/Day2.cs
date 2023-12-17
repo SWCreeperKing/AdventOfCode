@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 2, "Cube Conundrum")]
-public class Day2
+file class Day2
 {
     [ModifyInput]
     public static (int r, int g, int b)[][] ProcessInput(string input)

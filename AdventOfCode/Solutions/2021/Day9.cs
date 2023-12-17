@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 9, "Smoke Basin")]
-public static class Day9
+file class Day9
 {
     [ModifyInput]
     public static Dictionary<(int, int), int> ProcessInput(string input)

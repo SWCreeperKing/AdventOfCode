@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 1, "No Time for a Taxicab")]
-public static class Day1
+file class Day1
 {
     [ModifyInput]
     public static (bool, int)[] ProcessInput(string input)

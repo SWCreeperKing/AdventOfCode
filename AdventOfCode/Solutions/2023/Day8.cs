@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 8, "Haunted Wasteland")]
-public partial class Day8
+internal partial class Day8
 {
     [GeneratedRegex(@"(.+) = \((.+), (.+)\)")]
     private static partial Regex InputRegex();

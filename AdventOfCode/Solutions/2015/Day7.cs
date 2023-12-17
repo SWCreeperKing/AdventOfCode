@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 7, "Some Assembly Required")]
-public static class Day7
+file class Day7
 {
     [ModifyInput]
     public static Dictionary<string, string[]> ProcessInput(string input)

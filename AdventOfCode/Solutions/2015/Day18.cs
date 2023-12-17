@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 18, "Like a GIF For Your Yard")]
-public static class Day18
+file class Day18
 {
     [ModifyInput]
     public static bool[] ProcessInput(string input)

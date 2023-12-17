@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 3, "Crossed Wires")]
-public class Day3
+file class Day3
 {
     [ModifyInput]
     public static Instruction[][] ProcessInput(string input)
@@ -125,7 +125,7 @@ public readonly struct Instruction(char direction, int distance)
     public readonly int Distance = distance;
 }
 
-public class Cell((int x, int y) pos, bool origin = false)
+file class Cell((int x, int y) pos, bool origin = false)
 {
     public readonly bool Origin = origin;
     public readonly (int x, int y) Pos = pos;

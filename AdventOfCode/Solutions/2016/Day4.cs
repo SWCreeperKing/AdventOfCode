@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 4, "Security Through Obscurity")]
-public class Day4
+file class Day4
 {
     [ModifyInput]
     public static (string[], int, string)[] ProcessInput(string inp)

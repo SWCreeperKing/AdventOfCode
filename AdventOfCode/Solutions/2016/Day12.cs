@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 12, "Leonardo's Monorail")]
-public class Day12
+file class Day12
 {
     [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
     [Answer(318003)] public static long Part1(string[][] inp) => Solve(inp);

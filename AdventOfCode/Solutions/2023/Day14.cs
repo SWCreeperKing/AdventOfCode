@@ -8,7 +8,7 @@ using static AdventOfCode.Experimental_Run.Misc.Enums;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 14, "Parabolic Reflector Dish")]
-public class Day14
+file class Day14
 {
     [ModifyInput]
     public static Matrix2d<char> ProcessInput(string input)

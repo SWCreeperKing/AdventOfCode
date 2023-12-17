@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 18, "Boiling Boulders")]
-public class Day18
+file class Day18
 {
     [ModifyInput]
     public static int[][] ProcessInput(string inp)
@@ -102,7 +102,7 @@ public class Day18
     }
 }
 
-public class Cube
+file class Cube
 {
     public required int X, Y, Z;
 

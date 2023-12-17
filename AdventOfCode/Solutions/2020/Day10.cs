@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 10, "Adapter Array")]
-public class EDay10
+file class EDay10
 {
     [ModifyInput]
     public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).Order().ToArray();

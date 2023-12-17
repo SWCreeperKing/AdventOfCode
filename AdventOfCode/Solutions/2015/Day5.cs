@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 5, "Doesn't He Have Intern-Elves For This?")]
-public partial class Day5
+ internal partial class Day5
 {
     [GeneratedRegex("[aeiou]")] private static partial Regex AeiouRegex();
     [GeneratedRegex(@"([a-z])\1{1,}")] private static partial Regex AToZRegex();

@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 13, "Distress Signal")]
-public class Day13
+file class Day13
 {
     [Answer(6623)]
     public static long Part1(string inp)

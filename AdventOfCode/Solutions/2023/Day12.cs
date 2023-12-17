@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 12, "Hot Springs")]
-public class Day12
+file class Day12
 {
     public static Dictionary<string, long> Cached = new();
 

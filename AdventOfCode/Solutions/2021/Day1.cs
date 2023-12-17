@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 1, "Sonar Sweep")]
-public static class Day1
+file class Day1
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).ToArray();
     [Answer(1616)] public static int Part1(int[] inp) => Solve(inp);

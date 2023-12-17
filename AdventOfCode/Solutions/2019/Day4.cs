@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 4, "Secure Container")]
-public class Day4
+file class Day4
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split('-').Select(int.Parse).ToArray();
 

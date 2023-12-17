@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 6, "Signals and Noise")]
-public class Day6
+file class Day6
 {
     [ModifyInput]
     public static List<char>[] ProcessInput(string inp)

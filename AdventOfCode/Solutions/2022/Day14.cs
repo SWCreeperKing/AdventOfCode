@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 14, "Regolith Reservoir")]
-public class Day14
+file class Day14
 {
     [ModifyInput]
     public static Matrix2d<bool> ProcessInput(string inp)

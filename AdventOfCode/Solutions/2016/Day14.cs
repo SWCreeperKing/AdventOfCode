@@ -9,7 +9,7 @@ using static System.Text.Encoding;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 14, "One-Time Pad")]
-public partial class Day14
+ internal partial class Day14
 {
     [GeneratedRegex(@"(.)\1{2}", RegexOptions.Compiled)]
     private static partial Regex Match3();

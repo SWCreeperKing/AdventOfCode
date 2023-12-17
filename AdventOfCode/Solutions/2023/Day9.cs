@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 9, "Mirage Maintenance")]
-public class Day9
+file class Day9
 {
     [ModifyInput]
     public static long[][] ProcessInput(string input)

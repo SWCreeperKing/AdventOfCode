@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 7, "No Space Left On Device")]
-public class Day7
+file class Day7
 {
     [ModifyInput]
     public static Dictionary<string, long> ProcessInput(string inp)

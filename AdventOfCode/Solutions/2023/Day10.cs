@@ -7,7 +7,7 @@ using static AdventOfCode.Experimental_Run.Misc.Enums;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 10, "Pipe Maze")]
-public class Day10
+file class Day10
 {
     public static readonly Dictionary<char, Direction[]> Dirs = new()
     {

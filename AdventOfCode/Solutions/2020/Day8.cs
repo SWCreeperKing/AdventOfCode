@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 8, "Handheld Halting")]
-public static class Day8
+file class Day8
 {
     [ModifyInput]
     public static string[][] ProcessInput(string input) => input.Split('\n').Select(s => s.SplitSpace()).ToArray();

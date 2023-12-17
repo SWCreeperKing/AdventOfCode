@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 23, "Opening the Turing Lock")]
-public static class Day23
+file class Day23
 {
     [ModifyInput]
     public static string[][] ProcessInput(string inp)

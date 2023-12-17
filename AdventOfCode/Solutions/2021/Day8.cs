@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 8, "Seven Segment Search")]
-public class Day8
+file class Day8
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
 

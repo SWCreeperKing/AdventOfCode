@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 4, "Scratchcards")]
-public class Day4
+file class Day4
 {
     public static Regex CardMatch = new(@"Card *(\d+): ((?: *[\d]+)+) \| ((?: *[\d]+)+)", RegexOptions.Compiled);
 

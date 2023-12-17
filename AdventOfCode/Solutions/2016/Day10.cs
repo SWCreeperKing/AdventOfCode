@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 10, "Balance Bots")]
-public partial class Day10
+ internal partial class Day10
 {
     [GeneratedRegex(@"value (\d+?) goes to (.+)")]
     private static partial Regex ValueRegex();
@@ -119,7 +119,7 @@ public partial class Day10
         return outputs[0][0] * outputs[1][0] * outputs[2][0];
     }
 
-    public static Bot GetBot(Dictionary<string, Bot> bots, string botId)
+    private static Bot GetBot(IDictionary<string, Bot> bots, string botId)
     {
         if (!bots.TryGetValue(botId, out var bot))
         {

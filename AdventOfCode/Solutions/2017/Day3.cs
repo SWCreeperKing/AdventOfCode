@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2017;
 
 [Day(2017, 3, "Spiral Memory")/*, Run*/]
-public class Day3
+file class Day3
 {
     [ModifyInput] public static int ProcessInput(string input) => int.Parse(input);
 

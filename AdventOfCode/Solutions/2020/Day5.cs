@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 5, "Binary Boarding")]
-public partial class Day5
+internal partial class Day5
 {
     [GeneratedRegex("(B|R)")] private static partial Regex BrRegex();
     [GeneratedRegex("(F|L)")] private static partial Regex FlRegex();

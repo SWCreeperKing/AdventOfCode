@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 15, "Lens Library")]
-public class Day15
+file class Day15
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split(',');
     [Answer(502139)] public static long Part1(string[] inp) => inp.Select(HashString).Sum();

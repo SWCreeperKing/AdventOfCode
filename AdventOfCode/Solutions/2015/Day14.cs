@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 14, "Reindeer Olympics")]
-public partial class Day14
+ internal partial class Day14
 {
     [GeneratedRegex(@"(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.")]
     private static partial Regex InputRegex();

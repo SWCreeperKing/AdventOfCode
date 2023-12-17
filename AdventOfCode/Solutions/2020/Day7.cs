@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 7, "Handy Haversacks")]
-public static class Day7
+file class Day7
 {
     [ModifyInput]
     public static Dictionary<string, List<(int, string)>> ProcessInput(string input)

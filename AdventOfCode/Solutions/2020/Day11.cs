@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 11, "Seating System")]
-public static class Day11
+file class Day11
 {
     private static (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
     private static bool IsOccupied(char c) => c == '#';

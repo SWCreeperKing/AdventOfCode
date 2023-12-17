@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 6, "Lanternfish")]
-public class Day6
+file class Day6
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
     [Answer(391671)] public static long Part1(string inp) => Solve(inp, 80);

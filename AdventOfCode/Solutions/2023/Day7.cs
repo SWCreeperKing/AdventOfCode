@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 7, "Camel Cards")]
-public class Day7
+file class Day7
 {
     [ModifyInput]
     public static string[][] ProcessInput(string input)
@@ -31,7 +31,7 @@ public class Day7
         => hands.OrderDescending().Select((hand, i) => hand.Bid * (i + 1)).Sum();
 }
 
-public record Hand(int[] Values, int Bid, bool pt2 = false) : IComparable<Hand>
+file record Hand(int[] Values, int Bid, bool pt2 = false) : IComparable<Hand>
 {
     public int CompareTo(Hand other)
     {

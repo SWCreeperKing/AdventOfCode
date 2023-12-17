@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 4, "Camp Cleanup")]
-public class Day4
+file class Day4
 {
     [ModifyInput]
     public static Range[][] ProcessInput(string inp)

@@ -11,7 +11,7 @@ namespace AdventOfCode.Solutions._2016;
 // i didn't look at their solution i saw the equation and made my own solution 
 
 [Day(2016, 11, "Radioisotope Thermoelectric Generators")]
-public class Day11
+file class Day11
 {
     [ModifyInput]
     public static int[] ProcessInput(string input)

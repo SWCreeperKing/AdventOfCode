@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 13, "A Maze of Twisty Little Cubicles")]
-public class Day13
+file class Day13
 {
     [ModifyInput] public static int ProcessInput(string input) => int.Parse(input);
 
@@ -104,7 +104,7 @@ public class Day13
     }
 }
 
-public class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
+file class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
 {
     public static readonly (int x, int y)[] Surround = { (0, 1), (1, 0), (0, -1), (-1, 0) };
 

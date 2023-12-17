@@ -2,9 +2,9 @@ using System.Linq;
 
 namespace AdventOfCode.Solutions._2020;
 
-public class Day20
+file class Day20
 {
-    // public class Tile
+    // file class Tile
     // {
     //     public int id;
     //     public string[] map;

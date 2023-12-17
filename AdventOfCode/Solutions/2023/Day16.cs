@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 16, "The Floor Will Be Lava")]
-public class Day16
+file class Day16
 {
     [ModifyInput]
     public static Matrix2d<Tile> ProcessInput(string input)
@@ -110,7 +110,7 @@ public class Day16
     }
 }
 
-public class Tile(char tile)
+file class Tile(char tile)
 {
     public readonly char TileChar = tile;
     public readonly List<(int dx, int dy)> Movements = [];

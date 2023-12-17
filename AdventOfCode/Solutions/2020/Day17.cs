@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 17, "Conway Cubes")]
-public class Day17
+file class Day17
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
 
@@ -80,7 +80,7 @@ public class Day17
     }
 }
 
-public class Array3D : ICloneable
+file class Array3D : ICloneable
 {
     public Dictionary<(int, int, int), bool> Dim = new();
 
@@ -130,7 +130,7 @@ public class Array3D : ICloneable
     public object Clone() => new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) };
 }
 
-public class Array4D : ICloneable
+file class Array4D : ICloneable
 {
     public Dictionary<(int, int, int, int), bool> Dim = new();
 

@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 11, "Monkey in the Middle")]
-public class Day11
+file class Day11
 {
     [ModifyInput]
     public static string[][] ProcessInput(string inp)
@@ -123,7 +123,7 @@ public class Day11
     }
 }
 
-public class Monkey
+file class Monkey
 {
     public Operation Operation;
     public int TestDivisibility;
@@ -131,7 +131,7 @@ public class Monkey
     public int[] ThrowTo = new int[2];
 }
 
-public class Operation
+file class Operation
 {
     public bool IsAddOrMulti = true;
     public int[] Op = new int[2];

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 3, "Toboggan Trajectory")]
-public static class Day3
+file class Day3
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
     [Answer(203)] public static long Part1(string[] inp) => Method(3, 1, inp);

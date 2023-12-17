@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 
@@ -10,10 +9,10 @@ namespace AdventOfCode.Experimental_Run.Misc;
 public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare, int> comparer)
     where T : State<T, TM, TCompare>
 {
-    public List<NodeDirection> MovingDirections = [Up, Right, Down, Left];
+    public readonly List<NodeDirection> MovingDirections = [Up, Right, Down, Left];
 
-    private HashSet<string> Seen = [];
-    private PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
+    private readonly HashSet<string> Seen = [];
+    private readonly PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
 
     public T Eval((int x, int y) dest, params T[] starters)
     {

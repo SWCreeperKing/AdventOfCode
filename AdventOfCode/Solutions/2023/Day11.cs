@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 11, "Cosmic Expansion")]
-public class Day11
+file class Day11
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
     [Answer(9563821)] public static long Part1(string[] inp) => Solve(inp);

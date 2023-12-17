@@ -9,7 +9,7 @@ using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 22, "Monkey Map")]
-public class Day22
+file class Day22
 {
     [ModifyInput]
     public static (Instruction[] instructions, Matrix2d<bool?> map) ProcessInput(string inp)
@@ -103,7 +103,7 @@ public class Day22
     }
 }
 
-public class Instruction
+file class Instruction
 {
     public int Num;
     public bool? LeftOrRight = null;

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 2, "Password Philosophy")]
-public static class Day2
+file class Day2
 {
     [ModifyInput]
     public static string[][] ProcessInput(string input) => input.Split('\n').Select(s => s.Split(' ')).ToArray();

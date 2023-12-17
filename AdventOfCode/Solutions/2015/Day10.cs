@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 10, "Elves Look, Elves Say")]
-public class Day10
+file class Day10
 {
     [Answer(492982)] public static long Part1(string input) => RunLook(input, 40);
     [Answer(6989950)] public static long Part2(string input) => RunLook(input, 50);

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 2, "I Was Told There Would Be No Math")]
-public static class Day2
+file class Day2
 {
     [ModifyInput]
     public static int[][] ProcessInput(string input)

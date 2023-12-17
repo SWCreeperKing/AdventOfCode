@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 16, "Aunt Sue")]
-public static class Day16
+file class Day16
 {
     private static Dictionary<string, int> SearchFor = new()
     {

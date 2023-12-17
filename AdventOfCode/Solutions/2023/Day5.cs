@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 5, "If You Give A Seed A Fertilizer")]
-public class Day5
+file class Day5
 {
     [ModifyInput]
     public static (long[] seeds, (long start, long start2, long end2)[][] ranges) ProcessInput(string input)

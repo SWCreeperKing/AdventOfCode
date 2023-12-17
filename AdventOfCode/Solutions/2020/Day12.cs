@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 12, "Rain Risk")]
-public class Day12
+file class Day12
 {
     [ModifyInput]
     public static (char, int)[] ProcessInput(string input)

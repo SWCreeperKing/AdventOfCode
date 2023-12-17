@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 3, "Perfectly Spherical Houses in a Vacuum")]
-public static class Day3
+file class Day3
 {
     private static readonly Dictionary<char, Vector2> Directions = new()
         { ['^'] = -Vector2.UnitY, ['>'] = Vector2.UnitX, ['v'] = Vector2.UnitY, ['<'] = -Vector2.UnitX };

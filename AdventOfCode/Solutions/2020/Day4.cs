@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 4, "Passport Processing")]
-public partial class Day4
+internal partial class Day4
 {
     [GeneratedRegex("((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}")]
     private static partial Regex KindValidator();

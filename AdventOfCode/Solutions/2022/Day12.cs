@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
@@ -6,7 +5,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 12, "Hill Climbing Algorithm")]
-public class Day12
+file class Day12
 {
     [ModifyInput]
     public static ((int x, int y) start, (int x, int y) end, Matrix2d<int> map) ProcessInput(string inp)
@@ -36,7 +35,7 @@ public class Day12
                 .Eval(t.dest, new State(t.pos, NodeDirection.Center, part2)).Steps);
 }
 
-public class State((int x, int y) position, NodeDirection direction, bool part2 = false, int steps = 0)
+file class State((int x, int y) position, NodeDirection direction, bool part2 = false, int steps = 0)
     : State<State, int, int>(position, direction)
 {
     public readonly int Steps = steps;

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 20, "Grove Positioning System")]
-public class Day20
+file class Day20
 {
     [ModifyInput] public static int[] ProcessInput(string inp) => inp.Split('\n').ToIntArr();
 

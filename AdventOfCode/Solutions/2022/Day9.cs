@@ -9,7 +9,7 @@ using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 9, "Rope Bridge")]
-public class Day9
+file class Day9
 {
     private static readonly Dictionary<char, Direction> DirectionParse = new()
         { ['U'] = Up, ['R'] = Right, ['D'] = Down, ['L'] = Left };

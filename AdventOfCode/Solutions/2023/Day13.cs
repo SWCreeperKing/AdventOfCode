@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 13, "Point of Incidence")]
-public class Day13
+file class Day13
 {
     [ModifyInput]
     public static (List<string> col, List<string> row)[] ProcessInput(string input)

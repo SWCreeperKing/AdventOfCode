@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 2, "Bathroom Security")]
-public class Day2
+file class Day2
 {
     [ModifyInput]
     public static char[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.ToCharArray()).ToArray();

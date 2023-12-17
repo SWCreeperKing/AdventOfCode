@@ -10,7 +10,7 @@ using Parser = System.Func<string, System.Collections.Generic.IEnumerable<string
 namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 19, "Monster Messages")]
-public static class Day19
+file class Day19
 {
     private static readonly Regex RuleRegex = new(@"""(\D)""", RegexOptions.Compiled);
 

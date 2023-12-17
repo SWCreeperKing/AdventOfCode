@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 7, "The Treachery of Whales")]
-public class Day7
+file class Day7
 {
     [ModifyInput] public static int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
 

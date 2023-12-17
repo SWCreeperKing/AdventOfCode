@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 10, "Cathode-Ray Tube")]
-public class Day10
+file class Day10
 {
     private static readonly long[] CyclesToCountOn = { 20, 60, 100, 140, 180, 220 };
 

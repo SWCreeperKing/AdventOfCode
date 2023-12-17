@@ -7,7 +7,7 @@ namespace AdventOfCode.Solutions._2015;
 
 [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
 [Day(2015, 4, "The Ideal Stocking Stuffer")]
-public static class Day4
+file class Day4
 {
     [Answer(346386)] public static int Part1(string inp) => Hash(inp);
     [Answer(9958218)] public static int Part2(string inp) => Hash(inp, 0); // have not found a better solution

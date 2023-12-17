@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 8, "Two-Factor Authentication")]
-public class Day8
+file class Day8
 {
     [ModifyInput]
     public static string[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.Split(' ')).ToArray();

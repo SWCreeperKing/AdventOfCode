@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
@@ -6,7 +5,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 17, "Clumsy Crucible")]
-public class Day17
+file class Day17
 {
     [ModifyInput]
     public static Matrix2d<int> ProcessInput(string input)
@@ -26,7 +25,7 @@ public class Day17
             ]).Heat;
 }
 
-public class State(
+file class State(
     (int x, int y) position,
     NodeDirection direction,
     int heat,

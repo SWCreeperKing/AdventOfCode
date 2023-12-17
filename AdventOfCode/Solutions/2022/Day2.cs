@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 2, "Rock Paper Scissors")]
-public static class Day2
+file class Day2
 {
     private static readonly Dictionary<string, int> RockPaperValue = new()
     {

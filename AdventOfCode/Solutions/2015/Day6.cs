@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 6, "Probably a Fire Hazard")]
-public partial class Day6
+ internal partial class Day6
 {
     [GeneratedRegex("^((on|off)|toggle) ([0-9]{1,3}),([0-9]{1,3}) through ([0-9]{1,3}),([0-9]{1,3})$")]
     private static partial Regex Reg();

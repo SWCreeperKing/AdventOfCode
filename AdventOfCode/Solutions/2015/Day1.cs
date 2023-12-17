@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 1, "Not Quite Lisp")]
-public static class Day1
+file class Day1
 {
     [Answer(280)] public static int Part1(string inp) => inp.Sum(c => c is '(' ? 1 : -1);
 

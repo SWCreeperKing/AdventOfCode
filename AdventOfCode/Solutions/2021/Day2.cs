@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 2, "Dive!")]
-public static class Day2
+file class Day2
 {
     [ModifyInput]
     public static (char c, int i)[] ProcessInput(string input)

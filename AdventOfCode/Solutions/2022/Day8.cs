@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run.Misc;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 8, "Treetop Tree House")]
-public class Day8
+file class Day8
 
 {
     [ModifyInput]

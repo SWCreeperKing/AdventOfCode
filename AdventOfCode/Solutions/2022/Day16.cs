@@ -12,7 +12,7 @@ namespace AdventOfCode.Solutions._2022;
 // solution used: https://github.com/encse/adventofcode/blob/master/2022/Day16/Solution.cs
 // >24hr was waited before submitting
 [Day(2022, 16, "Proboscidea Volcanium")]
-public class Day16
+file class Day16
 {
     private static readonly Regex InputRegex =
         new(@"Valve ([A-Z]{2}) has flow rate=(\d+); tunnel(?:s|) lead(?:s|) to valve(?:s|) ([A-Z]{2}(, [A-Z]{2})*)",

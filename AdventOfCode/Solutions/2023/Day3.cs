@@ -8,7 +8,7 @@ using Range = System.Range;
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 3, "Gear Ratios")]
-public class Day3
+file class Day3
 {
     [ModifyInput]
     public static ((int line, int number, Range range)[] numbs, Matrix2d<char> map) ProcessInput(string input)

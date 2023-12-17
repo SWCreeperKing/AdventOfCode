@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 9, "Explosives in Cyberspace")]
-public partial class Day9
+ internal partial class Day9
 {
     [GeneratedRegex(@"\((\d+)x(\d+)\)")] public static partial Regex ParaFind();
 

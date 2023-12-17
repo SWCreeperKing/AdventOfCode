@@ -7,7 +7,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 7, "Internet Protocol Version 7")]
-public partial class Day7
+ internal partial class Day7
 {
     [GeneratedRegex(@"(\w{1})((?!\1)(\w{1})\3)\1")]
     public static partial Regex AbbaRegex();

@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 3, "Rucksack Reorganization")]
-public static class Day3
+file class Day3
 {
     [ModifyInput] public static string[] ProcessInput(string inp) => inp.Split('\n');
 

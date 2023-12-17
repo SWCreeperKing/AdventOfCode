@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 20, "Infinite Elves and Infinite Houses")]
-public static class Day20
+file class Day20
 {
     [ModifyInput] public static long ProcessInput(string input) => long.Parse(input);
     [Answer(665280)] public static long Part1(long inp) => GetHouseFromPresents(inp, inp / 10);

@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 25, "Let It Snow")]
-public partial class Day25
+ internal partial class Day25
 {
     [GeneratedRegex(@"(?:\w+) row (\d+), column (\d+).")]
     public static partial Regex InputRegex();

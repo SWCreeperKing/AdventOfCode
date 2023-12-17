@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 21, "RPG Simulator 20XX")]
-public class Day21
+file class Day21
 {
     private static readonly List<Item> Weapons =
         [new Item(8, 4), new Item(10, 5), new Item(25, 6), new Item(40, 7), new Item(74, 8)];
