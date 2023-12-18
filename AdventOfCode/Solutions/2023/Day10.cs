@@ -40,7 +40,7 @@ file class Day10
     {
         var dist = 0;
 
-        for (var x2 = x; x2 < map.Size.h; x2++)
+        for (var x2 = x; x2 < map.Size.w; x2++)
         {
             if (map[x2, y] is not ('|' or 'L' or 'J')) continue;
             dist++;

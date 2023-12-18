@@ -70,10 +70,10 @@ public class Matrix2d<T>
 
     public Matrix2d<T> Iterate(Action<Matrix2d<T>, T, int, int> action)
     {
-        for (var i = 0; i < TrueSize; i++)
+        for (var y = 0; y < Size.h; y++)
+        for (var x = 0; x < Size.w; x++)
         {
-            var (x, y) = TranslatePosition(i);
-            action(this, this[i], x, y);
+            action(this, this[x, y], x, y);
         }
 
         return this;
