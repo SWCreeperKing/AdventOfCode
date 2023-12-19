@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
+using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -13,7 +14,7 @@ file class Day16
     public static Matrix2d<Tile> ProcessInput(string input)
         => new(input.Split('\n').Select(s => s.Select(c => new Tile(c)).ToArray()).ToArray());
 
-    [Answer(7034)] public static long Part1(Matrix2d<Tile> inp) => RunMap(inp, (0, 0, 1, 0));
+    [Answer(7034)] public static long Part1(Matrix2d<Tile> inp) => RunMap(inp, (Pos.Zero, Right));
 
     [Answer(7759)]
     public static long Part2(Matrix2d<Tile> inp)
@@ -23,20 +24,20 @@ file class Day16
 
         for (var x = 0; x < size.w; x++)
         {
-            biggest = Math.Max(RunMap(inp, (x, 0, 0, -1)), biggest);
-            biggest = Math.Max(RunMap(inp, (x, size.h - 1, 0, 1)), biggest);
+            biggest = Math.Max(RunMap(inp, (new Pos(x, 0), Up)), biggest);
+            biggest = Math.Max(RunMap(inp, (new Pos(x, size.h - 1), Down)), biggest);
         }
 
         for (var y = 0; y < size.h; y++)
         {
-            biggest = Math.Max(RunMap(inp, (0, y, 1, 0)), biggest);
-            biggest = Math.Max(RunMap(inp, (size.w - 1, y, -1, 0)), biggest);
+            biggest = Math.Max(RunMap(inp, (new Pos(0, y), Right)), biggest);
+            biggest = Math.Max(RunMap(inp, (new Pos(size.w - 1, y), Left)), biggest);
         }
 
         return biggest;
     }
 
-    public static long RunMap(Matrix2d<Tile> map, (int x, int y, int dx, int dy) starting)
+    public static long RunMap(Matrix2d<Tile> map, (Pos pos, NodeDirection dir) starting)
     {
         map.Iterate((_, t, _) =>
         {
@@ -44,60 +45,47 @@ file class Day16
             t.Touched = false;
         });
 
-        List<(int x, int y, int dx, int dy)> lasers = [starting];
-
-        void TryAdd(int x, int y, int dx, int dy)
-        {
-            if (!map.PositionExists(x + dx, y + dy) || map[x + dx, y + dy].Movements.Contains((dx, dy))) return;
-            lasers.Add((x + dx, y + dy, dx, dy));
-            map[x + dx, y + dy].Movements.Add((dx, dy));
-        }
+        List<(Pos pos, NodeDirection dir)> lasers = [starting];
 
         while (lasers.Count != 0)
         {
-            var (x, y, dx, dy) = lasers[0];
-            if (!map.PositionExists(x, y))
+            var (pos, dir) = lasers[0];
+            if (!map.PositionExists(pos))
             {
                 lasers.RemoveAt(0);
                 continue;
             }
 
-            map[x, y].Touched = true;
+            map[pos].Touched = true;
 
-            switch (map[x, y].TileChar)
+            switch (map[pos].TileChar)
             {
                 case '.':
-                    lasers[0] = (x + dx, y + dy, dx, dy);
+                    lasers[0] = (pos.Move(dir), dir);
                     break;
 
                 case '|':
-                    if (dy != 0) goto case '.';
+                    if (dir is Up or Down) goto case '.';
                     lasers.RemoveAt(0);
-                    TryAdd(x, y, 0, 1);
-                    TryAdd(x, y, 0, -1);
+                    TryAdd(pos, Down);
+                    TryAdd(pos, Up);
                     break;
 
                 case '-':
-                    if (dx != 0) goto case '.';
+                    if (dir is Left or Right) goto case '.';
                     lasers.RemoveAt(0);
-                    TryAdd(x, y, 1, 0);
-                    TryAdd(x, y, -1, 0);
+                    TryAdd(pos, Right);
+                    TryAdd(pos, Left);
                     break;
 
-                case '/':
-                    if ((dy == 0 && map.PositionExists(x, y - dx)) || (dx == 0 && map.PositionExists(x - dy, y)))
+                case '/' or '\\':
+                    var mirrorDir = map[pos].TileChar is '/' ? dir.MirrorOther()
+                        : dir.Mirror();
+                    
+                    var mirror = pos.Move(mirrorDir);
+                    if (map.PositionExists(mirror))
                     {
-                        lasers[0] = dy == 0 ? (x, y - dx, 0, -dx) : (x - dy, y, -dy, 0);
-                        continue;
-                    }
-
-                    lasers.RemoveAt(0);
-                    break;
-
-                case '\\':
-                    if ((dy == 0 && map.PositionExists(x, y + dx)) || (dx == 0 && map.PositionExists(x + dy, y)))
-                    {
-                        lasers[0] = dy == 0 ? (x, y + dx, 0, dx) : (x + dy, y, dy, 0);
+                        lasers[0] = (mirror, mirrorDir);
                         continue;
                     }
 
@@ -107,12 +95,20 @@ file class Day16
         }
 
         return map.Select((_, t, _, _) => t.Touched ? 1 : 0).Sum();
+
+        void TryAdd(Pos pos, NodeDirection dir)
+        {
+            var next = pos.Move(dir);
+            if (!map.PositionExists(next) || map[next].Movements.Contains(dir)) return;
+            lasers.Add((next, dir));
+            map[next].Movements.Add(dir);
+        }
     }
 }
 
 file class Tile(char tile)
 {
     public readonly char TileChar = tile;
-    public readonly List<(int dx, int dy)> Movements = [];
+    public readonly List<NodeDirection> Movements = [];
     public bool Touched;
 }

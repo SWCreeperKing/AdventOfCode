@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
-using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
+using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
@@ -96,51 +96,48 @@ public class Matrix2d<T>
             return select(this, t, x, y);
         });
 
+    public bool PositionExists(Pos pos) => PositionExists(pos.X, pos.Y);
     public bool PositionExists(int x, int y) => x >= 0 && y >= 0 && x < Size.w && y < Size.h;
 
-    public (int x, int y)[] WhereInCircle(int x, int y, Predicate<T> condition, bool corners = true)
+    public Pos[] WhereInCircle(Pos pos, Predicate<T> condition, bool corners = true)
     {
-        List<(int x, int y)> cords = [];
-        foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
+        List<Pos> cords = [];
+        foreach (var offset in corners ? SurroundDiagonal : Surround)
         {
-            var nX = x + xOff;
-            var nY = y + yOff;
-            if (!PositionExists(nX, nY) || !condition(this[nX, nY])) continue;
-            cords.Add((nX, nY));
+            var newPos = pos + offset;
+            if (!PositionExists(newPos) || !condition(this[newPos])) continue;
+            cords.Add(newPos);
         }
 
         return cords.ToArray();
     }
 
-    public bool[] MatchInCircle(int x, int y, Predicate<T> condition, bool corners = true)
+    public bool[] MatchInCircle(Pos pos, Predicate<T> condition, bool corners = true)
     {
         List<bool> bools = [];
-        foreach (var (xOff, yOff) in corners ? SurroundDiagonal : Surround)
-        {
-            var nX = x + xOff;
-            var nY = y + yOff;
-            bools.Add(PositionExists(nX, nY) && condition(this[nX, nY]));
-        }
+        bools.AddRange((corners ? SurroundDiagonal : Surround)
+            .Select(offset => pos + offset)
+            .Select(newPos => PositionExists(newPos) && condition(this[newPos])));
 
         return bools.ToArray();
     }
 
-    public bool AnyTrueMatchInCircle(int x, int y, Predicate<T> condition, bool corners = true)
-        => MatchInCircle(x, y, condition, corners).Any(b => b);
+    public bool AnyTrueMatchInCircle(Pos pos, Predicate<T> condition, bool corners = true)
+        => MatchInCircle(pos, condition, corners).Any(b => b);
 
     public bool AnyAllCircularMarch(int x, int y, Func<T, bool> allConditional, int ring = 1)
-        => March(x, y - ring, Up).All(allConditional)
-           || March(x + ring, y, Right).All(allConditional)
-           || March(x, y + ring, Down).All(allConditional)
-           || March(x - ring, y, Left).All(allConditional);
+        => March(x, y - ring, Direction.Up).All(allConditional)
+           || March(x + ring, y, Direction.Right).All(allConditional)
+           || March(x, y + ring, Direction.Down).All(allConditional)
+           || March(x - ring, y, Direction.Left).All(allConditional);
 
     public long[] CircularMarchAndCountWhile(int x, int y, Func<T, bool> count, int ring = 1)
         =>
         [
-            MarchAndCountWhile(x, y - ring, Up, count),
-            MarchAndCountWhile(x + ring, y, Right, count),
-            MarchAndCountWhile(x, y + ring, Down, count),
-            MarchAndCountWhile(x - ring, y, Left, count)
+            MarchAndCountWhile(x, y - ring, Direction.Up, count),
+            MarchAndCountWhile(x + ring, y, Direction.Right, count),
+            MarchAndCountWhile(x, y + ring, Direction.Down, count),
+            MarchAndCountWhile(x - ring, y, Direction.Left, count)
         ];
 
     public long MarchAndCountWhile(int x, int y, Direction direction, Func<T, bool> count)
@@ -173,7 +170,7 @@ public class Matrix2d<T>
         var isVertical = (int) direction % 2 == 0;
         var set = isVertical ? y : x;
 
-        if (direction is Right or Down)
+        if (direction is Direction.Right or Direction.Down)
         {
             for (var i = set; i < (isVertical ? Size.h : Size.w); i++)
             {
@@ -189,16 +186,16 @@ public class Matrix2d<T>
         }
     }
 
-    public (int x, int y) Find(T t) => Find(tt => tt.Equals(t));
+    public Pos Find(T t) => Find(tt => tt.Equals(t));
 
-    public (int x, int y) Find(Func<T, bool> find)
+    public Pos Find(Func<T, bool> find)
     {
         for (var y = 0; y < Size.h; y++)
         for (var x = 0; x < Size.w; x++)
         {
             var t = this[x, y];
             if (!find(t)) continue;
-            return (x, y);
+            return new Pos(x, y);
         }
 
         throw new ArgumentException("Could not find element");
@@ -206,7 +203,12 @@ public class Matrix2d<T>
 
     public (int x, int y) TranslatePosition(int index) => (index % Size.w, index / Size.h);
     public int TranslatePosition((int x, int y) pos) => TranslatePosition(pos.x, pos.y);
-    public int TranslatePosition(int x, int y) => y * Size.w + x;
+    public int TranslatePosition(Pos pos) => TranslatePosition(pos.X, pos.Y);
+    public int TranslatePosition(int x, int y)
+    {
+        if (!PositionExists(x, y)) throw new ArgumentException("X, Y results in out of bounds!");
+        return y * Size.w + x;
+    }
 
     public T this[int index]
     {
@@ -224,6 +226,12 @@ public class Matrix2d<T>
     {
         get => Array[TranslatePosition(pos)];
         set => Array[TranslatePosition(pos)] = value;
+    }
+
+    public T this[Pos pos]
+    {
+        get => Array[TranslatePosition(pos.X, pos.Y)];
+        set => Array[TranslatePosition(pos.X, pos.Y)] = value;
     }
 
     public static implicit operator T[](Matrix2d<T> matrix2d) => matrix2d.Array;

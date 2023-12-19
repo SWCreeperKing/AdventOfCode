@@ -51,20 +51,20 @@ file class Day3
     public static long Part1(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
     {
         var sum = 0;
-        Iterate(inp.numbs, inp.map, c => c != '.' && !char.IsDigit(c), (_, _, number) => sum += number);
+        Iterate(inp.numbs, inp.map, c => c != '.' && !char.IsDigit(c), (_, number) => sum += number);
         return sum;
     }
 
     [Answer(80403602)]
     public static long Part2(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
     {
-        Dictionary<(int line, int place), List<int>> gears = new();
-        Iterate(inp.numbs, inp.map, c => c == '*', (x, y, number) =>
+        Dictionary<Pos, List<int>> gears = new();
+        Iterate(inp.numbs, inp.map, c => c == '*', (pos, number) =>
         {
-            var (nX, nY) = inp.map.WhereInCircle(x, y, c => c == '*').First();
-            if (!gears.TryGetValue((nY, nX), out var list))
+            var newPos = inp.map.WhereInCircle(pos, c => c == '*').First();
+            if (!gears.TryGetValue(newPos, out var list))
             {
-                gears[(nY, nX)] = list = [];
+                gears[newPos] = list = [];
             }
 
             list.Add(number);
@@ -74,14 +74,15 @@ file class Day3
     }
 
     public static void Iterate((int line, int number, Range range)[] numbs, Matrix2d<char> map,
-        Predicate<char> condition, Action<int, int, int> action)
+        Predicate<char> condition, Action<Pos, int> action)
     {
         foreach (var (y, number, range) in numbs)
         {
             for (var x = range.Start.Value; x < range.End.Value; x++)
             {
-                if (!map.AnyTrueMatchInCircle(x, y, condition)) continue;
-                action(x, y, number);
+                Pos pos = new(x, y);
+                if (!map.AnyTrueMatchInCircle(pos, condition)) continue;
+                action(pos, number);
                 break;
             }
         }

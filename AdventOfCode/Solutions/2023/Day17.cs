@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
@@ -20,39 +21,35 @@ file class Day17
                 .Inline(compare => compare == 0 ? x.Item2.CompareTo(y.Item2) : compare)).Eval(
             (map.Size.w - 1, map.Size.h - 1),
             [
-                new State((0, 0), NodeDirection.Right, 0, 0, part2),
-                new State((0, 0), NodeDirection.Down, 0, 0, part2)
+                new State(Pos.Zero, NodeDirection.Right, 0, 0, part2),
+                new State(Pos.Zero, NodeDirection.Down, 0, 0, part2)
             ]).Heat;
 }
 
 file class State(
-    (int x, int y) position,
+    Pos position,
     NodeDirection direction,
     int heat,
     int count,
     bool part2 = false) : State<State, int, (int, int)>(position, direction)
 {
     public readonly int Heat = heat;
-    public readonly string ThisKey = $"{position}|{direction}|{count}";
 
-    public override string Key() => ThisKey;
+    public override int GetHashCode() => HashCode.Combine(Position, Direction, count);
     public override (int, int) GetValue(int mapVal) => (Heat, count);
 
-    public override State MakeNewState(Matrix2d<int> map, int newX, int newY, NodeDirection dir)
-        => new((newX, newY), dir, Heat + map[newX, newY], direction == dir ? count + 1 : 1, part2);
+    public override State MakeNewState(Matrix2d<int> map, Pos newPos, NodeDirection dir)
+        => new(newPos, dir, Heat + map[newPos], Direction == dir ? count + 1 : 1, part2);
 
-    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, int dx, int dy)
+    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, Pos dxy)
     {
-        if (direction.Rotate180() == dir) return false;
-        if (!part2) return direction != dir || count < 3;
+        if (Direction.Rotate180() == dir) return false;
+        if (!part2) return Direction != dir || count < 3;
 
-        if (direction == dir && count < 10) return true;
-        return direction != dir && 4 <= count;
+        if (Direction == dir && count < 10) return true;
+        return Direction != dir && 4 <= count;
     }
 
-    public override bool IsFinal((int x, int y) dest, State<State, int, (int, int)> state, int val)
-    {
-        if (part2 && count < 4) return false;
-        return dest.x == Position.x && dest.y == Position.y;
-    }
+    public override bool IsFinal(Pos dest, State<State, int, (int, int)> state, int val)
+        => (!part2 || count >= 4) && dest == Position;
 }

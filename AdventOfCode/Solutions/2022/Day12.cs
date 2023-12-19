@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2022;
 file class Day12
 {
     [ModifyInput]
-    public static ((int x, int y) start, (int x, int y) end, Matrix2d<int> map) ProcessInput(string inp)
+    public static (Pos start, Pos end, Matrix2d<int> map) ProcessInput(string inp)
     {
         var matrix = new Matrix2d<int>(inp.Split('\n')
             .Select(s => s.Select(c => c switch
@@ -23,40 +23,34 @@ file class Day12
         return (matrix.Find(0), end, matrix);
     }
 
-    [Answer(481)]
-    public static long Part1(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp) => Solve(inp);
+    [Answer(481)] public static long Part1((Pos start, Pos end, Matrix2d<int> map) inp) => Solve(inp);
+    [Answer(480)] public static long Part2((Pos start, Pos end, Matrix2d<int> map) inp) => Solve(inp, true);
 
-    [Answer(480)]
-    public static long Part2(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp) => Solve(inp, true);
-
-    public static long Solve(((int x, int y) start, (int x, int y) end, Matrix2d<int> map) inp, bool part2 = false)
+    public static long Solve((Pos start, Pos end, Matrix2d<int> map) inp, bool part2 = false)
         => (!part2 ? (pos: inp.start, dest: inp.end) : (pos: inp.end, dest: inp.start)).Inline(t
-            => new Dijkstra<State, int, int>(inp.map, (x, y) => x.CompareTo(y))
+            => new Dijkstra<State, int, int>(inp.map, (a, b) => a.CompareTo(b))
                 .Eval(t.dest, new State(t.pos, NodeDirection.Center, part2)).Steps);
 }
 
-file class State((int x, int y) position, NodeDirection direction, bool part2 = false, int steps = 0)
+file class State(Pos position, NodeDirection direction, bool part2 = false, int steps = 0)
     : State<State, int, int>(position, direction)
 {
     public readonly int Steps = steps;
-    public override string Key() => $"{Position}";
+    public override int GetHashCode() => Position.GetHashCode();
     public override int GetValue(int mapVal) => Steps;
 
-    public override State MakeNewState(Matrix2d<int> map, int newX, int newY, NodeDirection dir)
-        => new((newX, newY), dir, part2, Steps + 1);
+    public override State MakeNewState(Matrix2d<int> map, Pos newPos, NodeDirection dir)
+        => new(newPos, dir, part2, Steps + 1);
 
-    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, int dx, int dy)
+    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, Pos dxy)
     {
         var alt = map[Position];
-        var nextAlt = map[Position.x + dx, Position.y + dy];
+        var nextAlt = map[Position + dxy];
         if (alt is -1 || nextAlt is -1) return true;
         if (!nextAlt.IsInRange(0, alt + 1) && !part2) return false;
         return (alt - 1).IsInRange(0, nextAlt) || !part2;
     }
 
-    public override bool IsFinal((int x, int y) dest, State<State, int, int> state, int val)
-    {
-        if (part2) return val == 1;
-        return dest.x == Position.x && dest.y == Position.y;
-    }
+    public override bool IsFinal(Pos dest, State<State, int, int> state, int val)
+        => part2 ? val == 1 : dest == Position;
 }

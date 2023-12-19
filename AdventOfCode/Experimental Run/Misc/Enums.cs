@@ -4,14 +4,14 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Enums
 {
-    public static readonly (int x, int y)[] SurroundDiagonal =
+    public static readonly Pos[] SurroundDiagonal =
         [(0, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)];
 
-    public static readonly (int x, int y)[] Surround =
+    public static readonly Pos[] Surround =
         [(0, 0), (-1, 0), (0, -1), (1, 0), (0, 1)];
 
     public static readonly IReadOnlyDictionary<Direction, (int x, int y)> DirectionModifiers =
-        new Dictionary<Direction, (int x, int y)>()
+        new Dictionary<Direction, (int x, int y)>
         {
             { Direction.Up, (0, 1) },
             { Direction.Right, (1, 0) },

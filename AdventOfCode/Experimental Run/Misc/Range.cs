@@ -1,23 +1,28 @@
 using System;
+using System.Net;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
-public class Range
+public readonly struct Range(long start, long end)
 {
-    public long Start { get; set; }
-    public long End { get; set; }
+    public static readonly Range Null = new(long.MinValue, long.MaxValue);
 
-    public Range(System.Range range)
+    public readonly long Start = start;
+    public readonly long End = end;
+
+    public Range(System.Range range) : this(range.Start.Value, range.End.Value)
     {
-        Start = range.Start.Value;
-        End = range.End.Value;
     }
 
-    public Range(long start, long end)
+    public void Deconstruct(out long start, out long end)
     {
-        Start = start;
-        End = end;
+        start = Start;
+        end = End;
     }
+
+    public Range NewEnd(long newEnd) => new(Start, newEnd);
+    public Range NewStart(long newStart) => new(newStart, End);
+    public bool IsValid() => Start <= End;
 
     public long Delta() => Math.Abs(Start - End);
 
@@ -51,7 +56,7 @@ public class Range
 
     public bool CanMerge(Range range, out Range merged, bool exact = true)
     {
-        merged = null;
+        merged = Null;
         if (!IsOverlapping(range, exact)) return false;
 
         if (IsConsistingOf(range, exact))
@@ -77,8 +82,15 @@ public class Range
         return false;
     }
 
+    public long Count() => Delta() + 1;
+
     public static Range operator +(Range range, int i) => new(range.Start + i, range.End + i);
     public static Range operator +(int i, Range range) => new(range.Start + i, range.End + i);
     public static Range operator -(Range range, int i) => new(range.Start - i, range.End - i);
     public static Range operator -(int i, Range range) => new(range.Start - i, range.End - i);
+
+    public static implicit operator System.Range(Range range) => new Index((int) range.Start)..(int) range.End;
+    public static implicit operator Range(System.Range range) => new(range);
+
+    public new int GetHashCode => HashCode.Combine(Start, End);
 }
