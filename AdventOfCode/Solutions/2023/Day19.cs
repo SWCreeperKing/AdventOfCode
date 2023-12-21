@@ -7,7 +7,7 @@ using Range = AdventOfCode.Experimental_Run.Misc.Range;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 19, "Aplenty"), Run]
+[Day(2023, 19, "Aplenty")]
 file class Day19
 {
     public static readonly ImmutableDictionary<char, int> Xmas =

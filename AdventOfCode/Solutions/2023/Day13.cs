@@ -10,9 +10,8 @@ namespace AdventOfCode.Solutions._2023;
 file class Day13
 {
     [ModifyInput]
-    public static (List<string> col, List<string> row)[] ProcessInput(string input)
-    {
-        return input.Split("\n\n").Select(line =>
+    public static Map[] ProcessInput(string input)
+        => input.Split("\n\n").Select(line =>
         {
             Matrix2d<char> map = new(line.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
@@ -28,27 +27,21 @@ file class Day13
                 columns.Add(sb.ToString());
             }
 
-            return (columns, line.Split('\n').ToList());
+            return new Map(columns, line.Split('\n'));
         }).ToArray();
-    }
 
-    [Answer(40006)]
-    public static long Part1((List<string> col, List<string> row)[] inp)
-        => inp.Select(t => CalcMap(t.col, t.row)).Sum();
+    [Answer(40006)] public static long Part1(Map[] inp) => inp.Select(CalcMap).Sum();
+    [Answer(28627)] public static long Part2(Map[] inp) => inp.Select(FullCalcDoubleMap).Sum();
 
-    [Answer(28627)]
-    public static long Part2((List<string> col, List<string> row)[] inp)
-        => inp.Select(t => CalcDoubleMap(MakeVariants(t.col), MakeVariants(t.row), CalcMap(t.col, t.row))).Sum();
-
-    public static List<List<string>> MakeVariants(List<string> list)
+    public static List<string[]> MakeVariants(string[] list)
     {
-        List<List<string>> variants = [];
+        List<string[]> variants = [];
 
-        for (var i = 0; i < list.Count; i++)
+        for (var i = 0; i < list.Length; i++)
         {
             for (var j = 0; j < list[i].Length; j++)
             {
-                var variant = list.ToList();
+                var variant = list.ToArray();
                 variant[i] = variant[i].Remove(j, 1).Insert(j, list[i][j] is '.' ? "#" : ".");
                 variants.Add(variant);
             }
@@ -57,18 +50,18 @@ file class Day13
         return variants;
     }
 
-    public static int CalcMap(List<string> columns, List<string> rows)
-        => Find(columns, false).Inline(vertical => vertical != -1 ? vertical : Find(rows, true));
+    public static int CalcMap(Map map)
+        => Find(map.Columns, false).Inline(vertical => vertical != -1 ? vertical : Find(map.Rows, true));
 
-    public static int Find(List<string> section, bool multi, int original = -1)
+    public static int Find(string[] section, bool multi, int original = -1)
     {
-        for (var i = 0; i < section.Count - 1; i++)
+        for (var i = 0; i < section.Length - 1; i++)
         {
             if (section[i] != section[i + 1]) continue;
             var pattern = true;
             for (int j = i, diff = 1; 0 <= j; j--, diff += 2)
             {
-                if (j + diff >= section.Count) break;
+                if (j + diff >= section.Length) break;
                 if (section[j] == section[j + diff]) continue;
                 pattern = false;
                 break;
@@ -83,12 +76,21 @@ file class Day13
         return -1;
     }
 
-    public static int CalcDoubleMap(List<List<string>> doubleColumns, List<List<string>> doubleRows, int original)
+    public static int FullCalcDoubleMap(Map map)
+        => CalcDoubleMap(MakeVariants(map.Columns), MakeVariants(map.Rows), CalcMap(map));
+
+    public static int CalcDoubleMap(List<string[]> doubleColumns, List<string[]> doubleRows, int original)
         => DoubleFind(doubleColumns, false, original)
             .Inline(vertical => vertical != -1 ? vertical : DoubleFind(doubleRows, true, original));
 
-    public static int DoubleFind(List<List<string>> sections, bool multi, int original)
+    public static int DoubleFind(List<string[]> sections, bool multi, int original)
         => sections.Select(section
                 => Find(section, multi, original)).Where(val => val != -1 && val != original)
             .Inline(found => found.Any() ? found.First() : -1);
+}
+
+file readonly struct Map(IEnumerable<string> columns, IEnumerable<string> rows)
+{
+    public readonly string[] Columns = columns.ToArray();
+    public readonly string[] Rows = rows.ToArray();
 }

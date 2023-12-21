@@ -18,7 +18,7 @@ file class Day10
     };
 
     [ModifyInput]
-    public static (Pos pos, Matrix2d<char> map) ModifyInput(string input)
+    public static (Pos pos, Matrix2d<char> map) ProcessInput(string input)
         => new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray())
             .Inline(map => (map.Find('S'), map));
 
