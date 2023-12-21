@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 20, "WIP"), Run]
+[Day(2023, 20, "Pulse Propagation")]
 file class Day20
 {
     [ModifyInput]
@@ -53,42 +53,49 @@ file class Day20
     {
         var (broadcaster, modules) = inp;
 
-        var count1 = 0L;
-        var count2 = 0L;
-        for (var i = 0; i < 1000; i++)
+        Counting count = new(0, 0);
+        for (var i = 0; i < 1000; i++, count += Run())
         {
-            var (low, high) = Run();
-            count1 += low;
-            count2 += high;
         }
 
-        return count1 * count2;
+        return count.Counter();
 
-        (long low, long high) Run()
+        Counting Run()
         {
-            long[] sentSignals = [0, 0];
+            long low = 1;
+            long high = 0;
             Queue<State> signalStates = new();
-            sentSignals[0]++;
             foreach (var output in broadcaster)
             {
-                sentSignals[0]++;
+                low++;
                 signalStates.Enqueue(new State(output, "broadcaster", Signal.Low));
             }
 
             while (signalStates.Count > 0)
             {
-                var (module, lastModule, signal) = signalStates.Dequeue();
+                var state = signalStates.Dequeue();
+                var module = modules[state.Module];
 
-                var receivedSignal = modules[module].Operate(signal, lastModule);
-                if (receivedSignal is Signal.None) continue;
-                sentSignals[receivedSignal is Signal.Low ? 0 : 1] += modules[module].Outputs.Count;
-                foreach (var output in modules[module].Outputs)
+                var receivedSignal = module.Operate(state.Signal, state.LastModule);
+                switch (receivedSignal)
                 {
-                    signalStates.Enqueue(new State(output, module, receivedSignal));
+                    case Signal.None:
+                        continue;
+                    case Signal.Low:
+                        low += module.Outputs.Count;
+                        break;
+                    default:
+                        high += module.Outputs.Count;
+                        break;
+                }
+
+                foreach (var output in module.Outputs)
+                {
+                    signalStates.Enqueue(new State(output, state.Module, receivedSignal));
                 }
             }
 
-            return (sentSignals[0], sentSignals[1]);
+            return new Counting(low, high);
         }
     }
 
@@ -121,27 +128,38 @@ file class Day20
 
             while (signalStates.Count > 0)
             {
-                var (module, lastModule, signal) = signalStates.Dequeue();
+                var state = signalStates.Dequeue();
+                var module = modules[state.Module];
 
-                var receivedSignal = modules[module].Operate(signal, lastModule);
+                var receivedSignal = module.Operate(state.Signal, state.LastModule);
 
-                if (required.TryGetValue(module, out var l) && l == 0 && receivedSignal == Signal.High)
+                if (required.TryGetValue(state.Module, out var l) && l == 0 && receivedSignal == Signal.High)
                 {
-                    required[module] = buttonPresses;
+                    required[state.Module] = buttonPresses;
                 }
 
                 if (required.Values.All(l => l != 0)) return false;
 
                 if (receivedSignal is Signal.None) continue;
-                foreach (var output in modules[module].Outputs)
+                foreach (var output in module.Outputs)
                 {
-                    signalStates.Enqueue(new State(output, module, receivedSignal));
+                    signalStates.Enqueue(new State(output, state.Module, receivedSignal));
                 }
             }
 
             return true;
         }
     }
+}
+
+file readonly struct Counting(long min, long max)
+{
+    public readonly long Min = min;
+    public readonly long Max = max;
+
+    public static Counting operator +(Counting c1, Counting c2) => new(c1.Min + c2.Min, c1.Max + c2.Max);
+
+    public long Counter() => min * max;
 }
 
 file readonly struct State(string module, string lastModule, Signal signal)

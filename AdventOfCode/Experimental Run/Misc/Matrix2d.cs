@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
@@ -200,10 +199,28 @@ public class Matrix2d<T>
 
         throw new ArgumentException("Could not find element");
     }
+    
+    
+    public Pos[] FindAll(Func<T, bool> find)
+    {
+        List<Pos> posList = [];
+        for (var y = 0; y < Size.h; y++)
+        for (var x = 0; x < Size.w; x++)
+        {
+            var t = this[x, y];
+            if (!find(t)) continue;
+            posList.Add(new Pos(x, y));
+        }
 
-    public (int x, int y) TranslatePosition(int index) => (index % Size.w, index / Size.h);
+        return posList.ToArray();
+    }
+
+    public Pos[] FindAll(T find) => Array.FindAllIndexesOf(find).Select(i => TranslatePosition(i)).ToArray();
+
+    public Pos TranslatePosition(int index) => new(index % Size.w, index / Size.h);
     public int TranslatePosition((int x, int y) pos) => TranslatePosition(pos.x, pos.y);
     public int TranslatePosition(Pos pos) => TranslatePosition(pos.X, pos.Y);
+
     public int TranslatePosition(int x, int y)
     {
         if (!PositionExists(x, y)) throw new ArgumentException("X, Y results in out of bounds!");
