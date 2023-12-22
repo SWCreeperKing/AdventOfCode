@@ -43,4 +43,6 @@ public readonly struct Pos(int x = 0, int y = 0)
     public static implicit operator Pos(NodeDirection dir) => dir.Positional();
     public static implicit operator Pos((int x, int y) pos) => new(pos.x, pos.y);
     public static implicit operator (int x, int y)(Pos pos) => (pos.X, pos.Y);
+
+    public override string ToString() => $"({X}, {Y})";
 }

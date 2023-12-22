@@ -7,7 +7,7 @@ using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 21, "WIP"), Run]
+[Day(2023, 21, "Step Counter")]
 file class Day21
 {
     [ModifyInput]
@@ -17,30 +17,30 @@ file class Day21
     [Answer(3847)]
     public static long Part1(Matrix2d<char> inp)
     {
-        var startPos = inp.Find('S');
-        Matrix2d<int> map = new(inp.Size) { [startPos] = 1 };
+        HashSet<Pos> locations = [inp.Find('S')];
 
-        var steps = 64;
-        for (var i = 0; i < steps; i++)
+        for (var i = 0; i < 64; i++)
         {
-            var nextLayer = map.FindAll(i + 1);
-            foreach (var pos in nextLayer)
+            HashSet<Pos> newLocations = [];
+            foreach (var pos in locations)
             {
-                MakePos(i + 2, pos.Move(Up));
-                MakePos(i + 2, pos.Move(Down));
-                MakePos(i + 2, pos.Move(Left));
-                MakePos(i + 2, pos.Move(Right));
+                AddPos(pos.Move(Up), newLocations);
+                AddPos(pos.Move(Down), newLocations);
+                AddPos(pos.Move(Left), newLocations);
+                AddPos(pos.Move(Right), newLocations);
             }
+
+            locations = newLocations;
         }
 
-        return map.FindAll(i => i % 2 == 1).Length;
+        return locations.Count;
 
-        void MakePos(int i, Pos nextPos)
+        void AddPos(Pos nextPos, HashSet<Pos> list)
         {
+            if (list.Contains(nextPos)) return;
             if (!inp.PositionExists(nextPos)) return;
-            if (inp[nextPos] is not '.') return;
-            if (map[nextPos] > 0) return;
-            map[nextPos] = i;
+            if (inp[nextPos] is '#') return;
+            list.Add(nextPos);
         }
     }
 
@@ -63,9 +63,9 @@ file class Day21
                 AddPos(pos.Move(Left), newLocations);
                 AddPos(pos.Move(Right), newLocations);
             }
-        
+
             locations = newLocations;
-        
+
             if (i % size != half) continue;
             counter.Add(newLocations.Count);
         }
@@ -81,6 +81,7 @@ file class Day21
 
         void AddPos(Pos nextPos, HashSet<Pos> list)
         {
+            if (list.Contains(nextPos)) return;
             Pos pos = new((nextPos.X % size + size) % size, (nextPos.Y % size + size) % size);
             if (inp[pos] is '#') return;
             list.Add(nextPos);

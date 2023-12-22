@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Resources;
+using System.Threading.Tasks;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode;
@@ -13,15 +15,22 @@ public class Program
     // Advent of Code:
     // https://adventofcode.com/
     // my highest placing is 2022, day 1, part 1 at 493 place and a total time of 3:33
+    // public static readonly ResourceManager ResourceManager = new();
     public static HttpClient client;
+    public static long LastDownload;
 
     [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
         MessageId = "type: System.Int64[]")]
     public static void Main()
     {
         InitHttpClient();
+        InitResources();
         Console.CursorVisible = false;
         Starter.Start();
+    }
+
+    public static void InitResources()
+    {
     }
 
     public static void InitHttpClient()
@@ -38,10 +47,20 @@ public class Program
     
     public static string SaveInput(int year, int day)
     {
+        ClrCnsl.Write($"[#yellow]Downloading Input for [{year}, {day}]... ");
+        var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
+
+        if (time - LastDownload <= 3e4) // 30s
+        {
+            Task.Delay((int) (3e4 - (time - LastDownload))).GetAwaiter().GetResult();
+        }
+        
         var input = client.GetStringAsync($"/{year}/day/{day}/input")
             .GetAwaiter().GetResult();
         if (!Directory.Exists($"Input/{year}")) Directory.CreateDirectory($"Input/{year}");
         File.WriteAllText($"Input/{year}/{day}.txt", input);
+        ClrCnsl.WriteLine("[#darkyellow][Done]");
+        LastDownload = time;
         return input;
     }
 }
