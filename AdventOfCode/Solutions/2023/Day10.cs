@@ -30,20 +30,20 @@ file class Day10
         Dictionary<int, char> path = new();
         Follow(inp.map, inp.pos, path);
         return inp.map.MatrixSelect((_, _, i) => path.GetValueOrDefault(i, ' '))
-            .MatrixSelect((map, c, x, y) => c is ' ' && ShouldFill(map, x, y) ? 'O' : c)
+            .MatrixSelect((map, c, pos) => c is ' ' && ShouldFill(map, pos) ? 'O' : c)
             .Array.Count(c => c is 'O');
     }
 
-    public static bool ShouldFill(Matrix2d<char> map, int x, int y)
+    public static bool ShouldFill(Matrix2d<char> map, Pos pos)
     {
         var dist = 0;
-    
-        for (var x2 = x; x2 < map.Size.w; x2++)
+
+        for (var x2 = pos.X; x2 < map.Size.w; x2++)
         {
-            if (map[x2, y] is not ('|' or 'L' or 'J')) continue;
+            if (map[x2, pos.Y] is not ('|' or 'L' or 'J')) continue;
             dist++;
         }
-    
+
         return dist % 2 == 1;
     }
 

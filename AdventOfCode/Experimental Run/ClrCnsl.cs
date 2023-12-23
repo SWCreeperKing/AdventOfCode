@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AdventOfCode.Experimental_Run.Misc;
 using static System.ConsoleKey;
 
 namespace AdventOfCode.Experimental_Run;
@@ -131,4 +132,7 @@ public static class ClrCnsl
         WriteLine("Press any key to continue . . . ");
         Console.ReadKey(true);
     }
+
+    public static Pos GetCursor() => Console.GetCursorPosition().Inline(cursPos => new Pos(cursPos.Left, cursPos.Top));
+    public static void SetCursor(Pos pos) => Console.SetCursorPosition(pos.X, pos.Y);
 }

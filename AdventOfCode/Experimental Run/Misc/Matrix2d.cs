@@ -78,15 +78,13 @@ public class Matrix2d<T>
         return this;
     }
 
+    public Matrix2d<TO> MatrixSelect<TO>(Func<T, TO> select) => new(Array.Select(select).ToArray(), Size.w, Size.h);
+
     public Matrix2d<TO> MatrixSelect<TO>(Func<Matrix2d<T>, T, int, TO> select)
         => new(Array.Select((t, i) => select(this, t, i)).ToArray(), Size.w, Size.h);
 
-    public Matrix2d<TO> MatrixSelect<TO>(Func<Matrix2d<T>, T, int, int, TO> select)
-        => new(Array.Select((t, i) =>
-        {
-            var (x, y) = TranslatePosition(i);
-            return select(this, t, x, y);
-        }).ToArray(), Size.w, Size.h);
+    public Matrix2d<TO> MatrixSelect<TO>(Func<Matrix2d<T>, T, Pos, TO> select)
+        => new(Array.Select((t, i) => select(this, t, TranslatePosition(i))).ToArray(), Size.w, Size.h);
 
     public IEnumerable<TO> Select<TO>(Func<Matrix2d<T>, T, int, int, TO> select)
         => Array.Select((t, i) =>
@@ -199,8 +197,8 @@ public class Matrix2d<T>
 
         throw new ArgumentException("Could not find element");
     }
-    
-    
+
+
     public Pos[] FindAll(Func<T, bool> find)
     {
         List<Pos> posList = [];
@@ -269,6 +267,6 @@ public class Matrix2d<T>
         return sb.ToString();
     }
 
-    public Matrix2d<T> Duplicate() => MatrixSelect((_, t, _) => t);
-    public Matrix2d<T> Duplicate(Func<T, T> dupeFunc) => MatrixSelect((_, t, _) => dupeFunc(t));
+    public Matrix2d<T> Duplicate() => MatrixSelect(t => t);
+    public Matrix2d<T> Duplicate(Func<T, T> dupeFunc) => MatrixSelect(dupeFunc);
 }

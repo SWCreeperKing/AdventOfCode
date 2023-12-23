@@ -6,7 +6,7 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 22, "Sand Slabs"), Run]
+[Day(2023, 22, "Sand Slabs")]
 file class Day22
 {
     [ModifyInput]

@@ -13,7 +13,11 @@ namespace AdventOfCode.Experimental_Run;
 public static class Starter
 {
     public static readonly Dictionary<int, string> InputCache = new();
+
     public static readonly Dictionary<int, Dictionary<int, (DayAttribute att, Type type)>> PuzzleTypes = new();
+    // public static readonly Dictionary<YearDayInfo, DayStructure> DailyPuzzlesCache = new();
+    // public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = new();
+    // public static readonly Dictionary<YearDayInfo, string> DayInputCache = new();
 
     private static readonly Stopwatch Sw = new();
     private static readonly Stopwatch Sw2 = new();
@@ -29,6 +33,13 @@ public static class Starter
         types.ForEach(t =>
         {
             var att = t.GetCustomAttributes<DayAttribute>().First();
+            YearDayInfo dayInfo = new(att.Year, att.Day);
+
+            // if (!DailyPuzzles.ContainsKey(dayInfo))
+            // {
+            //     DailyPuzzles[dayInfo] = t;
+            // }
+
             if (!PuzzleTypes.TryGetValue(att.Year, out var value))
             {
                 value = new Dictionary<int, (DayAttribute att, Type type)>();
@@ -174,9 +185,10 @@ public static class Starter
             {
                 reset.Invoke(null, null);
             }
+
             Sw.Restart();
             Sw.Start();
-            var answer = partMethod.Invoke(null, new[] { modified ?? inp });
+            var answer = partMethod.Invoke(null, [modified ?? inp]);
             Sw.Stop();
 
             if (!hasAnswer)
@@ -263,5 +275,27 @@ public static class Starter
             !File.Exists(file)
                 ? Program.SaveInput(SelectedYear, day).Replace("\r", string.Empty)
                 : File.ReadAllText(file).Replace("\r", string.Empty));
+    }
+}
+
+public readonly struct YearDayInfo(int year, int day)
+{
+    public readonly int Year = year;
+    public readonly int Day = day;
+}
+
+public readonly struct DayStructure
+{
+    public readonly MethodInfo RestDataMethod;
+    public readonly MethodInfo ModifyInputMethod;
+    public readonly MethodInfo Part1Method;
+    public readonly MethodInfo Part2Method;
+    public readonly TestAttribute[] Part1TestAttributes;
+    public readonly TestAttribute[] Part2TestAttributes;
+    public readonly AnswerAttribute[] Part1Answers;
+    public readonly AnswerAttribute[] Part2Answers;
+
+    public DayStructure(Type t)
+    {
     }
 }

@@ -5,19 +5,4 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>12</LangVersion>
     </PropertyGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Update="Resource\Days.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Days.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Resource\Days.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Days.resx</DependentUpon>
-      </Compile>
-    </ItemGroup>
 </Project>
