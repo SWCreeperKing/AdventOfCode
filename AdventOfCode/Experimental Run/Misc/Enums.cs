@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
-public class Enums
+public static class Enums
 {
     public static readonly Pos[] SurroundDiagonal =
         [(0, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)];
@@ -19,21 +19,31 @@ public class Enums
             { Direction.Left, (-1, 0) },
         };
 
-    public enum Direction
-    {
-        None = -1,
-        Up = 0,
-        Right = 1,
-        Down = 2,
-        Left = 3
-    }
+    public static string String(this AnswerState state, object answer, string extra)
+        => state switch
+        {
+            AnswerState.Correct => $"[#green]Answer: [{answer}] {extra}",
+            AnswerState.Not => $"[#red]Incorrect Answer: [{answer}] {extra}",
+            AnswerState.High => $"[#darkyellow]Incorrect Answer, it is too [#red]High[#r]: [{answer}] {extra}",
+            AnswerState.Low => $"[#darkyellow]Incorrect Answer, it is too [#red]Low[#r]: [{answer}] {extra}",
+            _ => $"[#darkyellow]Possible Answer: [{answer}] {extra}"
+        };
+}
 
-    public enum AnswerState
-    {
-        Possible,
-        Correct,
-        Not,
-        High,
-        Low
-    }
+public enum Direction
+{
+    None = -1,
+    Up = 0,
+    Right = 1,
+    Down = 2,
+    Left = 3
+}
+
+public enum AnswerState
+{
+    Possible = 0,
+    Correct = 1,
+    Not = 2,
+    High = 3,
+    Low = 4
 }

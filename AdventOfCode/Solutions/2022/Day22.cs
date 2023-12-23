@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.Enums;
-using static AdventOfCode.Experimental_Run.Misc.Enums.Direction;
+using static AdventOfCode.Experimental_Run.Misc.Direction;
 
 namespace AdventOfCode.Solutions._2022;
 

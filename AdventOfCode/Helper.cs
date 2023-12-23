@@ -1,8 +1,10 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
@@ -369,4 +371,18 @@ public static class Helper
 
         return Math.Abs(area / 2) + perimeter / 2 + 1;
     }
+
+    public static object? SInvoke(this MethodInfo info, params object?[]? objs) => info.Invoke(null, objs);
+
+    public static MethodInfo? FirstOrNull<T>(this IEnumerable<MethodInfo> list)
+        where T : Attribute
+        => list.FirstOrDefault(m => m.GetCustomAttributes<T>().Any(), null);
+
+    public static MethodInfo? FirstOrNull(this IEnumerable<MethodInfo> list, string name)
+        => list.FirstOrDefault(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null);
+
+    public static T? Attribute<T>(this MethodInfo info) where T : Attribute => info.GetCustomAttribute<T>();
+
+    public static IEnumerable<T> Attributes<T>(this MethodInfo info) where T : Attribute
+        => info.GetCustomAttributes<T>();
 }

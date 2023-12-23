@@ -5,22 +5,22 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AdventOfCode.Experimental_Run.Misc;
 using static AdventOfCode.Experimental_Run.ClrCnsl;
-using static AdventOfCode.Experimental_Run.Misc.Enums;
+using static AdventOfCode.Experimental_Run.Starter;
 
 namespace AdventOfCode.Experimental_Run;
 
 public static class Starter
 {
-    public static readonly Dictionary<int, string> InputCache = new();
-
-    public static readonly Dictionary<int, Dictionary<int, (DayAttribute att, Type type)>> PuzzleTypes = new();
-    // public static readonly Dictionary<YearDayInfo, DayStructure> DailyPuzzlesCache = new();
-    // public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = new();
-    // public static readonly Dictionary<YearDayInfo, string> DayInputCache = new();
+    public static readonly Dictionary<int, List<YearDayInfo>> AllPuzzles = [];
+    public static readonly Dictionary<YearDayInfo, DayStructure> DailyPuzzlesCache = new();
+    public static readonly Dictionary<YearDayInfo, DayAttribute> DailyPuzzlesAttributes = new();
+    public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = new();
 
     private static readonly Stopwatch Sw = new();
     private static readonly Stopwatch Sw2 = new();
+    private static readonly string[] RunPrompts = ["Run All", "Switch Year", "Exit"];
     private static int SelectedYear;
 
     public static void Start()
@@ -28,29 +28,26 @@ public static class Starter
         var types = Assembly.GetCallingAssembly().GetTypes()
             .Where(t => t.IsClass && t.GetCustomAttributes<DayAttribute>().Any());
 
-        List<(int year, int day)> runners = [];
+        List<YearDayInfo> runners = [];
 
         types.ForEach(t =>
         {
             var att = t.GetCustomAttributes<DayAttribute>().First();
             YearDayInfo dayInfo = new(att.Year, att.Day);
 
-            // if (!DailyPuzzles.ContainsKey(dayInfo))
-            // {
-            //     DailyPuzzles[dayInfo] = t;
-            // }
+            DailyPuzzles.TryAdd(dayInfo, t);
+            DailyPuzzlesAttributes.TryAdd(dayInfo, att);
 
-            if (!PuzzleTypes.TryGetValue(att.Year, out var value))
+            if (!AllPuzzles.TryGetValue(dayInfo.Year, out var list))
             {
-                value = new Dictionary<int, (DayAttribute att, Type type)>();
-                PuzzleTypes.Add(att.Year, value);
+                list = AllPuzzles[dayInfo.Year] = [];
             }
 
-            value.Add(att.Day, (att, t));
+            list.Add(dayInfo);
 
             if (t.GetCustomAttributes<RunAttribute>().Any())
             {
-                runners.Add((att.Year, att.Day));
+                runners.Add(dayInfo);
             }
         });
 
@@ -58,13 +55,13 @@ public static class Starter
         {
             foreach (var runner in runners)
             {
-                SwitchYear(runner.year);
-                RunDay(runner.day, true);
+                SelectedYear = runner.Year;
+                RunDay(runner, true);
                 WaitForInput();
             }
         }
 
-        SwitchYear(PuzzleTypes.Keys.Max());
+        SelectedYear = AllPuzzles.Keys.Max();
         RunInput();
     }
 
@@ -74,6 +71,9 @@ public static class Starter
         var days = GetDayList();
 
         Console.WriteLine($"Selecting Year: {SelectedYear}");
+        var yearKeys = AllPuzzles.Keys.ToArray();
+        var dayKeysRaw = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ToArray();
+        var dayKeys = dayKeysRaw.Select(dp => dp.Day).ToArray();
         int selected;
         while ((selected = ListView(days)) != days.Length - 1)
         {
@@ -82,7 +82,7 @@ public static class Starter
             {
                 Sw2.Restart();
                 Sw2.Start();
-                InputCache.Keys.Order().ForEach(i =>
+                AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ForEach(i =>
                 {
                     WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
                     RunDay(i, true);
@@ -93,12 +93,11 @@ public static class Starter
             }
             else if (selected == days.Length - 2)
             {
-                var keys = PuzzleTypes.Keys.ToArray();
                 Console.WriteLine("Switch Year");
-                SwitchYear(keys[ListView(keys.Select(i => $"{i}").ToArray())]);
+                SelectedYear = yearKeys[ListView(yearKeys.Select(i => $"{i}").ToArray())];
                 days = GetDayList();
             }
-            else RunDay(Math.Abs(InputCache.Count - selected));
+            else RunDay(dayKeysRaw[Math.Abs(dayKeys.Length - selected)]);
 
             Console.Clear();
             Console.WriteLine($"Selecting Year: {SelectedYear}");
@@ -106,27 +105,26 @@ public static class Starter
     }
 
     public static string[] GetDayList()
-    {
-        return InputCache.Keys.OrderDescending().Select(i =>
-        {
-            var att = PuzzleTypes[SelectedYear][i].att;
-            return $"[#darkblue]{i}[#r]. [#darkyellow]{att.Name}[#r]";
-        }).Concat(new[] { "Run All", "Switch Year", "Exit" }).ToArray();
-    }
+        => AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day)
+            .Select((dp, i) => $"[#darkblue]{i + 1}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
+            .Concat(RunPrompts).ToArray();
 
-    public static void RunDay(int day, bool runAll = false)
+    public static void RunDay(YearDayInfo info, bool runAll = false)
     {
-        var input = InputCache[day];
-        var dayType = PuzzleTypes[SelectedYear][day].type;
+        if (!DailyPuzzlesCache.TryGetValue(info, out var data))
+        {
+            data = DailyPuzzlesCache[info] = new DayStructure(info);
+        }
+
         List<string> run = [];
-        if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part1")) run.Add("Part 1");
-        if (dayType.GetMethods().Any(s => s.Name.ToLower() == "part2")) run.Add("Part 2");
+        if (data.HasPart(1)) run.Add("Part 1");
+        if (data.HasPart(2)) run.Add("Part 2");
 
         if (runAll)
         {
             foreach (var partNum in run.Select(part => part == "Part 1" ? 1 : 2))
             {
-                RunPart(dayType, partNum, input, false);
+                RunPart(data, partNum, false);
             }
 
             return;
@@ -136,104 +134,37 @@ public static class Starter
         run.Add($"Back to {SelectedYear}");
 
         int selected;
-        WriteLine($"=== Day [#darkyellow]{day}[#r] ===");
+        WriteLine($"=== Year [#cyan]{info.Year}[#r] | Day [#darkyellow]{info.Day}[#r] ===");
         while ((selected = ListView(run.ToArray())) != run.Count - 1)
         {
             Console.Clear();
             switch (run[selected])
             {
                 case "Part 1":
-                    RunPart(dayType, 1, input);
+                    RunPart(data, 1);
                     break;
                 case "Part 2":
-                    RunPart(dayType, 2, input);
+                    RunPart(data, 2);
                     break;
                 case "Both":
-                    RunPart(dayType, 1, input, false);
-                    RunPart(dayType, 2, input);
+                    RunPart(data, 1, false);
+                    RunPart(data, 2);
                     break;
             }
         }
     }
 
-    public static void RunPart(Type type, int part, string input, bool toContinue = true)
+    public static void RunPart(DayStructure data, int part, bool toContinue = true)
     {
         try
         {
             Console.WriteLine($"Part {part}:");
-            var methods = type.GetMethods();
-            var hasReset = methods.Any(m => m.GetCustomAttributes<ResetDataAttribute>().Any());
-            var reset = hasReset ? methods.First(m => m.GetCustomAttributes<ResetDataAttribute>().Any()) : null;
-            var hasModify = methods.Any(m => m.GetCustomAttributes<ModifyInputAttribute>().Any());
-            var modifyAtt = hasModify ? methods.First(m => m.GetCustomAttributes<ModifyInputAttribute>().Any()) : null;
-
-            var partMethod =
-                methods.First(m => m.Name.Equals($"part{part}", StringComparison.CurrentCultureIgnoreCase));
-            var testAtt = partMethod.GetCustomAttributes<TestAttribute>();
-
-            var inp = testAtt.Any() ? testAtt.First().TestInput : $"{input}"; // copy string
-
-            object modified = null;
-            if (modifyAtt is not null) modified = modifyAtt.Invoke(null, new[] { inp });
-
-            var answerAttributes = partMethod.GetCustomAttributes<AnswerAttribute>();
-            var hasAnswer = answerAttributes.Any();
-            var hasRealAnswer = answerAttributes.Any(att => att.State == AnswerState.Correct);
-            var realAnswer = hasRealAnswer ? answerAttributes.First().Answer : null;
-
-            if (hasReset)
-            {
-                reset.Invoke(null, null);
-            }
-
             Sw.Restart();
             Sw.Start();
-            var answer = partMethod.Invoke(null, [modified ?? inp]);
+            var answer = data.Run(part);
             Sw.Stop();
-
-            if (!hasAnswer)
-            {
-                WriteLine($"[#darkyellow]Possible Answer: [{answer}][#r] | Took [{Sw.Time()}]");
-            }
-            else
-            {
-                var states = answerAttributes
-                    .Select(ans => ans.Evaluate(answer))
-                    .Where(state => state is not AnswerState.Possible);
-
-                var extra = $"[#r]| Took [{Sw.Time()}]";
-                var correct = answerAttributes.Where(att => att.State is AnswerState.Correct);
-                if (states.Any(state => state is not AnswerState.Correct) &&
-                    correct.Any(att => att.State is AnswerState.Correct))
-                {
-                    extra = $"[#r]| The correct answer is [#blue][{realAnswer}] {extra}";
-                }
-
-                if (!states.Any())
-                {
-                    WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
-                }
-                else if (states.Any(state => state is AnswerState.Correct))
-                {
-                    WriteLine($"[#green]Answer: [{answer}] {extra}");
-                }
-                else if (states.Any(state => state is AnswerState.Not))
-                {
-                    WriteLine($"[#red]Incorrect Answer: [{answer}] {extra}");
-                }
-                else if (states.Any(state => state is AnswerState.High))
-                {
-                    WriteLine($"[#darkyellow]Incorrect Answer, it is too [#red]High[#r]: [{answer}] {extra}");
-                }
-                else if (states.Any(state => state is AnswerState.Low))
-                {
-                    WriteLine($"[#darkyellow]Incorrect Answer, it is too [#red]Low[#r]: [{answer}] {extra}");
-                }
-                else
-                {
-                    WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
-                }
-            }
+            data.Reset();
+            data.CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]");
         }
         catch (TargetException e)
         {
@@ -251,30 +182,15 @@ public static class Starter
         Console.Clear();
     }
 
-    public static void SwitchYear(int year)
-    {
-        if (SelectedYear == year) return;
-        SelectedYear = year;
-        InputCache.Clear();
-        PuzzleTypes[year].Keys.ForEach(LoadFile);
-        foreach (var key in InputCache.Keys)
-        {
-            InputCache[key] = InputCache[key].TrimEnd('\n');
-        }
-    }
-
-    public static void LoadFile(int day)
+    public static string LoadFile(YearDayInfo key)
     {
         if (!Directory.Exists($"Input/{SelectedYear}"))
         {
             Directory.CreateDirectory($"Input/{SelectedYear}");
         }
 
-        var file = $"Input/{SelectedYear}/{day}.txt";
-        InputCache.Add(day,
-            !File.Exists(file)
-                ? Program.SaveInput(SelectedYear, day).Replace("\r", string.Empty)
-                : File.ReadAllText(file).Replace("\r", string.Empty));
+        return (!File.Exists(key.File) ? Program.SaveInput(key) : File.ReadAllText(key.File))
+            .Replace("\r", string.Empty);
     }
 }
 
@@ -282,20 +198,63 @@ public readonly struct YearDayInfo(int year, int day)
 {
     public readonly int Year = year;
     public readonly int Day = day;
+    public readonly string File = $"Input/{year}/{day}.txt";
+    public readonly string Url = $"/{year}/day/{day}/input";
+
+    public override string ToString() => $"[{Year}, {Day}]";
 }
 
 public readonly struct DayStructure
 {
-    public readonly MethodInfo RestDataMethod;
-    public readonly MethodInfo ModifyInputMethod;
-    public readonly MethodInfo Part1Method;
-    public readonly MethodInfo Part2Method;
-    public readonly TestAttribute[] Part1TestAttributes;
-    public readonly TestAttribute[] Part2TestAttributes;
-    public readonly AnswerAttribute[] Part1Answers;
-    public readonly AnswerAttribute[] Part2Answers;
+    private readonly string Input;
+    private readonly MethodInfo ResetDataMethod;
+    private readonly MethodInfo ModifyInputMethod;
+    private readonly MethodInfo[] PartMethods;
+    private readonly TestAttribute[] PartTestAttributes;
+    private readonly AnswerAttribute[][] PartAnswers;
 
-    public DayStructure(Type t)
+    public DayStructure(YearDayInfo info)
     {
+        var methods = DailyPuzzles[info].GetMethods();
+        ResetDataMethod = methods.FirstOrNull<ResetDataAttribute>();
+        ModifyInputMethod = methods.FirstOrNull<ModifyInputAttribute>();
+        PartMethods = [methods.FirstOrNull("part1"), methods.FirstOrNull("part2")];
+        PartTestAttributes = PartMethods.Select(m => m?.Attribute<TestAttribute>()).ToArray();
+        PartAnswers = PartMethods.Select(m => m?.Attributes<AnswerAttribute>().ToArray()).ToArray();
+        Input = LoadFile(info);
+    }
+
+    public object ProcessInput(string data) => ModifyInputMethod is null ? data : ModifyInputMethod.SInvoke(data);
+    public void Reset() => ResetDataMethod?.SInvoke();
+    public object Run(int part) => PartMethods[part - 1]?.SInvoke(ProcessNormalOrTestInput(part));
+    public bool HasPart(int part) => PartMethods[part - 1] is not null;
+
+    public object ProcessNormalOrTestInput(int part)
+        => ProcessInput(PartTestAttributes[part - 1] is null ? Input : PartTestAttributes[part - 1].TestInput);
+
+    public void CheckAnswer(int part, object answer, string extra)
+    {
+        var answers = PartAnswers[part - 1];
+        if (answer is null)
+        {
+            WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+        }
+        else
+        {
+            var states = answers
+                .Select(ans => ans.Evaluate(answer))
+                .Where(state => state is not AnswerState.Possible)
+                .ToArray();
+
+            var correct = answers.FirstOrDefault(att => att.State is AnswerState.Correct);
+            if (correct is not null && states.Any(state => state is not AnswerState.Correct) &&
+                correct.State is AnswerState.Correct)
+            {
+                extra = $"[#r]| The correct answer is [#blue][{correct.Answer}] {extra}";
+            }
+
+            WriteLine(states.Length == 0 ? $"[#darkyellow]Possible Answer: [{answer}] {extra}"
+                : states.Order().First().String(answer, extra));
+        }
     }
 }

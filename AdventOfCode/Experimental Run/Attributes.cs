@@ -1,4 +1,5 @@
 using System;
+using AdventOfCode.Experimental_Run.Misc;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
 
 namespace AdventOfCode.Experimental_Run;
@@ -33,8 +34,8 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
                 var pi = (int) Answer;
                 if (i != pi && state is AnswerState.Correct) return AnswerState.Not;
                 if (i != pi && state is AnswerState.Not) break;
-                if (i < pi && state is AnswerState.Low) break;
-                if (i > pi && state is AnswerState.High) break;
+                if (i > pi && state is AnswerState.Low) break;
+                if (i < pi && state is AnswerState.High) break;
                 return state;
 
             case long l:
@@ -46,8 +47,8 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
                 };
                 if (l != pl && state is AnswerState.Correct) return AnswerState.Not;
                 if (l != pl && state is AnswerState.Not) break;
-                if (l < pl && state is AnswerState.Low) break;
-                if (l > pl && state is AnswerState.High) break;
+                if (l > pl && state is AnswerState.Low) break;
+                if (l < pl && state is AnswerState.High) break;
                 return state;
 
             case ulong l:
@@ -60,8 +61,8 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
                 };
                 if (l != pul && state is AnswerState.Correct) return AnswerState.Not;
                 if (l != pul && state is AnswerState.Not) break;
-                if (l < pul && state is AnswerState.Low) break;
-                if (l > pul && state is AnswerState.High) break;
+                if (l > pul && state is AnswerState.Low) break;
+                if (l < pul && state is AnswerState.High) break;
                 return state;
         }
 
