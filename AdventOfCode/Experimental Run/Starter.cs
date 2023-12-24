@@ -68,12 +68,12 @@ public static class Starter
     [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
     public static void RunInput()
     {
-        var days = GetDayList();
-
         Console.WriteLine($"Selecting Year: {SelectedYear}");
         var yearKeys = AllPuzzles.Keys.ToArray();
-        var dayKeysRaw = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ToArray();
+        var dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
         var dayKeys = dayKeysRaw.Select(dp => dp.Day).ToArray();
+        var days = GetDayList(dayKeysRaw);
+        
         int selected;
         while ((selected = ListView(days)) != days.Length - 1)
         {
@@ -82,7 +82,7 @@ public static class Starter
             {
                 Sw2.Restart();
                 Sw2.Start();
-                AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ForEach(i =>
+                AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ForEach(i =>
                 {
                     WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
                     RunDay(i, true);
@@ -95,18 +95,18 @@ public static class Starter
             {
                 Console.WriteLine("Switch Year");
                 SelectedYear = yearKeys[ListView(yearKeys.Select(i => $"{i}").ToArray())];
-                days = GetDayList();
+                days = GetDayList(dayKeysRaw);
             }
-            else RunDay(dayKeysRaw[Math.Abs(dayKeys.Length - selected)]);
+            else RunDay(dayKeysRaw[selected]);
 
             Console.Clear();
             Console.WriteLine($"Selecting Year: {SelectedYear}");
         }
     }
 
-    public static string[] GetDayList()
-        => AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day)
-            .Select((dp, i) => $"[#darkblue]{i + 1}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
+    public static string[] GetDayList(YearDayInfo[] infos)
+        => infos.Select(dp 
+                => $"[#darkblue]{dp.Day}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
             .Concat(RunPrompts).ToArray();
 
     public static void RunDay(YearDayInfo info, bool runAll = false)
@@ -190,7 +190,7 @@ public static class Starter
         }
 
         return (!File.Exists(key.File) ? Program.SaveInput(key) : File.ReadAllText(key.File))
-            .Replace("\r", string.Empty);
+            .Replace("\r", string.Empty).TrimEnd('\n');
     }
 }
 

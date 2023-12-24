@@ -4,7 +4,7 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 1, "Trebuchet?!"), Run]
+[Day(2023, 1, "Trebuchet?!")]
 file class Day1
 {
     [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
