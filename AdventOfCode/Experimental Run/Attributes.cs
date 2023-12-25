@@ -1,6 +1,5 @@
 using System;
 using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.Enums;
 
 namespace AdventOfCode.Experimental_Run;
 

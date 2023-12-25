@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 24, "Never Tell Me The Odds"), Run]
+[Day(2023, 24, "Never Tell Me The Odds")]
 file class Day24
 {
     public static readonly Regex InputRegex =
