@@ -71,10 +71,7 @@ public class Program
         LastDownload = time;
         return input;
     }
-
-    private const string LeaderboardStartText =
-        "Day   <span class=\"leaderboard-daydesc-first\">    Time   Rank  Score</span>   <span class=\"leaderboard-daydesc-both\">    Time   Rank  Score</span>";
-
+    
     public static string[][] GetLeaderBoard(int year)
     {
         ClrCnsl.Write($"[#yellow]Downloading leaderboard for [{year}]... ");
@@ -91,7 +88,8 @@ public class Program
         ClrCnsl.WriteLine("[#darkyellow][Done]");
         LastDownload = time;
 
-        var leaderboardIndex = leaderboardRaw.FindIndexOf(LeaderboardStartText);
+        var leaderboardStartText = leaderboardRaw.First(s => s.Contains("Day "));
+        var leaderboardIndex = leaderboardRaw.FindIndexOf(leaderboardStartText);
         var endingIndex = leaderboardRaw.FindIndexOf("</pre>");
         return leaderboardRaw[(leaderboardIndex + 1)..endingIndex]
             .Select(s => s.Trim().CleanSpaces().Replace(">", "\\>").Split(' '))

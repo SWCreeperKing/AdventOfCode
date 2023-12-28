@@ -24,7 +24,7 @@ public static class MdFormatter
         foreach (var (day, part, dayPart, time, rank, score) in leaderboard.DatIter(year))
         {
             if (day == 25 && part == 2) continue;
-            var dayStat = stats[day];
+            if (!stats.TryGetValue(day, out var dayStat)) continue;
             var partStatTimeRaw = dayStat.Item2[part - 1];
             var partStatCompletion = partStatTimeRaw is null ? NoAnswer : dayStat.Item1[part - 1].ToEmote();
             var partStatTime = partStatTimeRaw is null ? "-" : partStatTimeRaw!.Value.Time();
