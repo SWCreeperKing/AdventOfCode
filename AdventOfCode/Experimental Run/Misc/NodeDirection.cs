@@ -17,21 +17,11 @@ public enum NodeDirection
     DownLeft = Down | Left,
 }
 
-public class DirectionOptions(bool useCorners = true, bool upDownReversed = false, bool leftRightReversed = false)
-{
-    public static readonly DirectionOptions Default = new();
-
-    public bool UseCorners = useCorners;
-    public bool UpDownReversed = upDownReversed;
-    public bool LeftRightReversed = leftRightReversed;
-}
-
 public static class Ext
 {
-    public static NodeDirection Rotate90(this NodeDirection dir, DirectionOptions options = null)
+    public static NodeDirection Rotate(this NodeDirection dir, bool useCorners = false)
     {
-        var ops = options ?? DirectionOptions.Default;
-        if (!ops.UseCorners)
+        if (!useCorners)
         {
             return dir switch
             {
@@ -55,10 +45,9 @@ public static class Ext
         };
     }
 
-    public static NodeDirection RotateCC90(this NodeDirection dir, DirectionOptions options = null)
+    public static NodeDirection RotateCC(this NodeDirection dir, bool useCorners = false)
     {
-        var ops = options ?? DirectionOptions.Default;
-        if (!ops.UseCorners)
+        if (!useCorners)
         {
             return dir switch
             {
@@ -96,27 +85,26 @@ public static class Ext
             DownLeft => UpRight,
         };
 
-    public static Pos Positional(this NodeDirection dir, DirectionOptions options = null)
+    public static Pos Positional(this NodeDirection dir, bool leftRightReversed = false, bool upDownReversed = false)
     {
-        var ops = options ?? DirectionOptions.Default;
         var dx = 0;
         if (dir.HasFlag(Right))
         {
-            dx = ops.LeftRightReversed ? -1 : 1;
+            dx = leftRightReversed ? -1 : 1;
         }
         else if (dir.HasFlag(Left))
         {
-            dx = ops.LeftRightReversed ? 1 : -1;
+            dx = leftRightReversed ? 1 : -1;
         }
 
         var dy = 0;
         if (dir.HasFlag(Down))
         {
-            dy = ops.UpDownReversed ? -1 : 1;
+            dy = upDownReversed ? -1 : 1;
         }
         else if (dir.HasFlag(Up))
         {
-            dy = ops.UpDownReversed ? 1 : -1;
+            dy = upDownReversed ? 1 : -1;
         }
 
         return new Pos(dx, dy);

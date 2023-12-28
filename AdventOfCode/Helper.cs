@@ -189,9 +189,10 @@ public static class Helper
         return arr.Where((_, i) => boolArr.ElementAt(i));
     }
 
-    public static string Time(this Stopwatch sw)
+    public static string Time(this Stopwatch sw) => sw.Elapsed.Time();
+    
+    public static string Time(this TimeSpan elapsed)
     {
-        var elapsed = sw.Elapsed;
         StringBuilder sb = new();
         if (elapsed.Hours > 0) sb.Append(elapsed.Hours).Append("hr ");
         if (elapsed.Minutes > 0) sb.Append(elapsed.Minutes).Append("min ");
@@ -385,4 +386,13 @@ public static class Helper
 
     public static IEnumerable<T> Attributes<T>(this MethodInfo info) where T : Attribute
         => info.GetCustomAttributes<T>();
+
+    public static TimeSpan Sum(this TimeSpan?[] times)
+    {
+        if (times.Length > 2) throw new ArgumentException("Only 2 times in the array are allowed"); 
+        if (times[0] is null && times[1] is null) return TimeSpan.Zero;
+        if (times[0] is null) return times[1]!.Value;
+        if (times[1] is null) return times[0]!.Value;
+        return times[0]!.Value + times[0]!.Value;
+    }
 }

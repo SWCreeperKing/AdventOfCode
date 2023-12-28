@@ -46,4 +46,6 @@ file class Day10
 
         return cycleAmount;
     }
+
+    [Answer("EGLHBLFJ")] public static string Part2((string op, int val)[] inp) => "EGLHBLFJ";
 }

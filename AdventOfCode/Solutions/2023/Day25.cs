@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 25, "WIP"), Run]
+[Day(2023, 25, "Snowverload")]
 file class Day25
 {
     [ModifyInput]

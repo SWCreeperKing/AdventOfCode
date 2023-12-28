@@ -45,7 +45,7 @@ file class Day24
         return count;
     }
 
-    [Answer(871983857253169)]
+    [Answer(871983857253169L)]
     public static double Part2(long[][] inp) // pos (xyz), velocity(xyz)
     {
         long[][] possibilities = [[], [], []];

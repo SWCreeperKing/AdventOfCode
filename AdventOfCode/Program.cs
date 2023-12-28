@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode;
+
+/*
+ *      --------Part 1--------   --------Part 2--------
+Day       Time   Rank  Score       Time   Rank  Score
+  3       >24h  36783      0          -      -      -
+  2       >24h  46940      0       >24h  44793      0
+  1       >24h  57064      0       >24h  47303      0
+ *
+ * AoC leaderboard format for later purpose
+ *
+ */
 
 public class Program
 {
@@ -38,10 +50,8 @@ public class Program
         };
     }
 
-    // public static string SaveInput(int year, int day)
     public static string SaveInput(YearDayInfo info)
     {
-        // ClrCnsl.Write($"[#yellow]Downloading Input for [{year}, {day}]... ");
         ClrCnsl.Write($"[#yellow]Downloading Input for [{info}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
@@ -50,17 +60,41 @@ public class Program
             Task.Delay((int) (3e4 - (time - LastDownload))).GetAwaiter().GetResult();
         }
 
-        // var input = client.GetStringAsync($"/{year}/day/{day}/input").GetAwaiter().GetResult();
         var input = client.GetStringAsync(info.Url).GetAwaiter().GetResult();
-        // if (!Directory.Exists($"Input/{year}")) Directory.CreateDirectory($"Input/{year}");
         if (!Directory.Exists($"Input/{info.Year}"))
         {
             Directory.CreateDirectory($"Input/{info.Year}");
         }
-        // File.WriteAllText($"Input/{year}/{day}.txt", input);
+
         File.WriteAllText(info.File, input);
         ClrCnsl.WriteLine("[#darkyellow][Done]");
         LastDownload = time;
         return input;
+    }
+
+    private const string LeaderboardStartText =
+        "Day   <span class=\"leaderboard-daydesc-first\">    Time   Rank  Score</span>   <span class=\"leaderboard-daydesc-both\">    Time   Rank  Score</span>";
+
+    public static string[][] GetLeaderBoard(int year)
+    {
+        ClrCnsl.Write($"[#yellow]Downloading leaderboard for [{year}]... ");
+        var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
+
+        if (time - LastDownload <= 3e4) // 30s
+        {
+            Task.Delay((int) (3e4 - (time - LastDownload))).GetAwaiter().GetResult();
+        }
+
+        var content = client.GetStringAsync($"/{year}/leaderboard/self")
+            .GetAwaiter().GetResult();
+        var leaderboardRaw = content.Remove("\r").Split('\n');
+        ClrCnsl.WriteLine("[#darkyellow][Done]");
+        LastDownload = time;
+
+        var leaderboardIndex = leaderboardRaw.FindIndexOf(LeaderboardStartText);
+        var endingIndex = leaderboardRaw.FindIndexOf("</pre>");
+        return leaderboardRaw[(leaderboardIndex + 1)..endingIndex]
+            .Select(s => s.Trim().CleanSpaces().Replace(">", "\\>").Split(' '))
+            .ToArray();
     }
 }

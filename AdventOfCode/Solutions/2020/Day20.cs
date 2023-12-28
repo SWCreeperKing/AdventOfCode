@@ -43,7 +43,7 @@ file class Day20
     //         else matched[sidesRev.FindIndexOf(match)] = true;
     //     }
     //
-    //     public void Rotate90()
+    //     public void Rotate()
     //     {
     //         void Rotate<T>(ref T[] t) => t = new[] { t[3], t[0], t[1], t[2] };
     //         Rotate(ref sides);
@@ -109,7 +109,7 @@ file class Day20
         // string[] build = null;
         // foreach (var chosen in corners)
         // {
-        //     while (chosen.matched[0] || chosen.matched[3]) chosen.Rotate90();
+        //     while (chosen.matched[0] || chosen.matched[3]) chosen.Rotate();
         //     build = Part2Build(chosen.Copy(), tiles.ToArray(), 0, 0, (int)Math.Sqrt(tiles.Count),
         //         Array.Empty<int>(), tiles.ToDictionary(t => t.id, t => t), Array.Empty<int>());
         //     Console.WriteLine($"Failed at Testing Corner: {chosen.id}");
@@ -153,10 +153,10 @@ file class Day20
     //     {
     //         if (t.sides.Contains(match))
     //             while (t.sides[side] != match)
-    //                 t.Rotate90();
+    //                 t.Rotate();
     //         else
     //         {
-    //             while (t.sidesRev[side] != match) t.Rotate90();
+    //             while (t.sidesRev[side] != match) t.Rotate();
     //             t.Flip(false);
     //         }
     //     }

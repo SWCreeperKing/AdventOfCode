@@ -18,13 +18,9 @@ public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare
     {
         if (!set.PositionExists(dest)) throw new ArgumentException("Destination is not in Map");
         Check.EnqueueRange(starters.Select(state => (state, state.GetValue(set[state.Position]))));
-
-        var p = ClrCnsl.GetCursor();
         
         while (Check.Count > 0)
         {
-            ClrCnsl.SetCursor(p);
-            Console.WriteLine($"{Check.Count}             ");
             var state = Check.Dequeue();
             if (!Seen.Add(state.GetHashCode())) continue;
 

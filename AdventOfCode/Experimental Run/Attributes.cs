@@ -63,6 +63,35 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
                 if (l > pul && state is AnswerState.Low) break;
                 if (l < pul && state is AnswerState.High) break;
                 return state;
+            
+            case float f:
+                var pf = Answer switch
+                {
+                    int ai => ai,
+                    uint uai => uai,
+                    long al => al,
+                    _ => (float) Answer
+                };
+                if (f != pf && state is AnswerState.Correct) return AnswerState.Not;
+                if (f != pf && state is AnswerState.Not) break;
+                if (f > pf && state is AnswerState.Low) break;
+                if (f < pf && state is AnswerState.High) break;
+                return state;
+            
+            case double d:
+                var pd = Answer switch
+                {
+                    int ai => ai,
+                    uint uai => uai,
+                    long al => al,
+                    float af => af,
+                    _ => (double) Answer
+                };
+                if (d != pd && state is AnswerState.Correct) return AnswerState.Not;
+                if (d != pd && state is AnswerState.Not) break;
+                if (d > pd && state is AnswerState.Low) break;
+                if (d < pd && state is AnswerState.High) break;
+                return state;
         }
 
         return AnswerState.Possible;

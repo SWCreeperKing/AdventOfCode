@@ -16,7 +16,7 @@ file class Day23
 
     [Answer(2278)] public static long Part1(Input inp) => Solve(Populate(inp), inp.Start, inp.End);
 
-    // [Answer(6734)]
+    [Answer(6734)]
     public static long Part2(Input inp)
     {
         var nodes = Populate(inp, true);
