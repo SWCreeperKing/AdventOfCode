@@ -9,54 +9,74 @@ using static System.Text.Encoding;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 14, "One-Time Pad")]
- internal partial class Day14
+internal partial class Day14
 {
     [GeneratedRegex(@"(.)\1{2}", RegexOptions.Compiled)]
     private static partial Regex Match3();
 
-    [Test("abc")]
-    public static long Part1(string inp)
+    [Answer(16106)] public static long Part1(string inp) => FindHash(inp);
+    [Answer(22423)] public static long Part2(string inp) => FindHash(inp, true);
+
+    public static long FindHash(string input, bool part2 = false)
     {
-        List<string> hashes = [];
-        List<(int Pos, string hash)> hashList = [];
-        List<(int pos, string hash)> hashPossibilities = [];
+        HashSet<HashMatcher> hashPossibilities = [];
+        List<int> found = [];
 
         using var md5 = MD5.Create();
-        for (var i = 0; hashList.Count < 64; i++)
+        for (var i = 0; found.Count < 64; i++)
         {
-            var salt = inp + i;
-            var hash = Hash(md5, salt).ToLower();
+            var salt = input + i;
+            var hash = Hash(md5, salt, part2).ToLower();
             if (Match3().IsMatch(hash))
             {
-                hashPossibilities.Add((i, hash));
+                hashPossibilities.Add(new HashMatcher(Match3().Match(hash).Groups[1].Value[0], i));
             }
 
-            hashes.Add(hash);
-            if (!hashPossibilities.Any()) continue;
-            if (i - hashPossibilities[0].pos == 1001)
+            if (hashPossibilities.Count == 0) continue;
+            List<HashMatcher> removal = [];
+            foreach (var hasher in hashPossibilities)
             {
-                var (pos, testHash) = hashPossibilities[0];
-                hashPossibilities.RemoveAt(0);
-                var chr = Match3().Match(testHash).Groups[1];
-                Regex match5 = new($"{chr}{{5}}", RegexOptions.Compiled);
-                for (var j = pos + 1; j < pos + 1000; j++)
-                {
-                    if (!match5.IsMatch(hashes[j])) continue;
-                    hashList.Add((j, testHash));
-                    Console.WriteLine(testHash);
-                }
+                var result = hasher.TestMatch(i, hash);
+                if (result is null) continue;
+                removal.Add(hasher);
+                if (!result.Value) continue;
+                found.Add(hasher.Index);
             }
+
+            hashPossibilities.RemoveWhere(h => removal.Contains(h));
         }
 
-        return hashList[^1].Pos;
+        return found.Order().ToArray()[63]; // order is required because list can be bigger than 64 
     }
 
-    // [Test("")]
-    public static long Part2(string inp)
+    private static string Hash(HashAlgorithm md5, string s, bool part2)
     {
-        return -1;
+        if (!part2) return SubHash(md5, s);
+        var hash = s;
+        for (var i = 0; i < 2017; i++)
+        {
+            hash = SubHash(md5, hash.ToLower());
+        }
+
+        return hash;
     }
 
-    private static string Hash(HashAlgorithm md5, string s)
+    private static string SubHash(HashAlgorithm md5, string s)
         => BitConverter.ToString(md5.ComputeHash(UTF8.GetBytes(s))).Replace("-", "");
+}
+
+file readonly struct HashMatcher(char character, int index)
+{
+    public readonly Regex Regex = new($"({character}){{5}}", RegexOptions.Compiled);
+    public readonly int Index = index;
+
+    public bool? TestMatch(int index, string hash)
+    {
+        if (index == Index) return null;
+        if (Math.Abs(index - Index) > 1000) return false;
+        if (Regex.IsMatch(hash)) return true;
+        return null;
+    }
+
+    public override int GetHashCode() => index.GetHashCode();
 }
