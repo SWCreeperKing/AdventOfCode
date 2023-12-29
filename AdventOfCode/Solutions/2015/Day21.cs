@@ -49,23 +49,22 @@ file class Day21
 
     [Answer(78)]
     public static int Part1((Entity, List<Player> playerStates) inp)
-        => inp.playerStates.Where(ps => Fight(ps, inp.Item1)).Min(ps => ps.MoneySpent);
+        => inp.playerStates.OrderBy(ps => ps.MoneySpent).First(ps => Fight(ps, inp.Item1)).MoneySpent;
 
     [Answer(148)]
     public static int Part2((Entity, List<Player> playerStates) inp)
-        => inp.playerStates.Where(ps => !Fight(ps, inp.Item1)).Max(ps => ps.MoneySpent);
+        => inp.playerStates.OrderByDescending(ps => ps.MoneySpent).First(ps => !Fight(ps, inp.Item1)).MoneySpent;
 
     public static bool Fight(Player player, Entity boss)
     {
-        if (boss.Hp <= 0) return true;
-        if (player.Hp <= 0) return false;
-        return Fight(player with
+        while (true)
         {
-            Hp = player.Hp - Math.Max(1, boss.Damage - player.Armor)
-        }, boss with
-        {
-            Hp = boss.Hp - Math.Max(1, player.Damage - boss.Armor)
-        });
+            if (boss.Hp <= 0) return true;
+            if (player.Hp <= 0) return false;
+            var player1 = player;
+            player = player with { Hp = player.Hp - Math.Max(1, boss.Damage - player.Armor) };
+            boss = boss with { Hp = boss.Hp - Math.Max(1, player1.Damage - boss.Armor) };
+        }
     }
 }
 

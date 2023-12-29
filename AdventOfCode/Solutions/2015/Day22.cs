@@ -5,144 +5,99 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2015;
 
-/*
- * I completely admit my loss on this
- * I took the solution from: https://github.com/encse/adventofcode/blob/master/2015/Day22/Solution.cs
- * and then modified it to use Records
- */
 [Day(2015, 22, "Wizard Simulator 20XX")]
 file class Day22
 {
     [ModifyInput]
     public static GameState ProcessInput(string input)
-        => input.Split('\n').Select(s => s[(s.IndexOf(':') + 2)..]).Select(int.Parse).ToArray()
-            .Flatten(arr => new GameState(arr[0], arr[1], 50, 500));
+        => input.Split('\n').Inline(arr => new GameState(
+            int.Parse(arr[0][(arr[0].IndexOf(": ", StringComparison.Ordinal) + 1)..]),
+            int.Parse(arr[1][(arr[1].IndexOf(": ", StringComparison.Ordinal) + 1)..])));
 
-    [Answer(1269)]
-    public static long Part1(GameState inp) => BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), false));
+    [Answer(1269)] public static long Part1(GameState inp) => Run(inp);
+    [Answer(1309)] public static long Part2(GameState inp) => Run(inp, true);
 
-    [Answer(1309)]
-    public static long Part2(GameState inp) => BinarySearch(mana => TrySolve(inp.WithManaLimit(mana), true));
-
-    private static int BinarySearch(Func<int, bool> f)
+    public static int Run(GameState initState, bool part2 = false)
     {
-        var hi = 1;
-        while (!f(hi)) hi *= 2;
+        HashSet<int> seen = [];
+        PriorityQueue<GameState, int> states = new();
+        states.Enqueue(initState, initState.ManaUsed);
 
-        var lo = hi / 2;
-        while (hi - lo > 1)
+        while (states.Count > 0)
         {
-            var m = (hi + lo) / 2;
-            if (f(m)) hi = m;
-            else lo = m;
+            var state = states.Dequeue().RunEffects(part2);
+            if (state.Hp < 1) continue;
+
+            foreach (var nextState in state.PlayerTurn().Select(s => s.RunEffects()))
+            {
+                if (nextState.BossHp < 1) return nextState.ManaUsed;
+
+                var afterBoss = nextState.BossTurn();
+                if (afterBoss.BossHp < 1) return afterBoss.ManaUsed;
+                if (afterBoss.Hp < 1) continue;
+
+                if (!seen.Add(afterBoss.GetHashCode())) continue;
+
+                states.Enqueue(afterBoss, afterBoss.ManaUsed);
+            }
         }
 
-        return hi;
-    }
-
-    private static bool TrySolve(GameState gs, bool hard)
-    {
-        if (hard) gs = gs.Damage(1);
-        gs = gs.ApplyEffects();
-
-        foreach (var stateT in gs.PlayerSteps())
-        {
-            gs = stateT.ApplyEffects();
-            gs = gs.BossStep();
-            if (gs.BossHp > 0 && (gs.PlayerHp <= 0 || !TrySolve(gs, hard))) continue;
-            return true;
-        }
-
-        return false;
+        return -1;
     }
 }
 
 public record GameState(
     int BossHp,
     int BossDamage,
-    int PlayerHp,
-    int PlayerMana,
-    int PlayerArmor = 0,
-    int ManaLimit = 0,
-    int UsedMana = 0,
-    int ShieldTurns = 0,
-    int PoisonTurns = 0,
-    int RechargeTurns = 0);
-
-public static class Runner
+    int Hp = 50,
+    int Mana = 500,
+    int Shield = 0,
+    int Poison = 0,
+    int Recharge = 0,
+    int ManaUsed = 0)
 {
-    public static GameState WithManaLimit(this GameState gs, int manaLimit) => gs with { ManaLimit = manaLimit };
+    public GameState RunEffects(bool part2 = false)
+        => this with
+        {
+            BossHp = Poison > 0 ? BossHp - 3 : BossHp,
+            Hp = part2 ? Hp - 1 : Hp,
+            Mana = Recharge > 0 ? Mana + 101 : Mana,
+            Shield = Shield > 0 ? Shield - 1 : 0,
+            Poison = Poison > 0 ? Poison - 1 : 0,
+            Recharge = Recharge > 0 ? Recharge - 1 : 0
+        };
 
-    public static GameState ApplyEffects(this GameState gs)
+    public List<GameState> PlayerTurn()
     {
-        if (gs.PlayerHp <= 0 || gs.BossHp <= 0) return gs;
+        if (Mana < 53) return [];
+        List<GameState> states = [this with { Mana = Mana - 53, ManaUsed = ManaUsed + 53, BossHp = BossHp - 4 }];
 
-        var gsHolder = gs;
-        if (gsHolder.PoisonTurns > 0)
+        if (Mana < 73) return states;
+        states.Add(this with { Mana = Mana - 73, ManaUsed = ManaUsed + 73, BossHp = BossHp - 2, Hp = Hp + 2 });
+
+        if (Mana < 113) return states;
+        if (Shield == 0)
         {
-            gsHolder = gsHolder with { BossHp = gsHolder.BossHp - 3, PoisonTurns = gsHolder.PoisonTurns - 1 };
+            states.Add(this with { Mana = Mana - 113, ManaUsed = ManaUsed + 113, Shield = 6 });
         }
 
-        if (gsHolder.RechargeTurns > 0)
+        if (Mana < 173) return states;
+        if (Poison == 0)
         {
-            gsHolder = gsHolder with
-            {
-                PlayerMana = gsHolder.PlayerMana + 101, RechargeTurns = gsHolder.RechargeTurns - 1
-            };
+            states.Add(this with { Mana = Mana - 173, ManaUsed = ManaUsed + 173, Poison = 6 });
         }
 
-        if (gsHolder.ShieldTurns > 0)
+        if (Mana < 229) return states;
+        if (Recharge == 0)
         {
-            gsHolder = gsHolder with { PlayerArmor = 7, ShieldTurns = gsHolder.ShieldTurns - 1 };
+            states.Add(this with { Mana = Mana - 229, ManaUsed = ManaUsed + 229, Recharge = 5 });
         }
-        else gsHolder = gsHolder with { PlayerArmor = 0 };
 
-        return gsHolder;
+        return states;
     }
 
-    public static GameState Damage(this GameState gs, int damage)
-        => gs.PlayerHp <= 0 || gs.BossHp <= 0 ? gs : gs with { PlayerHp = gs.PlayerHp - damage };
+    public GameState BossTurn() => this with { Hp = Hp - (BossDamage - (Shield > 0 ? 7 : 0)) };
 
-    public static GameState BossStep(this GameState gs)
-        => gs.PlayerHp <= 0 || gs.BossHp <= 0
-            ? gs
-            : gs with { PlayerHp = gs.PlayerHp - Math.Max(1, gs.BossDamage - gs.PlayerArmor) };
-
-    public static IEnumerable<GameState> PlayerSteps(this GameState gs)
-    {
-        if (gs.PlayerHp <= 0 || gs.BossHp <= 0)
-        {
-            yield return gs;
-            yield break;
-        }
-
-        if (gs.PlayerMana >= 53 && 53 + gs.UsedMana <= gs.ManaLimit)
-        {
-            yield return gs.UseMana(53) with { BossHp = gs.BossHp - 4 };
-        }
-
-        if (gs.PlayerMana >= 73 && 73 + gs.UsedMana <= gs.ManaLimit)
-        {
-            yield return gs.UseMana(73) with
-            {
-                BossHp = gs.BossHp - 2, PlayerHp = gs.PlayerHp + 2
-            };
-        }
-
-        if (gs.PlayerMana >= 113 && gs.ShieldTurns == 0 && 113 + gs.UsedMana <= gs.ManaLimit)
-        {
-            yield return gs with { PlayerMana = gs.PlayerMana - 113, UsedMana = gs.UsedMana + 113, ShieldTurns = 6 };
-        }
-
-        if (gs.PlayerMana >= 173 && gs.PoisonTurns == 0 && 173 + gs.UsedMana <= gs.ManaLimit)
-        {
-            yield return gs.UseMana(173) with { PoisonTurns = 6 };
-        }
-
-        if (gs.PlayerMana < 229 || gs.RechargeTurns != 0 || 229 + gs.UsedMana > gs.ManaLimit) yield break;
-        yield return gs.UseMana(229) with { RechargeTurns = 5 };
-    }
-
-    private static GameState UseMana(this GameState gs, int mana)
-        => gs with { PlayerMana = gs.PlayerMana - mana, UsedMana = gs.UsedMana + mana };
+    public override int GetHashCode()
+        => HashCode.Combine(BossHp, BossDamage, Hp, Mana, Shield, Poison, Recharge, ManaUsed);
 }
