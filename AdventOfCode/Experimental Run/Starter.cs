@@ -21,7 +21,10 @@ public static class Starter
     public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = new();
 
     private static readonly Stopwatch Sw = new();
-    private static readonly string[] RunPrompts = ["Run All", "Make Leaderboard MD", "Switch Year", "Exit"];
+
+    private static readonly string[] RunPrompts =
+        ["(re)Cache Leaderboard Data", "Make Leaderboard MD", "Run All", "Switch Year", "Exit"];
+
     private static int SelectedYear;
 
     public static void Start()
@@ -78,7 +81,12 @@ public static class Starter
         while ((selected = ListView(selected, days)) != days.Length - 1)
         {
             Console.Clear();
-            if (selected == days.Length - 4)
+            if (selected == days.Length - 5) // cache leaderboard 
+            {
+                CacheLeaderboard();
+                WaitForAnyInput();
+            }
+            else if (selected == days.Length - 3) // run all
             {
                 var time = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).Select(i =>
                 {
@@ -88,7 +96,7 @@ public static class Starter
                 WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
-            else if (selected == days.Length - 3)
+            else if (selected == days.Length - 4) // make leaderboard md
             {
                 Dictionary<int, (bool?[], TimeSpan?[])> stats = [];
                 var totalTime = TimeSpan.Zero;
@@ -106,23 +114,44 @@ public static class Starter
                     File.Delete(md);
                 }
 
-                File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, Program.GetLeaderBoard(SelectedYear)));
-                
+                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md"))
+                {
+                    CacheLeaderboard();
+                }
+
+                var data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md")
+                    .SuperSplit('\n', ',');
+
+                File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, data));
+
                 WriteLine("README.md created!");
                 WaitForAnyInput();
             }
-            else if (selected == days.Length - 2)
+            else if (selected == days.Length - 2) // switch year
             {
                 Console.WriteLine("Switch Year");
                 SelectedYear = yearKeys[ListView(0, yearKeys.Select(i => $"{i}").ToArray())];
                 dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
                 days = GetDayList(dayKeysRaw);
             }
-            else RunDay(dayKeysRaw[selected], out _);
+            else RunDay(dayKeysRaw[selected], out _); // run
 
             Console.Clear();
             Console.WriteLine($"Selecting Year: {SelectedYear}");
         }
+    }
+
+    public static void CacheLeaderboard()
+    {
+        WriteLine("Caching leaderboard data");
+
+        var md = $"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md";
+        if (File.Exists(md))
+        {
+            File.Delete(md);
+        }
+
+        File.WriteAllText(md, Program.GetLeaderBoard(SelectedYear).Select(s => s.Join(',')).Join('\n'));
     }
 
     public static string[] GetDayList(YearDayInfo[] infos)
