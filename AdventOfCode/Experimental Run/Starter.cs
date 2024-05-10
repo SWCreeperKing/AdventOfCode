@@ -26,6 +26,7 @@ public static class Starter
         ["(re)Cache Leaderboard Data", "Make Leaderboard MD", "Run All", "Switch Year", "Exit"];
 
     private static int SelectedYear;
+    private static int ListViewSelectYear = 0;
 
     public static void Start()
     {
@@ -130,7 +131,7 @@ public static class Starter
             else if (selected == days.Length - 2) // switch year
             {
                 Console.WriteLine("Switch Year");
-                SelectedYear = yearKeys[ListView(0, yearKeys.Select(i => $"{i}").ToArray())];
+                SelectedYear = yearKeys[ListViewSelectYear = ListView(ListViewSelectYear, yearKeys.Select(i => $"{i}").ToArray())];
                 dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
                 days = GetDayList(dayKeysRaw);
             }
