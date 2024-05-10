@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using CreepyUtil;
+using static CreepyUtil.Direction;
+
 
 namespace AdventOfCode.Solutions._2017;
 
@@ -17,7 +19,7 @@ file class Day3
         List<Pos> positions = [new Pos()];
         var dir = Right;
         var toTheLeft = Up;
-        Dictionary<NodeDirection, Pos> corners = new()
+        Dictionary<Direction, Pos> corners = new()
         {
             { Up, new Pos() },
             { Right, new Pos() },
@@ -54,7 +56,7 @@ file class Day3
         List<Pos> positions = [new Pos()];
         var dir = Right;
         var toTheLeft = Up;
-        Dictionary<NodeDirection, Pos> corners = new()
+        Dictionary<Direction, Pos> corners = new()
         {
             { Up, new Pos() },
             { Right, new Pos() },

@@ -5,4 +5,22 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>12</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="CreepyUtil">
+        <HintPath>..\..\CreepyUtil\CreepyUtil\bin\Debug\net8.0\CreepyUtil.dll</HintPath>
+      </Reference>
+      <Reference Include="CreepyUtil.ClrCnsl">
+        <HintPath>..\..\CreepyUtil\CreepyUtil\bin\Debug\net8.0\CreepyUtil.ClrCnsl.dll</HintPath>
+      </Reference>
+      <Reference Include="CreepyUtil.ClrCnsl.Prompts">
+        <HintPath>..\..\CreepyUtil\CreepyUtil\bin\Debug\net8.0\CreepyUtil.ClrCnsl.Prompts.dll</HintPath>
+      </Reference>
+      <Reference Include="CreepyUtil.Matrix2d">
+        <HintPath>..\..\CreepyUtil\CreepyUtil\bin\Debug\net8.0\CreepyUtil.Matrix2d.dll</HintPath>
+      </Reference>
+      <Reference Include="CreepyUtil.Pos">
+        <HintPath>..\..\CreepyUtil\CreepyUtil\bin\Debug\net8.0\CreepyUtil.Pos.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 </Project>

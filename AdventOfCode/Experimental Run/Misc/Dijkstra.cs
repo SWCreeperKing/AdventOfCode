@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using CreepyUtil;
+using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
@@ -9,7 +10,7 @@ namespace AdventOfCode.Experimental_Run.Misc;
 public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare, int> comparer)
     where T : State<T, TM, TCompare>
 {
-    public readonly List<NodeDirection> MovingDirections = [Up, Right, Down, Left];
+    public readonly List<Direction> MovingDirections = [Up, Right, Down, Left];
 
     private readonly HashSet<int> Seen = [];
     private readonly PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
@@ -44,16 +45,16 @@ public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare
     }
 }
 
-public abstract class State<T, TM, TCompare>(Pos position, NodeDirection direction)
+public abstract class State<T, TM, TCompare>(Pos position, Direction direction)
     where T : State<T, TM, TCompare>
 {
-    public readonly NodeDirection Direction = direction;
+    public readonly Direction Direction = direction;
     public readonly Pos Position = position;
 
     public abstract override int GetHashCode();
     public abstract TCompare GetValue(TM mapVal);
-    public abstract T MakeNewState(Matrix2d<TM> map, Pos newPos, NodeDirection dir);
-    public virtual bool ValidState(Matrix2d<TM> map, NodeDirection dir, Pos dxy) => true;
+    public abstract T MakeNewState(Matrix2d<TM> map, Pos newPos, Direction dir);
+    public virtual bool ValidState(Matrix2d<TM> map, Direction dir, Pos dxy) => true;
     public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val) => Position == dest;
 }
 

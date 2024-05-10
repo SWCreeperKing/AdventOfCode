@@ -2,28 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using static CreepyUtil.Direction;
+
 
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 9, "Rope Bridge")]
 file class Day9
 {
-    private static readonly Dictionary<char, NodeDirection> DirectionParse = new()
+    private static readonly Dictionary<char, Direction> DirectionParse = new()
         { ['U'] = Up, ['R'] = Right, ['D'] = Down, ['L'] = Left };
 
     [ModifyInput]
-    public static (NodeDirection, int)[] ProcessInput(string inp)
+    public static (Direction, int)[] ProcessInput(string inp)
     {
         return inp.Split('\n').Select(s => (DirectionParse[s[0]], int.Parse(s[2..]))).ToArray();
     }
 
-    [Answer(5695)] public static long Part1((NodeDirection, int)[] inp) => PlaySnake(inp);
-    [Answer(2434)] public static long Part2((NodeDirection, int)[] inp) => PlaySnake(inp, 9);
+    [Answer(5695)] public static long Part1((Direction, int)[] inp) => PlaySnake(inp);
+    [Answer(2434)] public static long Part2((Direction, int)[] inp) => PlaySnake(inp, 9);
 
-    private static long PlaySnake((NodeDirection, int)[] inp, int snakeLength = 1)
+    private static long PlaySnake((Direction, int)[] inp, int snakeLength = 1)
     {
         List<Pos> tailPositions = [Pos.Zero];
         var head = Pos.Zero;
@@ -65,7 +66,7 @@ file class Day9
 
     private static bool IsTailBehind(Pos front, Pos end) => SurroundDiagonal.Any(xy => end + xy == front);
 
-    private static Pos Move(Pos pos, NodeDirection dir)
+    private static Pos Move(Pos pos, Direction dir)
     {
         return pos.Move(dir);
     }

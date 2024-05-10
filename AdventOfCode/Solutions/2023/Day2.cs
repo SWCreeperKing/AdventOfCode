@@ -9,9 +9,15 @@ file class Day2
 {
     [ModifyInput]
     public static (int r, int g, int b)[][] ProcessInput(string input)
-        => input.Split('\n').Select(line => line
-            .Split(':')[1].Split(';').Select(session => session.Split(','))
-            .Select(ToColor).ToArray()).ToArray();
+        => input.Split('\n')
+            .Select(line => line
+                .Split(':')[1]
+                .Split(';')
+                .Select(session
+                    => session.Split(','))
+                .Select(ToColor)
+                .ToArray())
+            .ToArray();
 
     [Answer(2268)]
     public static long Part1((int r, int g, int b)[][] inp)

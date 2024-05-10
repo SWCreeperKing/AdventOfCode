@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AdventOfCode.Experimental_Run;
+using static RedefinedRpg.ClrCnsl;
 
 namespace AdventOfCode;
 
@@ -52,7 +53,7 @@ public class Program
 
     public static string SaveInput(YearDayInfo info)
     {
-        ClrCnsl.Write($"[#yellow]Downloading Input for [{info}]... ");
+        Write($"[#yellow]Downloading Input for [{info}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
@@ -67,14 +68,14 @@ public class Program
         }
 
         File.WriteAllText(info.File, input);
-        ClrCnsl.WriteLine("[#darkyellow][Done]");
+        WriteLine("[#darkyellow][Done]");
         LastDownload = time;
         return input;
     }
     
     public static string[][] GetLeaderBoard(int year)
     {
-        ClrCnsl.Write($"[#yellow]Downloading leaderboard for [{year}]... ");
+        Write($"[#yellow]Downloading leaderboard for [{year}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
@@ -85,7 +86,7 @@ public class Program
         var content = client.GetStringAsync($"/{year}/leaderboard/self")
             .GetAwaiter().GetResult();
         var leaderboardRaw = content.Remove("\r").Split('\n');
-        ClrCnsl.WriteLine("[#darkyellow][Done]");
+        WriteLine("[#darkyellow][Done]");
         LastDownload = time;
 
         var leaderboardStartText = leaderboardRaw.First(s => s.Contains("Day "));

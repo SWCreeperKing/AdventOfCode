@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using CreepyUtil;
+using static CreepyUtil.Direction;
+
+
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -98,13 +100,13 @@ file readonly struct Input(Matrix2d<char> map)
     public readonly Pos End = new(map.Size.w - 2, map.Size.h - 1);
 }
 
-file class Node(Pos pos, NodeDirection dir = Center)
+file class Node(Pos pos, Direction dir = Center)
 {
-    public static readonly Dictionary<char, NodeDirection> Slopes = new()
+    public static readonly Dictionary<char, Direction> Slopes = new()
         { { '^', Up }, { '>', Right }, { 'v', Down }, { '<', Left } };
 
     public readonly Pos Pos = pos;
-    public readonly NodeDirection Dir = dir;
+    public readonly Direction Dir = dir;
 
     public Dictionary<Node, int> Edges = [];
 

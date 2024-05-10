@@ -1,6 +1,8 @@
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
+
 
 namespace AdventOfCode.Solutions._2022;
 
@@ -29,20 +31,20 @@ file class Day12
     public static long Solve((Pos start, Pos end, Matrix2d<int> map) inp, bool part2 = false)
         => (!part2 ? (pos: inp.start, dest: inp.end) : (pos: inp.end, dest: inp.start)).Inline(t
             => new Dijkstra<State, int, int>(inp.map, (a, b) => a.CompareTo(b))
-                .Eval(t.dest, new State(t.pos, NodeDirection.Center, part2)).Steps);
+                .Eval(t.dest, new State(t.pos, Direction.Center, part2)).Steps);
 }
 
-file class State(Pos position, NodeDirection direction, bool part2 = false, int steps = 0)
+file class State(Pos position, Direction direction, bool part2 = false, int steps = 0)
     : State<State, int, int>(position, direction)
 {
     public readonly int Steps = steps;
     public override int GetHashCode() => Position.GetHashCode();
     public override int GetValue(int mapVal) => Steps;
 
-    public override State MakeNewState(Matrix2d<int> map, Pos newPos, NodeDirection dir)
+    public override State MakeNewState(Matrix2d<int> map, Pos newPos, Direction dir)
         => new(newPos, dir, part2, Steps + 1);
 
-    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, Pos dxy)
+    public override bool ValidState(Matrix2d<int> map, Direction dir, Pos dxy)
     {
         var alt = map[Position];
         var nextAlt = map[Position + dxy];

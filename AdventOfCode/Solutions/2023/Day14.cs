@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
+using static CreepyUtil.Direction;
+
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -16,7 +18,7 @@ file class Day14
     [Answer(102497)]
     public static long Part1(Matrix2d<char> inp)
     {
-        CycleSide(inp, Direction.Up);
+        CycleSide(inp, Up);
         return CalcLoad(inp);
     }
 
@@ -47,10 +49,10 @@ file class Day14
 
     public static string Cycle(Matrix2d<char> slides)
     {
-        CycleSide(slides, Direction.Up);
-        CycleSide(slides, Direction.Left);
-        CycleSide(slides, Direction.Down);
-        CycleSide(slides, Direction.Right);
+        CycleSide(slides, Up);
+        CycleSide(slides, Left);
+        CycleSide(slides, Down);
+        CycleSide(slides, Right);
         return slides.ToString();
     }
 
@@ -58,10 +60,10 @@ file class Day14
     {
         var (inJ, jCondition) = direction switch
         {
-            Direction.Up => (0, (Func<int, bool>) (y => y < slides.Size.h)),
-            Direction.Left => (0, x => x < slides.Size.w),
-            Direction.Down => (slides.Size.h - 1, y => y >= 0),
-            Direction.Right => (slides.Size.w - 1, x => x >= 0)
+            Up => (0, (Func<int, bool>) (y => y < slides.Size.h)),
+            Left => (0, x => x < slides.Size.w),
+            Down => (slides.Size.h - 1, y => y >= 0),
+            Right => (slides.Size.w - 1, x => x >= 0)
         };
 
         CycleMap(slides, inJ, jCondition, direction);
@@ -70,7 +72,8 @@ file class Day14
     public static void CycleMap(Matrix2d<char> slides, int inJ, Func<int, bool> jCondition,
         Direction direction)
     {
-        var dir = (int) direction % 2 == 1;
+        var dir = direction.IsHorizontal();
+        var adder = direction is Right or Down ? -1 : 1;
         var size = dir ? slides.Size.h : slides.Size.w;
         for (var i = 0; i < size; i++)
         {
@@ -97,7 +100,7 @@ file class Day14
                         break;
                 }
 
-                j += direction is Direction.Right or Direction.Down ? -1 : 1;
+                j += adder;
             }
         }
     }

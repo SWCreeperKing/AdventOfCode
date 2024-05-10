@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.ClrCnsl;
 using static AdventOfCode.Experimental_Run.Starter;
+using static RedefinedRpg.ClrCnsl;
 
 namespace AdventOfCode.Experimental_Run;
 
@@ -58,7 +58,7 @@ public static class Starter
             {
                 SelectedYear = runner.Year;
                 RunDay(runner, out _, true);
-                WaitForInput();
+                WaitForAnyInput();
             }
         }
 
@@ -74,8 +74,8 @@ public static class Starter
         var dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
         var days = GetDayList(dayKeysRaw);
 
-        int selected;
-        while ((selected = ListView(days)) != days.Length - 1)
+        var selected = 0;
+        while ((selected = ListView(selected, days)) != days.Length - 1)
         {
             Console.Clear();
             if (selected == days.Length - 4)
@@ -86,7 +86,7 @@ public static class Starter
                     return RunDay(i, out _, true).Sum();
                 }).Aggregate((t1, t2) => t1 + t2);
                 WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
-                WaitForInput();
+                WaitForAnyInput();
             }
             else if (selected == days.Length - 3)
             {
@@ -109,12 +109,12 @@ public static class Starter
                 File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, Program.GetLeaderBoard(SelectedYear)));
                 
                 WriteLine("README.md created!");
-                WaitForInput();
+                WaitForAnyInput();
             }
             else if (selected == days.Length - 2)
             {
                 Console.WriteLine("Switch Year");
-                SelectedYear = yearKeys[ListView(yearKeys.Select(i => $"{i}").ToArray())];
+                SelectedYear = yearKeys[ListView(0, yearKeys.Select(i => $"{i}").ToArray())];
                 dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
                 days = GetDayList(dayKeysRaw);
             }
@@ -148,9 +148,9 @@ public static class Starter
         if (run.Count == 2) run.Add("Both");
         run.Add($"Back to {SelectedYear}");
 
-        int selected;
+        var selected = 0;
         WriteLine($"=== Year [#cyan]{info.Year}[#r] | Day [#darkyellow]{info.Day}[#r] ===");
-        while ((selected = ListView(run.ToArray())) != run.Count - 1)
+        while ((selected = ListView(selected, run.ToArray())) != run.Count - 1)
         {
             Console.Clear();
             switch (run[selected])
@@ -193,7 +193,7 @@ public static class Starter
         }
 
         if (!toContinue) return Sw.Elapsed;
-        WaitForInput();
+        WaitForAnyInput();
         Console.Clear();
         return Sw.Elapsed;
     }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using CreepyUtil;
+using static CreepyUtil.Direction;
+
+
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -37,7 +39,7 @@ file class Day16
         return biggest;
     }
 
-    public static long RunMap(Matrix2d<Tile> map, (Pos pos, NodeDirection dir) starting)
+    public static long RunMap(Matrix2d<Tile> map, (Pos pos, Direction dir) starting)
     {
         map.Iterate((_, t, _) =>
         {
@@ -45,7 +47,7 @@ file class Day16
             t.Touched = false;
         });
 
-        List<(Pos pos, NodeDirection dir)> lasers = [starting];
+        List<(Pos pos, Direction dir)> lasers = [starting];
 
         while (lasers.Count != 0)
         {
@@ -96,7 +98,7 @@ file class Day16
 
         return map.Select((_, t, _, _) => t.Touched ? 1 : 0).Sum();
 
-        void TryAdd(Pos pos, NodeDirection dir)
+        void TryAdd(Pos pos, Direction dir)
         {
             var next = pos.Move(dir);
             if (!map.PositionExists(next) || map[next].Movements.Contains(dir)) return;
@@ -109,6 +111,6 @@ file class Day16
 file class Tile(char tile)
 {
     public readonly char TileChar = tile;
-    public readonly List<NodeDirection> Movements = [];
+    public readonly List<Direction> Movements = [];
     public bool Touched;
 }

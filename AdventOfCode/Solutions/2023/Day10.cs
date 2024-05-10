@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.NodeDirection;
+using CreepyUtil;
+using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 10, "Pipe Maze")]
 file class Day10
 {
-    public static readonly Dictionary<char, NodeDirection[]> Dirs = new()
+    public static readonly Dictionary<char, Direction[]> Dirs = new()
     {
         { 'S', [Up, Down, Left, Right] }, { '.', [] },
         { '-', [Left, Right] }, { '|', [Up, Down] },
@@ -52,7 +52,7 @@ file class Day10
         var cameFrom = Center;
         var steps = 0;
 
-        bool Check(NodeDirection direction, char here)
+        bool Check(Direction direction, char here)
         {
             var otherDirection = direction.Rotate180();
             var next = pos.Move(otherDirection);

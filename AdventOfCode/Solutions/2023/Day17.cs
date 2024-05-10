@@ -2,6 +2,9 @@ using System;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
+
+
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -21,14 +24,14 @@ file class Day17
                 .Inline(compare => compare == 0 ? x.Item2.CompareTo(y.Item2) : compare)).Eval(
             (map.Size.w - 1, map.Size.h - 1),
             [
-                new State(Pos.Zero, NodeDirection.Right, 0, 0, part2),
-                new State(Pos.Zero, NodeDirection.Down, 0, 0, part2)
+                new State(Pos.Zero, Direction.Right, 0, 0, part2),
+                new State(Pos.Zero, Direction.Down, 0, 0, part2)
             ]).Heat;
 }
 
 file class State(
     Pos position,
-    NodeDirection direction,
+    Direction direction,
     int heat,
     int count,
     bool part2 = false) : State<State, int, (int, int)>(position, direction)
@@ -38,10 +41,10 @@ file class State(
     public override int GetHashCode() => HashCode.Combine(Position, Direction, count);
     public override (int, int) GetValue(int mapVal) => (Heat, count);
 
-    public override State MakeNewState(Matrix2d<int> map, Pos newPos, NodeDirection dir)
+    public override State MakeNewState(Matrix2d<int> map, Pos newPos, Direction dir)
         => new(newPos, dir, Heat + map[newPos], Direction == dir ? count + 1 : 1, part2);
 
-    public override bool ValidState(Matrix2d<int> map, NodeDirection dir, Pos dxy)
+    public override bool ValidState(Matrix2d<int> map, Direction dir, Pos dxy)
     {
         if (Direction.Rotate180() == dir) return false;
         if (!part2) return Direction != dir || count < 3;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
 
 namespace AdventOfCode.Solutions._2023;
 
@@ -14,20 +14,15 @@ file class Day22
         => input.Split('\n').Select((s, i)
                 => s.Split('~').SelectMany(s => s.Split(',').Select(int.Parse)).ToArray()
                     .Inline(arr => new Cube(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], i)))
-            .OrderBy(c => c.Z).ToList();
+            .OrderBy(c => c.Z).ToList().InlineAndReturnSelf(CreateMap);
 
     [Answer(421)]
     public static long Part1(List<Cube> inp)
-    {
-        CreateMap(inp);
-        return inp.Count(cube => cube.Supporting.Count == 0 || cube.Supporting.All(cube => cube.SupportBy.Count > 1));
-    }
+        => inp.Count(cube => cube.Supporting.Count == 0 || cube.Supporting.All(cube => cube.SupportBy.Count > 1));
 
     [Answer(39247)]
     public static long Part2(List<Cube> inp)
     {
-        CreateMap(inp);
-        
         var count = 0L;
         foreach (var cube in inp)
         {

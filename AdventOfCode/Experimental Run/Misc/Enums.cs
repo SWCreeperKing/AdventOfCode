@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using CreepyUtil;
 
 namespace AdventOfCode.Experimental_Run.Misc;
 
@@ -10,15 +10,6 @@ public static class Enums
     public static readonly Pos[] Surround =
         [(0, 0), (-1, 0), (0, -1), (1, 0), (0, 1)];
 
-    public static readonly IReadOnlyDictionary<Direction, (int x, int y)> DirectionModifiers =
-        new Dictionary<Direction, (int x, int y)>
-        {
-            { Direction.Up, (0, 1) },
-            { Direction.Right, (1, 0) },
-            { Direction.Down, (0, -1) },
-            { Direction.Left, (-1, 0) },
-        };
-
     public static string String(this AnswerState state, object answer, string extra)
         => state switch
         {
@@ -28,15 +19,6 @@ public static class Enums
             AnswerState.Low => $"[#darkyellow]Incorrect Answer, it is too [#red]Low[#r]: [{answer}] {extra}",
             _ => $"[#darkyellow]Possible Answer: [{answer}] {extra}"
         };
-}
-
-public enum Direction
-{
-    None = -1,
-    Up = 0,
-    Right = 1,
-    Down = 2,
-    Left = 3
 }
 
 public enum AnswerState

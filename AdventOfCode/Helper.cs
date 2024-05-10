@@ -8,7 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil;
+using static CreepyUtil.Direction;
 using Range = System.Range;
 
 namespace AdventOfCode;
@@ -315,6 +316,11 @@ public static class Helper
     public static int ParseInt(this char c, int def = 0) => int.TryParse($"{c}", out var i) ? i : def;
     public static TO Inline<T, TO>(this T t, Func<T, TO> func) => func(t);
     public static void InlineNoReturn<T>(this T t, Action<T> func) => func(t);
+    public static T InlineAndReturnSelf<T>(this T t, Action<T> func)
+    {
+        func(t);
+        return t;
+    }
 
     public static long ManhattanDistance(this (long x, long y) xy, (long x, long y) xy2)
         => Math.Abs(xy2.x - xy.x) + Math.Abs(xy2.y - xy.y);
@@ -351,19 +357,19 @@ public static class Helper
 
     //https://www.wikihow.com/Calculate-the-Area-of-a-Polygon
     //https://en.wikipedia.org/wiki/Shoelace_formula
-    public static long Shoelace(this IEnumerable<(int amount, NodeDirection dir)> list)
+    public static long Shoelace(this IEnumerable<(int amount, Direction dir)> list)
     {
         long x = 0, y = 0, area = 0, perimeter = 0;
         foreach (var (amount, dir) in list)
         {
             long lx = x, ly = y;
-            if (dir is NodeDirection.Up or NodeDirection.Down)
+            if (dir is Up or Down)
             {
-                y += amount * (dir is NodeDirection.Up ? -1 : 1);
+                y += amount * (dir is Up ? -1 : 1);
             }
             else
             {
-                x += amount * (dir is NodeDirection.Left ? -1 : 1);
+                x += amount * (dir is Left ? -1 : 1);
             }
 
             perimeter += amount;

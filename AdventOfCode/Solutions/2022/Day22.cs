@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
-using static AdventOfCode.Experimental_Run.Misc.Direction;
+using CreepyUtil;
+using static CreepyUtil.Direction;
+
 
 namespace AdventOfCode.Solutions._2022;
 
@@ -74,12 +75,8 @@ file class Day22
         {
             if (inst.LeftOrRight is not null)
             {
-                var tempDir = (int) direction;
-                if (inst.LeftOrRight!.Value) tempDir--;
-                else tempDir++;
-
-                if (tempDir < 0) tempDir += 4;
-                direction = (Direction) (tempDir % 4);
+                var tempDir = direction;
+                direction = inst.LeftOrRight!.Value ? tempDir.RotateCC() : tempDir.Rotate();
                 continue;
             }
 
