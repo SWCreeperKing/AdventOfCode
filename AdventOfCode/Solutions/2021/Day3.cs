@@ -8,7 +8,11 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 3, "Binary Diagnostic")]
 file class Day3
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
+    [ModifyInput]
+    public static string[] ProcessInput(string input)
+    {
+        return input.Split('\n');
+    }
 
     [Answer(1082324)]
     public static int Part1(string[] inp)

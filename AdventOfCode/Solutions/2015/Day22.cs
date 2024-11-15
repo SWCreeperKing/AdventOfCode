@@ -10,12 +10,23 @@ file class Day22
 {
     [ModifyInput]
     public static GameState ProcessInput(string input)
-        => input.Split('\n').Inline(arr => new GameState(
+    {
+        return input.Split('\n').Inline(arr => new GameState(
             int.Parse(arr[0][(arr[0].IndexOf(": ", StringComparison.Ordinal) + 1)..]),
             int.Parse(arr[1][(arr[1].IndexOf(": ", StringComparison.Ordinal) + 1)..])));
+    }
 
-    [Answer(1269)] public static long Part1(GameState inp) => Run(inp);
-    [Answer(1309)] public static long Part2(GameState inp) => Run(inp, true);
+    [Answer(1269)]
+    public static long Part1(GameState inp)
+    {
+        return Run(inp);
+    }
+
+    [Answer(1309)]
+    public static long Part2(GameState inp)
+    {
+        return Run(inp, true);
+    }
 
     public static int Run(GameState initState, bool part2 = false)
     {
@@ -57,7 +68,8 @@ public record GameState(
     int ManaUsed = 0)
 {
     public GameState RunEffects(bool part2 = false)
-        => this with
+    {
+        return this with
         {
             BossHp = Poison > 0 ? BossHp - 3 : BossHp,
             Hp = part2 ? Hp - 1 : Hp,
@@ -66,6 +78,7 @@ public record GameState(
             Poison = Poison > 0 ? Poison - 1 : 0,
             Recharge = Recharge > 0 ? Recharge - 1 : 0
         };
+    }
 
     public List<GameState> PlayerTurn()
     {
@@ -76,28 +89,24 @@ public record GameState(
         states.Add(this with { Mana = Mana - 73, ManaUsed = ManaUsed + 73, BossHp = BossHp - 2, Hp = Hp + 2 });
 
         if (Mana < 113) return states;
-        if (Shield == 0)
-        {
-            states.Add(this with { Mana = Mana - 113, ManaUsed = ManaUsed + 113, Shield = 6 });
-        }
+        if (Shield == 0) states.Add(this with { Mana = Mana - 113, ManaUsed = ManaUsed + 113, Shield = 6 });
 
         if (Mana < 173) return states;
-        if (Poison == 0)
-        {
-            states.Add(this with { Mana = Mana - 173, ManaUsed = ManaUsed + 173, Poison = 6 });
-        }
+        if (Poison == 0) states.Add(this with { Mana = Mana - 173, ManaUsed = ManaUsed + 173, Poison = 6 });
 
         if (Mana < 229) return states;
-        if (Recharge == 0)
-        {
-            states.Add(this with { Mana = Mana - 229, ManaUsed = ManaUsed + 229, Recharge = 5 });
-        }
+        if (Recharge == 0) states.Add(this with { Mana = Mana - 229, ManaUsed = ManaUsed + 229, Recharge = 5 });
 
         return states;
     }
 
-    public GameState BossTurn() => this with { Hp = Hp - (BossDamage - (Shield > 0 ? 7 : 0)) };
+    public GameState BossTurn()
+    {
+        return this with { Hp = Hp - (BossDamage - (Shield > 0 ? 7 : 0)) };
+    }
 
     public override int GetHashCode()
-        => HashCode.Combine(BossHp, BossDamage, Hp, Mana, Shield, Poison, Recharge, ManaUsed);
+    {
+        return HashCode.Combine(BossHp, BossDamage, Hp, Mana, Shield, Poison, Recharge, ManaUsed);
+    }
 }

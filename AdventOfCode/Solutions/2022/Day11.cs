@@ -27,7 +27,7 @@ file class Day11
             {
                 StartingItems = monkey[0].Remove("Starting items: ").Trim()
                     .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
-                Operation = new()
+                Operation = new Operation
                 {
                     IsAddOrMulti = operation[1] == "+",
                     Op = new[]
@@ -45,21 +45,19 @@ file class Day11
         var inspections = new int[monkeys.Count];
 
         for (var i = 0; i < 20; i++)
+        for (var m = 0; m < monkeys.Count; m++)
         {
-            for (var m = 0; m < monkeys.Count; m++)
+            var monkey = monkeys[m];
+
+            foreach (var item in monkey.StartingItems)
             {
-                var monkey = monkeys[m];
-
-                foreach (var item in monkey.StartingItems)
-                {
-                    inspections[m]++;
-                    var newWorry = (long) Math.Floor(monkey.Operation.RunOp(item) / 3f);
-                    var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
-                    monkeys[toThrowTo].StartingItems.Add(newWorry);
-                }
-
-                monkey.StartingItems.Clear();
+                inspections[m]++;
+                var newWorry = (long)Math.Floor(monkey.Operation.RunOp(item) / 3f);
+                var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
+                monkeys[toThrowTo].StartingItems.Add(newWorry);
             }
+
+            monkey.StartingItems.Clear();
         }
 
         var highest = inspections.OrderDescending().Take(2).ToArray();
@@ -79,7 +77,7 @@ file class Day11
             {
                 StartingItems = monkey[0].Remove("Starting items: ").Trim()
                     .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
-                Operation = new()
+                Operation = new Operation
                 {
                     IsAddOrMulti = operation[1] == "+",
                     Op = new[]
@@ -98,21 +96,19 @@ file class Day11
         var multiDivide = monkeys.Select(m => m.TestDivisibility).Multi();
 
         for (var i = 0; i < 10000; i++)
+        for (var m = 0; m < monkeys.Count; m++)
         {
-            for (var m = 0; m < monkeys.Count; m++)
+            var monkey = monkeys[m];
+
+            foreach (var item in monkey.StartingItems)
             {
-                var monkey = monkeys[m];
-
-                foreach (var item in monkey.StartingItems)
-                {
-                    inspections[m]++;
-                    var newWorry = monkey.Operation.RunOp(item) % multiDivide;
-                    var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
-                    monkeys[toThrowTo].StartingItems.Add(newWorry);
-                }
-
-                monkey.StartingItems.Clear();
+                inspections[m]++;
+                var newWorry = monkey.Operation.RunOp(item) % multiDivide;
+                var toThrowTo = newWorry % monkey.TestDivisibility == 0 ? monkey.ThrowTo[0] : monkey.ThrowTo[1];
+                monkeys[toThrowTo].StartingItems.Add(newWorry);
             }
+
+            monkey.StartingItems.Clear();
         }
 
         Console.WriteLine(inspections.String());
@@ -126,8 +122,8 @@ file class Day11
 file class Monkey
 {
     public Operation Operation;
-    public int TestDivisibility;
     public List<long> StartingItems = [];
+    public int TestDivisibility;
     public int[] ThrowTo = new int[2];
 }
 

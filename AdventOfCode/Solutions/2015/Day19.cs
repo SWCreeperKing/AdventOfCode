@@ -49,7 +49,10 @@ file class Day19
         var steps = 0;
         while (inpStr != "e")
         {
-            if (finalE.Any(ss => ss.Item1 == inpStr)) inpStr = "e";
+            if (finalE.Any(ss => ss.Item1 == inpStr))
+            {
+                inpStr = "e";
+            }
             else
             {
                 var lastPick = reversed.Where(ss => inpStr.Contains(ss.Item1))

@@ -6,7 +6,6 @@ using CreepyUtil;
 using static CreepyUtil.Direction;
 
 
-
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 16, "The Floor Will Be Lava")]
@@ -14,9 +13,15 @@ file class Day16
 {
     [ModifyInput]
     public static Matrix2d<Tile> ProcessInput(string input)
-        => new(input.Split('\n').Select(s => s.Select(c => new Tile(c)).ToArray()).ToArray());
+    {
+        return new Matrix2d<Tile>(input.Split('\n').Select(s => s.Select(c => new Tile(c)).ToArray()).ToArray());
+    }
 
-    [Answer(7034)] public static long Part1(Matrix2d<Tile> inp) => RunMap(inp, (Pos.Zero, Right));
+    [Answer(7034)]
+    public static long Part1(Matrix2d<Tile> inp)
+    {
+        return RunMap(inp, (Pos.Zero, Right));
+    }
 
     [Answer(7759)]
     public static long Part2(Matrix2d<Tile> inp)
@@ -26,7 +31,7 @@ file class Day16
 
         for (var x = 0; x < size.w; x++)
         {
-            biggest = Math.Max(RunMap(inp, (new Pos(x, 0), Up)), biggest);
+            biggest = Math.Max(RunMap(inp, (new Pos(x), Up)), biggest);
             biggest = Math.Max(RunMap(inp, (new Pos(x, size.h - 1), Down)), biggest);
         }
 
@@ -81,9 +86,10 @@ file class Day16
                     break;
 
                 case '/' or '\\':
-                    var mirrorDir = map[pos].TileChar is '/' ? dir.MirrorOther()
+                    var mirrorDir = map[pos].TileChar is '/'
+                        ? dir.MirrorOther()
                         : dir.Mirror();
-                    
+
                     var mirror = pos.Move(mirrorDir);
                     if (map.PositionExists(mirror))
                     {
@@ -110,7 +116,7 @@ file class Day16
 
 file class Tile(char tile)
 {
-    public readonly char TileChar = tile;
     public readonly List<Direction> Movements = [];
+    public readonly char TileChar = tile;
     public bool Touched;
 }

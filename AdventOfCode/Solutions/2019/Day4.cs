@@ -6,7 +6,11 @@ namespace AdventOfCode.Solutions._2019;
 [Day(2019, 4, "Secure Container")]
 file class Day4
 {
-    [ModifyInput] public static int[] ProcessInput(string input) => input.Split('-').Select(int.Parse).ToArray();
+    [ModifyInput]
+    public static int[] ProcessInput(string input)
+    {
+        return input.Split('-').Select(int.Parse).ToArray();
+    }
 
     [Answer(1019)]
     public static long Part1(int[] inp)

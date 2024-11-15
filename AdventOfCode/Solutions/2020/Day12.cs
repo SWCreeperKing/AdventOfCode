@@ -9,7 +9,9 @@ file class Day12
 {
     [ModifyInput]
     public static (char, int)[] ProcessInput(string input)
-        => input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
+    {
+        return input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
+    }
 
     [Answer(759)]
     public static long Part1((char, int)[] inp)
@@ -19,7 +21,6 @@ file class Day12
         var rot = 1;
 
         foreach (var (c, i) in inp)
-        {
             switch (c)
             {
                 case 'N' or 'E':
@@ -35,7 +36,6 @@ file class Day12
                     rot = (c == 'R' ? rot + i / 90 : Math.Abs(rot + (4 - i / 90))) % 4;
                     break;
             }
-        }
 
         return Math.Abs(ship[0]) + Math.Abs(ship[1]);
     }
@@ -43,11 +43,10 @@ file class Day12
     [Answer(45763)]
     public static long Part2((char, int)[] inp)
     {
-        int[] ship = [ 0, 0 ];
-        int[] waypoint = [ 10, -1 ];
+        int[] ship = [0, 0];
+        int[] waypoint = [10, -1];
 
         foreach (var (c, i) in inp)
-        {
             switch (c)
             {
                 case 'N' or 'W':
@@ -64,7 +63,6 @@ file class Day12
                         waypoint = c == 'R' ? new[] { -waypoint[1], waypoint[0] } : new[] { waypoint[1], -waypoint[0] };
                     break;
             }
-        }
 
         return Math.Abs(ship[0]) + Math.Abs(ship[1]);
     }

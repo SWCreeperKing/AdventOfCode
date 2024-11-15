@@ -4,6 +4,42 @@ namespace AdventOfCode.Solutions._2020;
 
 file class Day20
 {
+    // [Run(2020, 20, 1, 7492183537913)]
+    public static long Part1(string input)
+    {
+        // var tiles = input.Split("\n\n").Select(t => new Tile(t.Split('\n', StringSplitOptions.RemoveEmptyEntries)))
+        //     .ToList();
+        // for (var i = 0; i < tiles.Count; i++)
+        // for (var j = i + 1; j < tiles.Count; j++)
+        //     tiles[i].Match(tiles[j]);
+        // return tiles.Where(t => t.matched.Count(b => b) == 2).Aggregate(1L, (l, t) => l * t.id);
+        return -1;
+    }
+
+    // [Run(2020, 20, 2, 2323)]
+    public static long Part2(string input)
+    {
+        // var seaMonster = new[] { "                  # ", "#    ##    ##    ###", "#  #  #  #  #  #   " };
+        // var tiles = input.Split("\n\n")
+        //     .Select(t => new Tile(t.Split('\n', StringSplitOptions.RemoveEmptyEntries)))
+        //     .ToList();
+        // for (var i = 0; i < tiles.Count; i++)
+        // for (var j = i + 1; j < tiles.Count; j++)
+        //     tiles[i].Match(tiles[j]);
+        // var corners = tiles.Where(t => t.matched.Count(b => b) == 2);
+        // string[] build = null;
+        // foreach (var chosen in corners)
+        // {
+        //     while (chosen.matched[0] || chosen.matched[3]) chosen.Rotate();
+        //     build = Part2Build(chosen.Copy(), tiles.ToArray(), 0, 0, (int)Math.Sqrt(tiles.Count),
+        //         Array.Empty<int>(), tiles.ToDictionary(t => t.id, t => t), Array.Empty<int>());
+        //     Console.WriteLine($"Failed at Testing Corner: {chosen.id}");
+        // }
+        //
+        // Console.WriteLine(string.Join("\n", build!));
+        //
+        return -1;
+    }
     // file class Tile
     // {
     //     public int id;
@@ -69,9 +105,9 @@ file class Day20
 
     public class Tile
     {
+        public readonly string[] Sides;
         public int Id;
         public string RawData;
-        public string[] Sides;
         public string[] SidesFlipped;
 
         public Tile(int id, string rawData)
@@ -81,43 +117,6 @@ file class Day20
             Sides = new[] { data[0], data.Select(s => s[^1]).Join(), data[^1], data.Select(s => s[0]).Join() };
             SidesFlipped = Sides.Select(s => s.Reverse().Join()).ToArray();
         }
-    }
-
-    // [Run(2020, 20, 1, 7492183537913)]
-    public static long Part1(string input)
-    {
-        // var tiles = input.Split("\n\n").Select(t => new Tile(t.Split('\n', StringSplitOptions.RemoveEmptyEntries)))
-        //     .ToList();
-        // for (var i = 0; i < tiles.Count; i++)
-        // for (var j = i + 1; j < tiles.Count; j++)
-        //     tiles[i].Match(tiles[j]);
-        // return tiles.Where(t => t.matched.Count(b => b) == 2).Aggregate(1L, (l, t) => l * t.id);
-        return -1;
-    }
-
-    // [Run(2020, 20, 2, 2323)]
-    public static long Part2(string input)
-    {
-        // var seaMonster = new[] { "                  # ", "#    ##    ##    ###", "#  #  #  #  #  #   " };
-        // var tiles = input.Split("\n\n")
-        //     .Select(t => new Tile(t.Split('\n', StringSplitOptions.RemoveEmptyEntries)))
-        //     .ToList();
-        // for (var i = 0; i < tiles.Count; i++)
-        // for (var j = i + 1; j < tiles.Count; j++)
-        //     tiles[i].Match(tiles[j]);
-        // var corners = tiles.Where(t => t.matched.Count(b => b) == 2);
-        // string[] build = null;
-        // foreach (var chosen in corners)
-        // {
-        //     while (chosen.matched[0] || chosen.matched[3]) chosen.Rotate();
-        //     build = Part2Build(chosen.Copy(), tiles.ToArray(), 0, 0, (int)Math.Sqrt(tiles.Count),
-        //         Array.Empty<int>(), tiles.ToDictionary(t => t.id, t => t), Array.Empty<int>());
-        //     Console.WriteLine($"Failed at Testing Corner: {chosen.id}");
-        // }
-        //
-        // Console.WriteLine(string.Join("\n", build!));
-        //
-        return -1;
     }
 
     // public static string[] Part2Build(Tile start, Tile[] tiles, int x, int y, int size, int[] last,

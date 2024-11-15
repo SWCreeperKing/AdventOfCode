@@ -13,7 +13,9 @@ file class Day14
 {
     [ModifyInput]
     public static Matrix2d<char> ProcessInput(string input)
-        => new(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
+    {
+        return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
+    }
 
     [Answer(102497)]
     public static long Part1(Matrix2d<char> inp)
@@ -45,7 +47,9 @@ file class Day14
     }
 
     public static long CalcLoad(Matrix2d<char> slides)
-        => slides.Size.h.Inline(h => slides.Select((_, c, _, y) => c is not 'O' ? 0 : h - y).Sum());
+    {
+        return slides.Size.h.Inline(h => slides.Select((_, c, _, y) => c is not 'O' ? 0 : h - y).Sum());
+    }
 
     public static string Cycle(Matrix2d<char> slides)
     {
@@ -60,7 +64,7 @@ file class Day14
     {
         var (inJ, jCondition) = direction switch
         {
-            Up => (0, (Func<int, bool>) (y => y < slides.Size.h)),
+            Up => (0, (Func<int, bool>)(y => y < slides.Size.h)),
             Left => (0, x => x < slides.Size.w),
             Down => (slides.Size.h - 1, y => y >= 0),
             Right => (slides.Size.w - 1, x => x >= 0)

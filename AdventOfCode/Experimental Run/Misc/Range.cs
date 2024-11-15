@@ -9,6 +9,14 @@ public readonly struct Range(long start, long end)
     public readonly long Start = start;
     public readonly long End = end;
 
+    public Range(string range) : this(range.Split('-'))
+    {
+    }
+
+    public Range(string[] range) : this(long.Parse(range[0]), long.Parse(range[1]))
+    {
+    }
+
     public Range(System.Range range) : this(range.Start.Value, range.End.Value)
     {
     }
@@ -19,11 +27,25 @@ public readonly struct Range(long start, long end)
         end = End;
     }
 
-    public Range NewEnd(long newEnd) => new(Start, newEnd);
-    public Range NewStart(long newStart) => new(newStart, End);
-    public bool IsValid() => Start <= End;
+    public Range NewEnd(long newEnd)
+    {
+        return new Range(Start, newEnd);
+    }
 
-    public long Delta() => Math.Abs(Start - End);
+    public Range NewStart(long newStart)
+    {
+        return new Range(newStart, End);
+    }
+
+    public bool IsValid()
+    {
+        return Start <= End;
+    }
+
+    public long Delta()
+    {
+        return Math.Abs(Start - End);
+    }
 
     public bool IsContinuation(Range range, bool exact = true)
     {
@@ -81,15 +103,57 @@ public readonly struct Range(long start, long end)
         return false;
     }
 
-    public long Count() => Delta() + 1;
+    public long Count()
+    {
+        return Delta() + 1;
+    }
 
-    public static Range operator +(Range range, int i) => new(range.Start + i, range.End + i);
-    public static Range operator +(int i, Range range) => new(range.Start + i, range.End + i);
-    public static Range operator -(Range range, int i) => new(range.Start - i, range.End - i);
-    public static Range operator -(int i, Range range) => new(range.Start - i, range.End - i);
+    public static Range operator +(Range range, int i)
+    {
+        return new Range(range.Start + i, range.End + i);
+    }
 
-    public static implicit operator System.Range(Range range) => new Index((int) range.Start)..(int) range.End;
-    public static implicit operator Range(System.Range range) => new(range);
+    public static Range operator +(int i, Range range)
+    {
+        return new Range(range.Start + i, range.End + i);
+    }
+
+    public static Range operator -(Range range, int i)
+    {
+        return new Range(range.Start - i, range.End - i);
+    }
+
+    public static Range operator -(int i, Range range)
+    {
+        return new Range(range.Start - i, range.End - i);
+    }
+
+    public static bool operator ==(Range rangeA, Range rangeB)
+    {
+        return rangeA.Start == rangeB.Start && rangeA.End == rangeB.End;
+    }
+
+    public static bool operator !=(Range rangeA, Range rangeB)
+    {
+        return rangeA.Start != rangeB.Start || rangeA.End != rangeB.End;
+    }
+
+    public static implicit operator System.Range(Range range)
+    {
+        return new Index((int)range.Start)..(int)range.End;
+    }
+
+    public static implicit operator Range(System.Range range)
+    {
+        return new Range(range);
+    }
 
     public new int GetHashCode => HashCode.Combine(Start, End);
+
+    public override string ToString() => $"{Start}-{End}";
+
+    public bool Has(long val, bool startInclusive = true, bool endInclusive = true)
+        => (startInclusive ? Start <= val : Start < val) && (endInclusive ? val <= End : val < End);
+
+    public bool this[long l] => Has(l);
 }

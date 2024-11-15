@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
-
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 3, "Crossed Wires")]
@@ -11,11 +10,13 @@ file class Day3
 {
     [ModifyInput]
     public static Instruction[][] ProcessInput(string input)
-        => input.Split('\n').Select(
+    {
+        return input.Split('\n').Select(
                 line => line.Split(',')
                     .Select(str => new Instruction(str[0], int.Parse(str[1..])))
                     .ToArray())
             .ToArray();
+    }
 
     [Answer(489)]
     public static int Part1(Instruction[][] input)
@@ -32,9 +33,7 @@ file class Day3
         {
             int x = 0, y = 0;
             foreach (var instruction in instructions)
-            {
                 for (var i = 0; i < instruction.Distance; i++)
-                {
                     switch (instruction.Direction)
                     {
                         case 'R':
@@ -50,8 +49,6 @@ file class Day3
                             Add(x, --y, c);
                             break;
                     }
-                }
-            }
         }
 
         Map(input[0], 1);
@@ -88,9 +85,7 @@ file class Day3
             int x = 0, y = 0;
             var steps = 1;
             foreach (var instruction in instructions)
-            {
                 for (var i = 0; i < instruction.Distance; i++, steps++)
-                {
                     switch (instruction.Direction)
                     {
                         case 'R':
@@ -106,8 +101,6 @@ file class Day3
                             Add(x, --y, c, steps);
                             break;
                     }
-                }
-            }
         }
 
         Map(input[0], 1);
@@ -132,6 +125,13 @@ file class Cell((int x, int y) pos, bool origin = false)
     public int? ASteps;
     public int? BSteps;
 
-    public bool DoesIntercept() => ASteps != null && BSteps != null && !Origin;
-    public int Steps() => ASteps!.Value + BSteps!.Value;
+    public bool DoesIntercept()
+    {
+        return ASteps != null && BSteps != null && !Origin;
+    }
+
+    public int Steps()
+    {
+        return ASteps!.Value + BSteps!.Value;
+    }
 }

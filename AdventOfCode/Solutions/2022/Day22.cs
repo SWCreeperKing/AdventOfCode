@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using CreepyUtil;
 using static CreepyUtil.Direction;
-
 
 namespace AdventOfCode.Solutions._2022;
 
@@ -15,7 +13,6 @@ file class Day22
     public static (Instruction[] instructions, Matrix2d<bool?> map) ProcessInput(string inp)
     {
         var fileSep = inp.Split("\n\n");
-
         var rawMap = fileSep[0].Split('\n');
         var rawInstructions = fileSep[1];
 
@@ -24,24 +21,23 @@ file class Day22
         {
             var line = rawMap[y];
             for (var x = 0; x < map.Size.w; x++)
-            {
                 if (x < line.Length && line[x] != ' ') map[x, y] = line[x] == '#';
                 else map[x, y] = null;
-            }
         }
 
         List<Instruction> instructions = [];
         var numberBuilder = "";
         foreach (var c in rawInstructions)
-        {
             if (c is 'L' or 'R')
             {
                 instructions.Add(new Instruction { Num = int.Parse(numberBuilder) });
                 numberBuilder = "";
                 instructions.Add(new Instruction { LeftOrRight = c is 'L' });
             }
-            else numberBuilder += c;
-        }
+            else
+            {
+                numberBuilder += c;
+            }
 
         if (numberBuilder != "") instructions.Add(new Instruction { Num = int.Parse(numberBuilder) });
 
@@ -88,7 +84,6 @@ file class Day22
             }
         }
 
-        Console.WriteLine(position);
         return 1000 * (position.y + 1) + 4 * (position.x + 1) +
                direction switch { Up => 3, Right => 0, Down => 1, Left => 2 };
     }
@@ -101,6 +96,6 @@ file class Day22
 
 file class Instruction
 {
+    public bool? LeftOrRight;
     public int Num;
-    public bool? LeftOrRight = null;
 }

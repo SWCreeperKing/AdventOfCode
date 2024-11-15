@@ -7,7 +7,11 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 13, "Shuttle Search")]
 file class Day13
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
+    [ModifyInput]
+    public static string[] ProcessInput(string input)
+    {
+        return input.Split('\n');
+    }
 
     [Answer(174)]
     public static long Part1(string[] inp)

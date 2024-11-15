@@ -30,8 +30,17 @@ file class Day16
         }).ToArray();
     }
 
-    [Answer(2059)] public static long Part1((string valve, int rate, string[] leadTo)[] inp) => Solve(inp, true, 30);
-    [Answer(2790)] public static long Part2((string valve, int rate, string[] leadTo)[] inp) => Solve(inp, false, 26);
+    [Answer(2059)]
+    public static long Part1((string valve, int rate, string[] leadTo)[] inp)
+    {
+        return Solve(inp, true, 30);
+    }
+
+    [Answer(2790)]
+    public static long Part2((string valve, int rate, string[] leadTo)[] inp)
+    {
+        return Solve(inp, false, 26);
+    }
 
     private static int Solve((string valve, int rate, string[] leadTo)[] inp, bool singlePlayer, int time)
     {
@@ -40,9 +49,8 @@ file class Day16
 
         var valvesToOpen = new BitArray(map.Valves.Length);
         for (var i = 0; i < map.Valves.Length; i++)
-        {
-            if (map.Valves[i].FlowRate > 0) valvesToOpen[i] = true;
-        }
+            if (map.Valves[i].FlowRate > 0)
+                valvesToOpen[i] = true;
 
         return MaxFlow(map, 0, 0, new Player(start, 0),
             singlePlayer ? new Player(start, int.MaxValue) : new Player(start, 0), valvesToOpen, time);
@@ -95,36 +103,32 @@ file class Day16
         if (currentFlow + Residue(valvesToOpen, map, remainingTime) <= maxFlow) return maxFlow;
 
         for (var i0 = 0; i0 < nextStatesByPlayer[0].Length; i0++)
+        for (var i1 = 0; i1 < nextStatesByPlayer[1].Length; i1++)
         {
-            for (var i1 = 0; i1 < nextStatesByPlayer[1].Length; i1++)
+            player0 = nextStatesByPlayer[0][i0];
+            player1 = nextStatesByPlayer[1][i1];
+
+            if ((nextStatesByPlayer[0].Length > 1 || nextStatesByPlayer[1].Length > 1) &&
+                player0.Valve == player1.Valve)
+                continue;
+
+            var advance = 0;
+            if (player0.Distance > 0 && player1.Distance > 0)
             {
-                player0 = nextStatesByPlayer[0][i0];
-                player1 = nextStatesByPlayer[1][i1];
-
-                if ((nextStatesByPlayer[0].Length > 1 || nextStatesByPlayer[1].Length > 1) &&
-                    player0.Valve == player1.Valve)
-                {
-                    continue;
-                }
-
-                var advance = 0;
-                if (player0.Distance > 0 && player1.Distance > 0)
-                {
-                    advance = Math.Min(player0.Distance, player1.Distance);
-                    player0 = player0 with { Distance = player0.Distance - advance };
-                    player1 = player1 with { Distance = player1.Distance - advance };
-                }
-
-                maxFlow = MaxFlow(
-                    map,
-                    maxFlow,
-                    currentFlow,
-                    player0,
-                    player1,
-                    valvesToOpen,
-                    remainingTime - advance
-                );
+                advance = Math.Min(player0.Distance, player1.Distance);
+                player0 = player0 with { Distance = player0.Distance - advance };
+                player1 = player1 with { Distance = player1.Distance - advance };
             }
+
+            maxFlow = MaxFlow(
+                map,
+                maxFlow,
+                currentFlow,
+                player0,
+                player1,
+                valvesToOpen,
+                remainingTime - advance
+            );
         }
 
         return maxFlow;
@@ -158,18 +162,15 @@ file class Day16
     {
         var distances = new Matrix2d<int>(valves.Length);
         for (var i = 0; i < valves.Length; i++)
-        {
-            for (var j = 0; j < valves.Length; j++) distances[i, j] = int.MaxValue;
-        }
+        for (var j = 0; j < valves.Length; j++)
+            distances[i, j] = int.MaxValue;
 
         foreach (var valve in valves)
+        foreach (var target in valve.Tunnels)
         {
-            foreach (var target in valve.Tunnels)
-            {
-                var targetNode = valves.Single(x => x.Name == target);
-                distances[valve.Id, targetNode.Id] = 1;
-                distances[targetNode.Id, valve.Id] = 1;
-            }
+            var targetNode = valves.Single(x => x.Name == target);
+            distances[valve.Id, targetNode.Id] = 1;
+            distances[targetNode.Id, valve.Id] = 1;
         }
 
         var n = distances.Size.w;
@@ -178,23 +179,19 @@ file class Day16
         {
             done = true;
             for (var source = 0; source < n; source++)
+            for (var target = 0; target < n; target++)
             {
-                for (var target = 0; target < n; target++)
+                if (source == target) continue;
+                for (var through = 0; through < n; through++)
                 {
-                    if (source == target) continue;
-                    for (var through = 0; through < n; through++)
-                    {
-                        if (distances[source, through] == int.MaxValue || distances[through, target] == int.MaxValue)
-                        {
-                            continue;
-                        }
+                    if (distances[source, through] == int.MaxValue ||
+                        distances[through, target] == int.MaxValue) continue;
 
-                        var cost = distances[source, through] + distances[through, target];
-                        if (cost >= distances[source, target]) continue;
-                        done = false;
-                        distances[source, target] = cost;
-                        distances[target, source] = cost;
-                    }
+                    var cost = distances[source, through] + distances[through, target];
+                    if (cost >= distances[source, target]) continue;
+                    done = false;
+                    distances[source, target] = cost;
+                    distances[target, source] = cost;
                 }
             }
         }

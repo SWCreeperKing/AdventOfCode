@@ -7,29 +7,44 @@ using static System.Text.Json.JsonValueKind;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 12, "JSAbacusFramework.io")]
- internal partial class Day12
+internal partial class Day12
 {
-    [GeneratedRegex(@"[-\d]+")] private static partial Regex NegativeRegex();
+    private static readonly Regex NegativeRegex = new(@"[-\d]+", RegexOptions.Compiled);
 
     [Answer(111754)]
     public static long Part1(string input)
-        => NegativeRegex().Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
+    {
+        return NegativeRegex.Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
+    }
 
-    [Answer(65402)] public static long Part2(string input) => SearchWithoutRed(input);
+    [Answer(65402)]
+    public static long Part2(string input)
+    {
+        return SearchWithoutRed(input);
+    }
 
     private static int SearchWithoutRed(string inp)
     {
-        bool JsonRed(JsonProperty jp) => jp.Value.ValueKind is not String || jp.Value.GetString() is not "red";
-        int JsonStuffJp(JsonProperty jp) => JsonStuff(jp.Value);
+        bool JsonRed(JsonProperty jp)
+        {
+            return jp.Value.ValueKind is not String || jp.Value.GetString() is not "red";
+        }
+
+        int JsonStuffJp(JsonProperty jp)
+        {
+            return JsonStuff(jp.Value);
+        }
 
         int JsonStuff(JsonElement e)
-            => e.ValueKind switch
+        {
+            return e.ValueKind switch
             {
                 Object when e.EnumerateObject().All(JsonRed) => e.EnumerateObject().Select(JsonStuffJp).Sum(),
                 Array => e.EnumerateArray().Select(JsonStuff).Sum(),
                 Number => e.GetInt32(),
                 _ => 0
             };
+        }
 
         return JsonStuff(JsonDocument.Parse(inp).RootElement);
     }

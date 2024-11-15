@@ -58,15 +58,20 @@ file class Day25
         return minCut.Select(list => list.Count).Multi();
 
         int CutsMade(List<List<string>> minCut)
-            => edges.Count(edge => minCut.First(list => list.Contains(edge.Source)) !=
-                                   minCut.Find(list => list.Contains(edge.Destination)));
+        {
+            return edges.Count(edge => minCut.First(list => list.Contains(edge.Source)) !=
+                                       minCut.Find(list => list.Contains(edge.Destination)));
+        }
     }
 }
 
 file class Edge(string source, string destination)
 {
-    public string Source = source;
-    public string Destination = destination;
+    public readonly string Destination = destination;
+    public readonly string Source = source;
 
-    public override string ToString() => $"[{Source}, {Destination}]";
+    public override string ToString()
+    {
+        return $"[{Source}, {Destination}]";
+    }
 }

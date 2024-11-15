@@ -46,8 +46,13 @@ file class Day7
     }
 
     [Answer(38426)]
-    public static long Part2(Dictionary<string, List<(int, string)>> inp) => Counter(inp["shiny gold"], inp);
+    public static long Part2(Dictionary<string, List<(int, string)>> inp)
+    {
+        return Counter(inp["shiny gold"], inp);
+    }
 
     private static long Counter(IEnumerable<(int, string)> bags, Dictionary<string, List<(int, string)>> bagz)
-        => bags.Sum(b => b.Item1 * (1 + Counter(bagz[b.Item2], bagz)));
+    {
+        return bags.Sum(b => b.Item1 * (1 + Counter(bagz[b.Item2], bagz)));
+    }
 }

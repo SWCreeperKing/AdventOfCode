@@ -11,7 +11,8 @@ public static class Enums
         [(0, 0), (-1, 0), (0, -1), (1, 0), (0, 1)];
 
     public static string String(this AnswerState state, object answer, string extra)
-        => state switch
+    {
+        return state switch
         {
             AnswerState.Correct => $"[#green]Answer: [{answer}] {extra}",
             AnswerState.Not => $"[#red]Incorrect Answer: [{answer}] {extra}",
@@ -19,6 +20,7 @@ public static class Enums
             AnswerState.Low => $"[#darkyellow]Incorrect Answer, it is too [#red]Low[#r]: [{answer}] {extra}",
             _ => $"[#darkyellow]Possible Answer: [{answer}] {extra}"
         };
+    }
 }
 
 public enum AnswerState

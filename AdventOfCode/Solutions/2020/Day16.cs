@@ -11,7 +11,9 @@ file class Day16
 {
     [ModifyInput]
     public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)
-        => input.Split("\n\n").Flatten(arr => (arr, arr[2].Split('\n')[1..]));
+    {
+        return input.Split("\n\n").Flatten(arr => (arr, arr[2].Split('\n')[1..]));
+    }
 
     [Answer(29878)]
     public static long Part1((string[] inp, string[] nearbyTickets) inp)
@@ -24,7 +26,7 @@ file class Day16
             var reg = Regex.Match(r, ".*: ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
             var (one, two, three, four) = (int.Parse(reg[1].Value), int.Parse(reg[2].Value),
                 int.Parse(reg[3].Value), int.Parse(reg[4].Value));
-            requirements.Add(i => one <= i && i <= two || three <= i && i <= four);
+            requirements.Add(i => (one <= i && i <= two) || (three <= i && i <= four));
         }
 
         return inp.nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray()).Aggregate(0L,
@@ -43,7 +45,7 @@ file class Day16
             var reg = Regex.Match(r, @"(.*): ([0-9]*)-([0-9]*) or ([0-9]*)-([0-9]*)").Groups;
             var (one, two, three, four) = (int.Parse(reg[2].Value), int.Parse(reg[3].Value),
                 int.Parse(reg[4].Value), int.Parse(reg[5].Value));
-            requirementsRaw.Add(reg[1].Value, i => one <= i && i <= two || three <= i && i <= four);
+            requirementsRaw.Add(reg[1].Value, i => (one <= i && i <= two) || (three <= i && i <= four));
         }
 
         var requirements = requirementsRaw.Values.ToList();
@@ -52,20 +54,15 @@ file class Day16
         var restructure = new List<int>[myTicket.Length];
 
         foreach (var split in inp.nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray()))
-        {
             for (var i = 0; i < split.Length; i++)
-            {
                 if (restructure[i] is null) restructure[i] = [split[i]];
                 else restructure[i].Add(split[i]);
-            }
-        }
 
         var concrete = new int[requirements.Count];
         Array.Fill(concrete, -1);
         var candidates = new List<int>[requirements.Count];
 
         for (var i = 0; i < restructure.Length; i++)
-        {
             foreach (var satisfy in restructure[i].Select(data =>
                          requirements.FindAll(f => f.Invoke(data)).Select(f => requirements.IndexOf(f)).ToArray()))
             {
@@ -73,10 +70,8 @@ file class Day16
                 if (satisfy.Length >= 20) continue;
                 candidates[i].RemoveAll(j => candidates[i].Except(satisfy).Contains(j));
             }
-        }
 
         while (concrete.Any(l => l == -1))
-        {
             for (var i = 0; i < candidates.Length; i++)
             {
                 if (concrete[i] != -1 || candidates[i].Count > 1) continue;
@@ -85,7 +80,6 @@ file class Day16
                     if (t.Count > 1)
                         t.Remove(found);
             }
-        }
 
         var keys = requirementsRaw.Keys.ToArray();
         return keys.Where(s => s.Contains("departure")).Aggregate(1L,

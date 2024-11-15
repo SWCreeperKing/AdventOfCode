@@ -7,17 +7,18 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 14, "Reindeer Olympics")]
- internal partial class Day14
+file class Day14
 {
-    [GeneratedRegex(@"(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.")]
-    private static partial Regex InputRegex();
-
-    public record Flight(int Speed, int Sec, int Rest);
+    private static readonly Regex InputRegex =
+        new(@"(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.",
+            RegexOptions.Compiled);
 
     [ModifyInput]
     public static Dictionary<string, Flight> ProcessInput(string input)
-        => input.Split('\n').Select(l => InputRegex().Match(l).Range(1..4)).ToDictionary(match => match[0],
+    {
+        return input.Split('\n').Select(l => InputRegex.Match(l).Range(1..4)).ToDictionary(match => match[0],
             match => new Flight(int.Parse(match[1]), int.Parse(match[2]), int.Parse(match[3])));
+    }
 
     [Answer(2660)]
     public static long Part1(Dictionary<string, Flight> inp)
@@ -25,7 +26,7 @@ namespace AdventOfCode.Solutions._2015;
         var distance = 0;
         foreach (var (speed, sec, rest) in inp.Values)
         {
-            var dist = (int) Math.Floor(2503f / (sec + rest)) * speed * sec;
+            var dist = (int)Math.Floor(2503f / (sec + rest)) * speed * sec;
             if (2503f % (sec + rest) > sec) dist += speed * sec;
             distance = Math.Max(distance, dist);
         }
@@ -56,12 +57,12 @@ namespace AdventOfCode.Solutions._2015;
             var winners = distance.Where(kv => kv.Value == max).Select(kv => kv.Key);
 
             foreach (var winner in winners)
-            {
                 if (!points.TryGetValue(winner, out var value)) points[winner] = 1;
                 else points[winner] = ++value;
-            }
         }
 
         return points.Values.Max();
     }
+
+    public record Flight(int Speed, int Sec, int Rest);
 }

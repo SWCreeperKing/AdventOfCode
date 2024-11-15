@@ -14,7 +14,8 @@ public static class MdFormatter
     private const string LinkStarter =
         "https://github.com/SWCreeperKing/AdventOfCode/blob/master/AdventOfCode/Solutions";
 
-    public static string MakeFile(this Dictionary<int, (bool?[], TimeSpan?[])> stats, TimeSpan totalTime, int year, string[][] leaderboard)
+    public static string MakeFile(this Dictionary<int, (bool?[], TimeSpan?[])> stats, TimeSpan totalTime, int year,
+        string[][] leaderboard)
     {
         StringBuilder sb = new();
         sb.Append("> [!NOTE]\n> Timings are only ran once, this is not an average\n\n");
@@ -50,10 +51,12 @@ public static class MdFormatter
     }
 
     private static char ToEmote(this bool? b)
-        => b switch
+    {
+        return b switch
         {
             null => PossibleAnswer,
             true => CorrectAnswer,
             _ => WrongAnswer
         };
+    }
 }

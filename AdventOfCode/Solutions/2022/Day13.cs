@@ -30,7 +30,10 @@ file class Day13
         return firstIndex * secondIndex;
     }
 
-    public static JsonNode GetJsonRaw(string inp) => JsonNode.Parse(inp);
+    public static JsonNode GetJsonRaw(string inp)
+    {
+        return JsonNode.Parse(inp);
+    }
 
     public static (JsonNode left, JsonNode right) GetJson(string left, string right)
     {

@@ -16,19 +16,19 @@ file class Day5
 
         var i = 0;
         foreach (var map in inp.Skip(1))
-        {
             ranges[i++] = map.Split('\n').Skip(1)
                 .Select(str => str.CleanSpaces().Trim().Split(' ').Select(long.Parse).ToArray())
                 .Select(line => (line[0], line[1], line[1] + (line[2] - 1)))
                 .OrderByDescending(t => t.Item2).ToArray();
-        }
 
         return (seeds.ToArray(), ranges);
     }
 
     [Answer(265018614)]
     public static long Part1((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
-        => inp.seeds.Select(i => FindLocation(inp.ranges, i)).Min();
+    {
+        return inp.seeds.Select(i => FindLocation(inp.ranges, i)).Min();
+    }
 
     [Answer(63179500)]
     public static long Part2((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
@@ -38,19 +38,13 @@ file class Day5
         for (var i = 0; i < inp.seeds.Length; i += 2)
         {
             var num = inp.seeds[i];
-            for (var j = 0; j < inp.seeds[i + 1] + 1; j += 50000)
-            {
-                seeds.Add(num + j);
-            }
+            for (var j = 0; j < inp.seeds[i + 1] + 1; j += 50000) seeds.Add(num + j);
         }
 
         var minBy = seeds.Select(i => (i, FindLocation(inp.ranges, i))).MinBy(t => t.Item2);
         seeds.Clear();
 
-        for (var j = -50000; j < 50000; j++)
-        {
-            seeds.Add(minBy.i + j);
-        }
+        for (var j = -50000; j < 50000; j++) seeds.Add(minBy.i + j);
 
         return seeds.Select(i => FindLocation(inp.ranges, i)).Min();
     }

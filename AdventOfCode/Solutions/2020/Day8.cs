@@ -8,7 +8,10 @@ namespace AdventOfCode.Solutions._2020;
 file class Day8
 {
     [ModifyInput]
-    public static string[][] ProcessInput(string input) => input.Split('\n').Select(s => s.SplitSpace()).ToArray();
+    public static string[][] ProcessInput(string input)
+    {
+        return input.Split('\n').Select(s => s.SplitSpace()).ToArray();
+    }
 
     [Answer(2058)]
     public static int Part1(string[][] inp)

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
-
 // this is interesting, will keep this in mind, (Credit for part 2)
 using Parser = System.Func<string, System.Collections.Generic.IEnumerable<string>>;
 
@@ -66,18 +65,25 @@ file class Day19
         }
 
         Parser Alt(List<Parser> parsers)
-            => parsers.Count == 1
+        {
+            return parsers.Count == 1
                 ? parsers.Single()
                 : input => from parser in parsers.ToArray() from rest in parser(input) select rest;
+        }
 
         Parser Seq(List<Parser> parsers)
-            => parsers.Count == 1
+        {
+            return parsers.Count == 1
                 ? parsers.Single()
                 : inpt => from tail in parsers.First()(inpt)
                     from rest in Seq(parsers.Skip(1).ToList())(tail)
                     select rest;
+        }
 
-        Parser Literal(string st) => inpt => inpt.StartsWith(st) ? new[] { inpt[st.Length..] } : new string[0];
+        Parser Literal(string st)
+        {
+            return inpt => inpt.StartsWith(st) ? new[] { inpt[st.Length..] } : new string[0];
+        }
 
         var parser = GetParser(0);
         return inp.realIn.Count(data => parser(data).Any(st => st == string.Empty));

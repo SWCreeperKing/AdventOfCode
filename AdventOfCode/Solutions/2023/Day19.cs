@@ -50,12 +50,11 @@ file class Day19
         string Solve(Cell[] partList, string start)
         {
             var workflow = workflows[start];
-            
+
             foreach (var condition in workflow.Condition)
             foreach (var (c, num) in partList)
-            {
-                if (condition.Letter == c && condition.Check(num)) return condition.Jump;
-            }
+                if (condition.Letter == c && condition.Check(num))
+                    return condition.Jump;
 
             return workflow.Default;
         }
@@ -129,8 +128,15 @@ file readonly struct Condition
         Jump = conditionString[(colon + 1)..];
     }
 
-    public bool Check(long value) => Operator ? value < Value : value > Value;
-    public bool Check(long min, long max) => Operator ? max < Value : min > Value;
+    public bool Check(long value)
+    {
+        return Operator ? value < Value : value > Value;
+    }
+
+    public bool Check(long min, long max)
+    {
+        return Operator ? max < Value : min > Value;
+    }
 }
 
 file readonly struct Workflow

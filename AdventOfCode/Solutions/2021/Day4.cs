@@ -43,8 +43,8 @@ file class Day4
 
 file class Card
 {
-    public bool[,] Marked = new bool[5, 5];
-    public Dictionary<int, (int x, int y)> Board = new();
+    public readonly Dictionary<int, (int x, int y)> Board = new();
+    public readonly bool[,] Marked = new bool[5, 5];
     public int LastNumber;
 
     public Card(string board)
@@ -67,11 +67,14 @@ file class Card
     public bool Check()
     {
         for (var i = 0; i < 5; i++)
-            if (Marked[i, 0] && Marked[i, 1] && Marked[i, 2] && Marked[i, 3] && Marked[i, 4] ||
-                Marked[0, i] && Marked[1, i] && Marked[2, i] && Marked[3, i] && Marked[4, i])
+            if ((Marked[i, 0] && Marked[i, 1] && Marked[i, 2] && Marked[i, 3] && Marked[i, 4]) ||
+                (Marked[0, i] && Marked[1, i] && Marked[2, i] && Marked[3, i] && Marked[4, i]))
                 return true;
         return false;
     }
 
-    public int Calc() => Board.Sum(kv => Marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * LastNumber;
+    public int Calc()
+    {
+        return Board.Sum(kv => Marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * LastNumber;
+    }
 }

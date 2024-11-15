@@ -6,15 +6,16 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 3, "Squares With Three Sides")]
- internal partial class Day3
+file class Day3
 {
-    [GeneratedRegex(@"\s+(\d+)\s+(\d+)\s+(\d+)")]
-    public static partial Regex InputRegex();
+    public static readonly Regex InputRegex = new(@"\s+(\d+)\s+(\d+)\s+(\d+)", RegexOptions.Compiled);
 
     [ModifyInput]
     public static int[][] ProcessInput(string inp)
-        => inp.Split('\n').Select(s => InputRegex().Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
+    {
+        return inp.Split('\n').Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
             .ToArray();
+    }
 
     [Answer(1032)]
     public static long Part1(int[][] inp)
@@ -22,9 +23,8 @@ namespace AdventOfCode.Solutions._2016;
         return inp.Count(i =>
         {
             for (var j = 0; j < 3; j++)
-            {
-                if (i[j] + i[(j + 1) % 3] <= i[(j + 2) % 3]) return false;
-            }
+                if (i[j] + i[(j + 1) % 3] <= i[(j + 2) % 3])
+                    return false;
 
             return true;
         });

@@ -9,7 +9,11 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 11, "Corporate Policy")]
 file class Day11
 {
-    [ModifyInput] public static int[] ProcessInput(string input) => input.Select(c => c - 'a').ToArray();
+    [ModifyInput]
+    public static int[] ProcessInput(string input)
+    {
+        return input.Select(c => c - 'a').ToArray();
+    }
 
     [Answer("hxbxxyzz")]
     public static string Part1(int[] input)
@@ -25,9 +29,7 @@ file class Day11
             {
                 Span<int> span = input;
                 if (!hasConsecutive && i < input.Length - 1 && IsSequential(span[(i - 1)..(i + 2)]))
-                {
                     hasConsecutive = true;
-                }
 
                 if (hasPair || input[i - 1] != input[i] || pair == input[i]) continue;
                 if (pair != -1) hasPair = true;

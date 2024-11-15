@@ -6,7 +6,6 @@ using CreepyUtil;
 using static CreepyUtil.Direction;
 
 
-
 namespace AdventOfCode.Solutions._2023;
 
 [Day(2023, 23, "A Long Walk")]
@@ -14,9 +13,15 @@ file class Day23
 {
     [ModifyInput]
     public static Input ProcessInput(string input)
-        => new(new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray()));
+    {
+        return new Input(new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray()));
+    }
 
-    [Answer(2278)] public static long Part1(Input inp) => Solve(Populate(inp), inp.Start, inp.End);
+    [Answer(2278)]
+    public static long Part1(Input inp)
+    {
+        return Solve(Populate(inp), inp.Start, inp.End);
+    }
 
     [Answer(6734)]
     public static long Part2(Input inp)
@@ -76,10 +81,7 @@ file class Day23
         while (stack.Count != 0)
         {
             var state = stack.Pop();
-            if (state.Node.Pos == end)
-            {
-                count = Math.Max(count, state.Dist);
-            }
+            if (state.Node.Pos == end) count = Math.Max(count, state.Dist);
 
             foreach (var edge in state.Node.Edges.Keys)
             {
@@ -96,7 +98,7 @@ file class Day23
 file readonly struct Input(Matrix2d<char> map)
 {
     public readonly Matrix2d<char> Map = map;
-    public readonly Pos Start = new(1, 0);
+    public readonly Pos Start = new(1);
     public readonly Pos End = new(map.Size.w - 2, map.Size.h - 1);
 }
 
@@ -105,10 +107,11 @@ file class Node(Pos pos, Direction dir = Center)
     public static readonly Dictionary<char, Direction> Slopes = new()
         { { '^', Up }, { '>', Right }, { 'v', Down }, { '<', Left } };
 
-    public readonly Pos Pos = pos;
     public readonly Direction Dir = dir;
 
-    public Dictionary<Node, int> Edges = [];
+    public readonly Dictionary<Node, int> Edges = [];
+
+    public readonly Pos Pos = pos;
 
     public void Compress()
     {

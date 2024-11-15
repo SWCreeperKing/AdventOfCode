@@ -11,12 +11,16 @@ namespace AdventOfCode.Solutions._2017;
 [Day(2017, 3, "Spiral Memory")]
 file class Day3
 {
-    [ModifyInput] public static int ProcessInput(string input) => int.Parse(input);
+    [ModifyInput]
+    public static int ProcessInput(string input)
+    {
+        return int.Parse(input);
+    }
 
     [Answer(371)]
     public static long Part1(int inp)
     {
-        List<Pos> positions = [new Pos()];
+        List<Pos> positions = [new()];
         var dir = Right;
         var toTheLeft = Up;
         Dictionary<Direction, Pos> corners = new()
@@ -24,7 +28,7 @@ file class Day3
             { Up, new Pos() },
             { Right, new Pos() },
             { Down, new Pos() },
-            { Left, new Pos() },
+            { Left, new Pos() }
         };
 
         while (positions.Count < inp)
@@ -53,7 +57,7 @@ file class Day3
     [Answer(426490, AnswerState.Not)]
     public static long Part2(int inp)
     {
-        List<Pos> positions = [new Pos()];
+        List<Pos> positions = [new()];
         var dir = Right;
         var toTheLeft = Up;
         Dictionary<Direction, Pos> corners = new()
@@ -61,7 +65,7 @@ file class Day3
             { Up, new Pos() },
             { Right, new Pos() },
             { Down, new Pos() },
-            { Left, new Pos() },
+            { Left, new Pos() }
         };
 
         Dictionary<Pos, int> values = new() { { new Pos(), 1 } };
@@ -74,20 +78,11 @@ file class Day3
             var prev = positions[^1];
             var side = pos.Move(toTheLeft);
             var diagonal = pos.Move(toTheLeft.RotateCC(true));
-            if (prev != side && values.TryGetValue(prev, out var prevVal))
-            {
-                count += prevVal;
-            }
+            if (prev != side && values.TryGetValue(prev, out var prevVal)) count += prevVal;
 
-            if (values.TryGetValue(side, out var sideVal))
-            {
-                count += sideVal;
-            }
+            if (values.TryGetValue(side, out var sideVal)) count += sideVal;
 
-            if (values.TryGetValue(diagonal, out var diagonalVal))
-            {
-                count += diagonalVal;
-            }
+            if (values.TryGetValue(diagonal, out var diagonalVal)) count += diagonalVal;
 
             if (count > inp) return count;
 

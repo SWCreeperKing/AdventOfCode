@@ -9,33 +9,37 @@ namespace AdventOfCode.Solutions._2016;
 file class Day2
 {
     [ModifyInput]
-    public static char[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.ToCharArray()).ToArray();
+    public static char[][] ProcessInput(string inp)
+    {
+        return inp.Split('\n').Select(s => s.ToCharArray()).ToArray();
+    }
 
     [Answer("19636")]
     public static string Part1(char[][] inp)
-        => Solve(inp, MakeMap("""
-                              123
-                              456
-                              789
-                              """));
+    {
+        return Solve(inp, MakeMap("""
+                                  123
+                                  456
+                                  789
+                                  """));
+    }
 
     [Answer("3CC43")]
     public static string Part2(char[][] inp)
-        => Solve(inp, MakeMap("""
-                                1
-                               234
-                              56789
-                               ABC
-                                D
-                              """));
+    {
+        return Solve(inp, MakeMap("""
+                                    1
+                                   234
+                                  56789
+                                   ABC
+                                    D
+                                  """));
+    }
 
     public static string Solve(char[][] inp, Dictionary<Vector2, char> map)
     {
         List<Vector2> code = [map.First(kv => kv.Value == '5').Key];
-        foreach (var carr in inp)
-        {
-            code.Add(GetDigit(carr, code[^1], map));
-        }
+        foreach (var carr in inp) code.Add(GetDigit(carr, code[^1], map));
 
         return code.Skip(1).Select(v2 => map[v2]).Join();
     }

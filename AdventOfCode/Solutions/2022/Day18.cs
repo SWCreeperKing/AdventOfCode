@@ -104,12 +104,10 @@ file class Day18
 
 file class Cube
 {
-    public required int X, Y, Z;
-
-    public bool IsLava;
-
     //                           x+1, x-1,     y+1, y-1      z+1, z-1
-    public bool[] Touching = { false, false, false, false, false, false };
+    public readonly bool[] Touching = { false, false, false, false, false, false };
+    public bool IsLava;
+    public required int X, Y, Z;
 
     public void UpdateTouch(Cube c)
     {

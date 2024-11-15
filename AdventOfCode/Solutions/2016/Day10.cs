@@ -6,13 +6,10 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 10, "Balance Bots")]
- internal partial class Day10
+file class Day10
 {
-    [GeneratedRegex(@"value (\d+?) goes to (.+)")]
-    private static partial Regex ValueRegex();
-
-    [GeneratedRegex("(.+) gives low to (.+) and high to (.+)")]
-    private static partial Regex GiveRegex();
+    private static readonly Regex ValueRegex = new(@"value (\d+?) goes to (.+)", RegexOptions.Compiled);
+    private static readonly Regex GiveRegex = new("(.+) gives low to (.+) and high to (.+)", RegexOptions.Compiled);
 
     [ModifyInput]
     public static string[][][] ProcessInput(string inp)
@@ -20,8 +17,8 @@ namespace AdventOfCode.Solutions._2016;
         var rawInp = inp.Split('\n');
         return
         [
-            rawInp.Where(s => s.StartsWith("value")).Select(s => ValueRegex().Match(s).Range(1..2)).ToArray(),
-            rawInp.Where(s => !s.StartsWith("value")).Select(s => GiveRegex().Match(s).Range(1..3)).ToArray()
+            rawInp.Where(s => s.StartsWith("value")).Select(s => ValueRegex.Match(s).Range(1..2)).ToArray(),
+            rawInp.Where(s => !s.StartsWith("value")).Select(s => GiveRegex.Match(s).Range(1..3)).ToArray()
         ];
     }
 
@@ -37,22 +34,14 @@ namespace AdventOfCode.Solutions._2016;
             var hander = GetBot(bots, botInstruction[0]);
 
             if (botInstruction[1].Contains("output"))
-            {
                 hander.GiveLowerOutput = int.Parse(botInstruction[1].Split(' ')[^1]);
-            }
             else
-            {
                 hander.GiveLowerBot = GetBot(bots, botInstruction[1]);
-            }
 
             if (botInstruction[2].Contains("output"))
-            {
                 hander.GiveHigherOutput = int.Parse(botInstruction[2].Split(' ')[^1]);
-            }
             else
-            {
                 hander.GiveHigherBot = GetBot(bots, botInstruction[2]);
-            }
         }
 
         var botList = bots.Values.ToList();
@@ -84,22 +73,14 @@ namespace AdventOfCode.Solutions._2016;
             var hander = GetBot(bots, botInstruction[0]);
 
             if (botInstruction[1].Contains("output"))
-            {
                 hander.GiveLowerOutput = int.Parse(botInstruction[1].Split(' ')[^1]);
-            }
             else
-            {
                 hander.GiveLowerBot = GetBot(bots, botInstruction[1]);
-            }
 
             if (botInstruction[2].Contains("output"))
-            {
                 hander.GiveHigherOutput = int.Parse(botInstruction[2].Split(' ')[^1]);
-            }
             else
-            {
                 hander.GiveHigherBot = GetBot(bots, botInstruction[2]);
-            }
         }
 
         var botList = bots.Values.ToList();
@@ -121,10 +102,7 @@ namespace AdventOfCode.Solutions._2016;
 
     private static Bot GetBot(IDictionary<string, Bot> bots, string botId)
     {
-        if (!bots.TryGetValue(botId, out var bot))
-        {
-            bots[botId] = bot = new Bot(int.Parse(botId.Split(' ')[^1]));
-        }
+        if (!bots.TryGetValue(botId, out var bot)) bots[botId] = bot = new Bot(int.Parse(botId.Split(' ')[^1]));
 
         return bot;
     }
@@ -134,12 +112,15 @@ public class Bot(int id)
 {
     public readonly int Id = id;
     public readonly List<int> Inventory = [];
-    public Bot GiveLowerBot;
-    public int GiveLowerOutput;
     public Bot GiveHigherBot;
     public int GiveHigherOutput;
+    public Bot GiveLowerBot;
+    public int GiveLowerOutput;
 
-    public bool IsInventoryFull() => Inventory.Count >= 2;
+    public bool IsInventoryFull()
+    {
+        return Inventory.Count >= 2;
+    }
 
     public int GiveOutput(Dictionary<int, List<int>> outputs, params int[] getBotIdWith)
     {
@@ -149,22 +130,14 @@ public class Bot(int id)
         var higher = Inventory.Max();
 
         if (GiveLowerBot is null)
-        {
             GiveOutputValue(outputs, GiveLowerOutput, lower);
-        }
         else
-        {
             GiveLowerBot.Inventory.Add(lower);
-        }
 
         if (GiveHigherBot is null)
-        {
             GiveOutputValue(outputs, GiveHigherOutput, higher);
-        }
         else
-        {
             GiveHigherBot.Inventory.Add(higher);
-        }
 
         Inventory.Clear();
         return -1;
@@ -172,10 +145,7 @@ public class Bot(int id)
 
     private void GiveOutputValue(Dictionary<int, List<int>> outputs, int output, int value)
     {
-        if (!outputs.TryGetValue(output, out var outputList))
-        {
-            outputs[output] = outputList = [];
-        }
+        if (!outputs.TryGetValue(output, out var outputList)) outputs[output] = outputList = [];
 
         outputList.Add(value);
     }

@@ -34,7 +34,6 @@ file class Day14
         }
 
         foreach (var line in lineOps)
-        {
             for (var i = 1; i < line.Length; i++)
             {
                 var (x1, y1) = line[i - 1];
@@ -42,7 +41,6 @@ file class Day14
                 if (x1 != x2) DrawHorizontal(x1, y1, x2);
                 else DrawVertical(x1, y1, y2);
             }
-        }
 
         return map;
     }
@@ -52,10 +50,8 @@ file class Day14
     {
         var sand = 0;
         while (true)
-        {
             if (UpdateMap(inp, 500, 0)) sand++;
             else return sand;
-        }
     }
 
     [Answer(26729)]

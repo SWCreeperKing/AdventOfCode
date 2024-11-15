@@ -3,7 +3,6 @@ using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
 using CreepyUtil;
 
-
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 12, "Hill Climbing Algorithm")]
@@ -25,24 +24,45 @@ file class Day12
         return (matrix.Find(0), end, matrix);
     }
 
-    [Answer(481)] public static long Part1((Pos start, Pos end, Matrix2d<int> map) inp) => Solve(inp);
-    [Answer(480)] public static long Part2((Pos start, Pos end, Matrix2d<int> map) inp) => Solve(inp, true);
+    [Answer(481)]
+    public static long Part1((Pos start, Pos end, Matrix2d<int> map) inp)
+    {
+        return Solve(inp);
+    }
+
+    [Answer(480)]
+    public static long Part2((Pos start, Pos end, Matrix2d<int> map) inp)
+    {
+        return Solve(inp, true);
+    }
 
     public static long Solve((Pos start, Pos end, Matrix2d<int> map) inp, bool part2 = false)
-        => (!part2 ? (pos: inp.start, dest: inp.end) : (pos: inp.end, dest: inp.start)).Inline(t
+    {
+        return (!part2 ? (pos: inp.start, dest: inp.end) : (pos: inp.end, dest: inp.start)).Inline(t
             => new Dijkstra<State, int, int>(inp.map, (a, b) => a.CompareTo(b))
                 .Eval(t.dest, new State(t.pos, Direction.Center, part2)).Steps);
+    }
 }
 
 file class State(Pos position, Direction direction, bool part2 = false, int steps = 0)
     : State<State, int, int>(position, direction)
 {
     public readonly int Steps = steps;
-    public override int GetHashCode() => Position.GetHashCode();
-    public override int GetValue(int mapVal) => Steps;
+
+    public override int GetHashCode()
+    {
+        return Position.GetHashCode();
+    }
+
+    public override int GetValue(int mapVal)
+    {
+        return Steps;
+    }
 
     public override State MakeNewState(Matrix2d<int> map, Pos newPos, Direction dir)
-        => new(newPos, dir, part2, Steps + 1);
+    {
+        return new State(newPos, dir, part2, Steps + 1);
+    }
 
     public override bool ValidState(Matrix2d<int> map, Direction dir, Pos dxy)
     {
@@ -54,5 +74,7 @@ file class State(Pos position, Direction direction, bool part2 = false, int step
     }
 
     public override bool IsFinal(Pos dest, State<State, int, int> state, int val)
-        => part2 ? val == 1 : dest == Position;
+    {
+        return part2 ? val == 1 : dest == Position;
+    }
 }

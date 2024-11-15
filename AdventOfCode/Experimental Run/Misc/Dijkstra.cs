@@ -10,16 +10,16 @@ namespace AdventOfCode.Experimental_Run.Misc;
 public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare, int> comparer)
     where T : State<T, TM, TCompare>
 {
+    private readonly PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
     public readonly List<Direction> MovingDirections = [Up, Right, Down, Left];
 
     private readonly HashSet<int> Seen = [];
-    private readonly PriorityQueue<T, TCompare> Check = new(new Comparer<TCompare>(comparer));
 
     public T Eval(Pos dest, params T[] starters)
     {
         if (!set.PositionExists(dest)) throw new ArgumentException("Destination is not in Map");
         Check.EnqueueRange(starters.Select(state => (state, state.GetValue(set[state.Position]))));
-        
+
         while (Check.Count > 0)
         {
             var state = Check.Dequeue();
@@ -54,11 +54,22 @@ public abstract class State<T, TM, TCompare>(Pos position, Direction direction)
     public abstract override int GetHashCode();
     public abstract TCompare GetValue(TM mapVal);
     public abstract T MakeNewState(Matrix2d<TM> map, Pos newPos, Direction dir);
-    public virtual bool ValidState(Matrix2d<TM> map, Direction dir, Pos dxy) => true;
-    public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val) => Position == dest;
+
+    public virtual bool ValidState(Matrix2d<TM> map, Direction dir, Pos dxy)
+    {
+        return true;
+    }
+
+    public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val)
+    {
+        return Position == dest;
+    }
 }
 
 file class Comparer<T>(Func<T, T, int> compare) : IComparer<T>
 {
-    public int Compare(T a, T b) => compare(a, b);
+    public int Compare(T a, T b)
+    {
+        return compare(a, b);
+    }
 }

@@ -9,13 +9,21 @@ using static System.Text.Encoding;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 14, "One-Time Pad")]
-internal partial class Day14
+file class Day14
 {
-    [GeneratedRegex(@"(.)\1{2}", RegexOptions.Compiled)]
-    private static partial Regex Match3();
+    private static readonly Regex Match3 = new(@"(.)\1{2}", RegexOptions.Compiled);
 
-    [Answer(16106)] public static long Part1(string inp) => FindHash(inp);
-    [Answer(22423)] public static long Part2(string inp) => FindHash(inp, true);
+    [Answer(16106)]
+    public static long Part1(string inp)
+    {
+        return FindHash(inp);
+    }
+
+    [Answer(22423)]
+    public static long Part2(string inp)
+    {
+        return FindHash(inp, true);
+    }
 
     public static long FindHash(string input, bool part2 = false)
     {
@@ -27,10 +35,7 @@ internal partial class Day14
         {
             var salt = input + i;
             var hash = Hash(md5, salt, part2).ToLower();
-            if (Match3().IsMatch(hash))
-            {
-                hashPossibilities.Add(new HashMatcher(Match3().Match(hash).Groups[1].Value[0], i));
-            }
+            if (Match3.IsMatch(hash)) hashPossibilities.Add(new HashMatcher(Match3.Match(hash).Groups[1].Value[0], i));
 
             if (hashPossibilities.Count == 0) continue;
             List<HashMatcher> removal = [];
@@ -53,16 +58,15 @@ internal partial class Day14
     {
         if (!part2) return SubHash(md5, s);
         var hash = s;
-        for (var i = 0; i < 2017; i++)
-        {
-            hash = SubHash(md5, hash.ToLower());
-        }
+        for (var i = 0; i < 2017; i++) hash = SubHash(md5, hash.ToLower());
 
         return hash;
     }
 
     private static string SubHash(HashAlgorithm md5, string s)
-        => BitConverter.ToString(md5.ComputeHash(UTF8.GetBytes(s))).Replace("-", "");
+    {
+        return System.Convert.ToHexString(md5.ComputeHash(UTF8.GetBytes(s)));
+    }
 }
 
 file readonly struct HashMatcher(char character, int index)
@@ -78,5 +82,8 @@ file readonly struct HashMatcher(char character, int index)
         return null;
     }
 
-    public override int GetHashCode() => index.GetHashCode();
+    public override int GetHashCode()
+    {
+        return index.GetHashCode();
+    }
 }

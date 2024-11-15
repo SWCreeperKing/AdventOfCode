@@ -8,7 +8,11 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 17, "Conway Cubes")]
 file class Day17
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
+    [ModifyInput]
+    public static string[] ProcessInput(string input)
+    {
+        return input.Split('\n');
+    }
 
     [Answer(295)]
     public static int Part1(string[] inp)
@@ -21,7 +25,7 @@ file class Day17
 
         for (var i = 0; i < 6; i++)
         {
-            var old = (Array3D) dim.Clone();
+            var old = (Array3D)dim.Clone();
             var ((x1, y1, z1), (x2, y2, z2)) = old.GetSize();
 
             for (var z = z1 - 1; z <= z2 + 1; z++)
@@ -55,7 +59,7 @@ file class Day17
 
         for (var i = 0; i < 6; i++)
         {
-            var old = (Array4D) dim.Clone();
+            var old = (Array4D)dim.Clone();
             var ((x1, y1, z1, w1), (x2, y2, z2, w2)) = old.GetSize();
 
             for (var w = w1 - 1; w <= w2 + 1; w++)
@@ -84,7 +88,26 @@ file class Array3D : ICloneable
 {
     public Dictionary<(int, int, int), bool> Dim = new();
 
-    public int GetAllBoxes() => Dim.Values.Count(b => b);
+    public bool this[int x, int y, int z]
+    {
+        get
+        {
+            if (!Dim.ContainsKey((x, y, z))) Dim.Add((x, y, z), false);
+            return Dim[(x, y, z)];
+        }
+
+        set => Dim[(x, y, z)] = value;
+    }
+
+    public object Clone()
+    {
+        return new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) };
+    }
+
+    public int GetAllBoxes()
+    {
+        return Dim.Values.Count(b => b);
+    }
 
     public int AroundTown(int x, int y, int z)
     {
@@ -115,26 +138,32 @@ file class Array3D : ICloneable
 
         return ((minX, minY, minZ), (maxX, maxY, maxZ));
     }
-
-    public bool this[int x, int y, int z]
-    {
-        get
-        {
-            if (!Dim.ContainsKey((x, y, z))) Dim.Add((x, y, z), false);
-            return Dim[(x, y, z)];
-        }
-
-        set => Dim[(x, y, z)] = value;
-    }
-
-    public object Clone() => new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) };
 }
 
 file class Array4D : ICloneable
 {
     public Dictionary<(int, int, int, int), bool> Dim = new();
 
-    public int GetAllBoxes() => Dim.Values.Count(b => b);
+    public bool this[int x, int y, int z, int w]
+    {
+        get
+        {
+            if (!Dim.ContainsKey((x, y, z, w))) Dim.Add((x, y, z, w), false);
+            return Dim[(x, y, z, w)];
+        }
+
+        set => Dim[(x, y, z, w)] = value;
+    }
+
+    public object Clone()
+    {
+        return new Array4D { Dim = new Dictionary<(int, int, int, int), bool>(Dim) };
+    }
+
+    public int GetAllBoxes()
+    {
+        return Dim.Values.Count(b => b);
+    }
 
     public int AroundTown(int x, int y, int z, int w)
     {
@@ -175,17 +204,4 @@ file class Array4D : ICloneable
 
         return ((minX, minY, minZ, minW), (maxX, maxY, maxZ, maxW));
     }
-
-    public bool this[int x, int y, int z, int w]
-    {
-        get
-        {
-            if (!Dim.ContainsKey((x, y, z, w))) Dim.Add((x, y, z, w), false);
-            return Dim[(x, y, z, w)];
-        }
-
-        set => Dim[(x, y, z, w)] = value;
-    }
-
-    public object Clone() => new Array4D { Dim = new Dictionary<(int, int, int, int), bool>(Dim) };
 }

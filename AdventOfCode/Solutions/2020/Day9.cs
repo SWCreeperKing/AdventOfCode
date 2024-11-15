@@ -6,7 +6,11 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 9, "Encoding Error")]
 file class Day9
 {
-    [ModifyInput] public static long[] ProcessInput(string input) => input.Split('\n').Select(long.Parse).ToArray();
+    [ModifyInput]
+    public static long[] ProcessInput(string input)
+    {
+        return input.Split('\n').Select(long.Parse).ToArray();
+    }
 
     [Answer(552655238)]
     public static long Part1(long[] inp)
@@ -29,15 +33,13 @@ file class Day9
     {
         var weakness = Part1(inp);
         for (var i = 2; i < inp.Length; i++)
+        for (var j = 0; j < i; j++)
         {
-            for (var j = 0; j < i; j++)
-            {
-                var preamble = inp.SubArr(i - j, i);
-                var sum = preamble.Sum();
-                if (sum < weakness) continue;
-                if (sum > weakness) break;
-                return preamble.Min() + preamble.Max();
-            }
+            var preamble = inp.SubArr(i - j, i);
+            var sum = preamble.Sum();
+            if (sum < weakness) continue;
+            if (sum > weakness) break;
+            return preamble.Min() + preamble.Max();
         }
 
         return -1;

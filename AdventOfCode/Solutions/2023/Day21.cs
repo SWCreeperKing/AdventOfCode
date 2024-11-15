@@ -12,7 +12,9 @@ file class Day21
 {
     [ModifyInput]
     public static Matrix2d<char> ProcessInput(string input)
-        => new(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
+    {
+        return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
+    }
 
     [Answer(3847)]
     public static long Part1(Matrix2d<char> inp)
@@ -90,10 +92,7 @@ file class Day21
         List<List<long>> MakeDifferenceList(long[] arr)
         {
             List<List<long>> history = [arr.ToList()];
-            while (history[^1].GroupBy(i => i).Count() > 1)
-            {
-                history.Add(Differences(history[^1]));
-            }
+            while (history[^1].GroupBy(i => i).Count() > 1) history.Add(Differences(history[^1]));
 
             return history;
         }
@@ -101,10 +100,7 @@ file class Day21
         List<long> Differences(List<long> arr)
         {
             List<long> diffArr = [];
-            for (var i = 1; i < arr.Count; i++)
-            {
-                diffArr.Add(arr[i] - arr[i - 1]);
-            }
+            for (var i = 1; i < arr.Count; i++) diffArr.Add(arr[i] - arr[i - 1]);
 
             return diffArr;
         }

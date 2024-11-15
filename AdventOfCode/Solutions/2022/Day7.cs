@@ -15,7 +15,6 @@ file class Day7
         var inputLines = inp.Split('\n').Select(s => s.Split(' ')).ToArray();
 
         foreach (var line in inputLines)
-        {
             switch (line)
             {
                 case ["$", "cd", var name]:
@@ -29,7 +28,6 @@ file class Day7
                     directory.AddData((fileName, long.Parse(size)));
                     break;
             }
-        }
 
         return directory.AwareAndFlattenDirectory(l => l.Sum(l => l.Item2),
             (l1, l2) => l1 + l2);

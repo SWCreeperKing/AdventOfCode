@@ -90,9 +90,7 @@ file class Day20
                 }
 
                 foreach (var output in module.Outputs)
-                {
                     signalStates.Enqueue(new State(output, state.Module, receivedSignal));
-                }
             }
 
             return new Counting(low, high);
@@ -119,10 +117,7 @@ file class Day20
         bool Run()
         {
             Queue<State> signalStates = new();
-            foreach (var output in broadcaster)
-            {
-                signalStates.Enqueue(new State(output, "broadcaster", Signal.Low));
-            }
+            foreach (var output in broadcaster) signalStates.Enqueue(new State(output, "broadcaster", Signal.Low));
 
             buttonPresses++;
 
@@ -134,17 +129,13 @@ file class Day20
                 var receivedSignal = module.Operate(state.Signal, state.LastModule);
 
                 if (required.TryGetValue(state.Module, out var l) && l == 0 && receivedSignal == Signal.High)
-                {
                     required[state.Module] = buttonPresses;
-                }
 
                 if (required.Values.All(l => l != 0)) return false;
 
                 if (receivedSignal is Signal.None) continue;
                 foreach (var output in module.Outputs)
-                {
                     signalStates.Enqueue(new State(output, state.Module, receivedSignal));
-                }
             }
 
             return true;
@@ -157,9 +148,15 @@ file readonly struct Counting(long min, long max)
     public readonly long Min = min;
     public readonly long Max = max;
 
-    public static Counting operator +(Counting c1, Counting c2) => new(c1.Min + c2.Min, c1.Max + c2.Max);
+    public static Counting operator +(Counting c1, Counting c2)
+    {
+        return new Counting(c1.Min + c2.Min, c1.Max + c2.Max);
+    }
 
-    public long Counter() => min * max;
+    public long Counter()
+    {
+        return min * max;
+    }
 }
 
 file readonly struct State(string module, string lastModule, Signal signal)
@@ -185,7 +182,10 @@ file abstract class Module
 
 file class Output : Module
 {
-    public override Signal Operate(Signal signal, string lastModule) => Signal.None;
+    public override Signal Operate(Signal signal, string lastModule)
+    {
+        return Signal.None;
+    }
 }
 
 file class FlipFlop : Module

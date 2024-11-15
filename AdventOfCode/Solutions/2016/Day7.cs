@@ -7,13 +7,10 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 7, "Internet Protocol Version 7")]
- internal partial class Day7
+file class Day7
 {
-    [GeneratedRegex(@"(\w{1})((?!\1)(\w{1})\3)\1")]
-    public static partial Regex AbbaRegex();
-
-    [GeneratedRegex(@"(\w{1})(?!\1)(\w{1})\1")]
-    public static partial Regex AbaRegex();
+    public static readonly Regex AbbaRegex = new(@"(\w{1})((?!\1)(\w{1})\3)\1", RegexOptions.Compiled);
+    public static readonly Regex AbaRegex = new(@"(\w{1})(?!\1)(\w{1})\1", RegexOptions.Compiled);
 
     [ModifyInput]
     public static (string[] brackets, string[] normal)[] ProcessInput(string inp)
@@ -40,19 +37,22 @@ namespace AdventOfCode.Solutions._2016;
 
     [Answer(118)]
     public static long Part1((string[] brackets, string[] normal)[] inp)
-        => inp.Count(s =>
-            !s.brackets.Any(s => AbbaRegex().IsMatch(s)) && s.normal.Any(s => AbbaRegex().IsMatch(s)));
+    {
+        return inp.Count(s =>
+            !s.brackets.Any(s => AbbaRegex.IsMatch(s)) && s.normal.Any(s => AbbaRegex.IsMatch(s)));
+    }
 
     [Answer(260)]
     public static long Part2((string[] brackets, string[] normal)[] inp)
-        => inp.Count(s =>
+    {
+        return inp.Count(s =>
         {
             foreach (var str in s.brackets)
             {
                 var i = 0;
-                while (AbaRegex().IsMatch(str, i))
+                while (AbaRegex.IsMatch(str, i))
                 {
-                    var match = AbaRegex().Match(str, i);
+                    var match = AbaRegex.Match(str, i);
                     var groups = match.Groups;
                     i = str.IndexOf(match.Value, i, StringComparison.Ordinal);
                     var bab = $"{groups[2].Value}{groups[1].Value}{groups[2].Value}";
@@ -63,4 +63,5 @@ namespace AdventOfCode.Solutions._2016;
 
             return false;
         });
+    }
 }

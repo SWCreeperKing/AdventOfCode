@@ -11,7 +11,11 @@ file class Day3
     private static readonly Dictionary<char, Vector2> Directions = new()
         { ['^'] = -Vector2.UnitY, ['>'] = Vector2.UnitX, ['v'] = Vector2.UnitY, ['<'] = -Vector2.UnitX };
 
-    [ModifyInput] public static Vector2[] ProcessInput(string input) => input.Select(c => Directions[c]).ToArray();
+    [ModifyInput]
+    public static Vector2[] ProcessInput(string input)
+    {
+        return input.Select(c => Directions[c]).ToArray();
+    }
 
     [Answer(2592)]
     public static int Part1(Vector2[] inp)

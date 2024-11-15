@@ -7,24 +7,35 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 11, "Seating System")]
 file class Day11
 {
-    private static (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
-    private static bool IsOccupied(char c) => c == '#';
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
+    private static readonly (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
+
+    private static bool IsOccupied(char c)
+    {
+        return c == '#';
+    }
+
+    [ModifyInput]
+    public static string[] ProcessInput(string input)
+    {
+        return input.Split('\n');
+    }
 
     [Answer(2275)]
     public static int Part1(string[] inp)
     {
         char Look(int i, int j)
-            => i >= inp.Length || i < 0
+        {
+            return i >= inp.Length || i < 0
                 ? '.'
                 : j >= inp[i].Length || j < 0
                     ? '.'
                     : inp[i][j];
+        }
 
         bool Surround(int i, int j, char c = 'L')
         {
             var counter = Area.Count(a => Look(i + a.Item1, j + a.Item2) == '#');
-            return c == '#' && counter == 0 || c == 'L' && counter >= 4;
+            return (c == '#' && counter == 0) || (c == 'L' && counter >= 4);
         }
 
         var oldCount = -1;
@@ -77,7 +88,7 @@ file class Day11
         bool Surround(int i, int j, char c = 'L')
         {
             var counter = Area.Count(a => Look(i, j, a.Item1, a.Item2) == '#');
-            return c == '#' && counter == 0 || c == 'L' && counter > 4;
+            return (c == '#' && counter == 0) || (c == 'L' && counter > 4);
         }
 
         var oldCount = -1;

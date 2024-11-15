@@ -14,14 +14,16 @@ file class Day24
 
     [ModifyInput]
     public static long[][] ProcessInput(string input)
-        => input.Split('\n').Select(s
+    {
+        return input.Split('\n').Select(s
             => InputRegex.Match(s).Range(1..6).Select(long.Parse).ToArray()).ToArray();
+    }
 
     [Answer(16779)]
     public static long Part1(long[][] inp) // pos (xyz), velocity(xyz)
     {
-        const long min = (long) 2e14;
-        const long max = (long) 4e14;
+        const long min = (long)2e14;
+        const long max = (long)4e14;
 
         var count = 0;
         for (var i = 0; i < inp.Length - 1; i++)

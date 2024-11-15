@@ -8,15 +8,23 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 24, "It Hangs in the Balance")]
 file class Day24
 {
-    [ModifyInput] public static long[] ProcessInput(string inp) => inp.Split('\n').Select(long.Parse).ToArray();
+    [ModifyInput]
+    public static long[] ProcessInput(string inp)
+    {
+        return inp.Split('\n').Select(long.Parse).ToArray();
+    }
 
     [Answer(11846773891)]
     public static long Part1(long[] inp)
-        => GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 2 != sum || rSum / 2f % 1 != 0 || rSum % 2 != 0);
+    {
+        return GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 2 != sum || rSum / 2f % 1 != 0 || rSum % 2 != 0);
+    }
 
     [Answer(80393059)]
     public static long Part2(long[] inp)
-        => GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 3 != sum || rSum / 3f % 1 != 0 || rSum % 3 != 0);
+    {
+        return GetPossibilitiesAndLowEq(inp, (rSum, sum) => rSum / 3 != sum || rSum / 3f % 1 != 0 || rSum % 3 != 0);
+    }
 
     public static long GetPossibilitiesAndLowEq(long[] arr, Func<long, long, bool> continueFunc)
     {

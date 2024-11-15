@@ -7,8 +7,17 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 10, "Elves Look, Elves Say")]
 file class Day10
 {
-    [Answer(492982)] public static long Part1(string input) => RunLook(input, 40);
-    [Answer(6989950)] public static long Part2(string input) => RunLook(input, 50);
+    [Answer(492982)]
+    public static long Part1(string input)
+    {
+        return RunLook(input, 40);
+    }
+
+    [Answer(6989950)]
+    public static long Part2(string input)
+    {
+        return RunLook(input, 50);
+    }
 
     private static string LookSay(string look)
     {

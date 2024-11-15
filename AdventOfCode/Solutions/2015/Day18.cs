@@ -82,5 +82,7 @@ file class Day18
     }
 
     private static bool? Get(bool[] arr, int x, int y)
-        => y is < 0 or >= 100 || x is < 0 or >= 100 ? null : arr[y * 100 + x];
+    {
+        return y is < 0 or >= 100 || x is < 0 or >= 100 ? null : arr[y * 100 + x];
+    }
 }

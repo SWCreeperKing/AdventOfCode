@@ -6,8 +6,8 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Directory<T>
 {
-    public readonly Stack<string> PathStack = new();
     public readonly Dictionary<string, List<T>> Data = new();
+    public readonly Stack<string> PathStack = new();
 
     public Directory()
     {
@@ -15,8 +15,15 @@ public class Directory<T>
         Data.Add("home", []);
     }
 
-    public string Path() => PathStack.Reverse().Join('/');
-    public void AddData(T t) => Data[Path()].Add(t);
+    public string Path()
+    {
+        return PathStack.Reverse().Join('/');
+    }
+
+    public void AddData(T t)
+    {
+        Data[Path()].Add(t);
+    }
 
     public void AddPath(string dir)
     {
@@ -45,16 +52,13 @@ public class Directory<T>
     public Dictionary<string, TR> FlattenDirectory<TR>(Func<List<T>, TR> func)
     {
         Dictionary<string, TR> built = new();
-        foreach (var (path, files) in Data)
-        {
-            built.Add(path, func(files));
-        }
+        foreach (var (path, files) in Data) built.Add(path, func(files));
 
         return built;
     }
 
     /// <summary>
-    /// make the directories aware of their children
+    ///     make the directories aware of their children
     /// </summary>
     public Dictionary<string, TR> AwareAndFlattenDirectory<TR>(Func<List<T>, TR> func, Func<TR, TR, TR> merge)
     {
@@ -66,10 +70,7 @@ public class Directory<T>
             var pathing = path;
             while (pathing != "")
             {
-                if (!built.TryAdd(pathing, rFunc))
-                {
-                    built[pathing] = merge(built[pathing], rFunc);
-                }
+                if (!built.TryAdd(pathing, rFunc)) built[pathing] = merge(built[pathing], rFunc);
 
                 if (pathing == "home") break;
                 pathing = pathing[..pathing.LastIndexOf('/')];

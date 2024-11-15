@@ -7,7 +7,11 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 8, "Seven Segment Search")]
 file class Day8
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput]
+    public static string ProcessInput(string input)
+    {
+        return input;
+    }
 
     [Answer(375)]
     public static long Part1(string inp)

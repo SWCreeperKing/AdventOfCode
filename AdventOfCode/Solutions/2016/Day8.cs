@@ -10,7 +10,10 @@ namespace AdventOfCode.Solutions._2016;
 file class Day8
 {
     [ModifyInput]
-    public static string[][] ProcessInput(string inp) => inp.Split('\n').Select(s => s.Split(' ')).ToArray();
+    public static string[][] ProcessInput(string inp)
+    {
+        return inp.Split('\n').Select(s => s.Split(' ')).ToArray();
+    }
 
     [Answer(106)]
     public static long Part1(string[][] inp)
@@ -21,10 +24,7 @@ file class Day8
         var (cL, cT) = Console.GetCursorPosition();
         foreach (var inst in inp)
         {
-            if (display)
-            {
-                Console.SetCursorPosition(cL, cT);
-            }
+            if (display) Console.SetCursorPosition(cL, cT);
 
             switch (inst)
             {
@@ -42,10 +42,7 @@ file class Day8
             {
                 for (var y = 0; y < 6; y++)
                 {
-                    for (var x = 0; x < 50; x++)
-                    {
-                        Console.Write(map[y * 50 + x] ? "██" : "  ");
-                    }
+                    for (var x = 0; x < 50; x++) Console.Write(map[y * 50 + x] ? "██" : "  ");
 
                     Console.WriteLine();
                 }
@@ -62,9 +59,7 @@ file class Day8
     {
         for (var y = 0; y < h; y++)
         for (var x = 0; x < w; x++)
-        {
             map[y * 50 + x] = true;
-        }
     }
 
     private static void RotateHorizontal(IList<bool> map, int row, int amount)

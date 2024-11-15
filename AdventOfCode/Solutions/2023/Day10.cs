@@ -19,10 +19,16 @@ file class Day10
 
     [ModifyInput]
     public static (Pos pos, Matrix2d<char> map) ProcessInput(string input)
-        => new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray())
+    {
+        return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray())
             .Inline(map => (map.Find('S'), map));
+    }
 
-    [Answer(6778)] public static long Part1((Pos pos, Matrix2d<char> map) inp) => Follow(inp.map, inp.pos, []) / 2;
+    [Answer(6778)]
+    public static long Part1((Pos pos, Matrix2d<char> map) inp)
+    {
+        return Follow(inp.map, inp.pos, []) / 2;
+    }
 
     [Answer(433)]
     public static long Part2((Pos pos, Matrix2d<char> map) inp)

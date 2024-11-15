@@ -7,7 +7,11 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 7, "The Treachery of Whales")]
 file class Day7
 {
-    [ModifyInput] public static int[] ProcessInput(string input) => input.Split(',').Select(int.Parse).ToArray();
+    [ModifyInput]
+    public static int[] ProcessInput(string input)
+    {
+        return input.Split(',').Select(int.Parse).ToArray();
+    }
 
     [Answer(340056)]
     public static long Part1(int[] inp)

@@ -7,8 +7,6 @@ namespace AdventOfCode.Solutions._2022;
 [Day(2022, 17, "Pyroclastic Flow")]
 file class Day17
 {
-    [ModifyInput] public static bool[] ProcessInput(string inp) => inp.ToCharArray().Select(c => c is '<').ToArray();
-
     public static readonly List<(int x, int y)[]> Pieces =
     [
         new[] { (0, 0), (1, 0), (2, 0), (3, 0) },
@@ -17,6 +15,12 @@ file class Day17
         new[] { (0, 0), (0, 1), (0, 2), (0, 3) },
         new[] { (0, 0), (1, 0), (0, 1), (1, 1) }
     ];
+
+    [ModifyInput]
+    public static bool[] ProcessInput(string inp)
+    {
+        return inp.ToCharArray().Select(c => c is '<').ToArray();
+    }
 
     [Answer(3124)]
     public static long Part1(bool[] inp)
@@ -34,10 +38,7 @@ file class Day17
 
         void AddPiece((int x, int y) offset, (int x, int y)[] poses)
         {
-            foreach (var (x, y) in poses.Select(xy => (xy.x + offset.x, xy.y + offset.y)))
-            {
-                positions[x].Add(y);
-            }
+            foreach (var (x, y) in poses.Select(xy => (xy.x + offset.x, xy.y + offset.y))) positions[x].Add(y);
         }
 
         var instructionCounter = 0;
@@ -62,7 +63,10 @@ file class Day17
 
             var canMoveDown = piece.All(xy => CollideCheck(xy.x + x, xy.y + y - 1));
 
-            if (canMoveDown) y--;
+            if (canMoveDown)
+            {
+                y--;
+            }
             else
             {
                 AddPiece((x, y), piece);
@@ -78,7 +82,28 @@ file class Day17
     // i just couldn't recognize the pattern that repeated so i 'borrowed' someone else's part 2
     // https://github.com/encse/adventofcode/blob/master/2022/Day17/Solution.cs
     // done 24+hr after puzzle release
-    [Answer(1561176470569)] public static long Part2(bool[] inp) => new Tunnel(inp, 100).AddRocks(1000000000000).Height;
+    [Answer(1561176470569)]
+    public static long Part2(bool[] inp)
+    {
+        return new Tunnel(inp, 100).AddRocks(1000000000000).Height;
+    }
+
+    private static IEnumerable<Pos> Area(string[] mat)
+    {
+        for (var y = 0; y < mat.Length; y++)
+        for (var x = 0; x < mat[0].Length; x++)
+            yield return new Pos(x, y);
+    }
+
+    private static char Get(IEnumerable<IEnumerable<char>> mat, Pos pos)
+    {
+        return (mat.ElementAtOrDefault(pos.Y) ?? "#########").ElementAt(pos.X);
+    }
+
+    private static void Set(IList<char[]> mat, Pos pos, char ch)
+    {
+        mat[pos.Y][pos.X] = ch;
+    }
 
     private class Tunnel
     {
@@ -88,13 +113,14 @@ file class Day17
             new[] { "#", "#", "#", "#" }, new[] { "##", "##" }
         };
 
-        private readonly List<char[]> Lines = [];
-        private readonly int LinesToStore;
         private readonly bool[] Jets;
 
-        private ModCounter Rock = new(0, Rocks.Length);
-        private long LinesNotStored;
+        private readonly List<char[]> Lines = [];
+        private readonly int LinesToStore;
         private ModCounter Jet;
+        private long LinesNotStored;
+
+        private ModCounter Rock = new(0, Rocks.Length);
 
         public Tunnel(bool[] jets, int linesToStore)
         {
@@ -102,6 +128,8 @@ file class Day17
             Jet = new ModCounter(0, jets.Length);
             Jets = jets;
         }
+
+        public long Height => Lines.Count + LinesNotStored;
 
         public Tunnel AddRocks(long rocksToAdd)
         {
@@ -134,13 +162,13 @@ file class Day17
 
         private void AddRock()
         {
-            var rock = Rocks[(int) Rock++];
+            var rock = Rocks[(int)Rock++];
             for (var i = 0; i < rock.Length + 3; i++) Lines.Insert(0, "|       |".ToArray());
 
             var pos = new Pos(3, 0);
             while (true)
             {
-                var jet = Jets[(int) Jet++];
+                var jet = Jets[(int)Jet++];
                 pos = jet switch
                 {
                     false when !Hit(rock, pos.Right) => pos.Right,
@@ -156,14 +184,15 @@ file class Day17
         }
 
         private bool Hit(string[] rock, Pos pos)
-            => Area(rock).Any(pt => Get(rock, pt) == '#' && Get(Lines, pt + pos) != ' ');
+        {
+            return Area(rock).Any(pt => Get(rock, pt) == '#' && Get(Lines, pt + pos) != ' ');
+        }
 
         private void Draw(string[] rock, Pos pos)
         {
             foreach (var pt in Area(rock))
-            {
-                if (Get(rock, pt) == '#') Set(Lines, pt + pos, '#');
-            }
+                if (Get(rock, pt) == '#')
+                    Set(Lines, pt + pos, '#');
 
             while (!Lines[0].Contains('#')) Lines.RemoveAt(0);
 
@@ -173,35 +202,30 @@ file class Day17
                 LinesNotStored++;
             }
         }
-
-        public long Height => Lines.Count + LinesNotStored;
     }
-
-    private static IEnumerable<Pos> Area(string[] mat)
-    {
-        for (var y = 0; y < mat.Length; y++)
-        for (var x = 0; x < mat[0].Length; x++)
-            yield return new Pos(x, y);
-    }
-
-    private static char Get(IEnumerable<IEnumerable<char>> mat, Pos pos)
-    {
-        return (mat.ElementAtOrDefault(pos.Y) ?? "#########").ElementAt(pos.X);
-    }
-
-    private static void Set(IList<char[]> mat, Pos pos, char ch) => mat[pos.Y][pos.X] = ch;
 
     public record Pos(int X, int Y)
     {
         public Pos Left => this with { X = X - 1 };
         public Pos Right => this with { X = X + 1 };
         public Pos Below => this with { Y = Y + 1 };
-        public static Pos operator +(Pos posA, Pos posB) => new(posA.X + posB.X, posA.Y + posB.Y);
+
+        public static Pos operator +(Pos posA, Pos posB)
+        {
+            return new Pos(posA.X + posB.X, posA.Y + posB.Y);
+        }
     }
 
     public record ModCounter(int I, int Mod)
     {
-        public static explicit operator int(ModCounter c) => c.I;
-        public static ModCounter operator ++(ModCounter c) => c with { I = c.I == c.Mod - 1 ? 0 : c.I + 1 };
+        public static explicit operator int(ModCounter c)
+        {
+            return c.I;
+        }
+
+        public static ModCounter operator ++(ModCounter c)
+        {
+            return c with { I = c.I == c.Mod - 1 ? 0 : c.I + 1 };
+        }
     }
 }

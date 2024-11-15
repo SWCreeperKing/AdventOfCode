@@ -6,11 +6,6 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 12, "Passage Pathing")]
 file class Day12
 {
-    private class Node
-    {
-        public List<string> Connections = [];
-    }
-
     public static long Part1(string inp)
     {
         Dictionary<string, Node> nodes = new();
@@ -42,5 +37,10 @@ file class Day12
     public static long Part2(string inp)
     {
         return -1;
+    }
+
+    private class Node
+    {
+        public readonly List<string> Connections = [];
     }
 }

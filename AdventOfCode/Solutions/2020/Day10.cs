@@ -8,7 +8,10 @@ namespace AdventOfCode.Solutions._2020;
 file class EDay10
 {
     [ModifyInput]
-    public static int[] ProcessInput(string input) => input.Split('\n').Select(int.Parse).Order().ToArray();
+    public static int[] ProcessInput(string input)
+    {
+        return input.Split('\n').Select(int.Parse).Order().ToArray();
+    }
 
     [Answer(1848)]
     public static long Part1(int[] inp)
@@ -36,11 +39,9 @@ file class EDay10
         {
             for (long j = 1, adder = 0; j < 4; j++)
             {
-                var ij = i + (int) j;
+                var ij = i + (int)j;
                 if (ij < numbers.Count && numbers[ij] - numbers[i] < 4)
-                {
                     adder += combos.TryGetValue(ij, out var value) ? value : Amass(ij);
-                }
 
                 if (j == 3) return combos[i] = adder;
             }

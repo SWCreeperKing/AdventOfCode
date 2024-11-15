@@ -8,7 +8,11 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 13, "A Maze of Twisty Little Cubicles")]
 file class Day13
 {
-    [ModifyInput] public static int ProcessInput(string input) => int.Parse(input);
+    [ModifyInput]
+    public static int ProcessInput(string input)
+    {
+        return int.Parse(input);
+    }
 
     [Answer(86)]
     public static long Part1(int inp)
@@ -69,9 +73,7 @@ file class Day13
 
         for (var x = 0; x < map.GetLength(0); x++)
         for (var y = 0; y < map.GetLength(1); y++)
-        {
             map[x, y] = Convert.ToString(x * x + 3 * x + 2 * x * y + y + y * y + inp, 2).Count(c => c is '1') % 2 == 1;
-        }
 
         void Add(int x, int y, int steps)
         {
@@ -108,6 +110,9 @@ file class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
 {
     public static readonly (int x, int y)[] Surround = { (0, 1), (1, 0), (0, -1), (-1, 0) };
 
+    // up right down left
+    public readonly Node[] Neighbors = new Node[4];
+
     public int X { get; } = x;
     public int Y { get; } = y;
     public int FCost { get; } = CalculateFCost(x, y, gCost, endPos);
@@ -115,9 +120,6 @@ file class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
 
     public bool Block { get; } =
         Convert.ToString(x * x + 3 * x + 2 * x * y + y + y * y + inp, 2).Count(c => c is '1') % 2 == 1;
-
-    // up right down left
-    public Node[] Neighbors = new Node[4];
 
     public List<Node> FindNeighbors()
     {
@@ -136,8 +138,13 @@ file class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
         return newNodes;
     }
 
-    public Node[] GetNonNullNeighbors() => Neighbors.Where(node => node is not null).ToArray();
+    public Node[] GetNonNullNeighbors()
+    {
+        return Neighbors.Where(node => node is not null).ToArray();
+    }
 
     public static int CalculateFCost(int x, int y, int gCost, (int x, int y) endPos)
-        => Math.Abs(x - endPos.x) + Math.Abs(y - endPos.y) + gCost + 10;
+    {
+        return Math.Abs(x - endPos.x) + Math.Abs(y - endPos.y) + gCost + 10;
+    }
 }

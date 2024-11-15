@@ -7,8 +7,17 @@ namespace AdventOfCode.Solutions._2023;
 [Day(2023, 15, "Lens Library")]
 file class Day15
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split(',');
-    [Answer(502139)] public static long Part1(string[] inp) => inp.Select(HashString).Sum();
+    [ModifyInput]
+    public static string[] ProcessInput(string input)
+    {
+        return input.Split(',');
+    }
+
+    [Answer(502139)]
+    public static long Part1(string[] inp)
+    {
+        return inp.Select(HashString).Sum();
+    }
 
     [Answer(284132)]
     public static long Part2(string[] inp)
@@ -21,10 +30,7 @@ file class Day15
             var index = command.IndexOf(isSub ? '-' : '=');
             var label = command[..index];
             var boxNumber = HashString(label);
-            if (!boxes.TryGetValue(boxNumber, out var box))
-            {
-                box = boxes[boxNumber] = [];
-            }
+            if (!boxes.TryGetValue(boxNumber, out var box)) box = boxes[boxNumber] = [];
 
             if (isSub)
             {
@@ -39,6 +45,13 @@ file class Day15
             => (kv.Key + 1) * (i + 1) * kv2.Item2).Sum()).Sum();
     }
 
-    public static int HashString(string s) => s.Aggregate(0, Hash);
-    public static int Hash(int i, char c) => (c + i) * 17 % 256;
+    public static int HashString(string s)
+    {
+        return s.Aggregate(0, Hash);
+    }
+
+    public static int Hash(int i, char c)
+    {
+        return (c + i) * 17 % 256;
+    }
 }

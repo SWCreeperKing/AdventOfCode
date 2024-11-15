@@ -7,13 +7,11 @@ using AdventOfCode.Experimental_Run;
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 15, "Beacon Exclusion Zone")]
- internal partial class Day15
+file class Day15
 {
-    [GeneratedRegex(@"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
-        RegexOptions.Compiled)]
-    private static partial Regex InputRegexRaw();
-
-    private static readonly Regex InputRegex = InputRegexRaw();
+    private static readonly Regex InputRegex = new(
+        @"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
+        RegexOptions.Compiled);
 
     [ModifyInput]
     public static (int x1, int y1, int x2, int y2)[] ProcessInput(string inp)
@@ -68,7 +66,7 @@ namespace AdventOfCode.Solutions._2022;
             var high = ranges[y][0].End.Value;
             for (var rangeX = 1; rangeX < ranges[y].Count; rangeX++)
             {
-                if (ranges[y][rangeX].Start.Value > high + 1) return ((ulong) high + 1) * 4000000L + (ulong) y;
+                if (ranges[y][rangeX].Start.Value > high + 1) return ((ulong)high + 1) * 4000000L + (ulong)y;
                 high = Math.Max(ranges[y][rangeX].End.Value, high);
             }
         }
@@ -76,5 +74,8 @@ namespace AdventOfCode.Solutions._2022;
         return 0;
     }
 
-    private static int Distance(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+    private static int Distance(int x1, int y1, int x2, int y2)
+    {
+        return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+    }
 }

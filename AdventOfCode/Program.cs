@@ -10,17 +10,6 @@ using static RedefinedRpg.ClrCnsl;
 
 namespace AdventOfCode;
 
-/*
- *      --------Part 1--------   --------Part 2--------
-Day       Time   Rank  Score       Time   Rank  Score
-  3       >24h  36783      0          -      -      -
-  2       >24h  46940      0       >24h  44793      0
-  1       >24h  57064      0       >24h  47303      0
- *
- * AoC leaderboard format for later purpose
- *
- */
-
 public class Program
 {
     // These are all solutions for
@@ -57,31 +46,25 @@ public class Program
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
-        {
-            Task.Delay((int) (3e4 - (time - LastDownload))).GetAwaiter().GetResult();
-        }
+            Task.Delay((int)(3e4 - (time - LastDownload))).GetAwaiter().GetResult();
 
+        Console.WriteLine();
         var input = client.GetStringAsync(info.Url).GetAwaiter().GetResult();
-        if (!Directory.Exists($"Input/{info.Year}"))
-        {
-            Directory.CreateDirectory($"Input/{info.Year}");
-        }
+        if (!Directory.Exists($"Input/{info.Year}")) Directory.CreateDirectory($"Input/{info.Year}");
 
         File.WriteAllText(info.File, input);
         WriteLine("[#darkyellow][Done]");
         LastDownload = time;
         return input;
     }
-    
+
     public static string[][] GetLeaderBoard(int year)
     {
         Write($"[#yellow]Downloading leaderboard for [{year}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
-        {
-            Task.Delay((int) (3e4 - (time - LastDownload))).GetAwaiter().GetResult();
-        }
+            Task.Delay((int)(3e4 - (time - LastDownload))).GetAwaiter().GetResult();
 
         var content = client.GetStringAsync($"/{year}/leaderboard/self")
             .GetAwaiter().GetResult();

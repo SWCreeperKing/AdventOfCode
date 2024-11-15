@@ -8,11 +8,14 @@ file class Day6
 {
     [ModifyInput]
     public static string[] ProcessInput(string input)
-        => input.Split('\n').Select(s => s.CleanSpaces().Remove("Time:", "Distance:").Trim()).ToArray();
+    {
+        return input.Split('\n').Select(s => s.CleanSpaces().Remove("Time:", "Distance:").Trim()).ToArray();
+    }
 
     [Answer(4811940)]
     public static long Part1(string[] inp)
-        => inp[0].Split(' ').Select(int.Parse)
+    {
+        return inp[0].Split(' ').Select(int.Parse)
             .Zip(inp[1].Split(' ').Select(int.Parse), (time, dist) =>
             {
                 var wins = 0L;
@@ -24,6 +27,7 @@ file class Day6
 
                 return wins;
             }).Multi();
+    }
 
     [Answer(30077773)]
     public static long Part2(string[] inp)

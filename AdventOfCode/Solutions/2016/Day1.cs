@@ -11,7 +11,9 @@ file class Day1
 {
     [ModifyInput]
     public static (bool, int)[] ProcessInput(string input)
-        => input.Split(", ").Select(s => (s[0] == 'L', int.Parse(s[1..]))).ToArray();
+    {
+        return input.Split(", ").Select(s => (s[0] == 'L', int.Parse(s[1..]))).ToArray();
+    }
 
     [Answer(230)]
     public static long Part1((bool, int)[] inp)
@@ -23,7 +25,7 @@ file class Day1
             dir = (dir + (arr.Item1 ? 3 : 1)) % 4;
             pos[dir % 2] += arr.Item2 * (dir > 1 ? -1 : 1);
         });
-        return Math.Abs((long) pos.X) + Math.Abs((long) pos.Y);
+        return Math.Abs((long)pos.X) + Math.Abs((long)pos.Y);
     }
 
     [Answer(154)]
@@ -38,7 +40,7 @@ file class Day1
             for (var i = 0; i < arr.Item2; i++)
             {
                 pos[dir % 2] += dir > 1 ? -1 : 1;
-                if (locations.Contains(pos)) return Math.Abs((long) pos[0]) + Math.Abs((long) pos[1]);
+                if (locations.Contains(pos)) return Math.Abs((long)pos[0]) + Math.Abs((long)pos[1]);
                 locations.Add(pos);
             }
         }

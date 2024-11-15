@@ -7,7 +7,11 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 10, "Syntax Scoring")]
 file class Day10
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput]
+    public static string ProcessInput(string input)
+    {
+        return input;
+    }
 
     [Answer(271245)]
     public static long Part1(string inp)
@@ -17,8 +21,10 @@ file class Day10
         {
             Stack<char> groups = new();
             foreach (var c in line)
-            {
-                if (c is '(' or '[' or '{' or '<') groups.Push(c);
+                if (c is '(' or '[' or '{' or '<')
+                {
+                    groups.Push(c);
+                }
                 else if (groups.Peek() switch
                          {
                              '(' => ')',
@@ -36,8 +42,10 @@ file class Day10
                     };
                     break;
                 }
-                else groups.Pop();
-            }
+                else
+                {
+                    groups.Pop();
+                }
         }
 
         return wrong;
@@ -52,8 +60,10 @@ file class Day10
             Stack<char> groups = new();
             var cc = true;
             foreach (var c in line)
-            {
-                if (c is '(' or '[' or '{' or '<') groups.Push(c);
+                if (c is '(' or '[' or '{' or '<')
+                {
+                    groups.Push(c);
+                }
                 else if (groups.Peek() switch
                          {
                              '(' => ')',
@@ -65,8 +75,10 @@ file class Day10
                     cc = false;
                     break;
                 }
-                else groups.Pop();
-            }
+                else
+                {
+                    groups.Pop();
+                }
 
             if (!cc) continue;
             if (groups.Count == 0) continue;

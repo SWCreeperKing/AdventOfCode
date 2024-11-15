@@ -15,7 +15,9 @@ file class Day11
 {
     [ModifyInput]
     public static int[] ProcessInput(string input)
-        => input.Split('\n').Select(s => s.Split(' ').Count(c => c == "a")).ToArray();
+    {
+        return input.Split('\n').Select(s => s.Split(' ').Count(c => c == "a")).ToArray();
+    }
 
     [Answer(37)]
     public static long Part1(int[] inp)
@@ -30,5 +32,9 @@ file class Day11
         return steps;
     }
 
-    [Answer(61)] public static long Part2(int[] inp) => Part1([inp[0] + 4, inp[1], inp[2], inp[3]]);
+    [Answer(61)]
+    public static long Part2(int[] inp)
+    {
+        return Part1([inp[0] + 4, inp[1], inp[2], inp[3]]);
+    }
 }

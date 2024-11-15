@@ -6,7 +6,11 @@ namespace AdventOfCode.Solutions._2022;
 [Day(2022, 20, "Grove Positioning System")]
 file class Day20
 {
-    [ModifyInput] public static int[] ProcessInput(string inp) => inp.Split('\n').ToIntArr();
+    [ModifyInput]
+    public static int[] ProcessInput(string inp)
+    {
+        return inp.Split('\n').ToIntArr();
+    }
 
     public static long Part1(int[] inp)
     {

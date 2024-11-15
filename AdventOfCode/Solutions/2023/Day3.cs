@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 using CreepyUtil;
-
 using Range = System.Range;
 
 namespace AdventOfCode.Solutions._2023;
@@ -34,10 +33,7 @@ file class Day3
                     continue;
                 }
 
-                if (isDigit)
-                {
-                    num += chr;
-                }
+                if (isDigit) num += chr;
 
                 if (startOfNumber == -1 || (isDigit && x != w - 1)) continue;
                 ranges.Add((y, int.Parse(num), startOfNumber..x));
@@ -63,10 +59,7 @@ file class Day3
         Iterate(inp.numbs, inp.map, c => c == '*', (pos, number) =>
         {
             var newPos = inp.map.WhereInCircle(pos, c => c == '*').First();
-            if (!gears.TryGetValue(newPos, out var list))
-            {
-                gears[newPos] = list = [];
-            }
+            if (!gears.TryGetValue(newPos, out var list)) gears[newPos] = list = [];
 
             list.Add(number);
         });
@@ -78,7 +71,6 @@ file class Day3
         Predicate<char> condition, Action<Pos, int> action)
     {
         foreach (var (y, number, range) in numbs)
-        {
             for (var x = range.Start.Value; x < range.End.Value; x++)
             {
                 Pos pos = new(x, y);
@@ -86,6 +78,5 @@ file class Day3
                 action(pos, number);
                 break;
             }
-        }
     }
 }

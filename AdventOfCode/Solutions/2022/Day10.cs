@@ -36,7 +36,10 @@ file class Day10
                 if (line.op is "addx") numberQueue.Enqueue(line.val);
                 i++;
             }
-            else x += numberQueue.Dequeue();
+            else
+            {
+                x += numberQueue.Dequeue();
+            }
 
             if (cycle >= 240) break;
             cycle++;
@@ -47,5 +50,9 @@ file class Day10
         return cycleAmount;
     }
 
-    [Answer("EGLHBLFJ")] public static string Part2((string op, int val)[] inp) => "EGLHBLFJ";
+    [Answer("EGLHBLFJ")]
+    public static string Part2((string op, int val)[] inp)
+    {
+        return "EGLHBLFJ";
+    }
 }

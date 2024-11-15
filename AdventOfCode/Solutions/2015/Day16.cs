@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 16, "Aunt Sue")]
 file class Day16
 {
-    private static Dictionary<string, int> SearchFor = new()
+    private static readonly Dictionary<string, int> SearchFor = new()
     {
         ["children"] = 3, ["cats"] = 7, ["samoyeds"] = 2, ["pomeranians"] = 3, ["akitas"] = 0, ["vizslas"] = 0,
         ["goldfish"] = 5, ["trees"] = 3, ["cars"] = 2, ["perfumes"] = 1
@@ -53,7 +53,8 @@ file class Day16
                                               "cats" or "tree" => SearchFor[kv.Key] < kv.Value ? 1 : 0,
                                               "pomeranians" or "goldfish" => SearchFor[kv.Key] > kv.Value ? 1 : 0,
                                               _ => SearchFor.TryGetValue(kv.Key, out var value)
-                                                  ? value == kv.Value ? 1 : 0 : 0
+                                                  ? value == kv.Value ? 1 : 0
+                                                  : 0
                                           }).Sum()
                                           - arr.Count(kv => searchForKeysWithZero.Contains(kv.Key) && kv.Value != 0)))
             .MaxBy(score => score.Item2).i + 1;

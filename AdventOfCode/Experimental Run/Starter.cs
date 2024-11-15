@@ -16,9 +16,9 @@ public static class Starter
     private const string SolutionsFolder = "../../../Solutions";
 
     public static readonly Dictionary<int, List<YearDayInfo>> AllPuzzles = [];
-    public static readonly Dictionary<YearDayInfo, DayStructure> DailyPuzzlesCache = new();
-    public static readonly Dictionary<YearDayInfo, DayAttribute> DailyPuzzlesAttributes = new();
-    public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = new();
+    public static readonly Dictionary<YearDayInfo, DayStructure> DailyPuzzlesCache = [];
+    public static readonly Dictionary<YearDayInfo, DayAttribute> DailyPuzzlesAttributes = [];
+    public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = [];
 
     private static readonly Stopwatch Sw = new();
 
@@ -26,7 +26,7 @@ public static class Starter
         ["(re)Cache Leaderboard Data", "Make Leaderboard MD", "Run All", "Switch Year", "Exit"];
 
     private static int SelectedYear;
-    private static int ListViewSelectYear = 0;
+    private static int ListViewSelectYear;
 
     public static void Start()
     {
@@ -43,17 +43,11 @@ public static class Starter
             DailyPuzzles.TryAdd(dayInfo, t);
             DailyPuzzlesAttributes.TryAdd(dayInfo, att);
 
-            if (!AllPuzzles.TryGetValue(dayInfo.Year, out var list))
-            {
-                list = AllPuzzles[dayInfo.Year] = [];
-            }
+            if (!AllPuzzles.TryGetValue(dayInfo.Year, out var list)) list = AllPuzzles[dayInfo.Year] = [];
 
             list.Add(dayInfo);
 
-            if (t.GetCustomAttributes<RunAttribute>().Any())
-            {
-                runners.Add(dayInfo);
-            }
+            if (t.GetCustomAttributes<RunAttribute>().Any()) runners.Add(dayInfo);
         });
 
         if (runners.Count > 0)
@@ -115,12 +109,12 @@ public static class Starter
                     File.Delete(md);
                 }
 
-                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md"))
+                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt"))
                 {
                     CacheLeaderboard();
                 }
 
-                var data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md")
+                var data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")
                     .SuperSplit('\n', ',');
 
                 File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, data));
@@ -131,11 +125,15 @@ public static class Starter
             else if (selected == days.Length - 2) // switch year
             {
                 Console.WriteLine("Switch Year");
-                SelectedYear = yearKeys[ListViewSelectYear = ListView(ListViewSelectYear, yearKeys.Select(i => $"{i}").ToArray())];
+                SelectedYear =
+                    yearKeys[ListViewSelectYear = ListView(ListViewSelectYear, yearKeys.Select(i => $"{i}").ToArray())];
                 dayKeysRaw = AllPuzzles[SelectedYear].OrderByDescending(dp => dp.Day).ToArray();
                 days = GetDayList(dayKeysRaw);
             }
-            else RunDay(dayKeysRaw[selected], out _); // run
+            else
+            {
+                RunDay(dayKeysRaw[selected], out _); // run
+            }
 
             Console.Clear();
             Console.WriteLine($"Selecting Year: {SelectedYear}");
@@ -146,36 +144,41 @@ public static class Starter
     {
         WriteLine("Caching leaderboard data");
 
-        var md = $"{SolutionsFolder}/{SelectedYear}/leaderboardCache.md";
-        if (File.Exists(md))
+        var file = $"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt";
+        if (File.Exists(file))
         {
-            File.Delete(md);
+            File.Delete(file);
         }
 
-        File.WriteAllText(md, Program.GetLeaderBoard(SelectedYear).Select(s => s.Join(',')).Join('\n'));
+        File.WriteAllText(file, Program.GetLeaderBoard(SelectedYear).Select(s => s.Join(',')).Join('\n'));
     }
 
     public static string[] GetDayList(YearDayInfo[] infos)
-        => infos.Select(dp
+    {
+        return infos.Select(dp
                 => $"[#darkblue]{dp.Day}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
             .Concat(RunPrompts).ToArray();
+    }
 
     public static TimeSpan?[] RunDay(YearDayInfo info, out bool?[] successes, bool runAll = false)
     {
         successes = [null, null];
-        if (!DailyPuzzlesCache.TryGetValue(info, out var data))
-        {
-            data = DailyPuzzlesCache[info] = new DayStructure(info);
-        }
+        if (!DailyPuzzlesCache.TryGetValue(info, out var data)) data = DailyPuzzlesCache[info] = new DayStructure(info);
 
         List<string> run = [];
         if (data.HasPart(1)) run.Add("Part 1");
         if (data.HasPart(2)) run.Add("Part 2");
 
         if (runAll)
+        {
             return [RunPart(data, 1, out successes[0], false), RunPart(data, 2, out successes[1], false)];
+        }
 
-        if (run.Count == 2) run.Add("Both");
+        if (run.Count == 2)
+        {
+            run.Add("Both");
+        }
+
         run.Add($"Back to {SelectedYear}");
 
         var selected = 0;
@@ -214,7 +217,10 @@ public static class Starter
         catch (TargetException e)
         {
             Console.WriteLine($"[{e.Message}]");
-            if (e.Message == "Non-static method requires a target.") WriteLine("[#red]A Method is not static");
+            if (e.Message == "Non-static method requires a target.")
+            {
+                WriteLine("[#red]A Method is not static");
+            }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -230,24 +236,24 @@ public static class Starter
 
     public static string LoadFile(YearDayInfo key)
     {
-        if (!Directory.Exists($"Input/{SelectedYear}"))
-        {
-            Directory.CreateDirectory($"Input/{SelectedYear}");
-        }
+        if (!Directory.Exists($"Input/{SelectedYear}")) Directory.CreateDirectory($"Input/{SelectedYear}");
 
         return (!File.Exists(key.File) ? Program.SaveInput(key) : File.ReadAllText(key.File))
             .Replace("\r", string.Empty).TrimEnd('\n');
     }
 }
 
-public readonly struct YearDayInfo(int year, int day)
+public readonly record struct YearDayInfo(int year, int day)
 {
     public readonly int Year = year;
     public readonly int Day = day;
     public readonly string File = $"Input/{year}/{day}.txt";
     public readonly string Url = $"/{year}/day/{day}/input";
 
-    public override string ToString() => $"[{Year}, {Day}]";
+    public override string ToString()
+    {
+        return $"[{Year}, {Day}]";
+    }
 }
 
 public readonly struct DayStructure
@@ -270,13 +276,30 @@ public readonly struct DayStructure
         Input = LoadFile(info);
     }
 
-    public object ProcessInput(string data) => ModifyInputMethod is null ? data : ModifyInputMethod.SInvoke(data);
-    public void Reset() => ResetDataMethod?.SInvoke();
-    public object Run(int part) => PartMethods[part - 1]?.SInvoke(ProcessNormalOrTestInput(part));
-    public bool HasPart(int part) => PartMethods[part - 1] is not null;
+    public object ProcessInput(string data)
+    {
+        return ModifyInputMethod is null ? data : ModifyInputMethod.SInvoke(data);
+    }
+
+    public void Reset()
+    {
+        ResetDataMethod?.SInvoke();
+    }
+
+    public object Run(int part)
+    {
+        return PartMethods[part - 1]?.SInvoke(ProcessNormalOrTestInput(part));
+    }
+
+    public bool HasPart(int part)
+    {
+        return PartMethods[part - 1] is not null;
+    }
 
     public object ProcessNormalOrTestInput(int part)
-        => ProcessInput(PartTestAttributes[part - 1] is null ? Input : PartTestAttributes[part - 1].TestInput);
+    {
+        return ProcessInput(PartTestAttributes[part - 1] is null ? Input : PartTestAttributes[part - 1].TestInput);
+    }
 
     public bool? CheckAnswer(int part, object answer, string extra)
     {
@@ -295,9 +318,7 @@ public readonly struct DayStructure
         var correct = answers.FirstOrDefault(att => att.State is AnswerState.Correct);
         if (correct is not null && states.Any(state => state is not AnswerState.Correct) &&
             correct.State is AnswerState.Correct)
-        {
             extra = $"[#r]| The correct answer is [#blue][{correct.Answer}] {extra}";
-        }
 
         if (states.Length == 0)
         {

@@ -9,16 +9,22 @@ file class Day4
 {
     [ModifyInput]
     public static Range[][] ProcessInput(string inp)
-        => inp.Split('\n').Select(s
+    {
+        return inp.Split('\n').Select(s
             => s.Split(',').Select(ss => ss.Split('-').Select(int.Parse)
                     .ToArray().Inline(split => split[0]..split[1]))
                 .ToArray()).ToArray();
+    }
 
     [Answer(444)]
     public static long Part1(Range[][] inp)
-        => inp.Select(r => r[0].IsInRange(r[1]) || r[1].IsInRange(r[0])).Count(b => b);
+    {
+        return inp.Select(r => r[0].IsInRange(r[1]) || r[1].IsInRange(r[0])).Count(b => b);
+    }
 
     [Answer(801)]
     public static long Part2(Range[][] inp)
-        => inp.Select(r => r[0].IsOverlapping(r[1]) || r[1].IsOverlapping(r[0])).Count(b => b);
+    {
+        return inp.Select(r => r[0].IsOverlapping(r[1]) || r[1].IsOverlapping(r[0])).Count(b => b);
+    }
 }
