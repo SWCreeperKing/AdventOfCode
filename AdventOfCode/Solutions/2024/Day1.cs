@@ -8,48 +8,32 @@ namespace AdventOfCode.Solutions._2024;
 [Day(2024, 1, "Historian Hysteria"), Run]
 file class Day1
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
-
-    public static long Part1(string inp)
+    [ModifyInput]
+    public static (int[], int[]) ProcessInput(string input)
     {
-        var nlInp = inp.Split('\n');
-        var rinp = nlInp.Select(s => s.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray()).ToArray();
-        var l1 = new List<int>();
-        var l2 = new List<int>();
-
-        foreach (var line in rinp)
-        {
-            l1.Add(int.Parse(line[0]));
-            l2.Add(int.Parse(line[^1]));
-        }
-
-        l1 = l1.Order().ToList();
-        l2 = l2.Order().ToList();
-
-        var difference = 0;
-        for (var i = 0; i < l1.Count; i++)
-        {
-            difference += Math.Abs(l1[i] - l2[i]);
-        }
-
-        return difference;
+        var list = input
+                  .Split('\n')
+                  .Select(s =>
+                   {
+                       var split = s.Split(' ');
+                       return (int.Parse(split[0]), int.Parse(split[^1]));
+                   });
+        return (list.Select(t => t.Item1).Order().ToArray(),
+            list.Select(t => t.Item2).Order().ToArray());
     }
 
-    // [Test("")]
-    public static long Part2(string inp)
+    [Answer(2904518)]
+    public static long Part1((int[], int[]) inp)
     {
-        var nlInp = inp.Split('\n');
-        var rinp = nlInp.Select(s => s.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray()).ToArray();
-        var l1 = new List<int>();
-        var l2 = new List<int>();
+        return inp.Item1.Select((n, i) => Math.Abs(n - inp.Item2[i])).Sum();
+    }
 
-        foreach (var line in rinp)
-        {
-            l1.Add(int.Parse(line[0]));
-            l2.Add(int.Parse(line[^1]));
-        }
-
-        var grous = l2.GroupBy(i => i);
-        return l1.Sum(i => grous.Any(g => g.Key == i) ? (grous.First(g => g.Key == i).Count() * i) : 0);
+    [Answer(18650129)]
+    public static long Part2((int[], int[]) inp)
+    {
+        var groups = inp.Item2
+                        .GroupBy(i => i)
+                        .ToDictionary(g => g.Key, g => g.Count() * g.Key);
+        return inp.Item2.Sum(i => groups.GetValueOrDefault(i, 0));
     }
 }
