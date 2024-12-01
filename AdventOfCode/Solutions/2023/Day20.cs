@@ -104,7 +104,8 @@ file class Day20
 
         var rxConjunction = modules.First(kv => kv.Value.Outputs.Contains("rx")).Key;
         var required = modules.Where(kv => kv.Value.Outputs.Contains(rxConjunction))
-            .Select(kv => kv.Key).ToDictionary(k => k, _ => 0L);
+                              .Select(kv => kv.Key)
+                              .ToDictionary(k => k, _ => 0L);
 
         var buttonPresses = 0;
 
@@ -153,10 +154,7 @@ file readonly struct Counting(long min, long max)
         return new Counting(c1.Min + c2.Min, c1.Max + c2.Max);
     }
 
-    public long Counter()
-    {
-        return min * max;
-    }
+    public long Counter() { return min * max; }
 }
 
 file readonly struct State(string module, string lastModule, Signal signal)
@@ -182,10 +180,7 @@ file abstract class Module
 
 file class Output : Module
 {
-    public override Signal Operate(Signal signal, string lastModule)
-    {
-        return Signal.None;
-    }
+    public override Signal Operate(Signal signal, string lastModule) { return Signal.None; }
 }
 
 file class FlipFlop : Module

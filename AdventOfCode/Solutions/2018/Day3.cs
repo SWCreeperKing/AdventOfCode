@@ -26,22 +26,20 @@ file class Day3
         return rects;
     }
 
-    [Answer(112418)]
-    public static long Part1(Rect[] inp)
-    {
-        return MakeMap(inp).Array.Count(l => l?.Count > 1);
-    }
+    [Answer(112418)] public static long Part1(Rect[] inp) { return MakeMap(inp).Array.Count(l => l?.Count > 1); }
 
     [Answer(560)]
     public static long Part2(Rect[] inp)
     {
         var map = MakeMap(inp);
         var singleClaims = map.Array.Where(l => l?.Count == 1).Select(l => l[0]).ToHashSet();
-        var multiClaims = map.Array.Where(l => l?.Count > 1).Aggregate(new List<int>(), (h, l) =>
-        {
-            h.AddRange(l);
-            return h;
-        }).ToHashSet();
+        var multiClaims = map.Array.Where(l => l?.Count > 1)
+                             .Aggregate(new List<int>(), (h, l) =>
+                              {
+                                  h.AddRange(l);
+                                  return h;
+                              })
+                             .ToHashSet();
 
         singleClaims.RemoveWhere(i => multiClaims.Contains(i));
         return singleClaims.First();

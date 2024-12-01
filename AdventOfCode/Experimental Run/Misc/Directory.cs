@@ -15,15 +15,9 @@ public class Directory<T>
         Data.Add("home", []);
     }
 
-    public string Path()
-    {
-        return PathStack.Reverse().Join('/');
-    }
+    public string Path() { return PathStack.Reverse().Join('/'); }
 
-    public void AddData(T t)
-    {
-        Data[Path()].Add(t);
-    }
+    public void AddData(T t) { Data[Path()].Add(t); }
 
     public void AddPath(string dir)
     {

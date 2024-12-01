@@ -73,8 +73,5 @@ file class Card
         return false;
     }
 
-    public int Calc()
-    {
-        return Board.Sum(kv => Marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * LastNumber;
-    }
+    public int Calc() { return Board.Sum(kv => Marked[kv.Value.x, kv.Value.y] ? 0 : kv.Key) * LastNumber; }
 }

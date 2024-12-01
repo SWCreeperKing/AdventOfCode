@@ -51,8 +51,18 @@ file class Day22
 
         (int x, int y) AddDirection(int x, int y, Direction direction)
         {
-            var nX = direction switch { Left => x - 1, Right => x + 1, _ => x };
-            var nY = direction switch { Up => y - 1, Down => y + 1, _ => y };
+            var nX = direction switch
+            {
+                Left => x - 1,
+                Right => x + 1,
+                _ => x
+            };
+            var nY = direction switch
+            {
+                Up => y - 1,
+                Down => y + 1,
+                _ => y
+            };
             if (nX < 0) nX += map.Size.w;
             if (nY < 0) nY += map.Size.h;
             return (nX % map.Size.w, nY % map.Size.h);
@@ -85,13 +95,16 @@ file class Day22
         }
 
         return 1000 * (position.y + 1) + 4 * (position.x + 1) +
-               direction switch { Up => 3, Right => 0, Down => 1, Left => 2 };
+               direction switch
+               {
+                   Up => 3,
+                   Right => 0,
+                   Down => 1,
+                   Left => 2
+               };
     }
 
-    public static long Part2((Instruction[] instructions, Matrix2d<bool?> map) inp)
-    {
-        return 0;
-    }
+    public static long Part2((Instruction[] instructions, Matrix2d<bool?> map) inp) { return 0; }
 }
 
 file class Instruction

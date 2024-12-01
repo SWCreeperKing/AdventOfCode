@@ -14,10 +14,13 @@ file class Day4
     [ModifyInput]
     public static (int, int)[] ProcessInput(string input)
     {
-        return input.Split('\n').Select(s => CardMatch.Match(s.CleanSpaces()).Range(1..3))
-            .Select(arr => (int.Parse(arr[0]), arr.Skip(1).Select(s => s.Split(' '))
-                .Aggregate((arr1, arr2) => arr1.Intersect(arr2).ToArray()).Length))
-            .ToArray();
+        return input.Split('\n')
+                    .Select(s => CardMatch.Match(s.CleanSpaces()).Range(1..3))
+                    .Select(arr => (int.Parse(arr[0]), arr.Skip(1)
+                                                          .Select(s => s.Split(' '))
+                                                          .Aggregate((arr1, arr2) => arr1.Intersect(arr2).ToArray())
+                                                          .Length))
+                    .ToArray();
     }
 
     [Answer(27845)]

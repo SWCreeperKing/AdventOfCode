@@ -9,16 +9,9 @@ file class Day11
 {
     private static readonly (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
 
-    private static bool IsOccupied(char c)
-    {
-        return c == '#';
-    }
+    private static bool IsOccupied(char c) { return c == '#'; }
 
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(2275)]
     public static int Part1(string[] inp)

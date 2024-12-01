@@ -7,11 +7,7 @@ namespace AdventOfCode.Solutions._2018;
 [Day(2018, 5, "Alchemical Reduction")]
 file class Day5
 {
-    [Answer(11118)]
-    public static long Part1(string inp)
-    {
-        return React(inp);
-    }
+    [Answer(11118)] public static long Part1(string inp) { return React(inp); }
 
     [Answer(6948)]
     public static long Part2(string inp)

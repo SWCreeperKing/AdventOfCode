@@ -8,17 +8,15 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 3, "Binary Diagnostic")]
 file class Day3
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(1082324)]
     public static int Part1(string[] inp)
     {
-        var gamma = Enumerable.Range(0, inp[0].Length).Select(i => inp.Select(s => s[i]).Join())
-            .Select(s => s.Count(c => c is '0') > inp.Length / 2 ? '0' : '1').Join();
+        var gamma = Enumerable.Range(0, inp[0].Length)
+                              .Select(i => inp.Select(s => s[i]).Join())
+                              .Select(s => s.Count(c => c is '0') > inp.Length / 2 ? '0' : '1')
+                              .Join();
         return Convert.ToInt32(gamma, 2) * Convert.ToInt32(gamma.Select(c => c == '0' ? '1' : '0').Join(), 2);
     }
 

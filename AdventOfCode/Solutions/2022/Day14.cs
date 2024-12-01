@@ -13,12 +13,13 @@ file class Day14
     {
         var highY = 0;
         var lineOps = inp.SuperSplit("\n", " -> ", s => s.Select(str =>
-        {
-            var split = str.Split(',');
-            var y = int.Parse(split[1]);
-            highY = Math.Max(highY, y);
-            return (x: int.Parse(split[0]), y);
-        }).ToArray());
+                                                          {
+                                                              var split = str.Split(',');
+                                                              var y = int.Parse(split[1]);
+                                                              highY = Math.Max(highY, y);
+                                                              return (x: int.Parse(split[0]), y);
+                                                          })
+                                                         .ToArray());
         var map = new Matrix2d<bool>(1000, highY + 2);
 
         void DrawVertical(int x, int y, int toY)

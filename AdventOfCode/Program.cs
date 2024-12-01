@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AdventOfCode.Experimental_Run;
-using static RedefinedRpg.ClrCnsl;
+using static CreepyUtil.ClrCnsl.ClrCnsl;
 
 namespace AdventOfCode;
 
@@ -67,7 +67,8 @@ public class Program
             Task.Delay((int)(3e4 - (time - LastDownload))).GetAwaiter().GetResult();
 
         var content = client.GetStringAsync($"/{year}/leaderboard/self")
-            .GetAwaiter().GetResult();
+                            .GetAwaiter()
+                            .GetResult();
         var leaderboardRaw = content.Remove("\r").Split('\n');
         WriteLine("[#darkyellow][Done]");
         LastDownload = time;
@@ -76,7 +77,7 @@ public class Program
         var leaderboardIndex = leaderboardRaw.FindIndexOf(leaderboardStartText);
         var endingIndex = leaderboardRaw.FindIndexOf("</pre>");
         return leaderboardRaw[(leaderboardIndex + 1)..endingIndex]
-            .Select(s => s.Trim().CleanSpaces().Replace(">", "\\>").Split(' '))
-            .ToArray();
+              .Select(s => s.Trim().CleanSpaces().Replace(">", "\\>").Split(' '))
+              .ToArray();
     }
 }

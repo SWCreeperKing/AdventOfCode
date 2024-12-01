@@ -7,10 +7,7 @@ namespace AdventOfCode.Solutions._2019;
 file class Day2
 {
     [ModifyInput]
-    public static int[] ProcessInput(string input)
-    {
-        return input.Split(',').Select(int.Parse).ToArray();
-    }
+    public static int[] ProcessInput(string input) { return input.Split(',').Select(int.Parse).ToArray(); }
 
     [Answer(2692315)]
     public static long Part1(int[] inp)

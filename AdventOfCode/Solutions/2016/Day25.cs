@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
 using AdventOfCode.Experimental_Run;
-using RedefinedRpg;
 
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 25, "Clock Signal")]
 file class Day25
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
+    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
 
     [Answer(196)]
     public static long Part1(string[][] inp)
@@ -25,7 +23,6 @@ file class Day25
         HashSet<(long, long, long, long, long, long)> states = [];
 
         for (var i = 0L; i < inp.Length; i++)
-        {
             switch (inp[i])
             {
                 case ["out", var x]:
@@ -40,10 +37,7 @@ file class Day25
                     registers[y] = Decode(x);
 
                     if (i + 6 >= inp.Length) continue;
-                    if (Optimize(inp[(int)i..((int)i + 6)]))
-                    {
-                        i += 5;
-                    }
+                    if (Optimize(inp[(int)i..((int)i + 6)])) i += 5;
 
                     break;
                 case ["inc", var x]:
@@ -59,7 +53,6 @@ file class Day25
                     i += Decode(y) - 1;
                     break;
             }
-        }
 
         return false;
 
@@ -73,10 +66,7 @@ file class Day25
             if (lookahead[5][0] != "jnz" || lookahead[5][1] != d || lookahead[5][2] != "-5") return false;
 
             var dVal = registers[d];
-            if (dVal == 0)
-            {
-                dVal = 1;
-            }
+            if (dVal == 0) dVal = 1;
 
             registers[a] += Decode(b) * dVal;
             registers[c] = 0;
@@ -84,9 +74,6 @@ file class Day25
             return true;
         }
 
-        long Decode(string value)
-        {
-            return long.TryParse(value, out var val) ? val : registers[value];
-        }
+        long Decode(string value) { return long.TryParse(value, out var val) ? val : registers[value]; }
     }
 }

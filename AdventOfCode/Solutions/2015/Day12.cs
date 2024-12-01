@@ -7,7 +7,7 @@ using static System.Text.Json.JsonValueKind;
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 12, "JSAbacusFramework.io")]
-internal partial class Day12
+internal class Day12
 {
     private static readonly Regex NegativeRegex = new(@"[-\d]+", RegexOptions.Compiled);
 
@@ -17,23 +17,13 @@ internal partial class Day12
         return NegativeRegex.Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
     }
 
-    [Answer(65402)]
-    public static long Part2(string input)
-    {
-        return SearchWithoutRed(input);
-    }
+    [Answer(65402)] public static long Part2(string input) { return SearchWithoutRed(input); }
 
     private static int SearchWithoutRed(string inp)
     {
-        bool JsonRed(JsonProperty jp)
-        {
-            return jp.Value.ValueKind is not String || jp.Value.GetString() is not "red";
-        }
+        bool JsonRed(JsonProperty jp) { return jp.Value.ValueKind is not String || jp.Value.GetString() is not "red"; }
 
-        int JsonStuffJp(JsonProperty jp)
-        {
-            return JsonStuff(jp.Value);
-        }
+        int JsonStuffJp(JsonProperty jp) { return JsonStuff(jp.Value); }
 
         int JsonStuff(JsonElement e)
         {

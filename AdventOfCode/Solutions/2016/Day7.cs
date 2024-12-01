@@ -15,24 +15,26 @@ file class Day7
     [ModifyInput]
     public static (string[] brackets, string[] normal)[] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s =>
-        {
-            var str = s.AsSpan();
-            List<string> bracketString = [];
-            List<string> normalString = [];
-            int i = 0, j = 0;
-            while ((i = s.IndexOf('[', i)) != -1)
-            {
-                normalString.Add(str[j..i].ToString());
-                var end = s.IndexOf(']', i);
-                bracketString.Add(str[(i + 1)..end].ToString());
-                j = end + 1;
-                i++;
-            }
+        return inp.Split('\n')
+                  .Select(s =>
+                   {
+                       var str = s.AsSpan();
+                       List<string> bracketString = [];
+                       List<string> normalString = [];
+                       int i = 0, j = 0;
+                       while ((i = s.IndexOf('[', i)) != -1)
+                       {
+                           normalString.Add(str[j..i].ToString());
+                           var end = s.IndexOf(']', i);
+                           bracketString.Add(str[(i + 1)..end].ToString());
+                           j = end + 1;
+                           i++;
+                       }
 
-            normalString.Add(str[s.LastIndexOf(']')..].ToString());
-            return (bracketString.ToArray(), normalString.ToArray());
-        }).ToArray();
+                       normalString.Add(str[s.LastIndexOf(']')..].ToString());
+                       return (bracketString.ToArray(), normalString.ToArray());
+                   })
+                  .ToArray();
     }
 
     [Answer(118)]

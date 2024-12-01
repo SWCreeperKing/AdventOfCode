@@ -10,12 +10,14 @@ file class Day13
     [Answer(6623)]
     public static long Part1(string inp)
     {
-        return inp.Split("\n\n").Select((s, i) =>
-        {
-            var split = s.Split('\n');
-            var json = GetJson(split[0], split[1]);
-            return Search(json.left, json.right) < 0 ? i + 1 : 0;
-        }).Sum();
+        return inp.Split("\n\n")
+                  .Select((s, i) =>
+                   {
+                       var split = s.Split('\n');
+                       var json = GetJson(split[0], split[1]);
+                       return Search(json.left, json.right) < 0 ? i + 1 : 0;
+                   })
+                  .Sum();
     }
 
     [Answer(23049)]
@@ -30,10 +32,7 @@ file class Day13
         return firstIndex * secondIndex;
     }
 
-    public static JsonNode GetJsonRaw(string inp)
-    {
-        return JsonNode.Parse(inp);
-    }
+    public static JsonNode GetJsonRaw(string inp) { return JsonNode.Parse(inp); }
 
     public static (JsonNode left, JsonNode right) GetJson(string left, string right)
     {

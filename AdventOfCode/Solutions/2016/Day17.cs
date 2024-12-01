@@ -10,19 +10,11 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 17, "Two Steps Forward")]
 file class Day17
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput] public static string ProcessInput(string input) { return input; }
 
-    [Answer("DDRLRRUDDR")]
-    public static string Part1(string inp)
-    {
-        return Run(inp).First();
-    }
+    [Answer("DDRLRRUDDR")] public static string Part1(string inp) { return Run(inp).First(); }
 
-    [Answer(556)]
-    public static int Part2(string inp)
-    {
-        return Run(inp).Last().Length;
-    }
+    [Answer(556)] public static int Part2(string inp) { return Run(inp).Last().Length; }
 
     public static IEnumerable<string> Run(string inp)
     {
@@ -36,7 +28,6 @@ file class Day17
 
             if (state is { X: 3, Y: 3 }) yield return state.Hash[inp.Length..];
             else
-            {
                 foreach (var (c, x, y) in state.Moves())
                 {
                     var newHash = state.Hash + c;
@@ -45,7 +36,6 @@ file class Day17
                     states.Enqueue(new PlayerState(newHash, x, y, state.Steps + 1),
                         state.Steps + 1);
                 }
-            }
         }
     }
 }
@@ -57,20 +47,16 @@ public readonly struct PlayerState(string hash, int x, int y, int steps)
     public readonly int Y = y;
     public readonly int Steps = steps;
 
-    public string GetHash()
-    {
-        return Convert.ToHexString(MD5.HashData(UTF8.GetBytes(Hash)));
-    }
+    public string GetHash() { return Convert.ToHexString(MD5.HashData(UTF8.GetBytes(Hash))); }
 
     /// <summary>
-    /// up, down, left, and right
+    ///     up, down, left, and right
     /// </summary>
     public IEnumerable<(char c, int x, int y)> Moves()
     {
         var hash = MD5.HashData(UTF8.GetBytes(Hash)); // skip to string by u/AlexPalla
 
         for (var i = 0; i < 4; i++)
-        {
             switch (i)
             {
                 case 0 when hash[0] >> 4 > 10 && Y > 0:
@@ -86,6 +72,5 @@ public readonly struct PlayerState(string hash, int x, int y, int steps)
                     yield return ('R', X + 1, Y);
                     break;
             }
-        }
     }
 }

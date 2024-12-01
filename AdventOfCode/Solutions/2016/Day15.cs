@@ -11,8 +11,9 @@ file class Day15
     public static (int count, int pos)[] ProcessInput(string input)
     {
         List<(int c, int p)> disks = [];
-        disks.AddRange(input.Split('\n').Select(line => line.Split(' '))
-            .Select(split => (int.Parse(split[3]), int.Parse(split[^1][..^1]))));
+        disks.AddRange(input.Split('\n')
+                            .Select(line => line.Split(' '))
+                            .Select(split => (int.Parse(split[3]), int.Parse(split[^1][..^1]))));
 
         return disks.ToArray();
     }
@@ -27,10 +28,7 @@ file class Day15
         {
             var (c, p) = inp[i];
 
-            if ((1 + i + turn + p) % c == 0)
-            {
-                continue;
-            }
+            if ((1 + i + turn + p) % c == 0) continue;
 
             turn++;
             i = -1;

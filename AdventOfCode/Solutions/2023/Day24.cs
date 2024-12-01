@@ -15,8 +15,10 @@ file class Day24
     [ModifyInput]
     public static long[][] ProcessInput(string input)
     {
-        return input.Split('\n').Select(s
-            => InputRegex.Match(s).Range(1..6).Select(long.Parse).ToArray()).ToArray();
+        return input.Split('\n')
+                    .Select(s
+                         => InputRegex.Match(s).Range(1..6).Select(long.Parse).ToArray())
+                    .ToArray();
     }
 
     [Answer(16779)]

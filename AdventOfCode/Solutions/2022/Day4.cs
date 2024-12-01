@@ -10,10 +10,15 @@ file class Day4
     [ModifyInput]
     public static Range[][] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s
-            => s.Split(',').Select(ss => ss.Split('-').Select(int.Parse)
-                    .ToArray().Inline(split => split[0]..split[1]))
-                .ToArray()).ToArray();
+        return inp.Split('\n')
+                  .Select(s
+                       => s.Split(',')
+                           .Select(ss => ss.Split('-')
+                                           .Select(int.Parse)
+                                           .ToArray()
+                                           .Inline(split => split[0]..split[1]))
+                           .ToArray())
+                  .ToArray();
     }
 
     [Answer(444)]

@@ -29,9 +29,10 @@ file class Day16
             requirements.Add(i => (one <= i && i <= two) || (three <= i && i <= four));
         }
 
-        return inp.nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray()).Aggregate(0L,
-            (current1, split) => split.Where(i => !requirements.Any(f => f.Invoke(i)))
-                .Aggregate(current1, (current, i) => current + i));
+        return inp.nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray())
+                  .Aggregate(0L,
+                       (current1, split) => split.Where(i => !requirements.Any(f => f.Invoke(i)))
+                                                 .Aggregate(current1, (current, i) => current + i));
     }
 
     [Answer(855438643439)]
@@ -50,7 +51,8 @@ file class Day16
 
         var requirements = requirementsRaw.Values.ToList();
         inp = (inp.inp, inp.nearbyTickets
-            .Where(ticket => ticket.Split(",").All(s => requirements.Any(f => f.Invoke(int.Parse(s))))).ToArray());
+                           .Where(ticket => ticket.Split(",").All(s => requirements.Any(f => f.Invoke(int.Parse(s)))))
+                           .ToArray());
         var restructure = new List<int>[myTicket.Length];
 
         foreach (var split in inp.nearbyTickets.Select(ticket => ticket.Split(",").Select(int.Parse).ToArray()))
@@ -63,8 +65,9 @@ file class Day16
         var candidates = new List<int>[requirements.Count];
 
         for (var i = 0; i < restructure.Length; i++)
-            foreach (var satisfy in restructure[i].Select(data =>
-                         requirements.FindAll(f => f.Invoke(data)).Select(f => requirements.IndexOf(f)).ToArray()))
+            foreach (var satisfy in restructure[i]
+                        .Select(data =>
+                             requirements.FindAll(f => f.Invoke(data)).Select(f => requirements.IndexOf(f)).ToArray()))
             {
                 candidates[i] ??= Enumerable.Range(0, requirements.Count).ToList();
                 if (satisfy.Length >= 20) continue;
@@ -82,7 +85,9 @@ file class Day16
             }
 
         var keys = requirementsRaw.Keys.ToArray();
-        return keys.Where(s => s.Contains("departure")).Aggregate(1L,
-            (current, f) => current * long.Parse(myTicket[concrete.ToList().IndexOf(keys.ToList().IndexOf(f))]));
+        return keys.Where(s => s.Contains("departure"))
+                   .Aggregate(1L,
+                        (current, f)
+                            => current * long.Parse(myTicket[concrete.ToList().IndexOf(keys.ToList().IndexOf(f))]));
     }
 }

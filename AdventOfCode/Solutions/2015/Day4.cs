@@ -9,11 +9,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 4, "The Ideal Stocking Stuffer")]
 file class Day4
 {
-    [Answer(346386)]
-    public static int Part1(string inp)
-    {
-        return Hash(inp);
-    }
+    [Answer(346386)] public static int Part1(string inp) { return Hash(inp); }
 
     [Answer(9958218)]
     public static int Part2(string inp)

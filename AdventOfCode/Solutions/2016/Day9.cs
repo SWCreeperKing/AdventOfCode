@@ -9,17 +9,9 @@ file class Day9
 {
     public static readonly Regex ParaFind = new(@"\((\d+)x(\d+)\)", RegexOptions.Compiled);
 
-    [Answer(120765)]
-    public static long Part1(string inp)
-    {
-        return CountData(inp);
-    }
+    [Answer(120765)] public static long Part1(string inp) { return CountData(inp); }
 
-    [Answer(11658395076)]
-    public static long Part2(string inp)
-    {
-        return CountData(inp, true);
-    }
+    [Answer(11658395076)] public static long Part2(string inp) { return CountData(inp, true); }
 
     public static long CountData(string inp, bool recurse = false)
     {

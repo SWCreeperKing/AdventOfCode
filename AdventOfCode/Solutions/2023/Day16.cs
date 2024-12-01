@@ -17,11 +17,7 @@ file class Day16
         return new Matrix2d<Tile>(input.Split('\n').Select(s => s.Select(c => new Tile(c)).ToArray()).ToArray());
     }
 
-    [Answer(7034)]
-    public static long Part1(Matrix2d<Tile> inp)
-    {
-        return RunMap(inp, (Pos.Zero, Right));
-    }
+    [Answer(7034)] public static long Part1(Matrix2d<Tile> inp) { return RunMap(inp, (Pos.Zero, Right)); }
 
     [Answer(7759)]
     public static long Part2(Matrix2d<Tile> inp)

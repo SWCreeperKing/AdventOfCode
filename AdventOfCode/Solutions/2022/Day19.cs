@@ -17,13 +17,15 @@ file class Day19
     public static (int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[]
         ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s =>
-        {
-            var reg = InputRegex.Match(s).Groups.Range(1..7).ToIntArr();
-            return (blueprint: reg[0], orebot: reg[1], claybot: reg[2], obibot1: reg[3], obibot2: reg[4],
-                geobot1: reg[5],
-                geobot2: reg[6]);
-        }).ToArray();
+        return inp.Split('\n')
+                  .Select(s =>
+                   {
+                       var reg = InputRegex.Match(s).Groups.Range(1..7).ToIntArr();
+                       return (blueprint: reg[0], orebot: reg[1], claybot: reg[2], obibot1: reg[3], obibot2: reg[4],
+                           geobot1: reg[5],
+                           geobot2: reg[6]);
+                   })
+                  .ToArray();
     }
 
     public static long Part1(

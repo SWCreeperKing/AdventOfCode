@@ -9,10 +9,7 @@ namespace AdventOfCode.Solutions._2016;
 file class Day2
 {
     [ModifyInput]
-    public static char[][] ProcessInput(string inp)
-    {
-        return inp.Split('\n').Select(s => s.ToCharArray()).ToArray();
-    }
+    public static char[][] ProcessInput(string inp) { return inp.Split('\n').Select(s => s.ToCharArray()).ToArray(); }
 
     [Answer("19636")]
     public static string Part1(char[][] inp)

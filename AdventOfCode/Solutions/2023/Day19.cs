@@ -17,13 +17,21 @@ file class Day19
     public static (Dictionary<string, Workflow>, Cell[][]) ProcessInput(string input)
     {
         var split = input.Split("\n\n");
-        var workflows = split[0].Split('\n').Select(line =>
-            new Workflow(line)).ToDictionary(w => w.Key, w => w);
+        var workflows = split[0]
+                       .Split('\n')
+                       .Select(line =>
+                            new Workflow(line))
+                       .ToDictionary(w => w.Key, w => w);
 
-        var parts = split[1].Split('\n')
-            .Select(line => line.Remove("{", "}").Split(',')
-                .Select(s => s.Split('=').Inline(arr
-                    => new Cell(arr[0].First(), long.Parse(arr[1])))).ToArray()).ToArray();
+        var parts = split[1]
+                   .Split('\n')
+                   .Select(line => line.Remove("{", "}")
+                                       .Split(',')
+                                       .Select(s => s.Split('=')
+                                                     .Inline(arr
+                                                          => new Cell(arr[0].First(), long.Parse(arr[1]))))
+                                       .ToArray())
+                   .ToArray();
 
         return (workflows, parts);
     }
@@ -128,15 +136,9 @@ file readonly struct Condition
         Jump = conditionString[(colon + 1)..];
     }
 
-    public bool Check(long value)
-    {
-        return Operator ? value < Value : value > Value;
-    }
+    public bool Check(long value) { return Operator ? value < Value : value > Value; }
 
-    public bool Check(long min, long max)
-    {
-        return Operator ? max < Value : min > Value;
-    }
+    public bool Check(long min, long max) { return Operator ? max < Value : min > Value; }
 }
 
 file readonly struct Workflow
@@ -153,8 +155,10 @@ file readonly struct Workflow
         var lastComma = workflowString.LastIndexOf(',');
         Default = workflowString[(lastComma + 1)..^1];
 
-        Condition = workflowString[(openBracket + 1)..lastComma].Split(',')
-            .Select(s => new Condition(s)).ToArray();
+        Condition = workflowString[(openBracket + 1)..lastComma]
+                   .Split(',')
+                   .Select(s => new Condition(s))
+                   .ToArray();
     }
 
     public void Deconstruct(out string key, out Condition[] conditions, out string def)

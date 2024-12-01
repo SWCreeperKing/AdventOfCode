@@ -12,10 +12,12 @@ file class Day6
     [ModifyInput]
     public static NamedPos[] ProcessInput(string input)
     {
-        return input.Split('\n').Select((pos, i)
-                => pos.Split(", ").Inline(split
-                    => new NamedPos(i + 1, new Pos(int.Parse(split[0]) + 1, int.Parse(split[1]) + 1))))
-            .ToArray();
+        return input.Split('\n')
+                    .Select((pos, i)
+                         => pos.Split(", ")
+                               .Inline(split
+                                    => new NamedPos(i + 1, new Pos(int.Parse(split[0]) + 1, int.Parse(split[1]) + 1))))
+                    .ToArray();
     }
 
     [Answer(3687)]
@@ -66,8 +68,8 @@ file class Day6
         }
 
         biggest = map.Array
-            .GroupBy(i => i)
-            .ToDictionary(g => g.Key, g => g.Count());
+                     .GroupBy(i => i)
+                     .ToDictionary(g => g.Key, g => g.Count());
 
         for (var y = 0; y < maxY; y++)
         {

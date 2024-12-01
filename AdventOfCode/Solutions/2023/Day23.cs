@@ -17,11 +17,7 @@ file class Day23
         return new Input(new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray()));
     }
 
-    [Answer(2278)]
-    public static long Part1(Input inp)
-    {
-        return Solve(Populate(inp), inp.Start, inp.End);
-    }
+    [Answer(2278)] public static long Part1(Input inp) { return Solve(Populate(inp), inp.Start, inp.End); }
 
     [Answer(6734)]
     public static long Part2(Input inp)
@@ -33,8 +29,8 @@ file class Day23
         void Compress()
         {
             var nodeSelection = nodes.Values
-                .Where(node => node.Dir is Center && node.Edges.Count == 2 &&
-                               !node.Edges.Keys.Any(n => n.Dir is not Center));
+                                     .Where(node => node.Dir is Center && node.Edges.Count == 2 &&
+                                                    !node.Edges.Keys.Any(n => n.Dir is not Center));
 
             foreach (var node in nodeSelection)
             {

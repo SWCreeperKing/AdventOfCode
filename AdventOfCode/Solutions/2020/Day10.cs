@@ -8,10 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 file class EDay10
 {
     [ModifyInput]
-    public static int[] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(int.Parse).Order().ToArray();
-    }
+    public static int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).Order().ToArray(); }
 
     [Answer(1848)]
     public static long Part1(int[] inp)

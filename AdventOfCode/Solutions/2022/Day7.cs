@@ -34,10 +34,7 @@ file class Day7
     }
 
     [Answer(1390824)]
-    public static long Part1(Dictionary<string, long> inp)
-    {
-        return inp.Values.Where(l => l <= 100000).Sum();
-    }
+    public static long Part1(Dictionary<string, long> inp) { return inp.Values.Where(l => l <= 100000).Sum(); }
 
     [Answer(7490863)]
     public static long Part2(Dictionary<string, long> inp)

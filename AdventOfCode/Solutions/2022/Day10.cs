@@ -50,9 +50,5 @@ file class Day10
         return cycleAmount;
     }
 
-    [Answer("EGLHBLFJ")]
-    public static string Part2((string op, int val)[] inp)
-    {
-        return "EGLHBLFJ";
-    }
+    [Answer("EGLHBLFJ")] public static string Part2((string op, int val)[] inp) { return "EGLHBLFJ"; }
 }

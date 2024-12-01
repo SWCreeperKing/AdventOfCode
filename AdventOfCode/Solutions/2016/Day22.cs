@@ -1,11 +1,8 @@
-using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
 using AdventOfCode.Experimental_Run.Misc;
 using CreepyUtil;
-using RedefinedRpg;
 
 namespace AdventOfCode.Solutions._2016;
 
@@ -31,7 +28,6 @@ file class Day22
         return matrix;
     }
 
-    // [Test("")]
     [Answer(864)]
     public static long Part1(Matrix2d<Node> inp)
     {
@@ -50,7 +46,7 @@ file class Day22
         return pairs;
     }
 
-    [Answer(213, AnswerState.Low), Answer(252, AnswerState.High)]
+    [Answer(244)]
     public static long Part2(Matrix2d<Node> inp)
     {
         var max = inp[inp.Find(n => n.Used == 0)].Avail;
@@ -65,7 +61,7 @@ file class Day22
             var endX = newMap.Find('X');
             Pos end = (endX.X - 1, 0);
             var state = new Dijkstra<State, char, int>(newMap, (a, b) => a.CompareTo(b))
-                .Eval(end, new State(start, 0));
+               .Eval(end, new State(start, 0));
             steps += state.Steps;
             newMap[end] = 'X';
             newMap[endX] = '_';
@@ -82,15 +78,9 @@ file class State(Pos pos, int steps, Direction dir = Direction.Center)
 {
     public readonly int Steps = steps;
 
-    public override int GetHashCode()
-    {
-        return Position.GetHashCode();
-    }
+    public override int GetHashCode() { return Position.GetHashCode(); }
 
-    public override int GetValue(char mapVal)
-    {
-        return Steps;
-    }
+    public override int GetValue(char mapVal) { return Steps; }
 
     public override State MakeNewState(Matrix2d<char> map, Pos newPos, Direction dir)
     {

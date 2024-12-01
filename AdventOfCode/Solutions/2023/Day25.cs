@@ -70,8 +70,5 @@ file class Edge(string source, string destination)
     public readonly string Destination = destination;
     public readonly string Source = source;
 
-    public override string ToString()
-    {
-        return $"[{Source}, {Destination}]";
-    }
+    public override string ToString() { return $"[{Source}, {Destination}]"; }
 }

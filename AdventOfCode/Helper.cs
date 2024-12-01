@@ -19,55 +19,28 @@ public static class Helper
     // public static Regex NumberOnlyRegex = new(@"^\d+$", RegexOptions.Compiled);
     public static Regex SpaceRegex = new(@"\s+", RegexOptions.Compiled);
 
-    public static char ToChar(this int i, int offset = 97)
-    {
-        return (char)(i + offset);
-    }
+    public static char ToChar(this int i, int offset = 97) { return (char)(i + offset); }
 
-    public static bool IsInRange(this int i, int min, int max)
-    {
-        return min <= i && max >= i;
-    }
+    public static bool IsInRange(this int i, int min, int max) { return min <= i && max >= i; }
 
-    public static bool IsInRange(this long l, int min, int max)
-    {
-        return min <= l && max >= l;
-    }
+    public static bool IsInRange(this long l, int min, int max) { return min <= l && max >= l; }
 
-    public static bool IsInRange(this long l, long min, long max)
-    {
-        return min <= l && max >= l;
-    }
+    public static bool IsInRange(this long l, long min, long max) { return min <= l && max >= l; }
 
-    public static int[] ToIntArr(this IEnumerable<string> texts)
-    {
-        return texts.Select(int.Parse).ToArray();
-    }
+    public static int[] ToIntArr(this IEnumerable<string> texts) { return texts.Select(int.Parse).ToArray(); }
 
-    public static long[] ToLongArr(this IEnumerable<string> texts)
-    {
-        return texts.Select(long.Parse).ToArray();
-    }
+    public static long[] ToLongArr(this IEnumerable<string> texts) { return texts.Select(long.Parse).ToArray(); }
 
-    public static string ReplaceWithSpace(this string text, string pattern)
-    {
-        return text.Replace(pattern, " ");
-    }
+    public static string ReplaceWithSpace(this string text, string pattern) { return text.Replace(pattern, " "); }
 
-    public static string Remove(this string text, string pattern)
-    {
-        return text.Replace(pattern, string.Empty);
-    }
+    public static string Remove(this string text, string pattern) { return text.Replace(pattern, string.Empty); }
 
     public static string[] SplitSpace(this string text)
     {
         return text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     }
 
-    public static bool IsAllNumbers(this string text)
-    {
-        return text.All(c => c is >= '0' and <= '9');
-    }
+    public static bool IsAllNumbers(this string text) { return text.All(c => c is >= '0' and <= '9'); }
 
     public static int FindIndexOf<T>(this IEnumerable<T> arr, T find)
     {
@@ -79,25 +52,11 @@ public static class Helper
         return arr.Aggregate((l1, l2) => l1 * l2);
     }
 
-    public static IEnumerable<T> EvenIndexes<T>(this IEnumerable<T> arr)
-    {
-        return arr.Where((_, i) => i % 2 == 0);
-    }
+    public static IEnumerable<T> EvenIndexes<T>(this IEnumerable<T> arr) { return arr.Where((_, i) => i % 2 == 0); }
 
-    public static IEnumerable<T> OddIndexes<T>(this IEnumerable<T> arr)
-    {
-        return arr.Where((_, i) => i % 2 == 1);
-    }
+    public static IEnumerable<T> OddIndexes<T>(this IEnumerable<T> arr) { return arr.Where((_, i) => i % 2 == 1); }
 
-    public static int ToInt(this JsonNode node)
-    {
-        return node.GetValue<int>();
-    }
-
-    public static string ToStr<T>(this IEnumerable<T> obj)
-    {
-        return $"[{string.Join(",", obj)}]";
-    }
+    public static int ToInt(this JsonNode node) { return node.GetValue<int>(); }
 
     public static int FindLastIndexOf<T>(this IEnumerable<T> arr, T find)
     {
@@ -116,10 +75,7 @@ public static class Helper
         return arr;
     }
 
-    public static string[] Range(this Match match, Range range)
-    {
-        return match.Groups.Range(range);
-    }
+    public static string[] Range(this Match match, Range range) { return match.Groups.Range(range); }
 
     public static Dictionary<TK, TV> ToDictionary<TK, TV>(this IEnumerable<KeyValuePair<TK, TV>> pair)
     {
@@ -193,20 +149,11 @@ public static class Helper
         return arr;
     }
 
-    public static bool Contains<T>(this IEnumerable<T> arr, IEnumerable<T> arr2)
-    {
-        return arr2.Any(arr.Contains);
-    }
+    public static bool Contains<T>(this IEnumerable<T> arr, IEnumerable<T> arr2) { return arr2.Any(arr.Contains); }
 
-    public static string Join<T>(this IEnumerable<T> carr, string join = "")
-    {
-        return string.Join(join, carr);
-    }
+    public static string Join<T>(this IEnumerable<T> carr, string join = "") { return string.Join(join, carr); }
 
-    public static string Join<T>(this IEnumerable<T> carr, char join)
-    {
-        return string.Join(join, carr);
-    }
+    public static string Join<T>(this IEnumerable<T> carr, char join) { return string.Join(join, carr); }
 
     public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense)
     {
@@ -227,9 +174,14 @@ public static class Helper
         return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
     }
 
-    public static int Unique<T>(this IEnumerable<T> arr)
+    public static int Unique<T>(this IEnumerable<T> arr) { return arr.Distinct().Count(); }
+
+    public static bool IsAllUnique<T>(this IEnumerable<T> arr) { return arr.Distinct().Count() == arr.Count(); }
+
+    public static bool DoAllMatch<T, TKey>(this IEnumerable<T> arr, Func<T, TKey> by)
     {
-        return arr.Distinct().Count();
+        var groups = arr.GroupBy(by);
+        return groups.Count() == 1;
     }
 
     public static IEnumerable<IEnumerable<T>> GetPermutations<T>(this IEnumerable<T> list, int leng = -1)
@@ -237,7 +189,7 @@ public static class Helper
         return leng == 1
             ? list.Select(t => new[] { t })
             : GetPermutations(list, (leng == -1 ? list.Count() : leng) - 1)
-                .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }));
+               .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }));
     }
 
     public static T[][] GetPermutationsArr<T>(this IEnumerable<T> list, int leng = -1)
@@ -245,8 +197,8 @@ public static class Helper
         return leng == 1
             ? list.Select(t => new[] { t }).ToArray()
             : GetPermutationsArr(list, (leng == -1 ? list.Count() : leng) - 1)
-                .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }).ToArray())
-                .ToArray();
+             .SelectMany(t => list.Where(o => !t.Contains(o)), (t1, t2) => t1.Concat(new[] { t2 }).ToArray())
+             .ToArray();
     }
 
     public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key,
@@ -282,10 +234,7 @@ public static class Helper
         return arr.Where((_, i) => boolArr.ElementAt(i));
     }
 
-    public static string Time(this Stopwatch sw)
-    {
-        return sw.Elapsed.Time();
-    }
+    public static string Time(this Stopwatch sw) { return sw.Elapsed.Time(); }
 
     public static string Time(this TimeSpan elapsed)
     {
@@ -300,10 +249,7 @@ public static class Helper
         return sb.ToString().TrimEnd();
     }
 
-    public static string String<T>(this IEnumerable<T> arr)
-    {
-        return $"[{arr.Join(',')}]";
-    }
+    public static string String<T>(this IEnumerable<T> arr) { return $"[{arr.Join(',')}]"; }
 
     public static string String<T, TK>(this IEnumerable<T> arr, Func<T, TK> select)
     {
@@ -334,8 +280,9 @@ public static class Helper
     public static IEnumerable<IEnumerable<T>> GetCombinations<T>(this IEnumerable<T> arr, int k) where T : IComparable
     {
         if (k == 1) return arr.Select(t => new[] { t });
-        return arr.GetCombinations(k - 1).SelectMany(t => arr.Where(o => o.CompareTo(t.Last()) > 0),
-            (t1, t2) => t1.Concat(new[] { t2 }));
+        return arr.GetCombinations(k - 1)
+                  .SelectMany(t => arr.Where(o => o.CompareTo(t.Last()) > 0),
+                       (t1, t2) => t1.Concat(new[] { t2 }));
     }
 
     public static T[] SuperSplit<T>(this string str, string split1, string split2, Func<string[], T> select)
@@ -407,10 +354,7 @@ public static class Helper
         return arr.Aggregate(str, (current, replacement) => current.Replace(replacement.search, replacement.replace));
     }
 
-    public static string CleanSpaces(this string str)
-    {
-        return SpaceRegex.Replace(str, " ");
-    }
+    public static string CleanSpaces(this string str) { return SpaceRegex.Replace(str, " "); }
 
     public static long GCD(this long a, long b)
     {
@@ -424,10 +368,7 @@ public static class Helper
         return a;
     }
 
-    public static long LCM(this long a, long b)
-    {
-        return a / a.GCD(b) * b;
-    }
+    public static long LCM(this long a, long b) { return a / a.GCD(b) * b; }
 
     public static List<T> Rever<T>(this IEnumerable<T> arr)
     {
@@ -441,30 +382,15 @@ public static class Helper
         return flatten(list);
     }
 
-    public static TR Flatten<T, TR>(this List<T> list, Func<List<T>, TR> flatten)
-    {
-        return flatten(list);
-    }
+    public static TR Flatten<T, TR>(this List<T> list, Func<List<T>, TR> flatten) { return flatten(list); }
 
-    public static TR Flatten<T, TR>(this T[] list, Func<T[], TR> flatten)
-    {
-        return flatten(list);
-    }
+    public static TR Flatten<T, TR>(this T[] list, Func<T[], TR> flatten) { return flatten(list); }
 
-    public static int ParseInt(this char c, int def = 0)
-    {
-        return int.TryParse($"{c}", out var i) ? i : def;
-    }
+    public static int ParseInt(this char c, int def = 0) { return int.TryParse($"{c}", out var i) ? i : def; }
 
-    public static TO Inline<T, TO>(this T t, Func<T, TO> func)
-    {
-        return func(t);
-    }
+    public static TO Inline<T, TO>(this T t, Func<T, TO> func) { return func(t); }
 
-    public static void InlineNoReturn<T>(this T t, Action<T> func)
-    {
-        func(t);
-    }
+    public static void InlineNoReturn<T>(this T t, Action<T> func) { func(t); }
 
     public static T InlineAndReturnSelf<T>(this T t, Action<T> func)
     {
@@ -489,20 +415,11 @@ public static class Helper
             yield return (arr1.ElementAt(i), arr2.ElementAt(j));
     }
 
-    public static int[] GenRange(this int start, int count)
-    {
-        return Enumerable.Range(start, count).ToArray();
-    }
+    public static int[] GenRange(this int start, int count) { return Enumerable.Range(start, count).ToArray(); }
 
-    public static string Repeat(this char c, int amount)
-    {
-        return Enumerable.Repeat(c, amount).Join();
-    }
+    public static string Repeat(this char c, int amount) { return Enumerable.Repeat(c, amount).Join(); }
 
-    public static string Repeat(this string str, int amount)
-    {
-        return Enumerable.Repeat(str, amount).Join();
-    }
+    public static string Repeat(this string str, int amount) { return Enumerable.Repeat(str, amount).Join(); }
 
     public static string Repeat(this string str, int amount, char join)
     {
@@ -541,10 +458,7 @@ public static class Helper
         return Math.Abs(area / 2) + perimeter / 2 + 1;
     }
 
-    public static object? SInvoke(this MethodInfo info, params object?[]? objs)
-    {
-        return info.Invoke(null, objs);
-    }
+    public static object? SInvoke(this MethodInfo info, params object?[]? objs) { return info.Invoke(null, objs); }
 
     public static MethodInfo? FirstOrNull<T>(this IEnumerable<MethodInfo> list)
         where T : Attribute
@@ -557,10 +471,7 @@ public static class Helper
         return list.FirstOrDefault(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null);
     }
 
-    public static T? Attribute<T>(this MethodInfo info) where T : Attribute
-    {
-        return info.GetCustomAttribute<T>();
-    }
+    public static T? Attribute<T>(this MethodInfo info) where T : Attribute { return info.GetCustomAttribute<T>(); }
 
     public static IEnumerable<T> Attributes<T>(this MethodInfo info) where T : Attribute
     {
@@ -576,10 +487,7 @@ public static class Helper
         return times[0]!.Value + times[0]!.Value;
     }
 
-    public static bool IsDigit(this char c)
-    {
-        return c is >= '0' and <= '9';
-    }
+    public static bool IsDigit(this char c) { return c is >= '0' and <= '9'; }
 
     public static void Rotate<T>(this T[] arr, int steps, bool isLeft)
     {
@@ -587,9 +495,118 @@ public static class Helper
         var len = arr.Length;
         steps = Math.Abs(steps) % len;
         var step = isLeft ? steps : len - steps;
-        for (var i = 0; i < len; i++)
+        for (var i = 0; i < len; i++) arr[i] = copy[(i + step) % len];
+    }
+
+    public static (T t, TKey tKey, TKey otherKey) SingleOut<T, TKey>(this IEnumerable<T> arr, Func<T, TKey> by)
+    {
+        var groups = arr.GroupBy(by);
+        if (groups.Count() != 2) throw new ArgumentException("Input list has more than 1 unique element");
+        var single = groups.First(g => g.Count() == 1);
+
+        return (single.ElementAt(0), single.Key, groups.First(g => g.Count() != 1).Key);
+    }
+
+    public static string RemoveWhile(this string s, char what, int removeLength)
+    {
+        int i;
+        while ((i = s.IndexOf(what)) != -1)
         {
-            arr[i] = copy[(i + step) % len];
+            s = s.Remove(i, removeLength);
         }
+
+        return s;
+    }
+
+    public static string RemoveWhile(this string s, char what, Func<string, int, int> whereEnd, bool includeEnd = true)
+    {
+        int i;
+        while ((i = s.IndexOf(what)) != -1)
+        {
+            var end = whereEnd(s, i);
+            s = s.Remove(i, end - i + (includeEnd ? 1 : 0));
+        }
+
+        return s;
+    }
+
+    public static IEnumerable<string> RemoveWhileIterator(this string s, char what, Func<string, int, int> whereEnd,
+        bool includeEnd = true)
+    {
+        int i;
+        while ((i = s.IndexOf(what)) != -1)
+        {
+            var end = whereEnd(s, i);
+            yield return s.Substring(i, end - i + (includeEnd ? 1 : 0));
+            s = s.Remove(i, end - i + (includeEnd ? 1 : 0));
+        }
+    }
+
+    public static T[] ReverseWithWrapping<T>(this T[] arr, int start, int length)
+    {
+        if (length > arr.Length) throw new ArgumentException("Length is greater than input array length");
+        if (start + length <= arr.Length)
+        {
+            return [..arr[..start], ..arr[start..(start + length)].Reverse(), ..arr[(start + length)..]];
+        }
+
+        var reverseArr = ((T[]) [..arr[start..arr.Length], ..arr[..((start + length) % arr.Length)]])
+                        .Reverse()
+                        .ToArray(); // reverse wrapped array
+
+        return
+        [
+            ..reverseArr[(arr.Length - start)..], // beginning
+            ..arr[((start + length) % arr.Length)..start], // unchanged section
+            ..reverseArr[..(arr.Length - start)] // end
+        ];
+    }
+
+    public static IEnumerable<(int i, List<T>)> Cycle<T>(this IEnumerable<T> arr, Action<List<T>> cycle)
+    {
+        List<T> list = [..arr];
+        var i = 0;
+
+        while (true)
+        {
+            cycle(list);
+            yield return (++i, list);
+        }
+    }
+
+    public static IEnumerable<(int i, List<T>)> GetRepeatInCycle<T>(this IEnumerable<T> arr, Action<List<T>> cycle)
+    {
+        HashSet<string> seen = [];
+
+        foreach (var (i, item) in arr.Cycle(cycle))
+        {
+            if (seen.Add(item.String())) continue;
+            yield return (i, item);
+        }
+    }
+
+    public static (List<T[]>, List<T>, int i) GenerateCycleTillRepeat<T>(this IEnumerable<T> arr, Action<List<T>> cycle)
+    {
+        HashSet<string> seen = [];
+        List<T[]> cycles = [];
+
+        foreach (var (i, item) in arr.Cycle(cycle))
+        {
+            var str = item.String();
+            if (!seen.Add(str)) return (cycles, item, seen.FindIndexOf(str));
+            cycles.Add([..item]);
+        }
+
+        return (cycles, [], -1);
+    }
+
+    public static TR[] SelectArr<T, TR>(this IEnumerable<T> arr, Func<T, int, TR> selector)
+    {
+        return arr.Select(selector).ToArray();
+    }
+    
+    public static TR[] SelectArr<T, TR>(this IEnumerable<T> arr, Func<T, TR> selector)
+    {
+        return arr.Select(selector).ToArray();
     }
 }

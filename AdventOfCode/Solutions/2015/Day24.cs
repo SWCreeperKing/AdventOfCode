@@ -8,11 +8,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 24, "It Hangs in the Balance")]
 file class Day24
 {
-    [ModifyInput]
-    public static long[] ProcessInput(string inp)
-    {
-        return inp.Split('\n').Select(long.Parse).ToArray();
-    }
+    [ModifyInput] public static long[] ProcessInput(string inp) { return inp.Split('\n').Select(long.Parse).ToArray(); }
 
     [Answer(11846773891)]
     public static long Part1(long[] inp)
@@ -33,9 +29,9 @@ file class Day24
         for (var i = 2;; i++)
         {
             possibilities.AddRange(arr.GetCombinations(i)
-                .Select(group => (group, remainderSum: arr.Except(group).Sum(), sum: group.Sum()))
-                .Where(t => !continueFunc(t.remainderSum, t.sum))
-                .Select(t => (t.group.Count(), t.group.Multi())));
+                                      .Select(group => (group, remainderSum: arr.Except(group).Sum(), sum: group.Sum()))
+                                      .Where(t => !continueFunc(t.remainderSum, t.sum))
+                                      .Select(t => (t.group.Count(), t.group.Multi())));
             if (possibilities.Count != 0) break;
         }
 

@@ -6,19 +6,11 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 18, "Like a Rogue")]
 file class Day18
 {
-    [ModifyInput] public static bool[] ProcessInput(string input) => input.Select(c => c == '^').ToArray();
+    [ModifyInput] public static bool[] ProcessInput(string input) { return input.Select(c => c == '^').ToArray(); }
 
-    [Answer(2013)]
-    public static long Part1(bool[] inp)
-    {
-        return Generate(inp, 40 - 1);
-    }
+    [Answer(2013)] public static long Part1(bool[] inp) { return Generate(inp, 40 - 1); }
 
-    [Answer(20006289)]
-    public static long Part2(bool[] inp)
-    {
-        return Generate(inp, 400000 - 1);
-    }
+    [Answer(20006289)] public static long Part2(bool[] inp) { return Generate(inp, 400000 - 1); }
 
     public static long Generate(bool[] inp, int leng)
     {
@@ -38,12 +30,9 @@ file class Day18
 
         arr[0] = IsTrap(false, inp[0], inp[1]);
         arr[^1] = IsTrap(inp[^2], inp[^1], false);
-        
-        for (var i = 1; i < arr.Length - 1; i++)
-        {
-            arr[i] = IsTrap(inp[i - 1], inp[i], inp[i + 1]);
-        }
-        
+
+        for (var i = 1; i < arr.Length - 1; i++) arr[i] = IsTrap(inp[i - 1], inp[i], inp[i + 1]);
+
         return arr;
     }
 

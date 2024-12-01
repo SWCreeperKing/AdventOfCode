@@ -14,11 +14,15 @@ file class Day5
     public static (Dictionary<int, Stack<char>> ship, int[][] commands) ProcessInput(string inp)
     {
         var split = inp.Split("\n\n");
-        var topRaw = split[0].Split('\n')
-            .Select(s => s.Chunk(4).Select(c => c[1]).ToArray())
-            .SkipLast(1).ToArray();
-        var commands = split[1].Split('\n')
-            .Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray()).ToArray();
+        var topRaw = split[0]
+                    .Split('\n')
+                    .Select(s => s.Chunk(4).Select(c => c[1]).ToArray())
+                    .SkipLast(1)
+                    .ToArray();
+        var commands = split[1]
+                      .Split('\n')
+                      .Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
+                      .ToArray();
         Dictionary<int, Stack<char>> top = new();
 
         foreach (var row in topRaw.Reverse())

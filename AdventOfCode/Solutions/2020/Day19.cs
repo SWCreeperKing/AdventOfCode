@@ -60,7 +60,7 @@ file class Day19
             parsers[indx] = Alt((from seq in splitRules[indx].Split(" | ")
                     select Seq((from i in seq.Split(" ")
                         select int.TryParse(i, out var n) ? GetParser(n) : Literal(i.Trim('"'))).ToList()))
-                .ToList());
+               .ToList());
             return parsers[indx];
         }
 
@@ -80,10 +80,7 @@ file class Day19
                     select rest;
         }
 
-        Parser Literal(string st)
-        {
-            return inpt => inpt.StartsWith(st) ? new[] { inpt[st.Length..] } : new string[0];
-        }
+        Parser Literal(string st) { return inpt => inpt.StartsWith(st) ? new[] { inpt[st.Length..] } : new string[0]; }
 
         var parser = GetParser(0);
         return inp.realIn.Count(data => parser(data).Any(st => st == string.Empty));

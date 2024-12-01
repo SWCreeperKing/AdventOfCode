@@ -13,14 +13,7 @@ file class Day2
     }
 
     [Answer(1586300)]
-    public static long Part1(int[][] inp)
-    {
-        return inp.Sum(i => 3 * i[0] * i[1] + 2 * i[0] * i[2] + 2 * i[1] * i[2]);
-    }
+    public static long Part1(int[][] inp) { return inp.Sum(i => 3 * i[0] * i[1] + 2 * i[0] * i[2] + 2 * i[1] * i[2]); }
 
-    [Answer(3737498)]
-    public static long Part2(int[][] inp)
-    {
-        return inp.Sum(s => (s[0] + s[1]) * 2 + s.Multi());
-    }
+    [Answer(3737498)] public static long Part2(int[][] inp) { return inp.Sum(s => (s[0] + s[1]) * 2 + s.Multi()); }
 }

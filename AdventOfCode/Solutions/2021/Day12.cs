@@ -34,10 +34,7 @@ file class Day12
         return -1;
     }
 
-    public static long Part2(string inp)
-    {
-        return -1;
-    }
+    public static long Part2(string inp) { return -1; }
 
     private class Node
     {

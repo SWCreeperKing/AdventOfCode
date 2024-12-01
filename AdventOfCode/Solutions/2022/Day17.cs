@@ -17,10 +17,7 @@ file class Day17
     ];
 
     [ModifyInput]
-    public static bool[] ProcessInput(string inp)
-    {
-        return inp.ToCharArray().Select(c => c is '<').ToArray();
-    }
+    public static bool[] ProcessInput(string inp) { return inp.ToCharArray().Select(c => c is '<').ToArray(); }
 
     [Answer(3124)]
     public static long Part1(bool[] inp)
@@ -83,10 +80,7 @@ file class Day17
     // https://github.com/encse/adventofcode/blob/master/2022/Day17/Solution.cs
     // done 24+hr after puzzle release
     [Answer(1561176470569)]
-    public static long Part2(bool[] inp)
-    {
-        return new Tunnel(inp, 100).AddRocks(1000000000000).Height;
-    }
+    public static long Part2(bool[] inp) { return new Tunnel(inp, 100).AddRocks(1000000000000).Height; }
 
     private static IEnumerable<Pos> Area(string[] mat)
     {
@@ -100,10 +94,7 @@ file class Day17
         return (mat.ElementAtOrDefault(pos.Y) ?? "#########").ElementAt(pos.X);
     }
 
-    private static void Set(IList<char[]> mat, Pos pos, char ch)
-    {
-        mat[pos.Y][pos.X] = ch;
-    }
+    private static void Set(IList<char[]> mat, Pos pos, char ch) { mat[pos.Y][pos.X] = ch; }
 
     private class Tunnel
     {
@@ -210,22 +201,13 @@ file class Day17
         public Pos Right => this with { X = X + 1 };
         public Pos Below => this with { Y = Y + 1 };
 
-        public static Pos operator +(Pos posA, Pos posB)
-        {
-            return new Pos(posA.X + posB.X, posA.Y + posB.Y);
-        }
+        public static Pos operator +(Pos posA, Pos posB) { return new Pos(posA.X + posB.X, posA.Y + posB.Y); }
     }
 
     public record ModCounter(int I, int Mod)
     {
-        public static explicit operator int(ModCounter c)
-        {
-            return c.I;
-        }
+        public static explicit operator int(ModCounter c) { return c.I; }
 
-        public static ModCounter operator ++(ModCounter c)
-        {
-            return c with { I = c.I == c.Mod - 1 ? 0 : c.I + 1 };
-        }
+        public static ModCounter operator ++(ModCounter c) { return c with { I = c.I == c.Mod - 1 ? 0 : c.I + 1 }; }
     }
 }

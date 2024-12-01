@@ -11,11 +11,12 @@ file class Day3
     [ModifyInput]
     public static Instruction[][] ProcessInput(string input)
     {
-        return input.Split('\n').Select(
-                line => line.Split(',')
-                    .Select(str => new Instruction(str[0], int.Parse(str[1..])))
-                    .ToArray())
-            .ToArray();
+        return input.Split('\n')
+                    .Select(
+                         line => line.Split(',')
+                                     .Select(str => new Instruction(str[0], int.Parse(str[1..])))
+                                     .ToArray())
+                    .ToArray();
     }
 
     [Answer(489)]
@@ -55,9 +56,9 @@ file class Day3
         Map(input[1], 2);
 
         return map.Where(kv => kv.Value > 2)
-            .Select(kv => kv.Key)
-            .Select(cord => Math.Abs(cord.x) + Math.Abs(cord.y))
-            .Min();
+                  .Select(kv => kv.Key)
+                  .Select(cord => Math.Abs(cord.x) + Math.Abs(cord.y))
+                  .Min();
     }
 
     [Answer(93654)]
@@ -107,8 +108,9 @@ file class Day3
         Map(input[1], 2);
 
         return map.Values.Where(v => v.DoesIntercept())
-            .Select(v => v.Steps())
-            .ToArray().Min();
+                  .Select(v => v.Steps())
+                  .ToArray()
+                  .Min();
     }
 }
 
@@ -125,13 +127,7 @@ file class Cell((int x, int y) pos, bool origin = false)
     public int? ASteps;
     public int? BSteps;
 
-    public bool DoesIntercept()
-    {
-        return ASteps != null && BSteps != null && !Origin;
-    }
+    public bool DoesIntercept() { return ASteps != null && BSteps != null && !Origin; }
 
-    public int Steps()
-    {
-        return ASteps!.Value + BSteps!.Value;
-    }
+    public int Steps() { return ASteps!.Value + BSteps!.Value; }
 }

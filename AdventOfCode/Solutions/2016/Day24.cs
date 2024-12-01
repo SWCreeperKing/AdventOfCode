@@ -17,9 +17,7 @@ file class Day24
         Matrix2d<char> map = new(split[0].Length, split.Length);
         for (var y = 0; y < split.Length; y++)
         for (var x = 0; x < split[0].Length; x++)
-        {
             map[x, y] = split[y][x];
-        }
 
         return map;
     }
@@ -28,11 +26,8 @@ file class Day24
     public static long Part1(Matrix2d<char> inp)
     {
         Dictionary<int, Pos> positions = new();
-        for (var i = 0; i < 8; i++)
-        {
-            positions[i] = inp.Find($"{i}"[0]);
-        }
-        
+        for (var i = 0; i < 8; i++) positions[i] = inp.Find($"{i}"[0]);
+
         Dictionary<int, Dictionary<int, int>> stepMap = new();
         for (var i = 0; i < 8; i++)
         {
@@ -60,7 +55,7 @@ file class Day24
 
             shortSteps = Math.Min(shortSteps, steps);
         }
-        
+
         return shortSteps;
     }
 
@@ -68,11 +63,8 @@ file class Day24
     public static long Part2(Matrix2d<char> inp)
     {
         Dictionary<int, Pos> positions = new();
-        for (var i = 0; i < 8; i++)
-        {
-            positions[i] = inp.Find($"{i}"[0]);
-        }
-        
+        for (var i = 0; i < 8; i++) positions[i] = inp.Find($"{i}"[0]);
+
         Dictionary<int, Dictionary<int, int>> stepMap = new();
         for (var i = 0; i < 8; i++)
         {
@@ -100,7 +92,7 @@ file class Day24
 
             shortSteps = Math.Min(shortSteps, steps);
         }
-        
+
         return shortSteps;
     }
 
@@ -116,15 +108,9 @@ file class State(Pos pos, int steps, Direction dir = Direction.Center)
 {
     public readonly int Steps = steps;
 
-    public override int GetHashCode()
-    {
-        return Position.GetHashCode();
-    }
+    public override int GetHashCode() { return Position.GetHashCode(); }
 
-    public override int GetValue(char mapVal)
-    {
-        return Steps;
-    }
+    public override int GetValue(char mapVal) { return Steps; }
 
     public override State MakeNewState(Matrix2d<char> map, Pos newPos, Direction dir)
     {

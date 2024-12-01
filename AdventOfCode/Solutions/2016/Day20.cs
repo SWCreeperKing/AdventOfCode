@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using RedefinedRpg;
 using Range = AdventOfCode.Experimental_Run.Misc.Range;
 
 namespace AdventOfCode.Solutions._2016;
@@ -11,13 +8,10 @@ namespace AdventOfCode.Solutions._2016;
 file class Day20
 {
     [ModifyInput]
-    public static Range[] ProcessInput(string input) => input.Split('\n').Select(s => new Range(s)).ToArray();
+    public static Range[] ProcessInput(string input) { return input.Split('\n').Select(s => new Range(s)).ToArray(); }
 
     [Answer(4793564)]
-    public static long Part1(Range[] inp)
-    {
-        return inp.Select(r => r.End + 1).Where(l => !inp.Any(r => r[l])).Min();
-    }
+    public static long Part1(Range[] inp) { return inp.Select(r => r.End + 1).Where(l => !inp.Any(r => r[l])).Min(); }
 
     [Answer(146)]
     public static long Part2(Range[] inp)

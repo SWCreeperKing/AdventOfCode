@@ -1,27 +1,17 @@
-using System;
 using System.Collections.Generic;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 23, "Safe Cracking")]
 file class Day23
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
+    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
 
-    [Answer(10440)]
-    public static long Part1(string[][] inp)
-    {
-        return Solve(inp, 7);
-    }
+    [Answer(10440)] public static long Part1(string[][] inp) { return Solve(inp, 7); }
 
-    [Answer(479007000)]
-    public static long Part2(string[][] inp)
-    {
-        return Solve(inp, 12);
-    }
-    
+    [Answer(479007000)] public static long Part2(string[][] inp) { return Solve(inp, 12); }
+
     private static long Solve(string[][] inp, int aInit = 0, int cInit = 0)
     {
         Dictionary<string, long> registers = new() { { "a", aInit }, { "b", 0 }, { "c", cInit }, { "d", 0 } };
@@ -35,7 +25,6 @@ file class Day23
         };
 
         for (var i = 0L; i < inp.Length; i++)
-        {
             switch (inp[i])
             {
                 case ["tgl", var x]:
@@ -47,10 +36,7 @@ file class Day23
                     registers[y] = Decode(x);
 
                     if (i + 6 >= inp.Length) continue;
-                    if (Optimize(inp[(int)i..((int)i + 6)]))
-                    {
-                        i += 5;
-                    }
+                    if (Optimize(inp[(int)i..((int)i + 6)])) i += 5;
 
                     break;
                 case ["inc", var x]:
@@ -66,7 +52,6 @@ file class Day23
                     i += Decode(y) - 1;
                     break;
             }
-        }
 
         return registers["a"];
 
@@ -80,20 +65,14 @@ file class Day23
             if (lookahead[5][0] != "jnz" || lookahead[5][1] != d || lookahead[5][2] != "-5") return false;
 
             var dVal = registers[d];
-            if (dVal == 0)
-            {
-                dVal = 1;
-            }
-            
+            if (dVal == 0) dVal = 1;
+
             registers[a] += Decode(b) * dVal;
             registers[c] = 0;
             registers[d] = 0;
             return true;
         }
 
-        long Decode(string value)
-        {
-            return long.TryParse(value, out var val) ? val : registers[value];
-        }
+        long Decode(string value) { return long.TryParse(value, out var val) ? val : registers[value]; }
     }
 }

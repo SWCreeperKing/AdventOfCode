@@ -16,10 +16,12 @@ file class Day5
 
         var i = 0;
         foreach (var map in inp.Skip(1))
-            ranges[i++] = map.Split('\n').Skip(1)
-                .Select(str => str.CleanSpaces().Trim().Split(' ').Select(long.Parse).ToArray())
-                .Select(line => (line[0], line[1], line[1] + (line[2] - 1)))
-                .OrderByDescending(t => t.Item2).ToArray();
+            ranges[i++] = map.Split('\n')
+                             .Skip(1)
+                             .Select(str => str.CleanSpaces().Trim().Split(' ').Select(long.Parse).ToArray())
+                             .Select(line => (line[0], line[1], line[1] + (line[2] - 1)))
+                             .OrderByDescending(t => t.Item2)
+                             .ToArray();
 
         return (seeds.ToArray(), ranges);
     }
@@ -49,20 +51,23 @@ file class Day5
         return seeds.Select(i => FindLocation(inp.ranges, i)).Min();
     }
 
-    public static long FindLocation((long start, long start2, long end2)[][] ranges,
-        long seed, int i = 0)
+    public static long FindLocation((long start, long start2, long end2)[][] ranges, long seed, int i = 0)
     {
-        if (i == ranges.Length) return seed;
-        var list = ranges[i];
-        var number = seed;
-        foreach (var (start, start2, end2) in list)
+        while (true)
         {
-            if (seed < start2 || seed > end2) continue;
+            if (i == ranges.Length) return seed;
+            var list = ranges[i];
+            var number = seed;
+            foreach (var (start, start2, end2) in list)
+            {
+                if (seed < start2 || seed > end2) continue;
 
-            number = seed + (start - start2);
-            break;
+                number = seed + (start - start2);
+                break;
+            }
+
+            seed = number;
+            i++;
         }
-
-        return FindLocation(ranges, number, i + 1);
     }
 }

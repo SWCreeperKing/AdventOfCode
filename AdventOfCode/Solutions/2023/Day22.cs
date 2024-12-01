@@ -12,10 +12,15 @@ file class Day22
     [ModifyInput]
     public static List<Cube> ProcessInput(string input)
     {
-        return input.Split('\n').Select((s, i)
-                => s.Split('~').SelectMany(s => s.Split(',').Select(int.Parse)).ToArray()
-                    .Inline(arr => new Cube(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], i)))
-            .OrderBy(c => c.Z).ToList().InlineAndReturnSelf(CreateMap);
+        return input.Split('\n')
+                    .Select((s, i)
+                         => s.Split('~')
+                             .SelectMany(s => s.Split(',').Select(int.Parse))
+                             .ToArray()
+                             .Inline(arr => new Cube(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], i)))
+                    .OrderBy(c => c.Z)
+                    .ToList()
+                    .InlineAndReturnSelf(CreateMap);
     }
 
     [Answer(421)]
@@ -118,15 +123,9 @@ public class Cube(int x, int y, int z, int w, int h, int d, int label)
         return X == other.X && Y == other.Y && Z == other.Z && W == other.W && H == other.H && D == other.D;
     }
 
-    public override bool Equals(object obj)
-    {
-        return obj is Cube other && Equals(other);
-    }
+    public override bool Equals(object obj) { return obj is Cube other && Equals(other); }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(X, Y, Z, W, H, D);
-    }
+    public override int GetHashCode() { return HashCode.Combine(X, Y, Z, W, H, D); }
 
     public static bool operator ==(Cube c1, Cube c2)
     {
@@ -138,8 +137,5 @@ public class Cube(int x, int y, int z, int w, int h, int d, int label)
         return c1.X != c2.X || c1.Y != c2.Y || c1.Z != c2.Z || c1.W != c2.W || c1.H != c2.H || c1.D != c2.D;
     }
 
-    public override string ToString()
-    {
-        return $"{label}";
-    }
+    public override string ToString() { return $"{label}"; }
 }

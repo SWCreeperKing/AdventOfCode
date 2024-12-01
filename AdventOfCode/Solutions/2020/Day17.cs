@@ -8,11 +8,7 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 17, "Conway Cubes")]
 file class Day17
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(295)]
     public static int Part1(string[] inp)
@@ -99,15 +95,9 @@ file class Array3D : ICloneable
         set => Dim[(x, y, z)] = value;
     }
 
-    public object Clone()
-    {
-        return new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) };
-    }
+    public object Clone() { return new Array3D { Dim = new Dictionary<(int, int, int), bool>(Dim) }; }
 
-    public int GetAllBoxes()
-    {
-        return Dim.Values.Count(b => b);
-    }
+    public int GetAllBoxes() { return Dim.Values.Count(b => b); }
 
     public int AroundTown(int x, int y, int z)
     {
@@ -155,15 +145,9 @@ file class Array4D : ICloneable
         set => Dim[(x, y, z, w)] = value;
     }
 
-    public object Clone()
-    {
-        return new Array4D { Dim = new Dictionary<(int, int, int, int), bool>(Dim) };
-    }
+    public object Clone() { return new Array4D { Dim = new Dictionary<(int, int, int, int), bool>(Dim) }; }
 
-    public int GetAllBoxes()
-    {
-        return Dim.Values.Count(b => b);
-    }
+    public int GetAllBoxes() { return Dim.Values.Count(b => b); }
 
     public int AroundTown(int x, int y, int z, int w)
     {

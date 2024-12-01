@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
 using static AdventOfCode.Experimental_Run.Starter;
-using static RedefinedRpg.ClrCnsl;
+using static CreepyUtil.ClrCnsl.ClrCnsl;
 
 namespace AdventOfCode.Experimental_Run;
 
@@ -30,8 +30,9 @@ public static class Starter
 
     public static void Start()
     {
-        var types = Assembly.GetCallingAssembly().GetTypes()
-            .Where(t => t.IsClass && t.GetCustomAttributes<DayAttribute>().Any());
+        var types = Assembly.GetCallingAssembly()
+                            .GetTypes()
+                            .Where(t => t.IsClass && t.GetCustomAttributes<DayAttribute>().Any());
 
         List<YearDayInfo> runners = [];
 
@@ -51,14 +52,12 @@ public static class Starter
         });
 
         if (runners.Count > 0)
-        {
             foreach (var runner in runners)
             {
                 SelectedYear = runner.Year;
                 RunDay(runner, out _, true);
                 WaitForAnyInput();
             }
-        }
 
         SelectedYear = AllPuzzles.Keys.Max();
         RunInput();
@@ -83,11 +82,14 @@ public static class Starter
             }
             else if (selected == days.Length - 3) // run all
             {
-                var time = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).Select(i =>
-                {
-                    WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
-                    return RunDay(i, out _, true).Sum();
-                }).Aggregate((t1, t2) => t1 + t2);
+                var time = AllPuzzles[SelectedYear]
+                          .OrderBy(dp => dp.Day)
+                          .Select(i =>
+                           {
+                               WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
+                               return RunDay(i, out _, true).Sum();
+                           })
+                          .Aggregate((t1, t2) => t1 + t2);
                 WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
@@ -104,18 +106,12 @@ public static class Starter
                 }
 
                 var md = $"{SolutionsFolder}/{SelectedYear}/README.md";
-                if (File.Exists(md))
-                {
-                    File.Delete(md);
-                }
+                if (File.Exists(md)) File.Delete(md);
 
-                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt"))
-                {
-                    CacheLeaderboard();
-                }
+                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")) CacheLeaderboard();
 
                 var data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")
-                    .SuperSplit('\n', ',');
+                               .SuperSplit('\n', ',');
 
                 File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, data));
 
@@ -145,10 +141,7 @@ public static class Starter
         WriteLine("Caching leaderboard data");
 
         var file = $"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt";
-        if (File.Exists(file))
-        {
-            File.Delete(file);
-        }
+        if (File.Exists(file)) File.Delete(file);
 
         File.WriteAllText(file, Program.GetLeaderBoard(SelectedYear).Select(s => s.Join(',')).Join('\n'));
     }
@@ -156,8 +149,9 @@ public static class Starter
     public static string[] GetDayList(YearDayInfo[] infos)
     {
         return infos.Select(dp
-                => $"[#darkblue]{dp.Day}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
-            .Concat(RunPrompts).ToArray();
+                         => $"[#darkblue]{dp.Day}[#r]. [#darkyellow]{DailyPuzzlesAttributes[dp].Name}[#r]")
+                    .Concat(RunPrompts)
+                    .ToArray();
     }
 
     public static TimeSpan?[] RunDay(YearDayInfo info, out bool?[] successes, bool runAll = false)
@@ -169,15 +163,9 @@ public static class Starter
         if (data.HasPart(1)) run.Add("Part 1");
         if (data.HasPart(2)) run.Add("Part 2");
 
-        if (runAll)
-        {
-            return [RunPart(data, 1, out successes[0], false), RunPart(data, 2, out successes[1], false)];
-        }
+        if (runAll) return [RunPart(data, 1, out successes[0], false), RunPart(data, 2, out successes[1], false)];
 
-        if (run.Count == 2)
-        {
-            run.Add("Both");
-        }
+        if (run.Count == 2) run.Add("Both");
 
         run.Add($"Back to {SelectedYear}");
 
@@ -207,7 +195,25 @@ public static class Starter
         Sw.Restart();
         try
         {
-            Console.WriteLine($"Part {part}:");
+            var parms = data.GetParams(part);
+            if (parms.Length != 1)
+            {
+                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
+                WriteLine($"[#red]Part [{part}] does not contain the right amount of parameters");
+                WriteLine($"[#red]{parms.Length} != 1");
+                return null;
+            }
+
+            if (parms[0].ParameterType != data.GetModifyReturnType())
+            {
+                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
+                WriteLine($"[#red]|==>   dumb dumb forgor :alien: about part {part}'s input params!");
+                WriteLine($"[#red] |=> {parms[0].ParameterType} != {data.GetModifyReturnType()}".Replace("System.", ""));
+                return null;
+            }
+            
+            Console.WriteLine($"\nPart {part}:");
+            
             Sw.Start();
             var answer = data.Run(part);
             Sw.Stop();
@@ -227,6 +233,36 @@ public static class Starter
                 throw;
             }
         }
+        catch (Exception e)
+        {
+            var newE = e.InnerException!;
+
+            WriteLine($"[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
+            WriteLine($"[#darkred][{newE.Message}]");
+            var endWith = $"/AdventOfCode/Solutions/{data.Owner.Year}/Day{data.Owner.Day}.cs";
+
+            foreach (var frame in new StackTrace(newE, true).GetFrames().SkipLast(2))
+            {
+                var file = frame.GetFileName();
+                var method = frame.GetMethod();
+                var at = frame.GetFileLineNumber();
+                if (file is not null && !file.Replace("\\", "/").EndsWith(endWith))
+                {
+                    WriteLine($"[#yellow] File: {frame.GetFileName()}");
+                }
+
+                if (method is not null)
+                {
+                    WriteLine($"[#darkyellow]{method.Name}(){(at != 0 ? $"[#r] at [#red]{at}" : "")}");
+                }
+                else if (at != 0)
+                {
+                    WriteLine($"at [#red]{at}");
+                }
+            }
+
+            WriteLine("[#darkmagenta]<===   END OF STACK TRACE   ===>\n");
+        }
 
         if (!toContinue) return Sw.Elapsed;
         WaitForAnyInput();
@@ -239,25 +275,24 @@ public static class Starter
         if (!Directory.Exists($"Input/{SelectedYear}")) Directory.CreateDirectory($"Input/{SelectedYear}");
 
         return (!File.Exists(key.File) ? Program.SaveInput(key) : File.ReadAllText(key.File))
-            .Replace("\r", string.Empty).TrimEnd('\n');
+              .Replace("\r", string.Empty)
+              .TrimEnd('\n');
     }
 }
 
 public readonly record struct YearDayInfo(int year, int day)
 {
-    public readonly int Year = year;
     public readonly int Day = day;
     public readonly string File = $"Input/{year}/{day}.txt";
     public readonly string Url = $"/{year}/day/{day}/input";
+    public readonly int Year = year;
 
-    public override string ToString()
-    {
-        return $"[{Year}, {Day}]";
-    }
+    public override string ToString() { return $"[{Year}, {Day}]"; }
 }
 
 public readonly struct DayStructure
 {
+    public readonly YearDayInfo Owner;
     private readonly string Input;
     private readonly MethodInfo ResetDataMethod;
     private readonly MethodInfo ModifyInputMethod;
@@ -267,6 +302,7 @@ public readonly struct DayStructure
 
     public DayStructure(YearDayInfo info)
     {
+        Owner = info;
         var methods = DailyPuzzles[info].GetMethods();
         ResetDataMethod = methods.FirstOrNull<ResetDataAttribute>();
         ModifyInputMethod = methods.FirstOrNull<ModifyInputAttribute>();
@@ -281,19 +317,17 @@ public readonly struct DayStructure
         return ModifyInputMethod is null ? data : ModifyInputMethod.SInvoke(data);
     }
 
-    public void Reset()
-    {
-        ResetDataMethod?.SInvoke();
-    }
+    public void Reset() { ResetDataMethod?.SInvoke(); }
 
-    public object Run(int part)
-    {
-        return PartMethods[part - 1]?.SInvoke(ProcessNormalOrTestInput(part));
-    }
+    public object Run(int part) { return PartMethods[part - 1]?.SInvoke(ProcessNormalOrTestInput(part)); }
 
-    public bool HasPart(int part)
+    public bool HasPart(int part) { return PartMethods[part - 1] is not null; }
+
+    public ParameterInfo[] GetParams(int part) { return PartMethods[part - 1].GetParameters(); }
+
+    public Type GetModifyReturnType()
     {
-        return PartMethods[part - 1] is not null;
+        return ModifyInputMethod is null ? typeof(string) : ModifyInputMethod.ReturnType;
     }
 
     public object ProcessNormalOrTestInput(int part)
@@ -311,9 +345,9 @@ public readonly struct DayStructure
         }
 
         var states = answers
-            .Select(ans => ans.Evaluate(answer))
-            .Where(state => state is not AnswerState.Possible)
-            .ToArray();
+                    .Select(ans => ans.Evaluate(answer))
+                    .Where(state => state is not AnswerState.Possible)
+                    .ToArray();
 
         var correct = answers.FirstOrDefault(att => att.State is AnswerState.Correct);
         if (correct is not null && states.Any(state => state is not AnswerState.Correct) &&

@@ -10,20 +10,18 @@ file class Day12
 {
     public static readonly Dictionary<string, long> Cached = new();
 
-    [ResetData]
-    public static void Reset()
-    {
-        Cached.Clear();
-    }
+    [ResetData] public static void Reset() { Cached.Clear(); }
 
     [ModifyInput]
     public static (string, int[])[] ProcessInput(string input)
     {
-        return input.Split('\n').Select(s
-                => s.Split(' ').Inline(arr
-                    => (arr[0],
-                        arr[1].Split(',').Select(int.Parse).Rever().ToArray())))
-            .ToArray();
+        return input.Split('\n')
+                    .Select(s
+                         => s.Split(' ')
+                             .Inline(arr
+                                  => (arr[0],
+                                      arr[1].Split(',').Select(int.Parse).Rever().ToArray())))
+                    .ToArray();
     }
 
     [Answer(7007)]
@@ -36,8 +34,8 @@ file class Day12
     public static long Part2((string, int[])[] inp)
     {
         return inp.Select(line => Cache(line.Item1.Repeat(5, '?'),
-                ImmutableStack.CreateRange(Enumerable.Repeat(line.Item2, 5).SelectMany(arr => arr))))
-            .Sum();
+                       ImmutableStack.CreateRange(Enumerable.Repeat(line.Item2, 5).SelectMany(arr => arr))))
+                  .Sum();
     }
 
     public static long Cache(string pattern, ImmutableStack<int> nums)

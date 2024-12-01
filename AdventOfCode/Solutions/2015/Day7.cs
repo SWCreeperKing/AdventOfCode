@@ -11,15 +11,12 @@ file class Day7
     [ModifyInput]
     public static Dictionary<string, string[]> ProcessInput(string input)
     {
-        return input.Split('\n').Select(instruction => instruction.Split(" -> "))
-            .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
+        return input.Split('\n')
+                    .Select(instruction => instruction.Split(" -> "))
+                    .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
     }
 
-    [Answer(956)]
-    public static long Part1(Dictionary<string, string[]> inp)
-    {
-        return FollowWire("a", inp);
-    }
+    [Answer(956)] public static long Part1(Dictionary<string, string[]> inp) { return FollowWire("a", inp); }
 
     [Answer(40149)]
     public static long Part2(Dictionary<string, string[]> inp)
@@ -40,10 +37,7 @@ file class Day7
 
         var instruction = instructionSets[wire];
 
-        long Follow(string wire)
-        {
-            return FollowWire(wire, instructionSets, cache);
-        }
+        long Follow(string wire) { return FollowWire(wire, instructionSets, cache); }
 
         var valueFromInstruction = instruction switch
         {

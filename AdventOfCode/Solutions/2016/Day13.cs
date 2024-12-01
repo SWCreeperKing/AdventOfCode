@@ -8,11 +8,7 @@ namespace AdventOfCode.Solutions._2016;
 [Day(2016, 13, "A Maze of Twisty Little Cubicles")]
 file class Day13
 {
-    [ModifyInput]
-    public static int ProcessInput(string input)
-    {
-        return int.Parse(input);
-    }
+    [ModifyInput] public static int ProcessInput(string input) { return int.Parse(input); }
 
     [Answer(86)]
     public static long Part1(int inp)
@@ -138,10 +134,7 @@ file class Node(int x, int y, int gCost, int inp, (int x, int y) endPos)
         return newNodes;
     }
 
-    public Node[] GetNonNullNeighbors()
-    {
-        return Neighbors.Where(node => node is not null).ToArray();
-    }
+    public Node[] GetNonNullNeighbors() { return Neighbors.Where(node => node is not null).ToArray(); }
 
     public static int CalculateFCost(int x, int y, int gCost, (int x, int y) endPos)
     {

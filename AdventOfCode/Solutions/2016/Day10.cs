@@ -117,10 +117,7 @@ public class Bot(int id)
     public Bot GiveLowerBot;
     public int GiveLowerOutput;
 
-    public bool IsInventoryFull()
-    {
-        return Inventory.Count >= 2;
-    }
+    public bool IsInventoryFull() { return Inventory.Count >= 2; }
 
     public int GiveOutput(Dictionary<int, List<int>> outputs, params int[] getBotIdWith)
     {

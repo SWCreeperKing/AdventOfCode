@@ -37,8 +37,11 @@ file class Day4
     public static int Part2(string[][] inp)
     {
         return inp.Select(masterS
-            => masterS.All(s => s.Split(":").Flatten(arr
-                   => !RegexArr.ContainsKey(arr[0]) || Regex.IsMatch(arr[1], $"^({RegexArr[arr[0]]})$"))) &&
-               KindValidator.IsMatch(masterS.Join(" "))).Count(doesCount => doesCount);
+                       => masterS.All(s => s.Split(":")
+                                            .Flatten(arr
+                                                 => !RegexArr.ContainsKey(arr[0]) ||
+                                                    Regex.IsMatch(arr[1], $"^({RegexArr[arr[0]]})$"))) &&
+                          KindValidator.IsMatch(masterS.Join(" ")))
+                  .Count(doesCount => doesCount);
     }
 }

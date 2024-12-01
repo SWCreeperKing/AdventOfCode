@@ -16,8 +16,10 @@ file class Day14
     [ModifyInput]
     public static Dictionary<string, Flight> ProcessInput(string input)
     {
-        return input.Split('\n').Select(l => InputRegex.Match(l).Range(1..4)).ToDictionary(match => match[0],
-            match => new Flight(int.Parse(match[1]), int.Parse(match[2]), int.Parse(match[3])));
+        return input.Split('\n')
+                    .Select(l => InputRegex.Match(l).Range(1..4))
+                    .ToDictionary(match => match[0],
+                         match => new Flight(int.Parse(match[1]), int.Parse(match[2]), int.Parse(match[3])));
     }
 
     [Answer(2660)]

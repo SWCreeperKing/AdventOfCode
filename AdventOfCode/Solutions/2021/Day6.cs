@@ -6,23 +6,11 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 6, "Lanternfish")]
 file class Day6
 {
-    [ModifyInput]
-    public static string ProcessInput(string input)
-    {
-        return input;
-    }
+    [ModifyInput] public static string ProcessInput(string input) { return input; }
 
-    [Answer(391671)]
-    public static long Part1(string inp)
-    {
-        return Solve(inp, 80);
-    }
+    [Answer(391671)] public static long Part1(string inp) { return Solve(inp, 80); }
 
-    [Answer(1754000560399)]
-    public static long Part2(string inp)
-    {
-        return Solve(inp, 256);
-    }
+    [Answer(1754000560399)] public static long Part2(string inp) { return Solve(inp, 256); }
 
     private static long Solve(string input, int count)
     {

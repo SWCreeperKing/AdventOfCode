@@ -13,8 +13,9 @@ file class Day3
     [ModifyInput]
     public static int[][] ProcessInput(string inp)
     {
-        return inp.Split('\n').Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
-            .ToArray();
+        return inp.Split('\n')
+                  .Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
+                  .ToArray();
     }
 
     [Answer(1032)]

@@ -21,14 +21,11 @@ file class Day10
     public static (Pos pos, Matrix2d<char> map) ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray())
-            .Inline(map => (map.Find('S'), map));
+           .Inline(map => (map.Find('S'), map));
     }
 
     [Answer(6778)]
-    public static long Part1((Pos pos, Matrix2d<char> map) inp)
-    {
-        return Follow(inp.map, inp.pos, []) / 2;
-    }
+    public static long Part1((Pos pos, Matrix2d<char> map) inp) { return Follow(inp.map, inp.pos, []) / 2; }
 
     [Answer(433)]
     public static long Part2((Pos pos, Matrix2d<char> map) inp)
@@ -36,8 +33,8 @@ file class Day10
         Dictionary<int, char> path = new();
         Follow(inp.map, inp.pos, path);
         return inp.map.MatrixSelect((_, _, i) => path.GetValueOrDefault(i, ' '))
-            .MatrixSelect((map, c, pos) => c is ' ' && ShouldFill(map, pos) ? 'O' : c)
-            .Array.Count(c => c is 'O');
+                  .MatrixSelect((map, c, pos) => c is ' ' && ShouldFill(map, pos) ? 'O' : c)
+                  .Array.Count(c => c is 'O');
     }
 
     public static bool ShouldFill(Matrix2d<char> map, Pos pos)

@@ -21,17 +21,9 @@ file class Day9
         return inp.Split('\n').Select(s => (DirectionParse[s[0]], int.Parse(s[2..]))).ToArray();
     }
 
-    [Answer(5695)]
-    public static long Part1((Direction, int)[] inp)
-    {
-        return PlaySnake(inp);
-    }
+    [Answer(5695)] public static long Part1((Direction, int)[] inp) { return PlaySnake(inp); }
 
-    [Answer(2434)]
-    public static long Part2((Direction, int)[] inp)
-    {
-        return PlaySnake(inp, 9);
-    }
+    [Answer(2434)] public static long Part2((Direction, int)[] inp) { return PlaySnake(inp, 9); }
 
     private static long PlaySnake((Direction, int)[] inp, int snakeLength = 1)
     {
@@ -71,13 +63,7 @@ file class Day9
         return tailPositions.Unique();
     }
 
-    private static bool IsTailBehind(Pos front, Pos end)
-    {
-        return SurroundDiagonal.Any(xy => end + xy == front);
-    }
+    private static bool IsTailBehind(Pos front, Pos end) { return SurroundDiagonal.Any(xy => end + xy == front); }
 
-    private static Pos Move(Pos pos, Direction dir)
-    {
-        return pos.Move(dir);
-    }
+    private static Pos Move(Pos pos, Direction dir) { return pos.Move(dir); }
 }

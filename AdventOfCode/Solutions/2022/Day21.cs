@@ -20,10 +20,7 @@ file class Day21
     }
 
     [Answer(170237589447588)]
-    public static long Part1(Dictionary<string, string[]> inp)
-    {
-        return Path(inp, [], ["root"]);
-    }
+    public static long Part1(Dictionary<string, string[]> inp) { return Path(inp, [], ["root"]); }
 
     [Answer(3712643961892)]
     public static long Part2(Dictionary<string, string[]> inp)

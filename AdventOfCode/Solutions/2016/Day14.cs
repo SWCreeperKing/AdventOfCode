@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
 using static System.Text.Encoding;
+using Convert = System.Convert;
 
 namespace AdventOfCode.Solutions._2016;
 
@@ -13,17 +14,9 @@ file class Day14
 {
     private static readonly Regex Match3 = new(@"(.)\1{2}", RegexOptions.Compiled);
 
-    [Answer(16106)]
-    public static long Part1(string inp)
-    {
-        return FindHash(inp);
-    }
+    [Answer(16106)] public static long Part1(string inp) { return FindHash(inp); }
 
-    [Answer(22423)]
-    public static long Part2(string inp)
-    {
-        return FindHash(inp, true);
-    }
+    [Answer(22423)] public static long Part2(string inp) { return FindHash(inp, true); }
 
     public static long FindHash(string input, bool part2 = false)
     {
@@ -65,7 +58,7 @@ file class Day14
 
     private static string SubHash(HashAlgorithm md5, string s)
     {
-        return System.Convert.ToHexString(md5.ComputeHash(UTF8.GetBytes(s)));
+        return Convert.ToHexString(md5.ComputeHash(UTF8.GetBytes(s)));
     }
 }
 
@@ -82,8 +75,5 @@ file readonly struct HashMatcher(char character, int index)
         return null;
     }
 
-    public override int GetHashCode()
-    {
-        return index.GetHashCode();
-    }
+    public override int GetHashCode() { return index.GetHashCode(); }
 }

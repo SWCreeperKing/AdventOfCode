@@ -7,33 +7,33 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 8, "Seven Segment Search")]
 file class Day8
 {
-    [ModifyInput]
-    public static string ProcessInput(string input)
-    {
-        return input;
-    }
+    [ModifyInput] public static string ProcessInput(string input) { return input; }
 
     [Answer(375)]
     public static long Part1(string inp)
     {
-        return inp.Split('\n').Select(s => s.Split(" | ")[^1].Split(' '))
-            .Select(s => s.Select(ss => ss.Length is 2 or 3 or 4 or 7).Count(b => b)).Sum();
+        return inp.Split('\n')
+                  .Select(s => s.Split(" | ")[^1].Split(' '))
+                  .Select(s => s.Select(ss => ss.Length is 2 or 3 or 4 or 7).Count(b => b))
+                  .Sum();
     }
 
     [Answer(1019355)]
     public static long Part2(string inp)
     {
-        var n = inp.Split('\n').Select(s =>
-        {
-            var split = s.Split(" | ");
-            return (split[0].Split(' '), split[1].Split());
-        });
+        var n = inp.Split('\n')
+                   .Select(s =>
+                    {
+                        var split = s.Split(" | ");
+                        return (split[0].Split(' '), split[1].Split());
+                    });
         return n.Select(ss =>
-        {
-            var (strings, s) = ss;
-            var asm = Asm(strings);
-            return int.Parse($"{Decode(s[0], asm)}{Decode(s[1], asm)}{Decode(s[2], asm)}{Decode(s[3], asm)}");
-        }).Sum();
+                 {
+                     var (strings, s) = ss;
+                     var asm = Asm(strings);
+                     return int.Parse($"{Decode(s[0], asm)}{Decode(s[1], asm)}{Decode(s[2], asm)}{Decode(s[3], asm)}");
+                 })
+                .Sum();
     }
 
     private static Dictionary<string, int> Asm(string[] inp)
@@ -67,7 +67,7 @@ file class Day8
             7 => 8,
             _ => map[
                 (from key in map.Keys where !s.Except(key).Any() && !key.Except(s).Any() select key)
-                .First()]
+               .First()]
         };
     }
 }

@@ -14,30 +14,24 @@ file class Day7
         return input.Split('\n').Select(s => s.Split(' ').ToArray()).ToArray();
     }
 
-    [Answer(250898830)]
-    public static long Part1(string[][] inp)
-    {
-        return Solve(Parse(inp));
-    }
+    [Answer(250898830)] public static long Part1(string[][] inp) { return Solve(Parse(inp)); }
 
-    [Answer(252127335)]
-    public static long Part2(string[][] inp)
-    {
-        return Solve(Parse(inp, true));
-    }
+    [Answer(252127335)] public static long Part2(string[][] inp) { return Solve(Parse(inp, true)); }
 
     public static IEnumerable<Hand> Parse(string[][] inp, bool part2 = false)
     {
-        return inp.Select(s => new Hand(s[0].Select(c => c switch
-        {
-            'A' => 14,
-            'K' => 13,
-            'Q' => 12,
-            'J' when part2 => 1,
-            'J' => 11,
-            'T' => 10,
-            _ => int.Parse($"{c}")
-        }).ToArray(), int.Parse(s[1]), part2));
+        return inp.Select(s => new Hand(s[0]
+                                       .Select(c => c switch
+                                        {
+                                            'A' => 14,
+                                            'K' => 13,
+                                            'Q' => 12,
+                                            'J' when part2 => 1,
+                                            'J' => 11,
+                                            'T' => 10,
+                                            _ => int.Parse($"{c}")
+                                        })
+                                       .ToArray(), int.Parse(s[1]), part2));
     }
 
     public static long Solve(IEnumerable<Hand> hands)

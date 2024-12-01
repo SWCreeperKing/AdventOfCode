@@ -14,19 +14,13 @@ file class Day5
     [ModifyInput]
     public static int[] ProcessInput(string input)
     {
-        return input.Split('\n').Select(s => Convert.ToInt32(BrRegex.Replace(FlRegex.Replace(s, "0"), "1"), 2))
-            .ToArray();
+        return input.Split('\n')
+                    .Select(s => Convert.ToInt32(BrRegex.Replace(FlRegex.Replace(s, "0"), "1"), 2))
+                    .ToArray();
     }
 
-    [Answer(994)]
-    public static int Part1(int[] inp)
-    {
-        return inp.Max();
-    }
+    [Answer(994)] public static int Part1(int[] inp) { return inp.Max(); }
 
     [Answer(741)]
-    public static int Part2(int[] inp)
-    {
-        return Enumerable.Range(inp.Min(), inp.Max()).Except(inp).First();
-    }
+    public static int Part2(int[] inp) { return Enumerable.Range(inp.Min(), inp.Max()).Except(inp).First(); }
 }

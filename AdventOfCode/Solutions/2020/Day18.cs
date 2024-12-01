@@ -8,23 +8,11 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 18, "Operation Order")]
 file class Day18
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
-    [Answer(12956356593940)]
-    public static long Part1(string[] inp)
-    {
-        return inp.Sum(s => CalculateStart(s));
-    }
+    [Answer(12956356593940)] public static long Part1(string[] inp) { return inp.Sum(s => CalculateStart(s)); }
 
-    [Answer(94240043727614)]
-    public static long Part2(string[] inp)
-    {
-        return inp.Sum(s => CalculateStart(s, false));
-    }
+    [Answer(94240043727614)] public static long Part2(string[] inp) { return inp.Sum(s => CalculateStart(s, false)); }
 
     private static (int, int) GetPera(IList<string> equation)
     {
@@ -89,11 +77,12 @@ file class Day18
     private static long CalculateStart(string rawEquation, bool isPart1 = true)
     {
         return Calculate(Regex
-            .Replace(
-                Regex.Replace(
-                    new[] { '+', '*', '(', ')' }.Aggregate(rawEquation,
-                        (current, c) => current.Replace($"{c}", $" {c} ")), @"([ ]{2,})", " "), @"(^ | $)",
-                string.Empty)
-            .Split(" ").ToList(), isPart1);
+                        .Replace(
+                             Regex.Replace(
+                                 new[] { '+', '*', '(', ')' }.Aggregate(rawEquation,
+                                     (current, c) => current.Replace($"{c}", $" {c} ")), @"([ ]{2,})", " "), @"(^ | $)",
+                             string.Empty)
+                        .Split(" ")
+                        .ToList(), isPart1);
     }
 }

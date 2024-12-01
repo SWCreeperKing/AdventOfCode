@@ -24,15 +24,15 @@ file class Day4
         Dictionary<int, List<TimeStamp>> guards = [];
         List<TimeStamp> timeStamps = [];
         timeStamps.AddRange(input
-            .Split('\n')
-            .Select(line => Reg.Match(line).Range(1..3))
-            .Select(matches
-                => new TimeStamp(
-                    new Time(matches[0], matches[1]), matches[2]))
-            .OrderBy(ts => ts.Time.Month)
-            .ThenBy(ts => ts.Time.Day)
-            .ThenBy(ts => ts.Time.Hour)
-            .ThenBy(ts => ts.Time.Min)
+                           .Split('\n')
+                           .Select(line => Reg.Match(line).Range(1..3))
+                           .Select(matches
+                                => new TimeStamp(
+                                    new Time(matches[0], matches[1]), matches[2]))
+                           .OrderBy(ts => ts.Time.Month)
+                           .ThenBy(ts => ts.Time.Day)
+                           .ThenBy(ts => ts.Time.Hour)
+                           .ThenBy(ts => ts.Time.Min)
         );
 
         var i = 0;
@@ -71,17 +71,9 @@ file class Day4
         return schedules;
     }
 
-    [Answer(101262)]
-    public static long Part1(Dictionary<int, int[]> inp)
-    {
-        return Find(inp, kv => kv.Value.Sum());
-    }
+    [Answer(101262)] public static long Part1(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Sum()); }
 
-    [Answer(71976)]
-    public static long Part2(Dictionary<int, int[]> inp)
-    {
-        return Find(inp, kv => kv.Value.Max());
-    }
+    [Answer(71976)] public static long Part2(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Max()); }
 
     public static int Find(Dictionary<int, int[]> inp, Func<KeyValuePair<int, int[]>, int> action)
     {

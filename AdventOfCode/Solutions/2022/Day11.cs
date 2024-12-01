@@ -12,7 +12,8 @@ file class Day11
     public static string[][] ProcessInput(string inp)
     {
         return inp.Split("\n\n")
-            .Select(s => s.Split('\n').Skip(1).ToArray()).ToArray();
+                  .Select(s => s.Split('\n').Skip(1).ToArray())
+                  .ToArray();
     }
 
     [Answer(61503)]
@@ -25,8 +26,12 @@ file class Day11
             var operation = monkey[1].Split(' ').Skip(5).ToArray();
             Monkey newMonkey = new()
             {
-                StartingItems = monkey[0].Remove("Starting items: ").Trim()
-                    .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
+                StartingItems = monkey[0]
+                               .Remove("Starting items: ")
+                               .Trim()
+                               .Split(", ", StringSplitOptions.RemoveEmptyEntries)
+                               .Select(long.Parse)
+                               .ToList(),
                 Operation = new Operation
                 {
                     IsAddOrMulti = operation[1] == "+",
@@ -75,8 +80,12 @@ file class Day11
             var operation = monkey[1].Split(' ').Skip(5).ToArray();
             Monkey newMonkey = new()
             {
-                StartingItems = monkey[0].Remove("Starting items: ").Trim()
-                    .Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(long.Parse).ToList(),
+                StartingItems = monkey[0]
+                               .Remove("Starting items: ")
+                               .Trim()
+                               .Split(", ", StringSplitOptions.RemoveEmptyEntries)
+                               .Select(long.Parse)
+                               .ToList(),
                 Operation = new Operation
                 {
                     IsAddOrMulti = operation[1] == "+",

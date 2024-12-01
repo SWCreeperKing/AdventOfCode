@@ -14,12 +14,14 @@ file class Day9
     [ModifyInput]
     public static Dictionary<(string, string), int> ProcessInput(string input)
     {
-        return input.Split('\n').SelectMany(s =>
-        {
-            var reg = InputRegex.Match(s).Range(1..3);
-            var (from, to, dist) = (reg[0], reg[1], int.Parse(reg[2]));
-            return new[] { ((from, to), dist), ((to, from), dist) };
-        }).ToDictionary(ssi => ssi.Item1, ssi => ssi.Item2);
+        return input.Split('\n')
+                    .SelectMany(s =>
+                     {
+                         var reg = InputRegex.Match(s).Range(1..3);
+                         var (from, to, dist) = (reg[0], reg[1], int.Parse(reg[2]));
+                         return new[] { ((from, to), dist), ((to, from), dist) };
+                     })
+                    .ToDictionary(ssi => ssi.Item1, ssi => ssi.Item2);
     }
 
     [Answer(141)]

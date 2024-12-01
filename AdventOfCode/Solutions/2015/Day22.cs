@@ -11,22 +11,15 @@ file class Day22
     [ModifyInput]
     public static GameState ProcessInput(string input)
     {
-        return input.Split('\n').Inline(arr => new GameState(
-            int.Parse(arr[0][(arr[0].IndexOf(": ", StringComparison.Ordinal) + 1)..]),
-            int.Parse(arr[1][(arr[1].IndexOf(": ", StringComparison.Ordinal) + 1)..])));
+        return input.Split('\n')
+                    .Inline(arr => new GameState(
+                         int.Parse(arr[0][(arr[0].IndexOf(": ", StringComparison.Ordinal) + 1)..]),
+                         int.Parse(arr[1][(arr[1].IndexOf(": ", StringComparison.Ordinal) + 1)..])));
     }
 
-    [Answer(1269)]
-    public static long Part1(GameState inp)
-    {
-        return Run(inp);
-    }
+    [Answer(1269)] public static long Part1(GameState inp) { return Run(inp); }
 
-    [Answer(1309)]
-    public static long Part2(GameState inp)
-    {
-        return Run(inp, true);
-    }
+    [Answer(1309)] public static long Part2(GameState inp) { return Run(inp, true); }
 
     public static int Run(GameState initState, bool part2 = false)
     {
@@ -100,10 +93,7 @@ public record GameState(
         return states;
     }
 
-    public GameState BossTurn()
-    {
-        return this with { Hp = Hp - (BossDamage - (Shield > 0 ? 7 : 0)) };
-    }
+    public GameState BossTurn() { return this with { Hp = Hp - (BossDamage - (Shield > 0 ? 7 : 0)) }; }
 
     public override int GetHashCode()
     {

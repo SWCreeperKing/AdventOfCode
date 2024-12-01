@@ -18,14 +18,17 @@ file class Day9
     public static long Part1(long[][] inp)
     {
         return inp.Select(line
-            => Solve(MakeDifferenceList(line), (l1, l2) => l1 + l2)).Sum();
+                       => Solve(MakeDifferenceList(line), (l1, l2) => l1 + l2))
+                  .Sum();
     }
 
     [Answer(903)]
     public static long Part2(long[][] inp)
     {
         return inp.Select(line => Solve(MakeDifferenceList(line)
-            .Select(s => s.Rever()).ToList(), (l1, l2) => l1 - l2)).Sum();
+                                       .Select(s => s.Rever())
+                                       .ToList(), (l1, l2) => l1 - l2))
+                  .Sum();
     }
 
     public static long Solve(List<List<long>> history, Func<long, long, long> action)

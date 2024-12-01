@@ -16,11 +16,7 @@ file class Day8
         return new Matrix2d<int>(arr);
     }
 
-    [Answer(1705)]
-    public static long Part1(Matrix2d<int> inp)
-    {
-        return GetViewable(inp).Array.Count(b => b);
-    }
+    [Answer(1705)] public static long Part1(Matrix2d<int> inp) { return GetViewable(inp).Array.Count(b => b); }
 
     [Answer(371200)]
     public static long Part2(Matrix2d<int> inp)

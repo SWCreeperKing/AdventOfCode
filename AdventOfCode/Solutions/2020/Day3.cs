@@ -6,23 +6,15 @@ namespace AdventOfCode.Solutions._2020;
 [Day(2020, 3, "Toboggan Trajectory")]
 file class Day3
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
-    [Answer(203)]
-    public static long Part1(string[] inp)
-    {
-        return Method(3, 1, inp);
-    }
+    [Answer(203)] public static long Part1(string[] inp) { return Method(3, 1, inp); }
 
     [Answer(3316272960)]
     public static long Part2(string[] inp)
     {
         return new[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }.Select(i => Method(i.Item1, i.Item2, inp))
-            .Aggregate(1L, (current, i) => current * i);
+                                                               .Aggregate(1L, (current, i) => current * i);
     }
 
     private static int Method(int right, int down, string[] arr)

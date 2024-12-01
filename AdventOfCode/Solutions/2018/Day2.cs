@@ -6,11 +6,7 @@ namespace AdventOfCode.Solutions._2018;
 [Day(2018, 2, "Inventory Management System")]
 file class Day2
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
-    {
-        return input.Split('\n');
-    }
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(8820)]
     public static long Part1(string[] inp)

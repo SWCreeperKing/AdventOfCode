@@ -8,10 +8,7 @@ namespace AdventOfCode.Solutions._2021;
 file class Day7
 {
     [ModifyInput]
-    public static int[] ProcessInput(string input)
-    {
-        return input.Split(',').Select(int.Parse).ToArray();
-    }
+    public static int[] ProcessInput(string input) { return input.Split(',').Select(int.Parse).ToArray(); }
 
     [Answer(340056)]
     public static long Part1(int[] inp)
@@ -19,7 +16,8 @@ file class Day7
         var posArr = new int[inp.Max() + 1];
         foreach (var i in inp) posArr[i]++;
         return posArr.Select((_, key) => posArr.Select((t, line) => Math.Abs(line - key) * t).Sum())
-            .Prepend(int.MaxValue).Min();
+                     .Prepend(int.MaxValue)
+                     .Min();
     }
 
     [Answer(96592275)]
@@ -28,7 +26,8 @@ file class Day7
         var posArr = new int[inp.Max() + 1];
         foreach (var i in inp) posArr[i]++;
         return posArr.Select((_, key) =>
-                posArr.Select((t, line) => Math.Abs(line - key) * (Math.Abs(line - key) + 1) / 2 * t).Sum())
-            .Prepend(int.MaxValue).Min();
+                          posArr.Select((t, line) => Math.Abs(line - key) * (Math.Abs(line - key) + 1) / 2 * t).Sum())
+                     .Prepend(int.MaxValue)
+                     .Min();
     }
 }

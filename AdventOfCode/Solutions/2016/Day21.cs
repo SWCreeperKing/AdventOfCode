@@ -1,14 +1,12 @@
-using System;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 21, "Scrambled Letters and Hash")]
 file class Day21
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
+    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
 
     [Answer("baecdfgh")]
     public static string Part1(string[][] inp)
@@ -16,7 +14,6 @@ file class Day21
         var abc = "abcdefgh".ToCharArray();
 
         foreach (var line in inp)
-        {
             switch (line)
             {
                 case ["swap", "position", var rX, "with", "position", var rY]:
@@ -38,7 +35,6 @@ file class Day21
                     abc = Move(abc, rX, rY);
                     break;
             }
-        }
 
         return abc.Join();
     }
@@ -49,7 +45,6 @@ file class Day21
         var abc = "fbgdceah".ToCharArray();
 
         foreach (var line in inp.Reverse())
-        {
             switch (line)
             {
                 case ["swap", "position", var rX, "with", "position", var rY]:
@@ -71,7 +66,6 @@ file class Day21
                     abc = Move(abc, rY, rX);
                     break;
             }
-        }
 
         return abc.Join();
     }
@@ -101,15 +95,11 @@ file class Day21
     {
         var index = abc.FindIndexOf(l[0]);
         var steps = index;
-        if (steps >= 4)
-        {
-            steps++;
-        }
+        if (steps >= 4) steps++;
 
         steps++;
 
         if (isLeft)
-        {
             switch (index) // i don't wanna talk about it
             {
                 case 1 or 4:
@@ -125,7 +115,6 @@ file class Day21
                     steps += 3;
                     break;
             }
-        }
 
         abc.Rotate(steps, isLeft);
     }
@@ -136,10 +125,7 @@ file class Day21
         var y = int.Parse(rY) + 1;
         var reversed = abc[x..y].Reverse();
 
-        for (var i = x; i < y; i++)
-        {
-            abc[i] = reversed.ElementAt(i - x);
-        }
+        for (var i = x; i < y; i++) abc[i] = reversed.ElementAt(i - x);
     }
 
     public static char[] Move(char[] abc, string rX, string rY)

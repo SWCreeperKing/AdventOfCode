@@ -13,8 +13,10 @@ file class Day25
     [ModifyInput]
     public static Vector2 ProcessInput(string inp)
     {
-        return InputRegex.Match(inp).Groups.Range(1..2).Select(int.Parse)
-            .Flatten(list => new Vector2(list.ElementAt(1), list.ElementAt(0)));
+        return InputRegex.Match(inp)
+                         .Groups.Range(1..2)
+                         .Select(int.Parse)
+                         .Flatten(list => new Vector2(list.ElementAt(1), list.ElementAt(0)));
     }
 
     [Answer(8997277)]
@@ -38,8 +40,5 @@ file class Day25
         return pos.X == pass ? (new Vector2(1, pass + 1), pass + 1) : (new Vector2(pos.X + 1, pos.Y - 1), pass);
     }
 
-    public static long CalculateNumber(long n)
-    {
-        return n * 252533 % 33554393;
-    }
+    public static long CalculateNumber(long n) { return n * 252533 % 33554393; }
 }

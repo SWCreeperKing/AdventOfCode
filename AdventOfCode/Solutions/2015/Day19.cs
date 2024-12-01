@@ -12,11 +12,14 @@ file class Day19
     public static (string, List<(string, string)>) ProcessInput(string input)
     {
         var baseSplit = input.Replace("\r", string.Empty).Split("\n\n");
-        var dict = baseSplit[0].Split('\n').Select(s =>
-        {
-            var split = s.Split(" => ");
-            return (split[0], split[1]);
-        }).ToList();
+        var dict = baseSplit[0]
+                  .Split('\n')
+                  .Select(s =>
+                   {
+                       var split = s.Split(" => ");
+                       return (split[0], split[1]);
+                   })
+                  .ToList();
         return (baseSplit[1], dict);
     }
 
@@ -56,7 +59,7 @@ file class Day19
             else
             {
                 var lastPick = reversed.Where(ss => inpStr.Contains(ss.Item1))
-                    .MaxBy(ss => inpStr.LastIndexOf(ss.Item1, StringComparison.Ordinal));
+                                       .MaxBy(ss => inpStr.LastIndexOf(ss.Item1, StringComparison.Ordinal));
                 var lastIndex = inpStr.LastIndexOf(lastPick.Item1, StringComparison.Ordinal);
                 inpStr = $"{inpStr[..lastIndex]}{lastPick.Item2}{inpStr[(lastIndex + lastPick.Item1.Length)..]}";
             }

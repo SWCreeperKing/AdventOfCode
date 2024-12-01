@@ -14,19 +14,23 @@ file class Day13
     [ModifyInput]
     public static Dictionary<string, Dictionary<string, int>> ProcessInput(string input)
     {
-        return input.Split('\n').Select(s =>
-            {
-                var match = InputRegex.Match(s).Range(1..4);
-                return (match[0], match[3], (match[1] is "lose" ? -1 : 1) * int.Parse(match[2]));
-            }).GroupBy(m => m.Item1)
-            .ToDictionary(v => v.Key, v => v.ToDictionary(e => e.Item2, e => e.Item3));
+        return input.Split('\n')
+                    .Select(s =>
+                     {
+                         var match = InputRegex.Match(s).Range(1..4);
+                         return (match[0], match[3], (match[1] is "lose" ? -1 : 1) * int.Parse(match[2]));
+                     })
+                    .GroupBy(m => m.Item1)
+                    .ToDictionary(v => v.Key, v => v.ToDictionary(e => e.Item2, e => e.Item3));
     }
 
     [Answer(664)]
     public static long Part1(Dictionary<string, Dictionary<string, int>> inp)
     {
-        return inp.Keys.GetPermutationsArr().Select(s =>
-            s.Select((ss, i) => inp[s[(i + 1) % s.Length]][ss] + inp[ss][s[(i + 1) % s.Length]]).Sum()).Max();
+        return inp.Keys.GetPermutationsArr()
+                  .Select(s =>
+                       s.Select((ss, i) => inp[s[(i + 1) % s.Length]][ss] + inp[ss][s[(i + 1) % s.Length]]).Sum())
+                  .Max();
     }
 
     [Answer(640)]

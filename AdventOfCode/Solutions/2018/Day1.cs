@@ -8,16 +8,9 @@ namespace AdventOfCode.Solutions._2018;
 file class Day1
 {
     [ModifyInput]
-    public static long[] ProcessInput(string input)
-    {
-        return input.Split('\n').Select(long.Parse).ToArray();
-    }
+    public static long[] ProcessInput(string input) { return input.Split('\n').Select(long.Parse).ToArray(); }
 
-    [Answer(497)]
-    public static long Part1(long[] inp)
-    {
-        return inp.Sum();
-    }
+    [Answer(497)] public static long Part1(long[] inp) { return inp.Sum(); }
 
     [Answer(558)]
     public static long Part2(long[] inp)

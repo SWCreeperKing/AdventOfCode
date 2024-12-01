@@ -37,7 +37,7 @@ public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare
                 if (!state.ValidState(set, dir, dxy)) continue;
 
                 state.MakeNewState(set, newPos, dir)
-                    .InlineNoReturn(newState => Check.Enqueue(newState, newState.GetValue(set[newPos])));
+                     .InlineNoReturn(newState => Check.Enqueue(newState, newState.GetValue(set[newPos])));
             }
         }
 
@@ -55,21 +55,12 @@ public abstract class State<T, TM, TCompare>(Pos position, Direction direction)
     public abstract TCompare GetValue(TM mapVal);
     public abstract T MakeNewState(Matrix2d<TM> map, Pos newPos, Direction dir);
 
-    public virtual bool ValidState(Matrix2d<TM> map, Direction dir, Pos dxy)
-    {
-        return true;
-    }
+    public virtual bool ValidState(Matrix2d<TM> map, Direction dir, Pos dxy) { return true; }
 
-    public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val)
-    {
-        return Position == dest;
-    }
+    public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val) { return Position == dest; }
 }
 
 file class Comparer<T>(Func<T, T, int> compare) : IComparer<T>
 {
-    public int Compare(T a, T b)
-    {
-        return compare(a, b);
-    }
+    public int Compare(T a, T b) { return compare(a, b); }
 }

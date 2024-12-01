@@ -8,10 +8,7 @@ namespace AdventOfCode.Solutions._2022;
 file class Day18
 {
     [ModifyInput]
-    public static int[][] ProcessInput(string inp)
-    {
-        return inp.SuperSplit("\n", ",", s => s.ToIntArr());
-    }
+    public static int[][] ProcessInput(string inp) { return inp.SuperSplit("\n", ",", s => s.ToIntArr()); }
 
     [Answer(4460)]
     public static long Part1(int[][] inp)
@@ -119,10 +116,7 @@ file class Cube
         else if (c.IsSamePosition(X, Y, Z - 1)) Touching[5] = true;
     }
 
-    public bool IsSamePosition(int x, int y, int z)
-    {
-        return X == x && Y == y && Z == z;
-    }
+    public bool IsSamePosition(int x, int y, int z) { return X == x && Y == y && Z == z; }
 
     public void Deconstruct(out int x, out int y, out int z)
     {

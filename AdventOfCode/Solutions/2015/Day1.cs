@@ -6,11 +6,7 @@ namespace AdventOfCode.Solutions._2015;
 [Day(2015, 1, "Not Quite Lisp")]
 file class Day1
 {
-    [Answer(280)]
-    public static int Part1(string inp)
-    {
-        return inp.Sum(c => c is '(' ? 1 : -1);
-    }
+    [Answer(280)] public static int Part1(string inp) { return inp.Sum(c => c is '(' ? 1 : -1); }
 
     [Answer(1797)]
     public static int Part2(string inp)

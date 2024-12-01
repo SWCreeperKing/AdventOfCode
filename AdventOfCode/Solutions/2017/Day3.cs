@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using AdventOfCode.Experimental_Run;
-using AdventOfCode.Experimental_Run.Misc;
 using CreepyUtil;
 using static CreepyUtil.Direction;
 
@@ -11,11 +10,7 @@ namespace AdventOfCode.Solutions._2017;
 [Day(2017, 3, "Spiral Memory")]
 file class Day3
 {
-    [ModifyInput]
-    public static int ProcessInput(string input)
-    {
-        return int.Parse(input);
-    }
+    [ModifyInput] public static int ProcessInput(string input) { return int.Parse(input); }
 
     [Answer(371)]
     public static long Part1(int inp)
@@ -54,9 +49,10 @@ file class Day3
         return Math.Abs(last.X) + Math.Abs(last.Y);
     }
 
-    [Answer(426490, AnswerState.Not)]
+    [Answer(369601)]
     public static long Part2(int inp)
     {
+        Direction[] tally = [Up, UpLeft, Left, DownLeft, Down, DownRight, Right, UpRight];
         List<Pos> positions = [new()];
         var dir = Right;
         var toTheLeft = Up;
@@ -68,25 +64,26 @@ file class Day3
             { Left, new Pos() }
         };
 
-        Dictionary<Pos, int> values = new() { { new Pos(), 1 } };
+        Dictionary<Pos, int> counts = [];
 
-        while (positions.Count < inp)
+        while (true)
         {
-            var pos = positions[^1].Move(dir);
+            var pos = positions[^1];
 
             var count = 0;
-            var prev = positions[^1];
-            var side = pos.Move(toTheLeft);
-            var diagonal = pos.Move(toTheLeft.RotateCC(true));
-            if (prev != side && values.TryGetValue(prev, out var prevVal)) count += prevVal;
+            foreach (var tallyDir in tally)
+            {
+                var newPos = tallyDir + pos;
+                if (!counts.TryGetValue(newPos, out var posCount)) continue;
+                count += posCount;
+            }
 
-            if (values.TryGetValue(side, out var sideVal)) count += sideVal;
+            if (count == 0) count = 1;
 
-            if (values.TryGetValue(diagonal, out var diagonalVal)) count += diagonalVal;
+            if (count >= inp) return count;
+            counts[pos] = count;
 
-            if (count > inp) return count;
-
-            values[pos] = count;
+            pos = pos.Move(dir);
             positions.Add(pos);
 
             switch (toTheLeft)
@@ -102,7 +99,5 @@ file class Day3
             dir = toTheLeft;
             toTheLeft = dir.RotateCC();
         }
-
-        return -1;
     }
 }

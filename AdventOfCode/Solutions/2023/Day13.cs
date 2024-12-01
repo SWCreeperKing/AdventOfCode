@@ -12,34 +12,28 @@ file class Day13
     [ModifyInput]
     public static Map[] ProcessInput(string input)
     {
-        return input.Split("\n\n").Select(line =>
-        {
-            Matrix2d<char> map = new(line.Split('\n').Select(s => s.ToCharArray()).ToArray());
+        return input.Split("\n\n")
+                    .Select(line =>
+                     {
+                         Matrix2d<char> map = new(line.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
-            List<string> columns = [];
-            for (var x = 0; x < map.Size.w; x++)
-            {
-                StringBuilder sb = new();
-                for (var y = 0; y < map.Size.h; y++) sb.Append(map[x, y]);
+                         List<string> columns = [];
+                         for (var x = 0; x < map.Size.w; x++)
+                         {
+                             StringBuilder sb = new();
+                             for (var y = 0; y < map.Size.h; y++) sb.Append(map[x, y]);
 
-                columns.Add(sb.ToString());
-            }
+                             columns.Add(sb.ToString());
+                         }
 
-            return new Map(columns, line.Split('\n'));
-        }).ToArray();
+                         return new Map(columns, line.Split('\n'));
+                     })
+                    .ToArray();
     }
 
-    [Answer(40006)]
-    public static long Part1(Map[] inp)
-    {
-        return inp.Select(CalcMap).Sum();
-    }
+    [Answer(40006)] public static long Part1(Map[] inp) { return inp.Select(CalcMap).Sum(); }
 
-    [Answer(28627)]
-    public static long Part2(Map[] inp)
-    {
-        return inp.Select(FullCalcDoubleMap).Sum();
-    }
+    [Answer(28627)] public static long Part2(Map[] inp) { return inp.Select(FullCalcDoubleMap).Sum(); }
 
     public static List<string[]> MakeVariants(string[] list)
     {
@@ -92,14 +86,15 @@ file class Day13
     public static int CalcDoubleMap(List<string[]> doubleColumns, List<string[]> doubleRows, int original)
     {
         return DoubleFind(doubleColumns, false, original)
-            .Inline(vertical => vertical != -1 ? vertical : DoubleFind(doubleRows, true, original));
+           .Inline(vertical => vertical != -1 ? vertical : DoubleFind(doubleRows, true, original));
     }
 
     public static int DoubleFind(List<string[]> sections, bool multi, int original)
     {
         return sections.Select(section
-                => Find(section, multi, original)).Where(val => val != -1 && val != original)
-            .Inline(found => found.Any() ? found.First() : -1);
+                            => Find(section, multi, original))
+                       .Where(val => val != -1 && val != original)
+                       .Inline(found => found.Any() ? found.First() : -1);
     }
 }
 

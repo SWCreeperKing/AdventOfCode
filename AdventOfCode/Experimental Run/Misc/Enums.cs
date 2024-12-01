@@ -4,12 +4,12 @@ namespace AdventOfCode.Experimental_Run.Misc;
 
 public static class Enums
 {
-    public static readonly Pos[] SurroundDiagonal =
-        [(0, 0), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1)];
-
     public static readonly Pos[] Surround =
         [(0, 0), (-1, 0), (0, -1), (1, 0), (0, 1)];
-
+    
+    public static readonly Pos[] SurroundDiagonal =
+        [..Surround, (-1, -1), (1, -1), (1, 1), (-1, 1)];
+    
     public static string String(this AnswerState state, object answer, string extra)
     {
         return state switch

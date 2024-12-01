@@ -17,7 +17,8 @@ file class Day7
         {
             var key = Regex.Match(l, @"^[a-z]+ [a-z]+ bag").Value.Remove(" bag");
             var value = Regex.Matches(l, "(\\d+) ([a-z]+ [a-z]+ bag)")
-                .Select(x => (int.Parse(x.Groups[1].Value), x.Groups[2].Value.Remove(" bag"))).ToList();
+                             .Select(x => (int.Parse(x.Groups[1].Value), x.Groups[2].Value.Remove(" bag")))
+                             .ToList();
             if (realBags.TryGetValue(key, out var list)) list.AddRange(value);
             else realBags.Add(key, value);
         }
@@ -37,7 +38,8 @@ file class Day7
         {
             var realFirst = realFinder.First();
             realFinder.AddRange(inp.Where(b =>
-                b.Value.Any(rb => rb.Item2 == realFirst)).Select(b => b.Key));
+                                        b.Value.Any(rb => rb.Item2 == realFirst))
+                                   .Select(b => b.Key));
             realFinder.Remove(realFirst);
             if (!realHasGold.Contains(realFirst)) realHasGold.Add(realFirst);
         }
@@ -46,10 +48,7 @@ file class Day7
     }
 
     [Answer(38426)]
-    public static long Part2(Dictionary<string, List<(int, string)>> inp)
-    {
-        return Counter(inp["shiny gold"], inp);
-    }
+    public static long Part2(Dictionary<string, List<(int, string)>> inp) { return Counter(inp["shiny gold"], inp); }
 
     private static long Counter(IEnumerable<(int, string)> bags, Dictionary<string, List<(int, string)>> bagz)
     {

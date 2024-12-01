@@ -24,23 +24,18 @@ file class Day16
         var split = inp.Split('\n');
 
         return split.Select(s =>
-        {
-            var matches = InputRegex.Match(s).Groups.Range(1..3);
-            return (matches[0], int.Parse(matches[1]), matches[2].Split(", "));
-        }).ToArray();
+                     {
+                         var matches = InputRegex.Match(s).Groups.Range(1..3);
+                         return (matches[0], int.Parse(matches[1]), matches[2].Split(", "));
+                     })
+                    .ToArray();
     }
 
     [Answer(2059)]
-    public static long Part1((string valve, int rate, string[] leadTo)[] inp)
-    {
-        return Solve(inp, true, 30);
-    }
+    public static long Part1((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, true, 30); }
 
     [Answer(2790)]
-    public static long Part2((string valve, int rate, string[] leadTo)[] inp)
-    {
-        return Solve(inp, false, 26);
-    }
+    public static long Part2((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, false, 26); }
 
     private static int Solve((string valve, int rate, string[] leadTo)[] inp, bool singlePlayer, int time)
     {
@@ -151,9 +146,9 @@ file class Day16
     private static Map Parse((string valve, int rate, string[] leadTo)[] inp)
     {
         var valves = inp.Select(set => new Valve(0, set.valve, set.rate, set.leadTo))
-            .OrderByDescending(valve => valve.FlowRate)
-            .Select((v, i) => v with { Id = i })
-            .ToArray();
+                        .OrderByDescending(valve => valve.FlowRate)
+                        .Select((v, i) => v with { Id = i })
+                        .ToArray();
 
         return new Map(ComputeDistances(valves), valves);
     }

@@ -12,8 +12,9 @@ file class Day5
     public static (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
     {
         return input.Split('\n')
-            .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
-            .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1])).ToArray();
+                    .Select(s => s.Split(" -> ").Select(s => s.Split(',').Select(int.Parse).ToArray()).ToArray())
+                    .Select(s => (x1: s[0][0], x2: s[1][0], y1: s[0][1], y2: s[1][1]))
+                    .ToArray();
     }
 
     [Answer(5092)]

@@ -7,11 +7,7 @@ namespace AdventOfCode.Solutions._2021;
 [Day(2021, 10, "Syntax Scoring")]
 file class Day10
 {
-    [ModifyInput]
-    public static string ProcessInput(string input)
-    {
-        return input;
-    }
+    [ModifyInput] public static string ProcessInput(string input) { return input; }
 
     [Answer(271245)]
     public static long Part1(string inp)
