@@ -604,9 +604,16 @@ public static class Helper
     {
         return arr.Select(selector).ToArray();
     }
-    
+
     public static TR[] SelectArr<T, TR>(this IEnumerable<T> arr, Func<T, TR> selector)
     {
         return arr.Select(selector).ToArray();
     }
+
+    public static TR Sum<T, TR>(this IEnumerable<T> arr, Func<T, int, TR> selector)
+        where T : struct, INumber<T>
+        where TR : struct, INumber<TR>
+    {
+        return arr.Select(selector).Aggregate((a, b) => a + b);
     }
+}

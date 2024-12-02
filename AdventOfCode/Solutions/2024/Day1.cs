@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 1, "Historian Hysteria"), Run]
+[Day(2024, 1, "Historian Hysteria")]
 file class Day1
 {
     [ModifyInput]
@@ -13,11 +13,9 @@ file class Day1
     {
         var list = input
                   .Split('\n')
-                  .Select(s =>
-                   {
-                       var split = s.Split(' ');
-                       return (int.Parse(split[0]), int.Parse(split[^1]));
-                   });
+                  .Select(s => s
+                              .Split(' ')
+                              .Inline(arr => (int.Parse(arr[0]), int.Parse(arr[^1]))));
         return (list.Select(t => t.Item1).Order().ToArray(),
             list.Select(t => t.Item2).Order().ToArray());
     }
@@ -25,7 +23,7 @@ file class Day1
     [Answer(2904518)]
     public static long Part1((int[], int[]) inp)
     {
-        return inp.Item1.Select((n, i) => Math.Abs(n - inp.Item2[i])).Sum();
+        return inp.Item1.Sum((n, i) => Math.Abs(n - inp.Item2[i]));
     }
 
     [Answer(18650129)]
@@ -34,6 +32,6 @@ file class Day1
         var groups = inp.Item2
                         .GroupBy(i => i)
                         .ToDictionary(g => g.Key, g => g.Count() * g.Key);
-        return inp.Item2.Sum(i => groups.GetValueOrDefault(i, 0));
+        return inp.Item1.Sum(i => groups.GetValueOrDefault(i, 0));
     }
 }
