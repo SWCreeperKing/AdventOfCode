@@ -8,69 +8,32 @@ namespace AdventOfCode.Solutions._2024;
 [Day(2024, 2, "Wip"), Run]
 file class Day2
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput]
+    public static int[][] ProcessInput(string input)
+        => input.Split('\n').SelectArr(l => l.Split(' ').SelectArr(int.Parse));
 
-    [Answer(442)]
-    public static long Part1(string inp)
-    {
-        var nlInp = inp.Split('\n');
-
-        var intss = nlInp.Where(l =>
-        {
-            var ints = l.Split(' ').SelectArr(int.Parse);
-            List<int> deltas = [];
-
-            for (var i = 0; i < ints.Length - 1; i++)
-            {
-                deltas.Add(ints[i] - ints[i + 1]);
-            }
-
-            if (!(deltas.All(i => i < 0) || deltas.All(i => i > 0))) return false;
-            return deltas.All(i => Math.Abs(i) is >= 1 and <= 3);
-        });
-
-        return intss.Count();
-    }
+    [Answer(442)] public static long Part1(int[][] inp) { return inp.Where(Check).Count(); }
 
     [Answer(493)]
-    public static long Part2(string inp)
+    public static long Part2(int[][] inp)
     {
-        var nlInp = inp.Split('\n');
+        return inp.Where(ints =>
+                   {
+                       for (var j = 0; j < ints.Length; j++)
+                       {
+                           var list = ints.ToList();
+                           list.RemoveAt(j);
+                           if (Check(list.ToArray())) return true;
+                       }
 
-        var intss = nlInp.Where(l =>
-        {
-            var ints = l.Split(' ').SelectArr(int.Parse);
+                       return false;
+                   })
+                  .Count();
+    }
 
-            bool Run(int j)
-            {
-                List<int> deltas = [];
-
-                for (var i = 0; i < ints.Length - 1; i++)
-                {
-                    if (i == j) continue;
-                    if (i + 1 == j)
-                    {
-                        if (i + 2 >= ints.Length) continue;
-                        deltas.Add(ints[i] - ints[i + 2]);
-                    }
-                    else
-                    {
-                        deltas.Add(ints[i] - ints[i + 1]);
-                    }
-                }
-
-                if (!(deltas.All(i => i < 0) || deltas.All(i => i > 0))) return false;
-                return deltas.All(i => Math.Abs(i) is >= 1 and <= 3);
-            }
-            
-            for (var j = 0; j < ints.Length; j++)
-            {
-                if (Run(j)) return true;
-            }
-
-            return false;
-        });
-
-        return intss.Count();
+    public static bool Check(int[] ints)
+    {
+        var deltas = ints.SkipLast(1).SelectArr((n, i) => n - ints[i + 1]);
+        return (deltas.All(i => i < 0) || deltas.All(i => i > 0)) && deltas.All(i => Math.Abs(i) is >= 1 and <= 3);
     }
 }
