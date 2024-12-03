@@ -9,7 +9,7 @@ file class Day2
     [ModifyInput]
     public static int[][] ProcessInput(string input)
     {
-        return input.Split('\n').Select(s => s.Split("x").Select(int.Parse).Order().ToArray()).ToArray();
+        return input.Split('\n').SelectArr(s => s.Split("x").Select(int.Parse).Order().ToArray());
     }
 
     [Answer(1586300)]

@@ -155,9 +155,22 @@ public static class Helper
 
     public static string Join<T>(this IEnumerable<T> carr, char join) { return string.Join(join, carr); }
 
-    public static IEnumerable<T> Window<T>(this T[] arr, int grouping, Func<IEnumerable<T>, T> condense)
+    public static IEnumerable<T> Window<T>(this IEnumerable<T> arr, int grouping, Func<IEnumerable<T>, T> condense)
     {
-        return arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr[i..(i + grouping)]));
+        return arr.Skip(grouping - 1).Select((_, i) => condense.Invoke(arr.Range(i, i + grouping)));
+    }
+
+    public static T[] WindowArr<T>(this T[] arr, int grouping, Func<T[], T> condense)
+    {
+        return arr.Skip(grouping - 1).SelectArr((_, i) => condense.Invoke(arr[i..(i + grouping)]));
+    }
+
+    public static IEnumerable<T> Range<T>(this IEnumerable<T> arr, int start, int end)
+    {
+        for (var i = start; i < end; i++)
+        {
+            yield return arr.ElementAt(i);
+        }
     }
 
     public static IEnumerable<IEnumerable<T>> Window<T>(this IEnumerable<T> arr, int grouping, bool before = false)
@@ -530,6 +543,20 @@ public static class Helper
         return s;
     }
 
+    public static string RemoveWhile(this string s, string what, Func<string, int, int> whereEnd, int endLength = 0,
+        bool removeHanging = true)
+    {
+        int i;
+        while ((i = s.IndexOf(what, StringComparison.Ordinal)) != -1)
+        {
+            var end = whereEnd(s, i);
+            if (end == -1) return !removeHanging ? s : s.Remove(i);
+            s = s.Remove(i, end - i + endLength);
+        }
+
+        return s;
+    }
+
     public static IEnumerable<string> RemoveWhileIterator(this string s, char what, Func<string, int, int> whereEnd,
         bool includeEnd = true)
     {
@@ -615,5 +642,64 @@ public static class Helper
         where TR : struct, INumber<TR>
     {
         return arr.Select(selector).Aggregate((a, b) => a + b);
+    }
+
+    public static IEnumerable<long> Loop(this Range range)
+    {
+        var a = range.Start.Value;
+        var b = range.End.Value;
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
+        {
+            yield return i;
+        }
+    }
+
+    public static void Loop(this Range range, Action<long> process)
+    {
+        var a = range.Start.Value;
+        var b = range.End.Value;
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
+        {
+            process(i);
+        }
+    }
+
+    public static void LoopSet(this Range range, Func<long, long> process)
+    {
+        var a = range.Start.Value;
+        var b = range.End.Value;
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
+        {
+            i = process(i);
+        }
+    }
+
+    public static T? LoopSelect<T>(this Range range, Func<long, bool> check, Func<long, T> rtrn, T? def = default)
+    {
+        var a = range.Start.Value;
+        var b = range.End.Value;
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
+        {
+            if (check(i)) return rtrn(i);
+        }
+
+        return def;
+    }
+
+    public static IEnumerable<T> SkipIndex<T>(this IEnumerable<T> arr, int index)
+    {
+        for (var i = 0; i < arr.Count(); i++)
+        {
+            if (index == i) continue;
+            yield return arr.ElementAt(i);
+        }
+    }
+
+    public static T[] SkipIndexArr<T>(this T[] arr, int index)
+    {
+        if (arr.Length <= 1) return [];
+        if (index == 0) return arr[1..];
+        if (index == arr.Length - 1) return arr[..^1];
+        return [..arr[..index], ..arr[(index + 1)..]];
     }
 }

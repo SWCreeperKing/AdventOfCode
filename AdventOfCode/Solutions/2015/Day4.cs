@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using AdventOfCode.Experimental_Run;
@@ -11,12 +13,8 @@ file class Day4
 {
     [Answer(346386)] public static int Part1(string inp) { return Hash(inp); }
 
-    [Answer(9958218)]
-    public static int Part2(string inp)
-    {
-        return Hash(inp, 0);
-        // have not found a better solution
-    }
+    [Answer(9958218)] // have not found a better solution
+    public static int Part2(string inp) { return Hash(inp, 0); }
 
     private static int Hash(string input, int hash2 = 15)
     {
