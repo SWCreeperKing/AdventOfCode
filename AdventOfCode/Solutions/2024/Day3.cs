@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
 
@@ -13,21 +14,11 @@ file class Day3
 
     public static long Sum(string inp, bool part2 = false)
     {
-        var enabled = true;
-        long sum = 0;
-
         if (part2)
         {
             inp = inp.RemoveWhile("don't()", (s, i) => s.IndexOf("do()", i, StringComparison.Ordinal), 4);
         }
 
-        foreach (var match in Reg.Matches(inp))
-        {
-            var m = (Match)match;
-            var groups = m.Groups.Range(1..2);
-            sum += int.Parse(groups[0]) * int.Parse(groups[1]);
-        }
-
-        return sum;
+        return Reg.Matches(inp).Sum(match => match.Groups.Range(1..2).Inline(g => int.Parse(g[0]) * int.Parse(g[1])));
     }
 }
