@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Experimental_Run;
-using CreepyUtil;
+using CreepyUtil.Matrix2d;
 
 namespace AdventOfCode.Solutions._2022;
 

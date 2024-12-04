@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
-using CreepyUtil;
+using CreepyUtil.Matrix2d;
 
 namespace AdventOfCode.Solutions._2022;
 
