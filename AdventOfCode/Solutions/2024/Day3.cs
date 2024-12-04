@@ -5,7 +5,7 @@ using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 3, "Mull It Over"), Run]
+[Day(2024, 3, "Mull It Over")]
 file class Day3
 {
     public static Regex Reg = new(@"mul\((\d+),(\d+)\)", RegexOptions.Compiled);
