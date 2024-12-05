@@ -4,7 +4,7 @@ using CreepyUtil.Matrix2d;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 4, "wip"), Run]
+[Day(2024, 4, "Ceres Search")]
 file class Day4
 {
     [ModifyInput]
