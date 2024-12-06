@@ -1,97 +1,55 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Experimental_Run;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 5, "wip"), Run]
+[Day(2024, 5, "Print Queue")]
 file class Day5
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput]
+    public static int[][][] ProcessInput(string input)
+    {
+        var sections = input.Split("\n\n");
+        return
+        [
+            sections[0].Split('\n').SelectArr(l => l.Split('|').SelectArr(int.Parse)),
+            sections[1].Split('\n').SelectArr(l => l.Split(',').SelectArr(int.Parse))
+        ];
+    }
 
     [Answer(5964)]
-    public static long Part1(string inp)
+    public static long Part1(int[][][] inp)
     {
-        var sections = inp.Split("\n\n");
-        var rules = sections[0].Split('\n').SelectArr(l => l.Split('|').SelectArr(int.Parse));
-        var pages = sections[1].Split('\n').SelectArr(l => l.Split(',').SelectArr(int.Parse));
+        return inp[1].Where(line => Check(inp[0], line)).Sum(line => line[(int)Math.Floor(line.Length / 2f)]);
+    }
+
+    [Answer(4719)]
+    public static long Part2(int[][][] inp)
+    {
+        var ruleDict = inp[0]
+                      .GroupBy(arr => arr[0])
+                      .ToDictionary(g => g.Key, g => g.SelectArr(arr => arr[1]));
 
         var sum = 0;
-        foreach (var line in pages)
+        foreach (var line in inp[1])
         {
-            if (!Check(rules, line)) continue;
+            if (Check(inp[0], line)) continue;
+            Array.Sort(line, (a, b) => !ruleDict.TryGetValue(a, out var arr) || !arr.Contains(b) ? -1 : 1);
             sum += line[(int)Math.Floor(line.Length / 2f)];
         }
 
         return sum;
     }
 
-    [Answer(4719)]
-    public static long Part2(string inp)
-    {
-        var sections = inp.Split("\n\n");
-        var rules = sections[0].Split('\n').SelectArr(l => l.Split('|').SelectArr(int.Parse));
-        var pages = sections[1].Split('\n').SelectArr(l => l.Split(',').SelectArr(int.Parse));
-
-        var sum = 0;
-        foreach (var line in pages)
-        {
-            if (Check(rules, line)) continue;
-            var list = line.ToList();
-            Fix(list);
-            sum += list[(int)Math.Floor(line.Length / 2f)];
-        }
-
-        return sum;
-
-        void Fix(List<int> line)
-        {
-            for (var i = 0; i < line.Count; i++)
-            {
-                var changed = false;
-                foreach (var behind in rules.Where(arr => arr[0] == line[i]))
-                {
-                    if (!line.Contains(behind[1])) continue;
-                    if (line.FindIndexOf(behind[1]) < i)
-                    {
-                        changed = true;
-                        line.Remove(behind[1]);
-                        line.Insert(i, behind[1]);
-                        i = -1;
-                        break;
-                    }
-                }
-                if (changed) continue;
-                foreach (var ahead in rules.Where(arr => arr[1] == line[i]))
-                {
-                    if (!line.Contains(ahead[0])) continue;
-                    if (line.FindIndexOf(ahead[0]) > i)
-                    {
-                        line.Remove(ahead[0]);
-                        line.Insert(i, ahead[0]);
-                        i = -1;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    
     public static bool Check(int[][] rules, int[] line)
     {
         for (var i = 0; i < line.Length; i++)
         {
-            foreach (var behind in rules.Where(arr => arr[0] == line[i]))
-            {
-                if (!line.Contains(behind[1])) continue;
-                if (line.FindIndexOf(behind[1]) < i) return false;
-            }
-            foreach (var ahead in rules.Where(arr => arr[1] == line[i]))
-            {
-                if (!line.Contains(ahead[0])) continue;
-                if (line.FindIndexOf(ahead[0]) > i) return false;
-            }
+            if (!rules.Where(behind => behind[0] == line[i] && line.Contains(behind[1]))
+                      .Any(behind => line.FindIndexOf(behind[1]) < i)) continue;
+
+            return false;
         }
 
         return true;
