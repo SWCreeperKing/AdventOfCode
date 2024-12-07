@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil;
-using CreepyUtil.Matrix2d;
 using static AdventOfCode.Experimental_Run.Misc.Enums;
 
 namespace AdventOfCode.Solutions._2017;

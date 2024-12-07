@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
 using static AdventOfCode.Solutions._2023.Day19;
 using Range = AdventOfCode.Experimental_Run.Misc.Range;
 

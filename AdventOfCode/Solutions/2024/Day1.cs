@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2024;
 
 [Day(2024, 1, "Historian Hysteria")]

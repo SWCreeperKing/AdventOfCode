@@ -1,10 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil;
-using CreepyUtil.Matrix2d;
-
 namespace AdventOfCode.Solutions._2018;
 
 [Day(2018, 3, "No Matter How You Slice It")]

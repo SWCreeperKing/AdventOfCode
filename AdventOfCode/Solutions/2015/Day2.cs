@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2015;
+﻿namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 2, "I Was Told There Would Be No Math")]
 file class Day2

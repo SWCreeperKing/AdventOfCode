@@ -1,6 +1,3 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2017;
 
 [Day(2017, 5, "A Maze of Twisty Trampolines, All Alike")]

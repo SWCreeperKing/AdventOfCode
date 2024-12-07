@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2020;
+﻿namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 14, "Docking Data")]
 file class Day14

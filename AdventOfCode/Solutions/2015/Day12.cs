@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
 using static System.Text.Json.JsonValueKind;
 
 namespace AdventOfCode.Solutions._2015;
@@ -21,7 +18,10 @@ internal class Day12
 
     private static int SearchWithoutRed(string inp)
     {
-        bool JsonRed(JsonProperty jp) { return jp.Value.ValueKind is not String || jp.Value.GetString() is not "red"; }
+        bool JsonRed(JsonProperty jp)
+        {
+            return jp.Value.ValueKind is not JsonValueKind.String || jp.Value.GetString() is not "red";
+        }
 
         int JsonStuffJp(JsonProperty jp) { return JsonStuff(jp.Value); }
 
@@ -29,8 +29,10 @@ internal class Day12
         {
             return e.ValueKind switch
             {
-                Object when e.EnumerateObject().All(JsonRed) => e.EnumerateObject().Select(JsonStuffJp).Sum(),
-                Array => e.EnumerateArray().Select(JsonStuff).Sum(),
+                JsonValueKind.Object when e.EnumerateObject().All(JsonRed) => e.EnumerateObject()
+                   .Select(JsonStuffJp)
+                   .Sum(),
+                JsonValueKind.Array => e.EnumerateArray().Select(JsonStuff).Sum(),
                 Number => e.GetInt32(),
                 _ => 0
             };

@@ -1,5 +1,3 @@
-using CreepyUtil;
-
 namespace AdventOfCode.Experimental_Run.Misc;
 
 public static class Enums

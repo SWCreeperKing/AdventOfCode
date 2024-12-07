@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2024;
 
 [Day(2024, 3, "Mull It Over")]

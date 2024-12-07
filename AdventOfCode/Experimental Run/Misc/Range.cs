@@ -1,5 +1,3 @@
-using System;
-
 namespace AdventOfCode.Experimental_Run.Misc;
 
 public readonly struct Range(long start, long end)

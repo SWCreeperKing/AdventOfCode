@@ -1,14 +1,9 @@
 ﻿#nullable enable
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Nodes;
-using System.Text.RegularExpressions;
-using CreepyUtil;
 using static CreepyUtil.Direction;
 using Range = System.Range;
 
@@ -258,7 +253,7 @@ public static class Helper
         if (elapsed.Milliseconds > 0) sb.Append(elapsed.Milliseconds).Append("ms ");
 
         var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000f) / 100 / 10f;
-        if (ns > 0) sb.Append($"{ns:###.#}µs");
+        if (ns > 0) sb.Append($"{ns:###.#}ns");
         return sb.ToString().TrimEnd();
     }
 

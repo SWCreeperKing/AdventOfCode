@@ -1,6 +1,3 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 20, "Infinite Elves and Infinite Houses")]

@@ -1,6 +1,3 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2018;
 
 [Day(2018, 2, "Inventory Management System")]

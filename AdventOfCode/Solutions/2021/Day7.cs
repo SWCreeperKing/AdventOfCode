@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2021;
 
 [Day(2021, 7, "The Treachery of Whales")]

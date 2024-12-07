@@ -1,11 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using AdventOfCode.Experimental_Run;
 using static CreepyUtil.ClrCnsl.ClrCnsl;
 
 namespace AdventOfCode;
@@ -24,7 +20,6 @@ public class Program
     public static void Main()
     {
         InitHttpClient();
-        Console.CursorVisible = false;
         Starter.Start();
     }
 

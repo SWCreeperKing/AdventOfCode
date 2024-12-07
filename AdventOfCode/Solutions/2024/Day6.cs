@@ -1,56 +1,46 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil;
-using CreepyUtil.Matrix2d;
+using static System.Threading.Interlocked;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 6, "Guard Gallivant")]
+[Day(2024, 6, "Guard Gallivant"), Run]
 file class Day6
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput]
+    public static Matrix2d<char> ProcessInput(string input)
+        => new(input.Split('\n').SelectArr(line => line.ToCharArray()));
 
-    [Answer(4778)] public static long Part1(string inp) { return GetPath(inp).Length; }
+    [Answer(4778)] public static long Part1(Matrix2d<char> inp) { return GetPath(inp).Length; }
 
     [Answer(1618)]
-    public static long Part2(string inp)
+    public static long Part2(Matrix2d<char> inp)
     {
-        var nlInp = inp.Split('\n');
-        Matrix2d<char> map = new(nlInp.SelectArr(line => line.ToCharArray()));
-        var unique = new Matrix2d<Direction>(map.Size);
-        var startPos = map.Find(c => c == '^');
-        Pos pos;
-        Direction dir;
-
+        var startPos = inp.Find(c => c == '^');
         var loops = 0;
-        foreach (var possible in GetPath(inp))
+        Parallel.ForEach(GetPath(inp), possible =>
         {
-            for (var i = 0; i < unique.TrueSize; i++)
-            {
-                unique[i] = Direction.Center;
-            }
+            var unique = new Matrix2d<Direction>(inp.Size);
 
-            pos = startPos;
-            dir = Direction.Up;
+            var pos = startPos;
+            var dir = Direction.Up;
             unique[pos] |= dir;
 
             while (true)
             {
-                var num = Move(possible);
+                var num = Move(ref pos, possible, ref dir, unique);
                 if (num == 1) break;
                 if (num != 2) continue;
-                loops++;
+                Increment(ref loops);
                 break;
             }
-        }
-
+        });
+        
         return loops;
 
-        int Move(Pos p)
+        int Move(ref Pos pos, Pos obstaclePose, ref Direction dir, Matrix2d<Direction> unique)
         {
             var next = pos + dir.Positional();
-            if (!map.PositionExists(next)) return 1;
-            if (map[next] == '#' || next == p)
+            if (!inp.PositionExists(next)) return 1;
+            if (inp[next] == '#' || next == obstaclePose)
             {
                 dir = dir.Rotate();
                 return 0;
@@ -63,12 +53,10 @@ file class Day6
         }
     }
 
-    public static Pos[] GetPath(string inp)
+    public static Pos[] GetPath(Matrix2d<char> inp)
     {
-        var nlInp = inp.Split('\n');
-        Matrix2d<char> map = new(nlInp.SelectArr(line => line.ToCharArray()));
-        Matrix2d<bool> unique = new(map.Size);
-        var pos = map.Find(c => c == '^');
+        Matrix2d<bool> unique = new(inp.Size);
+        var pos = inp.Find(c => c == '^');
         var dir = Direction.Up;
         unique[pos] = true;
         while (true)
@@ -79,8 +67,8 @@ file class Day6
         bool Move()
         {
             var next = pos + dir.Positional();
-            if (!map.PositionExists(next)) return true;
-            if (map[next] == '#')
+            if (!inp.PositionExists(next)) return true;
+            if (inp[next] == '#')
             {
                 dir = dir.Rotate();
                 return false;

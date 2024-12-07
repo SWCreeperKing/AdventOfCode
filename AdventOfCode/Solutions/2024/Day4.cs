@@ -1,7 +1,3 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil.Matrix2d;
-
 namespace AdventOfCode.Solutions._2024;
 
 [Day(2024, 4, "Ceres Search")]

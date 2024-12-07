@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2015;
+﻿namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 5, "Doesn't He Have Intern-Elves For This?")]
 file class Day5

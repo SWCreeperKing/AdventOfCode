@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil.Matrix2d;
-
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 8, "Treetop Tree House")]

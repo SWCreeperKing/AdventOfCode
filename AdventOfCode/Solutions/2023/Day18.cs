@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-using CreepyUtil;
 using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;

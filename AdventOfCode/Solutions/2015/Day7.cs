@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2015;
+﻿namespace AdventOfCode.Solutions._2015;
 
 [Day(2015, 7, "Some Assembly Required")]
 file class Day7

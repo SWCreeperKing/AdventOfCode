@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace AdventOfCode.Experimental_Run.Misc;
 
 public class Directory<T>

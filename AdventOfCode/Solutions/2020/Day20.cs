@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace AdventOfCode.Solutions._2020;
 
 file class Day20

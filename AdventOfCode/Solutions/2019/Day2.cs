@@ -1,6 +1,3 @@
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 2, "Program Alarm")]

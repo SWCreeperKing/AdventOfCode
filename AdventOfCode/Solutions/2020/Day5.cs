@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2020;
+﻿namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 5, "Binary Boarding")]
 file class Day5

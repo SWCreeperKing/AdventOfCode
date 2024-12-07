@@ -1,7 +1,3 @@
-using System;
-using System.Text.RegularExpressions;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2016;
 
 [Day(2016, 9, "Explosives in Cyberspace")]

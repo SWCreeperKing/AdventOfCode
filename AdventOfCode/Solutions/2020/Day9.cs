@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using AdventOfCode.Experimental_Run;
-
-namespace AdventOfCode.Solutions._2020;
+﻿namespace AdventOfCode.Solutions._2020;
 
 [Day(2020, 9, "Encoding Error")]
 file class Day9

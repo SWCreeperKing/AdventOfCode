@@ -1,5 +1,3 @@
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 6, "Tuning Trouble")]

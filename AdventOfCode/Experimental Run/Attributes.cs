@@ -1,4 +1,3 @@
-using System;
 using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Experimental_Run;

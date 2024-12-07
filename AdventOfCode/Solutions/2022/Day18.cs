@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 18, "Boiling Boulders")]

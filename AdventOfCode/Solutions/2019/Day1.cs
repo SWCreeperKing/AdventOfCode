@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using AdventOfCode.Experimental_Run;
-
 namespace AdventOfCode.Solutions._2019;
 
 [Day(2019, 1, "The Tyranny of the Rocket Equation")]
