@@ -1,5 +1,3 @@
-using AdventOfCode.Experimental_Run.Misc;
-
 namespace AdventOfCode.Solutions._2024;
 
 [Day(2024, 7, "Bridge Repair"), Run]
