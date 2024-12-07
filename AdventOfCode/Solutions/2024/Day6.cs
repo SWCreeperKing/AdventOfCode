@@ -1,5 +1,3 @@
-using static System.Threading.Interlocked;
-
 namespace AdventOfCode.Solutions._2024;
 
 [Day(2024, 6, "Guard Gallivant")]

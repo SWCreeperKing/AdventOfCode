@@ -1,3 +1,5 @@
+using Range = System.Range;
+
 namespace AdventOfCode.Solutions._2022;
 
 [Day(2022, 4, "Camp Cleanup")]
