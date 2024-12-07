@@ -5,7 +5,9 @@ file class Day2
 {
     [ModifyInput]
     public static int[][] ProcessInput(string input)
-        => input.Split('\n').SelectArr(l => l.Split(' ').SelectArr(int.Parse));
+    {
+        return input.Split('\n').SelectArr(l => l.Split(' ').SelectArr(int.Parse));
+    }
 
     [Answer(442)] public static long Part1(int[][] inp) { return inp.Count(Check); }
 

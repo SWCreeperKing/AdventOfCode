@@ -162,10 +162,7 @@ public static class Helper
 
     public static IEnumerable<T> Range<T>(this IEnumerable<T> arr, int start, int end)
     {
-        for (var i = start; i < end; i++)
-        {
-            yield return arr.ElementAt(i);
-        }
+        for (var i = start; i < end; i++) yield return arr.ElementAt(i);
     }
 
     public static IEnumerable<IEnumerable<T>> Window<T>(this IEnumerable<T> arr, int grouping, bool before = false)
@@ -518,10 +515,7 @@ public static class Helper
     public static string RemoveWhile(this string s, char what, int removeLength)
     {
         int i;
-        while ((i = s.IndexOf(what)) != -1)
-        {
-            s = s.Remove(i, removeLength);
-        }
+        while ((i = s.IndexOf(what)) != -1) s = s.Remove(i, removeLength);
 
         return s;
     }
@@ -552,6 +546,22 @@ public static class Helper
         return s;
     }
 
+    public static void MovingWindow(this string s, string what, Func<string, int, int> whereEnd,
+        Func<string, bool> window, int endLength = 0)
+    {
+        var i = 0;
+        while ((i = s.IndexOf(what, i, StringComparison.Ordinal)) != -1)
+        {
+            var end = whereEnd(s, i);
+            if (end == -1) return;
+            var dest = end - i + endLength;
+            if (window(s[i..(i + dest)]))
+                i += dest;
+            else
+                i++;
+        }
+    }
+
     public static IEnumerable<string> RemoveWhileIterator(this string s, char what, Func<string, int, int> whereEnd,
         bool includeEnd = true)
     {
@@ -568,9 +578,7 @@ public static class Helper
     {
         if (length > arr.Length) throw new ArgumentException("Length is greater than input array length");
         if (start + length <= arr.Length)
-        {
             return [..arr[..start], ..arr[start..(start + length)].Reverse(), ..arr[(start + length)..]];
-        }
 
         var reverseArr = ((T[]) [..arr[start..arr.Length], ..arr[..((start + length) % arr.Length)]])
                         .Reverse()
@@ -643,30 +651,21 @@ public static class Helper
     {
         var a = range.Start.Value;
         var b = range.End.Value;
-        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
-        {
-            yield return i;
-        }
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++) yield return i;
     }
 
     public static void Loop(this Range range, Action<long> process)
     {
         var a = range.Start.Value;
         var b = range.End.Value;
-        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
-        {
-            process(i);
-        }
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++) process(i);
     }
 
     public static void LoopSet(this Range range, Func<long, long> process)
     {
         var a = range.Start.Value;
         var b = range.End.Value;
-        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
-        {
-            i = process(i);
-        }
+        for (long i = Math.Min(a, b); i < Math.Max(a, b); i++) i = process(i);
     }
 
     public static T? LoopSelect<T>(this Range range, Func<long, bool> check, Func<long, T> rtrn, T? def = default)
@@ -674,9 +673,8 @@ public static class Helper
         var a = range.Start.Value;
         var b = range.End.Value;
         for (long i = Math.Min(a, b); i < Math.Max(a, b); i++)
-        {
-            if (check(i)) return rtrn(i);
-        }
+            if (check(i))
+                return rtrn(i);
 
         return def;
     }

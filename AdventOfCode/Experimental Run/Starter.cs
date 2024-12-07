@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
 using static AdventOfCode.Experimental_Run.Starter;
-using static CreepyUtil.ClrCnsl.ClrCnsl;
 
 namespace AdventOfCode.Experimental_Run;
 
@@ -205,12 +204,13 @@ public static class Starter
             {
                 WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
                 WriteLine($"[#red]|==>   dumb dumb forgor :alien: about part {part}'s input params!");
-                WriteLine($"[#red] |=> {parms[0].ParameterType} != {data.GetModifyReturnType()}".Replace("System.", ""));
+                WriteLine($"[#red] |=> {parms[0].ParameterType} != {data.GetModifyReturnType()}"
+                   .Replace("System.", ""));
                 return null;
             }
-            
+
             Console.WriteLine($"\nPart {part}:");
-            
+
             Sw.Start();
             var answer = data.Run(part);
             Sw.Stop();
@@ -244,18 +244,11 @@ public static class Starter
                 var method = frame.GetMethod();
                 var at = frame.GetFileLineNumber();
                 if (file is not null && !file.Replace("\\", "/").EndsWith(endWith))
-                {
                     WriteLine($"[#yellow] File: {frame.GetFileName()}");
-                }
 
                 if (method is not null)
-                {
                     WriteLine($"[#darkyellow]{method.Name}(){(at != 0 ? $"[#r] at [#red]{at}" : "")}");
-                }
-                else if (at != 0)
-                {
-                    WriteLine($"at [#red]{at}");
-                }
+                else if (at != 0) WriteLine($"at [#red]{at}");
             }
 
             WriteLine("[#darkmagenta]<===   END OF STACK TRACE   ===>\n");

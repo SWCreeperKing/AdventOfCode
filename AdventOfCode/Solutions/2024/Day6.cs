@@ -2,12 +2,14 @@ using static System.Threading.Interlocked;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 6, "Guard Gallivant"), Run]
+[Day(2024, 6, "Guard Gallivant")]
 file class Day6
 {
     [ModifyInput]
     public static Matrix2d<char> ProcessInput(string input)
-        => new(input.Split('\n').SelectArr(line => line.ToCharArray()));
+    {
+        return new Matrix2d<char>(input.Split('\n').SelectArr(line => line.ToCharArray()));
+    }
 
     [Answer(4778)] public static long Part1(Matrix2d<char> inp) { return GetPath(inp).Length; }
 
@@ -33,7 +35,7 @@ file class Day6
                 break;
             }
         });
-        
+
         return loops;
 
         int Move(ref Pos pos, Pos obstaclePose, ref Direction dir, Matrix2d<Direction> unique)
@@ -60,9 +62,8 @@ file class Day6
         var dir = Direction.Up;
         unique[pos] = true;
         while (true)
-        {
-            if (Move()) return unique.Iterate().Where(t => t.Item3).SelectArr(t => new Pos(t.Item1, t.Item2));
-        }
+            if (Move())
+                return unique.Iterate().Where(t => t.Item3).SelectArr(t => new Pos(t.Item1, t.Item2));
 
         bool Move()
         {

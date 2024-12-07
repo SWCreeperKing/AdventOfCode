@@ -5,7 +5,7 @@ namespace AdventOfCode.Solutions._2017;
 [Day(2017, 16, "Permutation Promenade")]
 file class Day16
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split(',');
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split(','); }
 
     [Answer("ionlbkfeajgdmphc")]
     public static string Part1(string[] inp)

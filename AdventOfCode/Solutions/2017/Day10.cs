@@ -27,13 +27,11 @@ public class Day10
         var i = 0;
 
         for (var j = 0; j < 64; j++)
-        {
             foreach (var length in (int[]) [..inp.Select(c => (int)c).ToArray(), 17, 31, 73, 47, 23])
             {
                 arr = arr.ReverseWithWrapping(i, length);
                 i = (i + length + skip++) % arr.Length;
             }
-        }
 
         return arr.Chunk(16)
                   .Select(c => c.Aggregate((i1, i2) => i1 ^ i2))

@@ -6,3 +6,6 @@ global using AdventOfCode.Experimental_Run;
 global using CreepyUtil;
 global using CreepyUtil.Matrix2d;
 global using System.Text.RegularExpressions;
+global using CreepyUtil.ClrCnsl;
+global using CreepyUtil.ClrCnsl.Prompts;
+global using static CreepyUtil.ClrCnsl.ClrCnsl;

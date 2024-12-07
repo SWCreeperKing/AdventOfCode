@@ -4,7 +4,10 @@ namespace AdventOfCode.Solutions._2024;
 file class Day4
 {
     [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input) => new(input.Split('\n').SelectArr(l => l.ToCharArray()));
+    public static Matrix2d<char> ProcessInput(string input)
+    {
+        return new Matrix2d<char>(input.Split('\n').SelectArr(l => l.ToCharArray()));
+    }
 
     [Answer(2642)]
     public static long Part1(Matrix2d<char> inp)

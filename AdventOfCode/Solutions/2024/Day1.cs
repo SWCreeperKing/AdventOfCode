@@ -16,10 +16,7 @@ file class Day1
     }
 
     [Answer(2904518)]
-    public static long Part1((int[], int[]) inp)
-    {
-        return inp.Item1.Sum((n, i) => Math.Abs(n - inp.Item2[i]));
-    }
+    public static long Part1((int[], int[]) inp) { return inp.Item1.Sum((n, i) => Math.Abs(n - inp.Item2[i])); }
 
     [Answer(18650129)]
     public static long Part2((int[], int[]) inp)

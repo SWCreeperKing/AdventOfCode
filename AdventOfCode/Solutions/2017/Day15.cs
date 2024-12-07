@@ -4,7 +4,7 @@ namespace AdventOfCode.Solutions._2017;
 file class Day15
 {
     private const long Lowest = 65536;
-    
+
     [ModifyInput]
     public static (int a, int b) ProcessInput(string input)
     {
@@ -26,7 +26,7 @@ file class Day15
             if (lastA % Lowest != lastB % Lowest) continue;
             count++;
         }
-        
+
         return count;
     }
 
@@ -43,16 +43,17 @@ file class Day15
             {
                 lastA = lastA * 16807L % 2147483647;
             } while (lastA % 4 != 0);
+
             do
             {
                 lastB = lastB * 48271L % 2147483647;
             } while (lastB % 8 != 0);
 
-            
+
             if (lastA % Lowest != lastB % Lowest) continue;
             count++;
         }
-        
+
         return count;
     }
 }

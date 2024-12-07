@@ -15,11 +15,7 @@ file class Day12
                     .ToDictionary(t => t.Item1, t => t.Item2.ToArray());
     }
 
-    [Answer(283)]
-    public static long Part1(Dictionary<int, int[]> inp)
-    {
-        return Group(inp, 0).Count;
-    }
+    [Answer(283)] public static long Part1(Dictionary<int, int[]> inp) { return Group(inp, 0).Count; }
 
     [Answer(195)]
     public static long Part2(Dictionary<int, int[]> inp)
@@ -30,7 +26,7 @@ file class Day12
             Group(inp, inp.Keys.First()).ForEach(i => inp.Remove(i));
             groups++;
         }
-        
+
         return groups;
     }
 
@@ -39,7 +35,7 @@ file class Day12
         HashSet<int> set = [];
         Queue<int> queue = [];
         queue.Enqueue(enqueue);
-        
+
         while (queue.Count != 0)
         {
             var target = queue.Dequeue();

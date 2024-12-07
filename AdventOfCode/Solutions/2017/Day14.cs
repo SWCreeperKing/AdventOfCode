@@ -5,18 +5,16 @@ namespace AdventOfCode.Solutions._2017;
 [Day(2017, 14, "Disk Defragmentation")]
 file class Day14
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    [ModifyInput] public static string ProcessInput(string input) { return input; }
 
     [Answer(8074)]
     public static long Part1(string inp)
     {
         var count = 0L;
         for (var i = 0; i < 128; i++)
-        {
             count = Day10.Part2($"{inp}-{i}")
                          .Select(hex => Convert.ToString(Convert.ToInt32(hex.ToString(), 16), 2))
                          .Aggregate(count, (current, binary) => current + binary.Count(c => c == '1'));
-        }
 
         return count;
     }
@@ -31,11 +29,8 @@ file class Day14
             var line = Day10.Part2($"{inp}-{i}")
                             .Select(hex => Convert.ToString(Convert.ToInt32(hex.ToString(), 16), 2))
                             .Aggregate("", (current, binary) => $"{current}{int.Parse(binary):0000}");
-            
-            for (var j = 0; j < line.Length; j++)
-            {
-                map[j, i] = line[j];
-            }
+
+            for (var j = 0; j < line.Length; j++) map[j, i] = line[j];
         }
 
         var count = 0;
@@ -63,7 +58,7 @@ file class Day14
 
             count++;
         }
-        
+
         return count;
     }
 }

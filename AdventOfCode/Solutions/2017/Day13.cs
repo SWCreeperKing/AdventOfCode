@@ -51,7 +51,7 @@ file class Day13
 
             if (finish) return delay;
         }
-        
+
         int Loop(int n, int i)
         {
             var max = n * 2 - 2;

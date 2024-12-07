@@ -44,13 +44,9 @@ file class Day6
     {
         var lights = new T[1000, 1000];
         foreach (var (inst, (x1, y1), (x2, y2)) in inp)
-        {
             for (var i = x1; i <= x2; i++)
             for (var j = y1; j <= y2; j++)
-            {
                 lights[i, j] = func(inst, lights[i, j]);
-            }
-        }
 
         return lights.Cast<T>();
     }

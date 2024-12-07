@@ -3,17 +3,14 @@ namespace AdventOfCode.Solutions._2017;
 [Day(2017, 11, "Hex Ed")]
 file class Day11 // https://www.redblobgames.com/grids/hexagons/#conversions
 {
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split(',');
+    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split(','); }
 
     [Answer(698)]
     public static long Part1(string[] inp)
     {
         int q = 0, r = 0, s = 0;
 
-        foreach (var move in inp)
-        {
-            Nav(move, ref q, ref r, ref s);
-        }
+        foreach (var move in inp) Nav(move, ref q, ref r, ref s);
 
         return Math.Max(Math.Abs(q), Math.Max(Math.Abs(r), Math.Abs(s)));
     }

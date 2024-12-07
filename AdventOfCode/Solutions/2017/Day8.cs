@@ -54,7 +54,7 @@ file class Day8
             ">" => compare > 0,
             ">=" => compare >= 0,
             "<" => compare < 0,
-            "<=" => compare <= 0,
+            "<=" => compare <= 0
         };
     }
 }
