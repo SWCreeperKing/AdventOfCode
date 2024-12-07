@@ -262,7 +262,7 @@ public static class Starter
 
     public static string LoadFile(YearDayInfo key)
     {
-        if (!Directory.Exists($"Input/{SelectedYear}")) Directory.CreateDirectory($"Input/{SelectedYear}");
+        if (!Directory.Exists($"{Program.InputDir}/{SelectedYear}")) Directory.CreateDirectory($"Input/{SelectedYear}");
 
         return (!File.Exists(key.File) ? Program.SaveInput(key) : File.ReadAllText(key.File))
               .Replace("\r", string.Empty)
@@ -273,7 +273,7 @@ public static class Starter
 public readonly record struct YearDayInfo(int year, int day)
 {
     public readonly int Day = day;
-    public readonly string File = $"Input/{year}/{day}.txt";
+    public readonly string File = $"{Program.InputDir}/{year}/{day}.txt";
     public readonly string Url = $"/{year}/day/{day}/input";
     public readonly int Year = year;
 

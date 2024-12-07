@@ -11,6 +11,7 @@ public class Program
     // Advent of Code:
     // https://adventofcode.com/
     // my highest placing is 2022, day 1, part 1 at 493 place and a total time of 3:33
+    public const string InputDir = "../../Input";
     public static HttpClient client;
     public static long LastDownload;
 
@@ -44,7 +45,7 @@ public class Program
 
         Console.WriteLine();
         var input = client.GetStringAsync(info.Url).GetAwaiter().GetResult();
-        if (!Directory.Exists($"Input/{info.Year}")) Directory.CreateDirectory($"Input/{info.Year}");
+        if (!Directory.Exists($"{InputDir}/{info.Year}")) Directory.CreateDirectory($"{InputDir}/{info.Year}");
 
         File.WriteAllText(info.File, input);
         WriteLine("[#darkyellow][Done]");

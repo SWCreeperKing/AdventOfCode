@@ -21,7 +21,7 @@ file class Day4
         {
             hash = MD5.HashData(Encoding.UTF8.GetBytes($"{input}{counter++}"));
         } while (hash[0] > 0 || hash[1] > 0 || hash[2] > hash2);
-
+        
         return counter - 1;
     }
 }
