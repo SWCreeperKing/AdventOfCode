@@ -19,6 +19,8 @@ public class Program
         MessageId = "type: System.Int64[]")]
     public static void Main()
     {
+        CursorVis(false);
+        EnableAscii();
         InitHttpClient();
         Starter.Start();
     }

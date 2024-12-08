@@ -1,6 +1,6 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 7, "Bridge Repair"), Run]
+[Day(2024, 7, "Bridge Repair")]
 file class Day7
 {
     [ModifyInput]
@@ -39,13 +39,14 @@ file class Day7
 
         return total;
     }
+
     public static bool Recurse(long res, long num, int[] list, bool part2 = false, int index = 1)
     {
-        // if (res >= num || index >= list.Length) return res == num;
         if (index >= list.Length) return res == num;
 
         if (!part2)
         {
+            if (res >= num) return res == num;
             return Recurse(res * list[index], num, list, false, index + 1) ||
                    Recurse(res + list[index], num, list, false, index + 1);
         }

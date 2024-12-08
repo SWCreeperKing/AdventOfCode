@@ -197,6 +197,8 @@ public static class Starter
                 WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
                 WriteLine($"[#red]Part [{part}] does not contain the right amount of parameters");
                 WriteLine($"[#red]{parms.Length} != 1");
+                if (!toContinue) return null;
+                WaitForAnyInput();
                 return null;
             }
 
@@ -206,6 +208,8 @@ public static class Starter
                 WriteLine($"[#red]|==>   dumb dumb forgor :alien: about part {part}'s input params!");
                 WriteLine($"[#red] |=> {parms[0].ParameterType} != {data.GetModifyReturnType()}"
                    .Replace("System.", ""));
+                if (!toContinue) return null;
+                WaitForAnyInput();
                 return null;
             }
 

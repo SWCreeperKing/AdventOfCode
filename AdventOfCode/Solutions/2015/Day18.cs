@@ -19,20 +19,7 @@ file class Day18
     {
         for (var step = 0; step < 100; step++)
         {
-            var copy = inp.ToArray();
-            for (var y = 0; y < 100; y++)
-            for (var x = 0; x < 100; x++)
-            {
-                var around = GetSurroundings(inp, x, y);
-                copy[y * 100 + x] = inp[y * 100 + x] switch
-                {
-                    true when around is not (2 or 3) => false,
-                    false when around is 3 => true,
-                    _ => inp[y * 100 + x]
-                };
-            }
-
-            inp = copy;
+            inp = Step(inp);
         }
 
         return inp.Count(b => b);
@@ -44,32 +31,35 @@ file class Day18
         for (var step = 0; step < 100; step++)
         {
             inp[0] = inp[99] = inp[9900] = inp[9999] = true;
-            var copy = inp.ToArray();
-            for (var y = 0; y < 100; y++)
-            for (var x = 0; x < 100; x++)
-            {
-                var around = GetSurroundings(inp, x, y);
-                copy[y * 100 + x] = inp[y * 100 + x] switch
-                {
-                    true when around is not (2 or 3) => false,
-                    false when around is 3 => true,
-                    _ => inp[y * 100 + x]
-                };
-            }
-
-            inp = copy;
+            inp = Step(inp);
         }
 
         inp[0] = inp[99] = inp[9900] = inp[9999] = true;
-
         return inp.Count(b => b);
     }
 
+    private static bool[] Step(bool[] inp)
+    {
+        var copy = inp.ToArray();
+        for (var y = 0; y < 100; y++)
+        for (var x = 0; x < 100; x++)
+        {
+            var around = GetSurroundings(inp, x, y);
+            copy[y * 100 + x] = inp[y * 100 + x] switch
+            {
+                true when around is not (2 or 3) => false,
+                false when around is 3 => true,
+                _ => inp[y * 100 + x]
+            };
+        }
+
+        return copy;
+    }
+    
     private static int GetSurroundings(bool[] arr, int x, int y)
     {
         var on = 0;
-        for (var offY = -1; offY <= 1; offY++)
-        for (var offX = -1; offX <= 1; offX++)
+        foreach (var (offX, offY) in Pos.SurroundDiagonal)
         {
             if (offX == 0 && offY == 0) continue;
             on += Get(arr, x + offX, y + offY) is null or false ? 0 : 1;
