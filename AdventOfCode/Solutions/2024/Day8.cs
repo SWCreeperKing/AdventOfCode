@@ -1,10 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 8, "wip"), Run]
+[Day(2024, 8, "Resonant Collinearity")]
 file class Day8
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
 
+    [Answer(379)]
     public static long Part1(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
@@ -47,6 +48,7 @@ file class Day8
         return antiNodes.Distinct().Count();
     }
 
+    [Answer(1339)]
     public static long Part2(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
@@ -74,12 +76,6 @@ file class Day8
                 DeltaMarch(list[i] - list[j], list[j]);
                 DeltaMarch(list[j] - list[i], list[i]);
             }
-        }
-
-        foreach (var (x, y, c) in map.Iterate())
-        {
-            if (x == 0) Write('\n');
-            Write(antiNodes.Contains((x, y)) ? '#' : c);
         }
 
         return antiNodes.Distinct().Count();

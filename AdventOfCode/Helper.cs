@@ -176,7 +176,14 @@ public static class Helper
 
     public static int FirstIndexWhere<T>(this IEnumerable<T> arr, Func<T, bool> where)
     {
-        return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
+        try
+        {
+            return arr.Select((t, i) => (t, i)).First(ti => where(ti.t)).i;
+        }
+        catch (InvalidOperationException)
+        {
+            return -1;
+        }
     }
 
     public static int Unique<T>(this IEnumerable<T> arr) { return arr.Distinct().Count(); }
@@ -244,13 +251,13 @@ public static class Helper
     public static string Time(this TimeSpan elapsed)
     {
         StringBuilder sb = new();
-        if (elapsed.Hours > 0) sb.Append(elapsed.Hours).Append("hr ");
-        if (elapsed.Minutes > 0) sb.Append(elapsed.Minutes).Append("min ");
-        if (elapsed.Seconds > 0) sb.Append(elapsed.Seconds).Append("sec ");
-        if (elapsed.Milliseconds > 0) sb.Append(elapsed.Milliseconds).Append("ms ");
-
-        var ns = (elapsed.Nanoseconds + elapsed.Microseconds * 1000f) / 100 / 10f;
-        if (ns > 0) sb.Append($"{ns:###.#}ns");
+        if (elapsed.Hours > 0) sb.Append("[#red]").Append(elapsed.Hours).Append("hr[#r] ");
+        if (elapsed.Minutes > 0) sb.Append("[#orange]").Append(elapsed.Minutes).Append("min[#r] ");
+        if (elapsed.Seconds > 0) sb.Append("[#yellow]").Append(elapsed.Seconds).Append("sec[#r] ");
+        if (elapsed.Milliseconds > 0) sb.Append("[#skyblue]").Append(elapsed.Milliseconds).Append("ms[#r] ");
+        
+        var micro = elapsed.Nanoseconds / 1000f + elapsed.Microseconds;
+        if (micro > 0) sb.Append($"[#lightgreen]{micro:####,###.#}us[#r]");
         return sb.ToString().TrimEnd();
     }
 
