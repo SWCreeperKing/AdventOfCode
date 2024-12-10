@@ -7,7 +7,8 @@ file class Day10
     public static Matrix2d<int> ProcessInput(string input)
     {
         return new Matrix2d<int>(input.Split('\n')
-                                      .SelectArr(line => line.SelectArr(c => c == '.' ? 20 : int.Parse(c.ToString()))));
+                                      .SelectArr(line => line
+                                          .SelectArr(c => c == '.' ? 20 : int.Parse(c.ToString()))));
     }
 
     [Answer(510)]
@@ -21,24 +22,23 @@ file class Day10
         {
             foreach (var high in highes)
             {
-                if (!Path(low, high, 0)) continue;
+                if (!Path(low, high)) continue;
                 Increment(ref sum);
             }
         });
 
         return sum;
 
-        bool Path(Pos start, Pos end, int step)
+        bool Path(Pos start, Pos end)
         {
-            if (start == end && step == 9) return true;
-            if (step > 9) return false;
+            if (start == end) return true;
 
             foreach (var dir in Pos.Surround)
             {
                 var next = start + dir;
                 if (!inp.PositionExists(next)) continue;
-                if (inp[next] - inp[start] < 1) continue;
-                if (!Path(next, end, step + 1)) continue;
+                if (inp[next] - inp[start] != 1) continue;
+                if (!Path(next, end)) continue;
                 return true;
             }
 
@@ -58,24 +58,23 @@ file class Day10
         {
             foreach (var high in highes)
             {
-                Add(ref sum, Path(low, high, 0));
+                Add(ref sum, Path(low, high));
             }
         });
 
         return sum;
 
-        int Path(Pos start, Pos end, int step)
+        int Path(Pos start, Pos end)
         {
-            if (start == end && step == 9) return 1;
-            if (step > 9) return 0;
-
+            if (start == end) return 1;
+            
             var summ = 0;
             foreach (var dir in Pos.Surround)
             {
                 var next = start + dir;
                 if (!inp.PositionExists(next)) continue;
-                if (inp[next] - inp[start] < 1) continue;
-                summ += Path(next, end, step + 1);
+                if (inp[next] - inp[start] != 1) continue;
+                summ += Path(next, end);
             }
 
             return summ;
