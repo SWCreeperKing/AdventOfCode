@@ -20,11 +20,7 @@ file class Day10
         var sum = 0;
         Parallel.ForEach(lowes, low =>
         {
-            foreach (var high in highes)
-            {
-                if (!Path(low, high)) continue;
-                Increment(ref sum);
-            }
+            Add(ref sum, highes.Count(high => Path(low, high)));
         });
 
         return sum;
@@ -56,10 +52,7 @@ file class Day10
 
         Parallel.ForEach(lowes, low =>
         {
-            foreach (var high in highes)
-            {
-                Add(ref sum, Path(low, high));
-            }
+            Add(ref sum, highes.Sum(high => Path(low, high)));
         });
 
         return sum;
