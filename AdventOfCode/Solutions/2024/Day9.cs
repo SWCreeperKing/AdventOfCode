@@ -1,6 +1,6 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 9, "wip"), Run]
+[Day(2024, 9, "Disk Fragmenter")]
 file class Day9
 {
     [ModifyInput] public static string ProcessInput(string input) => input;
@@ -73,7 +73,6 @@ file class Day9
             driveSeg.Add((-1, space));
         }
 
-        var pos = GetCursor();
         var lowestI = driveSeg.Count - 1;
         var changed = true;
         while (changed)
