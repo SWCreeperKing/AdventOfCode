@@ -83,9 +83,11 @@ public static class Starter
                           .Select(i =>
                            {
                                WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
-                               return RunDay(i, out _, true).Sum();
+                               return RunDay(i, out _, true).Where(t => t is not null)
+                                                            .Aggregate((t1, t2) => t1!.Value + t2!.Value);
                            })
-                          .Aggregate((t1, t2) => t1 + t2);
+                          .Aggregate((t1, t2) => t1!.Value + t2!.Value)!.Value;
+                
                 WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
@@ -218,6 +220,7 @@ public static class Starter
             Sw.Start();
             var answer = data.Run(part);
             Sw.Stop();
+            EndWriteUpdates();
             data.Reset();
             success = data.CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]");
         }

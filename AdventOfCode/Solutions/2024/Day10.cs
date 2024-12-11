@@ -6,9 +6,7 @@ file class Day10
     [ModifyInput]
     public static Matrix2d<int> ProcessInput(string input)
     {
-        return new Matrix2d<int>(input.Split('\n')
-                                      .SelectArr(line => line
-                                          .SelectArr(c => c == '.' ? 20 : int.Parse(c.ToString()))));
+        return new Matrix2d<int>(input.Split('\n').SelectArr(line => line.SelectArr(c => c - '0')));
     }
 
     [Answer(510)]
@@ -18,10 +16,7 @@ file class Day10
         var lowes = inp.FindAll(i => i == 0);
 
         var sum = 0;
-        Parallel.ForEach(lowes, low =>
-        {
-            Add(ref sum, highes.Count(high => Path(low, high)));
-        });
+        Parallel.ForEach(lowes, low => { Add(ref sum, highes.Count(high => Path(low, high))); });
 
         return sum;
 
@@ -50,17 +45,14 @@ file class Day10
 
         var sum = 0;
 
-        Parallel.ForEach(lowes, low =>
-        {
-            Add(ref sum, highes.Sum(high => Path(low, high)));
-        });
+        Parallel.ForEach(lowes, low => { Add(ref sum, highes.Sum(high => Path(low, high))); });
 
         return sum;
 
         int Path(Pos start, Pos end)
         {
             if (start == end) return 1;
-            
+
             var summ = 0;
             foreach (var dir in Pos.Surround)
             {
