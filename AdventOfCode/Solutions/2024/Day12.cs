@@ -2,7 +2,7 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 12, "Garden Groups"), Run]
+[Day(2024, 12, "Garden Groups")]
 file class Day12
 {
     [ModifyInput]
