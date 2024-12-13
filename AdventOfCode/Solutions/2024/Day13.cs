@@ -5,56 +5,44 @@ namespace AdventOfCode.Solutions._2024;
 [Day(2024, 13, "Claw Contraption"), Run]
 file class Day13
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public static readonly Regex Reg = new(@".*: X(?:\+|=)(\d+), Y(?:\+|=)(\d+)");
+
+    [ModifyInput]
+    public static (double[] a, double[] b, double[] dest)[] ProcessInput(string input)
+    {
+        return input.Split("\n\n")
+                    .Select(line => line.Split('\n'))
+                    .Select(machines =>
+                         (Reg.Match(machines[0]).Groups.Range(1..2).SelectArr(double.Parse),
+                             Reg.Match(machines[1]).Groups.Range(1..2).SelectArr(double.Parse),
+                             Reg.Match(machines[2]).Groups.Range(1..2).SelectArr(double.Parse)))
+                    .ToArray();
+    }
 
     [Answer(31065)]
-    public static long Part1(string inp)
+    public static long Part1((double[] a, double[] b, double[] dest)[] inp)
     {
-        var nlInp = inp.Split("\n\n").SelectArr(line => line.Split('\n'));
-        var total = 0L;
-        foreach (var machine in nlInp)
-        {
-            var minMoves = int.MaxValue;
-            var a = machine[0].Split(": ")[1].Replace("X+", "").Replace("Y+", "").Split(", ").SelectArr(int.Parse);
-            var b = machine[1].Split(": ")[1].Replace("X+", "").Replace("Y+", "").Split(", ").SelectArr(int.Parse);
-            var dest = machine[2].Split(": ")[1].Replace("X=", "").Replace("Y=", "").Split(", ").SelectArr(int.Parse);
-
-            for (var i = 0; i <= 100; i++)
-            {
-                for (var j = 0; j <= 100; j++)
-                {
-                    int[] aNormal = [a[0] * i, a[1] * i];
-                    int[] bNormal = [b[0] * j, b[1] * j];
-
-                    if (aNormal[0] + bNormal[0] != dest[0] || aNormal[1] + bNormal[1] != dest[1]) continue;
-                    minMoves = Math.Min(minMoves, j + i * 3);
-                }
-            }
-
-            if (minMoves == int.MaxValue) continue;
-            total += minMoves;
-        }
-
-        return total;
+        return Equate(inp);
     }
-    
-    [Answer(93866170395343)]
-    public static long Part2(string inp)
-    {
-        var nlInp = inp.Split("\n\n").SelectArr(line => line.Split('\n'));
-        var total = 0L;
-        foreach (var machine in nlInp)
-        {
-            var a = machine[0].Split(": ")[1].Replace("X+", "").Replace("Y+", "").Split(", ").SelectArr(double.Parse);
-            var b = machine[1].Split(": ")[1].Replace("X+", "").Replace("Y+", "").Split(", ").SelectArr(double.Parse);
-            var dest = machine[2].Split(": ")[1]
-                                 .Replace("X=", "")
-                                 .Replace("Y=", "")
-                                 .Split(", ")
-                                 .SelectArr(double.Parse);
 
-            dest[0] += 10000000000000;
-            dest[1] += 10000000000000;
+    [Answer(93866170395343)]
+    public static long Part2((double[] a, double[] b, double[] dest)[] inp)
+    {
+        return Equate(inp, true);
+    }
+
+    public static long Equate((double[] a, double[] b, double[] dest)[] inp, bool part2 = false)
+    {
+        var total = 0L;
+        foreach (var machine in inp)
+        {
+            var (a, b, dest) = machine;
+
+            if (part2)
+            {
+                dest[0] += 10000000000000;
+                dest[1] += 10000000000000;
+            }
 
             var determinant = a[0] * b[1] - a[1] * b[0];
             if (determinant == 0)
@@ -86,10 +74,10 @@ file class Day13
 
                 continue;
             }
-            
+
             var A = (b[1] * dest[0] - b[0] * dest[1]) / determinant;
             var B = (a[0] * dest[1] - a[1] * dest[0]) / determinant;
-            if (A % 1 != 0 || A < 0) continue;  
+            if (A % 1 != 0 || A < 0) continue;
             if (B % 1 != 0 || B < 0) continue;
             total += (long)(A * 3 + B);
         }
