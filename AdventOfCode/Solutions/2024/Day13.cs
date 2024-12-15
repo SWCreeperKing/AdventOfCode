@@ -1,8 +1,6 @@
-using AdventOfCode.Experimental_Run.Misc;
-
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 13, "Claw Contraption"), Run]
+[Day(2024, 13, "Claw Contraption")]
 file class Day13
 {
     public static readonly Regex Reg = new(@".*: X(?:\+|=)(\d+), Y(?:\+|=)(\d+)");
