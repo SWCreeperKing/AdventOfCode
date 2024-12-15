@@ -8,14 +8,10 @@ file class Day14
     [ModifyInput]
     public static Pos[][] ProcessInput(string input)
     {
-        List<Pos[]> inp = [];
-        foreach (var line in input.Split('\n'))
-        {
-            var match = Reg.Match(line).Groups.Range(1..4).SelectArr(int.Parse);
-            inp.Add([(match[0], match[1]), (match[2], match[3])]);
-        }
-
-        return inp.ToArray();
+        return input.Split('\n')
+                    .Select(line => Reg.Match(line).Groups.Range(1..4).SelectArr(int.Parse))
+                    .Select(match => (Pos[]) [(match[0], match[1]), (match[2], match[3])])
+                    .ToArray();
     }
 
     [Answer(222901875)]
@@ -23,24 +19,16 @@ file class Day14
     {
         Pos size = (101, 103);
         var halfSize = ((int)Math.Floor(size.X / 2f), (int)Math.Floor(size.Y / 2f));
-        Dictionary<int, long> quads = new()
-        {
-            [1] = 0,
-            [2] = 0,
-            [3] = 0,
-            [4] = 0,
-        };
+        Dictionary<int, long> quads = new() { [1] = 0, [2] = 0, [3] = 0, [4] = 0 };
 
         foreach (var bot in inp)
         {
             for (var i = 0; i < 100; i++)
             {
-                bot[0] += bot[1];
-                bot[0] = (bot[0].X < 0 ? bot[0].X + size.X : bot[0].X, bot[0].Y < 0 ? bot[0].Y + size.Y : bot[0].Y);
-                bot[0] %= size;
+                bot[0] = (bot[0] + bot[1] + size) % size;
             }
 
-            if (bot[0].X == halfSize.Item1 && bot[0].Y == halfSize.Item2) continue;
+            if (bot[0].X == halfSize.Item1 || bot[0].Y == halfSize.Item2) continue;
             var quad = bot[0].X > size.X / 2f ? 1 : 2;
 
             if (bot[0].Y > size.Y / 2f)
@@ -63,13 +51,19 @@ file class Day14
             Matrix2d<int> map = new(size);
             foreach (var bot in inp)
             {
-                bot[0] += bot[1];
-                bot[0] = (bot[0].X < 0 ? bot[0].X + size.X : bot[0].X, bot[0].Y < 0 ? bot[0].Y + size.Y : bot[0].Y);
-                bot[0] %= size;
+                bot[0] = (bot[0] + bot[1] + size) % size;
                 map[bot[0]]++;
             }
 
-            if (map.ToString().Contains("1111111111")) return j + 1;
+            for (var y = 0; y < size.Y / 2; y++)
+            {
+                var onesInARow = 0;
+                for (var x = 0; x < size.X; x++)
+                {
+                    if (onesInARow >= 10) return j + 1;
+                    onesInARow = map[x, y] == 1 ? onesInARow + 1 : 0;
+                }
+            }
         }
     }
 }

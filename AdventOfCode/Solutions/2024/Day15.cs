@@ -1,18 +1,14 @@
-using AdventOfCode.Experimental_Run.Misc;
 using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 15, "wip"), Run]
+[Day(2024, 15, "Warehouse Woes")]
 file class Day15
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
-
-    [Answer(1457740)]
-    public static long Part1(string inp)
+    [ModifyInput]
+    public static (string map, Direction[] instructions) ProcessInput(string input)
     {
-        var sep = inp.Split("\n\n");
-        Matrix2d<char> map = new(sep[0].Split('\n').SelectArr(line => line.ToCharArray()));
+        var sep = input.Split("\n\n");
         var instructions = sep[1]
                           .Select(c => c switch
                            {
@@ -22,12 +18,19 @@ file class Day15
                                'v' => Down,
                                _ => Center
                            })
-                          .Where(dir => dir is not Center);
+                          .Where(dir => dir is not Center)
+                          .ToArray();
+        return (sep[0], instructions);
+    }
 
+    [Answer(1457740)]
+    public static long Part1((string map, Direction[] instructions) inp)
+    {
+        Matrix2d<char> map = new(inp.map.Split('\n').SelectArr(line => line.ToCharArray()));
         var bot = map.Find(c => c == '@');
         map[bot] = '.';
 
-        foreach (var inst in instructions)
+        foreach (var inst in inp.instructions)
         {
             var next = bot + inst;
             var nextC = map[next];
@@ -76,41 +79,30 @@ file class Day15
     }
 
     [Answer(1467145)]
-    public static long Part2(string inp)
+    public static long Part2((string map, Direction[] instructions) inp)
     {
-        var sep = inp.Split("\n\n");
-        Matrix2d<char> map = new(sep[0]
+        Matrix2d<char> map = new(inp.map
                                 .LoopReplace(("#", "##"), ("O", "[]"), (".", ".."), ("@", "@."))
                                 .Split('\n')
                                 .SelectArr(line => line.ToCharArray()));
-        var instructions = sep[1]
-                          .Select(c => c switch
-                           {
-                               '<' => Left,
-                               '>' => Right,
-                               '^' => Up,
-                               'v' => Down,
-                               _ => Center
-                           })
-                          .Where(dir => dir is not Center);
-
         var bot = map.Find(c => c == '@');
         map[bot] = '.';
 
-        foreach (var inst in instructions)
+        foreach (var inst in inp.instructions)
         {
-            // Clr();
             var next = bot + inst;
             var nextC = map[next];
 
-            if (nextC is '#') continue;
-            if (nextC is '[' or ']')
+            switch (nextC)
             {
-                if (!Move(next, inst)) continue;
+                case '#':
+                case '[' or ']' when !Move(next, inst):
+                    continue;
+                default:
+                    bot = next;
+                    map[bot] = '.';
+                    break;
             }
-
-            bot = next;
-            map[bot] = '.';
         }
 
         var total = 0L;
@@ -215,7 +207,7 @@ public readonly record struct Box
 
     public bool CanMove(Matrix2d<char> map, Direction dir)
     {
-        return (map[P1 + dir] is not '#') && (map[P2 + dir] is not '#');
+        return map[P1 + dir] is not '#' && map[P2 + dir] is not '#';
     }
 
     public bool CanFit(Matrix2d<char> map, Direction dir) { return map[P1 + dir] is '.' && map[P2] is '.'; }
