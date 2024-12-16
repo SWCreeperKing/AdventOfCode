@@ -56,7 +56,7 @@ public abstract class State<T, TM, TCompare>(Pos position, Direction direction)
     public virtual bool IsFinal(Pos dest, State<T, TM, TCompare> state, TM val) { return Position == dest; }
 }
 
-file class Comparer<T>(Func<T, T, int> compare) : IComparer<T>
+public class Comparer<T>(Func<T, T, int> compare) : IComparer<T>
 {
     public int Compare(T a, T b) { return compare(a, b); }
 }

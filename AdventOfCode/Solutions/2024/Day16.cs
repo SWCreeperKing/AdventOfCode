@@ -1,4 +1,5 @@
 using AdventOfCode.Experimental_Run.Misc;
+using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
@@ -14,7 +15,7 @@ file class Day16
         var start = map.Find(c => c is 'S');
         var end = map.Find(c => c is 'E');
         var dijkstra = new Dijkstra<State, char, int>(map, (a, b) => a.CompareTo(b));
-        var finish = dijkstra.Eval(end, new State(start, Direction.Center, []));
+        var finish = dijkstra.Eval(end, new State(start, Center, []));
         return finish.Value;
     }
 
@@ -27,22 +28,23 @@ file class Day16
         var dijkstra = new Dijkstra<State, char, int>(map, (a, b) => a.CompareTo(b));
         var finish = dijkstra.Eval(end, new State(start, Direction.Center, [start]));
         var paths = finish.Path.ToList();
-        WriteLine(finish.Value);
-        State next;
         List<Pos> deadEnds = [];
+        List<(Pos, Pos)> deadEnds2 = [];
+        State[] next;
 
-        do
+        while ((next = FindPathWithIntersections(paths)).Length != 0)
         {
-            next = FindPathWithIntersections(paths);
-            if (next.Value != finish.Value) break;
-            paths.AddRange(next.Path);
+            foreach (var set in next)
+            {
+                paths.AddRange(set.Path);
+            }
+
             paths = paths.Distinct().ToList();
-            WriteLine("found");
-        } while (next.Value == finish.Value);
-        
+        }
+
         return paths.Count;
 
-        State FindPathWithIntersections(List<Pos> paths)
+        State[] FindPathWithIntersections(List<Pos> paths)
         {
             List<Pos> intersections = [];
             List<Pos> processed = [];
@@ -63,39 +65,58 @@ file class Day16
             }
 
             intersections = intersections.Distinct().ToList();
-            
+
             List<State> candidates = [];
-            for (var i = 0; i < intersections.Count; i++)
-            for (var j = i; j < intersections.Count; j++)
+            Parallel.For(0, intersections.Count, i =>
             {
-                if (deadEnds.Contains(intersections[i])) continue;
-                if (deadEnds.Contains(intersections[j])) continue;
-                
-                map[intersections[i]] = '#';
-                map[intersections[j]] = '#';
-                try
+                Matrix2d<char> copy = new(map.Array, map.Size);
+                if (deadEnds.Contains(intersections[i])) return;
+                copy[intersections[i]] = '#';
+                for (var j = i; j < intersections.Count; j++)
                 {
-                    var dijkstra = new Dijkstra<State, char, int>(map, (a, b) => a.CompareTo(b));
-                    candidates.Add(dijkstra.Eval(end, new State(start, Direction.Center, [start])));
-                    if (candidates[^1].Value > finish.Value && i == j)
+                    if (deadEnds.Contains(intersections[j])) continue;
+                    var set = (intersections[i], intersections[j]);
+                    if (deadEnds2.Contains(set)) continue;
+                    
+                    copy[intersections[j]] = '#';
+                    try
                     {
-                        deadEnds.Add(intersections[i]);
+                        var dijkstra = new Dijkstra<State, char, int>(copy, (a, b) => a.CompareTo(b));
+                        var possible = dijkstra.Eval(end, new State(start, Center, [start]));
+                        if (possible.Value > finish.Value && i == j)
+                        {
+                            deadEnds.Add(intersections[i]);
+                        }
+                        else if (possible.Value == finish.Value)
+                        {
+                            deadEnds2.Add(set);
+                        }
+
+                        lock (candidates)
+                        {
+                            candidates.Add(possible);
+                        }
                     }
-                }
-                catch
-                {
-                    if (i == j)
+                    catch
                     {
-                        deadEnds.Add(intersections[i]);
+                        if (i == j)
+                        {
+                            deadEnds.Add(intersections[i]);
+                        }
+                        else
+                        {
+                            deadEnds2.Add(set);
+                        }
                     }
+
+                    copy[intersections[j]] = '.';
                 }
 
-                map[intersections[i]] = '.';
-                map[intersections[j]] = '.';
-            }
+                copy[intersections[i]] = '.';
+            });
 
-            return candidates.Where(state => state.Path.Any(p => !paths.Contains(p)))
-                             .MinBy(state => state.Value);
+            return candidates.Where(state => state.Path.Any(p => !paths.Contains(p)) && state.Value == finish.Value)
+                             .ToArray();
         }
     }
 }
