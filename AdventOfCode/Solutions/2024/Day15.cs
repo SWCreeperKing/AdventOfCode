@@ -82,17 +82,16 @@ file class Day15
     public static long Part2((string map, Direction[] instructions) inp)
     {
         Matrix2d<char> map = new(inp.map
-                                .LoopReplace(("#", "##"), ("O", "[]"), (".", ".."), ("@", "@."))
-                                .Split('\n')
-                                .SelectArr(line => line.ToCharArray()));
+                                    .LoopReplace(("#", "##"), ("O", "[]"), (".", ".."), ("@", "@."))
+                                    .Split('\n')
+                                    .SelectArr(line => line.ToCharArray()));
         var bot = map.Find(c => c == '@');
         map[bot] = '.';
-
+        
         foreach (var inst in inp.instructions)
         {
-            var next = bot + inst;
-            var nextC = map[next];
-
+            var next = bot + inst; var nextC = map[next];
+            
             switch (nextC)
             {
                 case '#':
