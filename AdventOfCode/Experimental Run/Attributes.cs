@@ -111,3 +111,6 @@ public class TestAttribute(string testInput) : Attribute
 {
     public readonly string TestInput = testInput.Replace("\r", "");
 }
+
+[AttributeUsage(AttributeTargets.Method)]
+public class Copy : Attribute;

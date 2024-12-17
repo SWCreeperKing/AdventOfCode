@@ -3,7 +3,7 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 16, "Reindeer Maze"), Run]
+[Day(2024, 16, "Reindeer Maze")]
 file class Day16
 {
     [ModifyInput] public static string ProcessInput(string input) => input;

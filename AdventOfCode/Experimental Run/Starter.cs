@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
+using TextCopy;
 using static AdventOfCode.Experimental_Run.Starter;
 
 namespace AdventOfCode.Experimental_Run;
@@ -70,7 +71,7 @@ public static class Starter
         var selected = 0;
         while ((selected = ListView(selected, days)) != days.Length - 1)
         {
-            Console.Clear();
+            Clr();
             if (selected == days.Length - 5) // cache leaderboard 
             {
                 CacheLeaderboard();
@@ -83,11 +84,12 @@ public static class Starter
                           .Select(i =>
                            {
                                WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
-                               return RunDay(i, out _, true).Where(t => t is not null)
-                                                            .Aggregate((t1, t2) => t1!.Value + t2!.Value);
+                               return RunDay(i, out _, true)
+                                     .Where(t => t is not null)
+                                     .Aggregate((t1, t2) => t1!.Value + t2!.Value);
                            })
                           .Aggregate((t1, t2) => t1!.Value + t2!.Value)!.Value;
-                
+
                 WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
@@ -129,8 +131,8 @@ public static class Starter
                 RunDay(dayKeysRaw[selected], out _); // run
             }
 
-            Console.Clear();
-            Console.WriteLine($"Selecting Year: {SelectedYear}");
+            Clr();
+            WriteLine($"Selecting Year: {SelectedYear}");
         }
     }
 
@@ -196,7 +198,7 @@ public static class Starter
             var parms = data.GetParams(part);
             if (parms.Length != 1)
             {
-                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
+                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.Year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
                 WriteLine($"[#red]Part [{part}] does not contain the right amount of parameters");
                 WriteLine($"[#red]{parms.Length} != 1");
                 if (!toContinue) return null;
@@ -206,7 +208,7 @@ public static class Starter
 
             if (parms[0].ParameterType != data.GetModifyReturnType())
             {
-                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
+                WriteLine($"\n[#red]===>   ERROR ON [{data.Owner.Year}] DAY [{data.Owner.Day}] PART [{part}]   <===");
                 WriteLine($"[#red]|==>   dumb dumb forgor :alien: about part {part}'s input params!");
                 WriteLine($"[#red] |=> {parms[0].ParameterType} != {data.GetModifyReturnType()}"
                    .Replace("System.", ""));
@@ -215,7 +217,8 @@ public static class Starter
                 return null;
             }
 
-            Console.WriteLine($"\nPart {part}:");
+            WriteLine(
+                $"\nYear: [#yellow]{data.Owner.Year}[#r]   Day: [#yellow]{data.Owner.Day}[#r]   Part [#yellow]{part}[#r]:");
 
             Sw.Start();
             var answer = data.Run(part);
@@ -223,10 +226,15 @@ public static class Starter
             EndWriteUpdates();
             data.Reset();
             success = data.CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]");
+
+            if (answer is not null && success != true && data.Copy[part - 1] && answer is not -1)
+            {
+                ClipboardService.SetText(answer.ToString() ?? string.Empty);
+            }
         }
         catch (TargetException e)
         {
-            Console.WriteLine($"[{e.Message}]");
+            WriteLine($"[{e.Message}]");
             if (e.Message == "Non-static method requires a target.")
             {
                 WriteLine("[#red]A Method is not static");
@@ -263,7 +271,7 @@ public static class Starter
 
         if (!toContinue) return Sw.Elapsed;
         WaitForAnyInput();
-        Console.Clear();
+        Clr();
         return Sw.Elapsed;
     }
 
@@ -290,6 +298,7 @@ public readonly record struct YearDayInfo(int year, int day)
 public readonly struct DayStructure
 {
     public readonly YearDayInfo Owner;
+    public readonly bool[] Copy;
     private readonly string Input;
     private readonly MethodInfo ResetDataMethod;
     private readonly MethodInfo ModifyInputMethod;
@@ -303,10 +312,15 @@ public readonly struct DayStructure
         var methods = DailyPuzzles[info].GetMethods();
         ResetDataMethod = methods.FirstOrNull<ResetDataAttribute>();
         ModifyInputMethod = methods.FirstOrNull<ModifyInputAttribute>();
-        PartMethods = [methods.FirstOrNull("part1"), methods.FirstOrNull("part2")];
+        var part1 = methods.FirstOrNull("part1");
+        var part2 = methods.FirstOrNull("part2");
+        PartMethods = [part1, part2];
+        Copy = [GetCopy(part1), GetCopy(part2)];
         PartTestAttributes = PartMethods.Select(m => m?.Attribute<TestAttribute>()).ToArray();
         PartAnswers = PartMethods.Select(m => m?.Attributes<AnswerAttribute>().ToArray()).ToArray();
         Input = LoadFile(info);
+
+        bool GetCopy(MethodInfo? info) { return info is not null && info.GetCustomAttributes<Copy>().Any(); }
     }
 
     public object ProcessInput(string data)
