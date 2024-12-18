@@ -229,7 +229,11 @@ public static class Starter
 
             if (answer is not null && success != true && data.Copy[part - 1] && answer is not -1)
             {
-                ClipboardService.SetText(answer.ToString() ?? string.Empty);
+                var str = answer.ToString() ?? string.Empty;
+                if (str is not "" and not "-1")
+                {
+                    ClipboardService.SetText(str);
+                }
             }
         }
         catch (TargetException e)

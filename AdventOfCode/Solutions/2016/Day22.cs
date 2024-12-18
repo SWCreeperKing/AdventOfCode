@@ -74,8 +74,6 @@ file class State(Pos pos, int steps, Direction dir = Direction.Center)
 {
     public readonly int Steps = steps;
 
-    public override int GetHashCode() { return Position.GetHashCode(); }
-
     public override int GetValue(char mapVal) { return Steps; }
 
     public override State MakeNewState(Matrix2d<char> map, Pos newPos, Direction dir)

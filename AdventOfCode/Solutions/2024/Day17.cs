@@ -1,6 +1,6 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 17, "wip"), Run]
+[Day(2024, 17, "Chronospatial Computer")]
 file class Day17
 {
     [ModifyInput] public static string ProcessInput(string input) => input;

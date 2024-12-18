@@ -121,13 +121,11 @@ file class Day16
     }
 }
 
-public class State(Pos position, Direction direction, Pos[] path, int value = 0)
+file class State(Pos position, Direction direction, Pos[] path, int value = 0)
     : State<State, char, int>(position, direction)
 {
     public Pos[] Path = path;
     public int Value = value;
-
-    public override int GetHashCode() { return Position.GetHashCode(); }
 
     public override int GetValue(char mapVal) { return Value; }
 

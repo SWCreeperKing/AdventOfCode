@@ -47,7 +47,7 @@ public abstract class State<T, TM, TCompare>(Pos position, Direction direction)
     public readonly Direction Direction = direction;
     public readonly Pos Position = position;
 
-    public abstract override int GetHashCode();
+    public override int GetHashCode() { return Position.GetHashCode(); }
     public abstract TCompare GetValue(TM mapVal);
     public abstract T MakeNewState(Matrix2d<TM> map, Pos newPos, Direction dir);
 
