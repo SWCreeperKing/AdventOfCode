@@ -22,20 +22,6 @@ public class Program
     {
         CursorVis(false);
         EnableAscii();
-
-        // var pos = GetCursor();
-        // TimeTable(2099, [
-        //     (26, new TimeSpan(5, 3, 2), true, new TimeSpan(0, 3, 2), false)
-        // ], true);
-        //
-        // WaitForAnyInput();
-        // SetCursor(pos);
-        // TimeTable(2099, [
-        //     (26, new TimeSpan(5, 3, 2), true, new TimeSpan(0, 3, 2), false),
-        //     (62, null, null, new TimeSpan(9, 2, 32, 25, 163, 128), true)
-        // ], false);
-        // WaitForAnyInput();
-        // return;
         InitHttpClient();
         Start();
     }

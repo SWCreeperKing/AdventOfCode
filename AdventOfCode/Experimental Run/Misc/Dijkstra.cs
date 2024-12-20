@@ -32,8 +32,8 @@ public class Dijkstra<T, TM, TCompare>(Matrix2d<TM> set, Func<TCompare, TCompare
                 if (!set.PositionExists(newPos)) continue;
                 if (!state.ValidState(set, dir, dxy)) continue;
 
-                state.MakeNewState(set, newPos, dir)
-                     .InlineNoReturn(newState => Check.Enqueue(newState, newState.GetValue(set[newPos])));
+                var newState = state.MakeNewState(set, newPos, dir);
+                newState?.InlineNoReturn(newState => Check.Enqueue(newState, newState.GetValue(set[newPos])));
             }
         }
 

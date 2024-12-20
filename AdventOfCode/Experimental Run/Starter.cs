@@ -24,7 +24,10 @@ public static class Starter
     [
         new("Day", ColumnSetting.Align.Center),
         new("Result", ColumnSetting.Align.Center),
-        ..Helper.TimeColors.Select(s => new ColumnSetting(s, ColumnSetting.Align.Right, ' '))
+        ..Helper.TimeColors[..^1].Select(s => new ColumnSetting(s, ColumnSetting.Align.Right, ' ')),
+        new(Helper.TimeColors[^1], ColumnSetting.Align.Right),
+        new("Ranking", ColumnSetting.Align.Right),
+        new("Time", ColumnSetting.Align.Right)
     ];
 
     private static readonly string[] RunPrompts =
@@ -87,64 +90,26 @@ public static class Starter
             }
             else if (selected == days.Length - 3) // run all
             {
-                // var time = AllPuzzles[SelectedYear]
-                //           .OrderBy(dp => dp.Day)
-                //           .Select(i =>
-                //            {
-                //                WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
-                //                return RunDay(i, out _, true)
-                //                      .Where(t => t is not null)
-                //                      .Aggregate((t1, t2) => t1!.Value + t2!.Value);
-                //            })
-                //           .Aggregate((t1, t2) => t1!.Value + t2!.Value)!.Value;
-
-                var puzzles = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ToArray();
-                var time = TimeSpan.Zero;
-                var pos = GetCursor();
-                List<(int day, TimeSpan? pt1, bool? state1, TimeSpan? pt2, bool? state2)> dayParts = [];
-                for (var i = 0; i < puzzles.Length; i++)
-                {
-                    SetCursor(pos);
-                    var dayRes = RunDay(puzzles[i], out var res, true, false);
-                    dayParts.Add((puzzles[i].Day, dayRes[0], res[0], dayRes[1], res[1]));
-                    TimeTable(SelectedYear, dayParts, i < puzzles.Length - 1);
-
-                    if (dayRes[0] is not null)
-                    {
-                        time += dayRes[0]!.Value;
-                    }
-
-                    if (dayRes[1] is not null)
-                    {
-                        time += dayRes[1]!.Value;
-                    }
-                }
-
+                MakeTable(out var time, out _);
                 WriteLine($"running [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
             else if (selected == days.Length - 4) // make leaderboard md
             {
-                Dictionary<int, (bool?[], TimeSpan?[])> stats = [];
-                var totalTime = TimeSpan.Zero;
-                foreach (var info in AllPuzzles[SelectedYear].OrderBy(dp => dp.Day))
-                {
-                    WriteLine($"\n=== Day [#darkyellow]{info}[#r] ===");
-                    var times = RunDay(info, out var successes, true);
-                    stats[info.Day] = (successes, times);
-                    totalTime += times.Sum();
-                }
-
                 var md = $"{SolutionsFolder}/{SelectedYear}/README.md";
                 if (File.Exists(md)) File.Delete(md);
 
-                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")) CacheLeaderboard();
+                if (!File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt"))
+                {
+                    CacheLeaderboard();
+                }
+
+                MakeTable(out var totalTime, out var stats);
 
                 var data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")
                                .SuperSplit('\n', ',');
 
                 File.WriteAllText(md, stats.MakeFile(totalTime, SelectedYear, data));
-
                 WriteLine("README.md created!");
                 WaitForAnyInput();
             }
@@ -163,6 +128,55 @@ public static class Starter
 
             Clr();
             WriteLine($"Selecting Year: {SelectedYear}");
+        }
+    }
+
+    public static void MakeTable(out TimeSpan totalTime, out Dictionary<int, (bool?[], TimeSpan?[])> stats)
+    {
+        var puzzles = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ToArray();
+        totalTime = TimeSpan.Zero;
+        var pos = GetCursor();
+        stats = [];
+        List<TableItem> dayParts = [];
+
+        Dictionary<int, (string time, int place)[]> data = [];
+        if (File.Exists($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt"))
+        {
+            data = File.ReadAllText($"{SolutionsFolder}/{SelectedYear}/leaderboardCache.txt")
+                       .SuperSplit('\n', ',')
+                       .ToDictionary(arr => int.Parse(arr[0]), arr => ((string time, int place)[])
+                        [
+                            (arr[1].Replace("&gt;", ">"), arr[2] == "-" ? -2 : int.Parse(arr[2])),
+                            (arr[4].Replace("&gt;", ">"), arr[5] == "-" ? -2 : int.Parse(arr[5]))
+                        ]);
+        }
+
+        for (var i = 0; i < puzzles.Length; i++)
+        {
+            SetCursor(pos);
+            (string time, int place) part1Placement = (" Not Cached ", -1);
+            (string time, int place) part2Placement = (" Not Cached ", -1);
+            if (data.TryGetValue(puzzles[i].Day, out var placement))
+            {
+                part1Placement = placement[0];
+                part2Placement = placement[1];
+            }
+
+            var dayRes = RunDay(puzzles[i], out var res, true, false);
+            dayParts.Add(new TableItem(puzzles[i].Day, dayRes[0], res[0], part1Placement.place, part1Placement.time,
+                dayRes[1], res[1], part2Placement.place, part2Placement.time));
+            TimeTable(SelectedYear, dayParts, i < puzzles.Length - 1);
+            stats[puzzles[i].Day] = (res, dayRes);
+
+            if (dayRes[0] is not null)
+            {
+                totalTime += dayRes[0]!.Value;
+            }
+
+            if (dayRes[1] is not null)
+            {
+                totalTime += dayRes[1]!.Value;
+            }
         }
     }
 
@@ -333,26 +347,29 @@ public static class Starter
               .TrimEnd('\n');
     }
 
-    public static void TimeTable(int year,
-        List<(int day, TimeSpan? pt1, bool? state1, TimeSpan? pt2, bool? state2)> infos, bool running)
+    public static void TimeTable(int year, List<TableItem> infos, bool running)
     {
         List<string[]> items = [];
-        foreach (var (day, pt1, stateP1, pt2, stateP2) in infos)
+        foreach (var (day, pt1, stateP1, place1, time1, pt2, stateP2, place2, time2) in infos)
         {
             if (pt1 is not null)
             {
-                items.Add([$" [#yellow]{day}[#r] - pt. [#blue]1 ", StateSwitch(stateP1), ..pt1.TimeArr()]);
+                items.Add(
+                    [$" [#yellow]{day}[#r] - pt. [#blue]1 ", StateSwitch(stateP1), ..pt1.TimeArr(), place1, time1]);
             }
 
             if (pt2 is not null)
             {
-                items.Add([$" [#yellow]{day}[#r] - pt. [#cyan]2 ", StateSwitch(stateP2), ..pt2.TimeArr()]);
+                items.Add(
+                    [$" [#yellow]{day}[#r] - pt. [#cyan]2 ", StateSwitch(stateP2), ..pt2.TimeArr(), place2, time2]);
             }
         }
 
         if (running)
         {
-            items.Add(["[@blink]Running", "[@blink]???", "", "", "", "", "", "[@blink]..."]);
+            items.Add([
+                "[@blink]Running", "[@blink]???", "", "", "", "", "", "[@blink]...", "[@blink]???", "[@blink]???"
+            ]);
         }
 
         Table($" [#yellow]{year}[#r] ", false, ColumnSettings, items);
@@ -474,5 +491,57 @@ public readonly struct DayStructure
             AnswerState.Correct => true,
             _ => false
         };
+    }
+}
+
+public readonly struct TableItem(
+    int day,
+    TimeSpan? pt1,
+    bool? state1,
+    int place1,
+    string time1,
+    TimeSpan? pt2,
+    bool? state2,
+    int place2,
+    string time2
+)
+{
+    public readonly int Day = day;
+
+    public readonly TimeSpan? Pt1 = pt1;
+    public readonly bool? State1 = state1;
+    public readonly int Place1 = place1;
+    public readonly string Time1 = time1;
+
+    public readonly TimeSpan? Pt2 = pt2;
+    public readonly bool? State2 = state2;
+    public readonly int Place2 = place2;
+    public readonly string Time2 = time2;
+
+    public void Deconstruct(out int day, out TimeSpan? pt1, out bool? state1, out string place1, out string time1,
+        out TimeSpan? pt2,
+        out bool? state2, out string place2, out string time2)
+    {
+        day = Day;
+
+        pt1 = Pt1;
+        state1 = State1;
+        place1 = Place1 switch
+        {
+            -2 => "  -  ",
+            -1 => " Not Cached ",
+            _ => $" {Place1:###,###} "
+        };
+        time1 = Time1;
+
+        pt2 = Pt2;
+        state2 = State2;
+        place2 = Place2 switch
+        {
+            -2 => "  -  ",
+            -1 => " Not Cached ",
+            _ => $" {Place2:###,###} "
+        };
+        time2 = Time2;
     }
 }
