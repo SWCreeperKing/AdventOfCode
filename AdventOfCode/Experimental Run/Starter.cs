@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
 using TextCopy;
+using static System.Linq.Enumerable;
 using static AdventOfCode.Experimental_Run.Starter;
 
 namespace AdventOfCode.Experimental_Run;
@@ -18,6 +19,13 @@ public static class Starter
     public static readonly Dictionary<YearDayInfo, Type> DailyPuzzles = [];
 
     private static readonly Stopwatch Sw = new();
+
+    private static readonly ColumnSetting[] ColumnSettings =
+    [
+        new("Day", ColumnSetting.Align.Center),
+        new("Result", ColumnSetting.Align.Center),
+        ..Helper.TimeColors.Select(s => new ColumnSetting(s, ColumnSetting.Align.Right, ' '))
+    ];
 
     private static readonly string[] RunPrompts =
         ["(re)Cache Leaderboard Data", "Make Leaderboard MD", "Run All", "Switch Year", "Exit"];
@@ -79,18 +87,40 @@ public static class Starter
             }
             else if (selected == days.Length - 3) // run all
             {
-                var time = AllPuzzles[SelectedYear]
-                          .OrderBy(dp => dp.Day)
-                          .Select(i =>
-                           {
-                               WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
-                               return RunDay(i, out _, true)
-                                     .Where(t => t is not null)
-                                     .Aggregate((t1, t2) => t1!.Value + t2!.Value);
-                           })
-                          .Aggregate((t1, t2) => t1!.Value + t2!.Value)!.Value;
+                // var time = AllPuzzles[SelectedYear]
+                //           .OrderBy(dp => dp.Day)
+                //           .Select(i =>
+                //            {
+                //                WriteLine($"\n=== Day [#darkyellow]{i}[#r] ===");
+                //                return RunDay(i, out _, true)
+                //                      .Where(t => t is not null)
+                //                      .Aggregate((t1, t2) => t1!.Value + t2!.Value);
+                //            })
+                //           .Aggregate((t1, t2) => t1!.Value + t2!.Value)!.Value;
 
-                WriteLine($"\nrunning [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
+                var puzzles = AllPuzzles[SelectedYear].OrderBy(dp => dp.Day).ToArray();
+                var time = TimeSpan.Zero;
+                var pos = GetCursor();
+                List<(int day, TimeSpan? pt1, bool? state1, TimeSpan? pt2, bool? state2)> dayParts = [];
+                for (var i = 0; i < puzzles.Length; i++)
+                {
+                    SetCursor(pos);
+                    var dayRes = RunDay(puzzles[i], out var res, true, false);
+                    dayParts.Add((puzzles[i].Day, dayRes[0], res[0], dayRes[1], res[1]));
+                    TimeTable(SelectedYear, dayParts, i < puzzles.Length - 1);
+
+                    if (dayRes[0] is not null)
+                    {
+                        time += dayRes[0]!.Value;
+                    }
+
+                    if (dayRes[1] is not null)
+                    {
+                        time += dayRes[1]!.Value;
+                    }
+                }
+
+                WriteLine($"running [#cyan]{SelectedYear}[#r] Took [{time.Time()}]\n");
                 WaitForAnyInput();
             }
             else if (selected == days.Length - 4) // make leaderboard md
@@ -154,7 +184,7 @@ public static class Starter
                     .ToArray();
     }
 
-    public static TimeSpan?[] RunDay(YearDayInfo info, out bool?[] successes, bool runAll = false)
+    public static TimeSpan?[] RunDay(YearDayInfo info, out bool?[] successes, bool runAll = false, bool print = true)
     {
         successes = [null, null];
         if (!DailyPuzzlesCache.TryGetValue(info, out var data)) data = DailyPuzzlesCache[info] = new DayStructure(info);
@@ -163,32 +193,44 @@ public static class Starter
         if (data.HasPart(1)) run.Add("Part 1");
         if (data.HasPart(2)) run.Add("Part 2");
 
-        if (runAll) return [RunPart(data, 1, out successes[0], false), RunPart(data, 2, out successes[1], false)];
+        if (runAll)
+        {
+            return [RunPart(data, 1, out successes[0], false, print), RunPart(data, 2, out successes[1], false, print)];
+        }
 
         if (run.Count == 2) run.Add("Both");
 
         run.Add($"Back to {SelectedYear}");
 
         var selected = 0;
-        WriteLine($"=== Year [#cyan]{info.Year}[#r] | Day [#darkyellow]{info.Day}[#r] ===");
+        if (print)
+        {
+            WriteLine($"=== Year [#cyan]{info.Year}[#r] | Day [#darkyellow]{info.Day}[#r] ===");
+        }
+
         while ((selected = ListView(selected, run.ToArray())) != run.Count - 1)
         {
-            Console.Clear();
+            Clr();
             switch (run[selected])
             {
                 case "Part 1":
-                    return [RunPart(data, 1, out successes[0]), null];
+                    return [RunPart(data, 1, out successes[0], print), null];
                 case "Part 2":
-                    return [null, RunPart(data, 2, out successes[1])];
+                    return [null, RunPart(data, 2, out successes[1], print)];
                 case "Both":
-                    return [RunPart(data, 1, out successes[0], false), RunPart(data, 2, out successes[1])];
+                    return
+                    [
+                        RunPart(data, 1, out successes[0], false, print),
+                        RunPart(data, 2, out successes[1], true, print)
+                    ];
             }
         }
 
         return [null, null];
     }
 
-    public static TimeSpan? RunPart(DayStructure data, int part, out bool? success, bool toContinue = true)
+    public static TimeSpan? RunPart(DayStructure data, int part, out bool? success, bool toContinue = true,
+        bool print = true)
     {
         success = false;
         if (!data.HasPart(part)) return null;
@@ -217,17 +259,20 @@ public static class Starter
                 return null;
             }
 
-            WriteLine(
-                $"\nYear: [#yellow]{data.Owner.Year}[#r]   Day: [#yellow]{data.Owner.Day}[#r]   Part [#yellow]{part}[#r]:");
+            if (print)
+            {
+                WriteLine(
+                    $"\nYear: [#yellow]{data.Owner.Year}[#r]   Day: [#yellow]{data.Owner.Day}[#r]   Part [#yellow]{part}[#r]:");
+            }
 
             Sw.Start();
             var answer = data.Run(part);
             Sw.Stop();
             EndWriteUpdates();
             data.Reset();
-            success = data.CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]");
+            success = data.CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]", print);
 
-            if (answer is not null && success != true && data.Copy[part - 1] && answer is not -1)
+            if (print && answer is not null && success is null && data.Copy[part - 1] && answer is not -1)
             {
                 var str = answer.ToString() ?? string.Empty;
                 if (str is not "" and not "-1")
@@ -287,6 +332,40 @@ public static class Starter
               .Replace("\r", string.Empty)
               .TrimEnd('\n');
     }
+
+    public static void TimeTable(int year,
+        List<(int day, TimeSpan? pt1, bool? state1, TimeSpan? pt2, bool? state2)> infos, bool running)
+    {
+        List<string[]> items = [];
+        foreach (var (day, pt1, stateP1, pt2, stateP2) in infos)
+        {
+            if (pt1 is not null)
+            {
+                items.Add([$" [#yellow]{day}[#r] - pt. [#blue]1 ", StateSwitch(stateP1), ..pt1.TimeArr()]);
+            }
+
+            if (pt2 is not null)
+            {
+                items.Add([$" [#yellow]{day}[#r] - pt. [#cyan]2 ", StateSwitch(stateP2), ..pt2.TimeArr()]);
+            }
+        }
+
+        if (running)
+        {
+            items.Add(["[@blink]Running", "[@blink]???", "", "", "", "", "", "[@blink]..."]);
+        }
+
+        Table($" [#yellow]{year}[#r] ", false, ColumnSettings, items);
+        return;
+
+        string StateSwitch(bool? state)
+        {
+            if (state is null) return "[#yellow]possible";
+            return state.Value ? "[#green]success" : "[#red]fail";
+        }
+    }
+
+    public static string TimeString(TimeSpan? time) { return CleanColors(time.Time()); }
 }
 
 public readonly record struct YearDayInfo(int year, int day)
@@ -350,12 +429,16 @@ public readonly struct DayStructure
         return ProcessInput(PartTestAttributes[part - 1] is null ? Input : PartTestAttributes[part - 1].TestInput);
     }
 
-    public bool? CheckAnswer(int part, object answer, string extra)
+    public bool? CheckAnswer(int part, object answer, string extra, bool print = true)
     {
         var answers = PartAnswers[part - 1];
         if (answer is null)
         {
-            WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+            if (print)
+            {
+                WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+            }
+
             return null;
         }
 
@@ -371,12 +454,20 @@ public readonly struct DayStructure
 
         if (states.Length == 0)
         {
-            WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+            if (print)
+            {
+                WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+            }
+
             return null;
         }
 
         var state = states.Order().First();
-        WriteLine(state.String(answer, extra));
+        if (print)
+        {
+            WriteLine(state.String(answer, extra));
+        }
+
         return state switch
         {
             AnswerState.Possible => null,
