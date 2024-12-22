@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using AdventOfCode.Experimental_Run.Misc;
 using TextCopy;
-using static System.Linq.Enumerable;
 using static AdventOfCode.Experimental_Run.Starter;
 
 namespace AdventOfCode.Experimental_Run;

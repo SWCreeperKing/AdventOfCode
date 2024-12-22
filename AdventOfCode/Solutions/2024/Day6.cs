@@ -47,7 +47,7 @@ file class Day6
             }
 
             pos = next;
-            if ((unique[pos] & dir) != 0) return 2;
+            if (unique[pos].HasFlag(dir)) return 2;
             unique[pos] |= dir;
             return 0;
         }

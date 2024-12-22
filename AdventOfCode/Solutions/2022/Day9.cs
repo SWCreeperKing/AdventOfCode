@@ -1,4 +1,3 @@
-using static AdventOfCode.Experimental_Run.Misc.Enums;
 using static CreepyUtil.Direction;
 
 
@@ -58,7 +57,7 @@ file class Day9
         return tailPositions.Unique();
     }
 
-    private static bool IsTailBehind(Pos front, Pos end) { return SurroundDiagonal.Any(xy => end + xy == front); }
+    private static bool IsTailBehind(Pos front, Pos end) { return Pos.SurroundDiagonal.Any(xy => end + xy == front); }
 
     private static Pos Move(Pos pos, Direction dir) { return pos.Move(dir); }
 }

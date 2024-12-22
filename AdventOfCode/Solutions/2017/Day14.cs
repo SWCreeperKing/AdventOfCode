@@ -1,5 +1,3 @@
-using static AdventOfCode.Experimental_Run.Misc.Enums;
-
 namespace AdventOfCode.Solutions._2017;
 
 [Day(2017, 14, "Disk Defragmentation")]
@@ -47,7 +45,7 @@ file class Day14
                 var pos = scan.Dequeue();
                 map[pos] = '#';
 
-                foreach (var newPos in Surround.Select(dxy => dxy + pos).Where(map.PositionExists))
+                foreach (var newPos in Pos.Surround.Select(dxy => dxy + pos).Where(map.PositionExists))
                 {
                     if (pos == newPos) continue;
                     if (!seen.Add(newPos)) continue;
