@@ -49,7 +49,7 @@ file class Day18
             }
             catch (Exception)
             {
-                WriteLine(i);
+                // WriteLine(i);
                 return $"{inp[i].X},{inp[i].Y}";
             }
         }

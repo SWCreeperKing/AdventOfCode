@@ -11,10 +11,6 @@ namespace AdventOfCode;
 
 public static class Helper
 {
-    public static readonly string[] TimeColors =
-    [
-        "[#darkred]d", "[#red]hr", "[#orange]min", "[#yellow]sec", "[#skyblue]ms", "[#lightgreen]us"
-    ];
 
     // public static Regex NumberOnlyRegex = new(@"^\d+$", RegexOptions.Compiled);
     public static Regex SpaceRegex = new(@"\s+", RegexOptions.Compiled);
@@ -249,55 +245,6 @@ public static class Helper
     {
         if (arr.Count() != boolArr.Count) throw new ArgumentException($"GetFrom error: {arr.Count()} != {boolArr}");
         return arr.Where((_, i) => boolArr.ElementAt(i));
-    }
-
-    public static string Time(this Stopwatch sw) { return sw.Elapsed.Time(); }
-
-    public static string Time(this TimeSpan? elapsed)
-    {
-        return elapsed is null ? "[#mediumpurple]null[#r]" : elapsed.Value.Time();
-    }
-
-    public static string[] TimeArr(this TimeSpan? elapsed)
-    {
-        if (elapsed is null) return ["", "", "", "", "", "[#mediumpurple]null[#r]"];
-        var arr = elapsed.Value.TimeArr();
-        if (arr.Length == 6) return arr;
-        var fullArr = new string[6];
-        for (int i = fullArr.Length - 1, j = arr.Length - 1; i >= 0 && j >= 0; i--, j--)
-        {
-            fullArr[i] = arr[j];
-        }
-        return fullArr;
-    }
-
-    public static string Time(this TimeSpan elapsed)
-    {
-        StringBuilder sb = new();
-        if (elapsed.Days > 0) sb.Append("[#darkred]").Append(elapsed.Days).Append("d ");
-        if (elapsed.Hours > 0) sb.Append("[#red]").Append(elapsed.Hours).Append("hr ");
-        if (elapsed.Minutes > 0) sb.Append("[#orange]").Append(elapsed.Minutes).Append("min ");
-        if (elapsed.Seconds > 0) sb.Append("[#yellow]").Append(elapsed.Seconds).Append("sec ");
-        if (elapsed.Milliseconds > 0) sb.Append("[#skyblue]").Append(elapsed.Milliseconds).Append("ms ");
-
-        var micro = elapsed.Nanoseconds / 1000f + elapsed.Microseconds;
-        if (micro > 0) sb.Append($"[#lightgreen]{micro:####,##0.#}us");
-        sb.Append("[#r]");
-        return sb.ToString().TrimEnd();
-    }
-
-    public static string[] TimeArr(this TimeSpan elapsed)
-    {
-        List<string> arr = [];
-        if (elapsed.Days > 0) arr.Add($"[#darkred]{elapsed.Days}d");
-        if (elapsed.Hours > 0 || arr.Count > 0) arr.Add($"[#red]{elapsed.Hours}hr");
-        if (elapsed.Minutes > 0 || arr.Count > 0) arr.Add($"[#orange]{elapsed.Minutes}min");
-        if (elapsed.Seconds > 0 || arr.Count > 0) arr.Add($"[#yellow]{elapsed.Seconds}sec");
-        if (elapsed.Milliseconds > 0 || arr.Count > 0) arr.Add($"[#skyblue]{elapsed.Milliseconds}ms");
-
-        var micro = elapsed.Nanoseconds / 1000f + elapsed.Microseconds;
-        if (micro > 0 || arr.Count > 0) arr.Add($"[#lightgreen]{micro:####,##0.#}us");
-        return arr.ToArray();
     }
 
     public static string String<T>(this IEnumerable<T> arr) { return $"[{arr.Join(',')}]"; }

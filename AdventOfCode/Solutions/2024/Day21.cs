@@ -40,7 +40,6 @@ file class Day21
                 });
             }
 
-            WriteLine(path.Count);
             sum += path.Values.Sum() * int.Parse(line[..3]);
         }
 

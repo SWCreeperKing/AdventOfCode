@@ -10,6 +10,7 @@ namespace AdventOfCode.Experimental_Run;
 
 public static class Starter
 {
+    private const bool TableUseTimeIdentifiers = false;
     private const string SolutionsFolder = "../../../Solutions";
 
     public static readonly Dictionary<int, List<YearDayInfo>> AllPuzzles = [];
@@ -21,10 +22,10 @@ public static class Starter
 
     private static readonly ColumnSetting[] ColumnSettings =
     [
-        new("Day", ColumnSetting.Align.Center),
+        new("Day", ColumnSetting.Align.Right),
         new("Result", ColumnSetting.Align.Center),
-        ..Helper.TimeColors[..^1].Select(s => new ColumnSetting(s, ColumnSetting.Align.Right, ' ')),
-        new(Helper.TimeColors[^1], ColumnSetting.Align.Right),
+        ..TimeHelper.TimeColors[..^1].Select(s => new ColumnSetting(s, ColumnSetting.Align.Right, ' ')),
+        new(TimeHelper.TimeColors[^1], ColumnSetting.Align.Right),
         new("Ranking", ColumnSetting.Align.Right),
         new("Time", ColumnSetting.Align.Right)
     ];
@@ -162,8 +163,9 @@ public static class Starter
             }
 
             var dayRes = RunDay(puzzles[i], out var res, true, false);
-            dayParts.Add(new TableItem(puzzles[i].Day, dayRes[0], res[0], part1Placement.place, part1Placement.time,
-                dayRes[1], res[1], part2Placement.place, part2Placement.time));
+            dayParts.Add(new TableItem(puzzles[i].Day, dayRes[0], res[0], part1Placement.place,
+                CleanTime(part1Placement.time),
+                dayRes[1], res[1], part2Placement.place, CleanTime(part2Placement.time)));
             TimeTable(SelectedYear, dayParts, i < puzzles.Length - 1);
             stats[puzzles[i].Day] = (res, dayRes);
 
@@ -177,6 +179,19 @@ public static class Starter
                 totalTime += dayRes[1]!.Value;
             }
         }
+    }
+
+    public static string CleanTime(string time)
+    {
+        var chars = time.ToCharArray();
+
+        for (var i = 0; i < chars.Length; i++)
+        {
+            if (chars[i] is not '0' and not ':') break;
+            chars[i] = ' ';
+        }
+
+        return chars.Join();
     }
 
     public static void CacheLeaderboard()
@@ -354,13 +369,13 @@ public static class Starter
             if (pt1 is not null)
             {
                 items.Add(
-                    [$" [#yellow]{day}[#r] - pt. [#blue]1 ", StateSwitch(stateP1), ..pt1.TimeArr(), place1, time1]);
+                    [$" [#yellow]{day}[#r] - pt. [#blue]1 ", StateSwitch(stateP1), ..pt1.TimeArr(TableUseTimeIdentifiers), place1, time1]);
             }
 
             if (pt2 is not null)
             {
                 items.Add(
-                    [$" [#yellow]{day}[#r] - pt. [#cyan]2 ", StateSwitch(stateP2), ..pt2.TimeArr(), place2, time2]);
+                    [$" [#yellow]{day}[#r] - pt. [#cyan]2 ", StateSwitch(stateP2), ..pt2.TimeArr(TableUseTimeIdentifiers), place2, time2]);
             }
         }
 
