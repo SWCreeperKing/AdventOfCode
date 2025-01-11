@@ -20,6 +20,13 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
 
     private int[] Years;
     private string[] YearStrings;
+    private bool YearLeaderboard;
+    private bool IsLeaderboardActive;
+    private bool RunInSync;
+    private bool CloseWhenFinished;
+    private int LeaderboardDay;
+    private TimeSpan LeaderboardTotal;
+    private Dictionary<int, TimeSpan[]> LeaderboardTotalCached = [];
 
     public override void Init()
     {
@@ -55,14 +62,7 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
 
     public override void Update()
     {
-        foreach (var window in ChildWindowsQueueRemoval)
-        {
-            ChildWindows.Remove(window);
-            OpenWindows.Remove(window.Name);
-        }
-
-        ChildWindowsQueueRemoval.Clear();
-
+        RemoveQueueClosed();
         foreach (var window in ChildWindows)
         {
             window.Update();
@@ -73,11 +73,135 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
     {
         // ImGui.ShowDemoWindow();
         // return;
+        if (!YearLeaderboard)
+        {
+            YearUi();
+        }
+        else
+        {
+            LeaderboardUi();
+        }
+    }
+
+    public void LeaderboardUi()
+    {
+        var year = Years[SelectedYear];
+        ImGui.SeparatorText($"{year}");
+
+        if (!IsLeaderboardActive)
+        {
+            if (ImGui.Button("Close Run Year UI"))
+            {
+                YearLeaderboard = false;
+            }
+
+            ImGui.SameLine();
+            ImGui.Checkbox("Run Days Synchronously", ref RunInSync);
+            ImGui.SameLine();
+            ImGui.Checkbox("Close Days When Finished", ref CloseWhenFinished);
+
+            if (ImGui.Button("Run Leaderboard"))
+            {
+                IsLeaderboardActive = true;
+                LeaderboardTotalCached.Clear();
+                LeaderboardTotal = TimeSpan.Zero;
+                LeaderboardDay = 0;
+
+                if (!RunInSync)
+                {
+                    Puzzles[year].ForEach(Run);
+                    LeaderboardDay = 25;
+                }
+            }
+        }
+        else
+        {
+            LeaderboardTotal = ChildWindows.Where(window => !window.CanClose)
+                                           .Aggregate(TimeSpan.Zero, (ts, window) => ts + window.Time);
+
+            foreach (var window in ChildWindows.Where(window => window.CanClose))
+            {
+                if (LeaderboardTotalCached.ContainsKey(window.Day)) continue;
+                LeaderboardTotalCached[window.Day] = [window.Pt1TotalTime, window.Pt2TotalTime];
+            }
+
+            if ((ChildWindows.All(window => window.CanClose) || ChildWindows.Count <= 0))
+            {
+                if (LeaderboardDay >= 25 && ImGui.Button("Close Leaderboard"))
+                {
+                    IsLeaderboardActive = false;
+                    RemoveClosables();
+                }
+                else if (RunInSync && LeaderboardDay < 25)
+                {
+                    var puzzle = Puzzles[year][LeaderboardDay++];
+                    Run(puzzle);
+                }
+            }
+
+            if (CloseWhenFinished)
+            {
+                RemoveClosables();
+            }
+        }
+
+        if (LeaderboardTotal != TimeSpan.Zero)
+        {
+            RlImgui.RichText(
+                $"Total Run: [{LeaderboardTotalCached.Values.Aggregate(LeaderboardTotal, (ts, arr) => ts + arr[0] + arr[1]).Time()}]");
+        }
+        else if (LeaderboardTotalCached.Count != 0)
+        {
+            RlImgui.RichText(
+                $"Total Run: [{LeaderboardTotalCached.Values.Aggregate(TimeSpan.Zero, (ts, arr) => ts + arr[0] + arr[1]).Time()}]");
+        }
+
+        if (ChildWindows.Count == 0) return;
+        if (ImGui.BeginChild("Puzzles", Vector2.Zero, ImGuiChildFlags.Borders))
+        {
+            for (var i = ChildWindows.Count - 1; i >= 0; i--)
+            {
+                var window = ChildWindows[i];
+                if (ImGui.BeginChild(window.Name, Vector2.Zero, ChildFlags | ImGuiChildFlags.AutoResizeY))
+                {
+                    ImGui.SeparatorText(window.Name);
+                    window.Render();
+                }
+
+                ImGui.EndChild();
+            }
+        }
+
+        ImGui.EndChild();
+    }
+
+    public void YearUi()
+    {
         ImGui.Combo("Selected Year", ref SelectedYear, YearStrings, YearStrings.Length);
         var year = Years[SelectedYear];
+        var anyChildrenOpen = ChildWindows.Any(window => !window.CanClose);
+        var anyChildren = ChildWindows.Any(window => window.CanClose);
 
-        if (ImGui.Button("Open Run Year UI"))
+        if (!anyChildrenOpen && ImGui.Button("Open Run Year UI"))
         {
+            ChildWindowsQueueRemoval.AddRange(ChildWindows.Where(window => window.CanClose));
+            YearLeaderboard = true;
+            IsLeaderboardActive = false;
+            RunInSync = true;
+            CloseWhenFinished = true;
+            LeaderboardTotalCached.Clear();
+            LeaderboardTotal = TimeSpan.Zero;
+            LeaderboardDay = 0;
+        }
+
+        if (!anyChildrenOpen && anyChildren)
+        {
+            ImGui.SameLine();
+        }
+
+        if (anyChildren && ImGui.Button("Close All Child Windows"))
+        {
+            RemoveClosables();
         }
 
         if (ImGui.BeginChild("tableChild", Vector2.Zero, ChildFlags))
@@ -97,6 +221,13 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
                     ImGui.TableNextColumn();
                     ImGui.Text(puzzle.Name);
                     ImGui.TableNextColumn();
+
+                    if (OpenWindows.Contains(puzzle.Id))
+                    {
+                        ImGui.Text("     ->");
+                        continue;
+                    }
+
                     ImGui.PushID(puzzle.ToString());
                     if (ImGui.Button("Run", ButtonSize))
                     {
@@ -114,18 +245,20 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
 
         if (ChildWindows.Count < 1) return;
         ImGui.SameLine();
-        ImGui.BeginChild("Puzzles", Vector2.Zero, ChildFlags | ImGuiChildFlags.AutoResizeY);
-        foreach (var window in ChildWindows)
+        if (ImGui.BeginChild("Puzzles", Vector2.Zero, ImGuiChildFlags.Borders))
         {
-            if (ImGui.BeginChild(window.Name, Vector2.Zero, ChildFlags | ImGuiChildFlags.AutoResizeY))
+            for (var i = ChildWindows.Count - 1; i >= 0; i--)
             {
-                ImGui.SeparatorText(window.Name);
-                window.Render();
+                var window = ChildWindows[i];
+                if (ImGui.BeginChild(window.Name, Vector2.Zero, ChildFlags | ImGuiChildFlags.AutoResizeY))
+                {
+                    ImGui.SeparatorText(window.Name);
+                    window.Render();
+                }
+
+                ImGui.EndChild();
             }
-
-            ImGui.EndChild();
         }
-
 
         ImGui.EndChild();
     }
@@ -138,5 +271,22 @@ public class UserInterface() : Backbone.Backbone("Advent of Code")
             (ChildWindow)Activator.CreateInstance(windowType.MakeGenericType(beacon.ParentGenericType), beacon);
         window!.Init();
         ChildWindows.Add(window);
+    }
+
+    public void RemoveClosables()
+    {
+        ChildWindowsQueueRemoval.AddRange(ChildWindows.Where(window => window.CanClose));
+        RemoveQueueClosed();
+    }
+
+    public void RemoveQueueClosed()
+    {
+        foreach (var window in ChildWindowsQueueRemoval)
+        {
+            ChildWindows.Remove(window);
+            OpenWindows.Remove(window.Name);
+        }
+
+        ChildWindowsQueueRemoval.Clear();
     }
 }

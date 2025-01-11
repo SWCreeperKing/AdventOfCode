@@ -14,5 +14,14 @@
 
     <ItemGroup Label="Resources">
         <EmbeddedResource Include="Resources/**"/>
+        <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
     </ItemGroup>
 </Project>

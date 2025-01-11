@@ -9,32 +9,27 @@ using Raylib_cs;
 namespace AdventOfCode.Experimental_Run;
 
 public class PuzzleInterface<T>(Puzzle<T> puzzle)
-    : ChildWindow(puzzle.ToString())
+    : ChildWindow(puzzle.ToString(), puzzle.Day)
 {
     public readonly ConcurrentBag<Action> Drawings = [];
-
-    private readonly Puzzle<T> Puzzle = puzzle;
     private readonly Stopwatch Sw = new();
-    private TimeSpan TotalTime = TimeSpan.Zero;
     private Task Execution;
+
+    public override bool CanClose => Execution.IsCompleted;
+    public override TimeSpan Time => Pt1TotalTime + Sw.Elapsed;
 
     public override void Init()
     {
-        Puzzle.Cache(this);
+        puzzle.Cache(this);
         Execution = Task.Run(() =>
         {
             var timeSpan = RunPart(1, out _);
-            if (timeSpan is not null)
-            {
-                TotalTime += timeSpan.Value;
-            }
+            Pt1TotalTime = timeSpan ?? TimeSpan.Zero;
 
             Drawings.Add(() => ImGui.Text(""));
+
             timeSpan = RunPart(2, out _);
-            if (timeSpan is not null)
-            {
-                TotalTime += timeSpan.Value;
-            }
+            Pt2TotalTime = timeSpan ?? TimeSpan.Zero;
         });
     }
 
@@ -48,10 +43,13 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
         }
 
         ImGui.Text("");
-        RlImgui.RichText($"Total: [{TotalTime.Time()}]");
-        if (ImGui.Button("Close"))
+        RlImgui.RichText($"Total: [{(Pt1TotalTime + Sw.Elapsed).Time()}]");
+        if (Execution.IsCompleted)
         {
-            UserInterface.ChildWindowsQueueRemoval.Add(this);
+            if (ImGui.Button("Close"))
+            {
+                UserInterface.ChildWindowsQueueRemoval.Add(this);
+            }
         }
 
         ImGui.Text("");
@@ -63,16 +61,16 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
         Sw.Restart();
         try
         {
-            Puzzle.WriteLine(
-                $"Year: [#yellow]{Puzzle.Year}[#r]   Day: [#yellow]{Puzzle.Day}[#r]   Part [#yellow]{part}[#r]:");
+            puzzle.WriteLine(
+                $"Year: [#yellow]{puzzle.Year}[#r]   Day: [#yellow]{puzzle.Day}[#r]   Part [#yellow]{part}[#r]:");
 
             Sw.Start();
             var answer = Run(part);
             Sw.Stop();
-            Puzzle.Reset();
+            puzzle.Reset();
             success = CheckAnswer(part, answer, $"[#r]| Took [{Sw.Time()}]");
 
-            if (answer is not null && success is null && Puzzle.Copy[part - 1] && answer is not -1)
+            if (answer is not null && success is null && puzzle.Copy[part - 1] && answer is not -1)
             {
                 var str = answer.ToString() ?? string.Empty;
                 if (str is not "" and not "-1")
@@ -86,9 +84,9 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
             StringBuilder sb = new();
             var newE = e.InnerException!;
 
-            sb.Append($"[#red]===>   ERROR ON [{Puzzle.Year}] DAY [{Puzzle.Day}] PART [{part}]   <===");
+            sb.Append($"[#red]===>   ERROR ON [{puzzle.Year}] DAY [{puzzle.Day}] PART [{part}]   <===");
             sb.Append($"[#darkred][{newE.Message}]");
-            var endWith = $"/AdventOfCode/Solutions/{Puzzle.Year}/Day{Puzzle.Day}.cs";
+            var endWith = $"/AdventOfCode/Solutions/{puzzle.Year}/Day{puzzle.Day}.cs";
 
             foreach (var frame in new StackTrace(newE, true).GetFrames().SkipLast(2))
             {
@@ -111,7 +109,7 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
             }
 
             sb.Append("[#darkmagenta]<===   END OF STACK TRACE   ===>\n");
-            Puzzle.WriteLine(sb.ToString());
+            puzzle.WriteLine(sb.ToString());
         }
 
         return Sw.Elapsed;
@@ -119,17 +117,17 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
 
     private object Run(int part)
     {
-        var input = Puzzle.ProcessInput(Puzzle.Input);
+        var input = puzzle.ProcessInput(puzzle.Input);
         return part switch
         {
-            1 => Puzzle.Part1(input),
-            2 => Puzzle.Part2(input)
+            1 => puzzle.Part1(input),
+            2 => puzzle.Part2(input)
         };
     }
 
     private bool? CheckAnswer(int part, object answer, string extra)
     {
-        var answers = Puzzle.PartAnswers[part - 1];
+        var answers = puzzle.PartAnswers[part - 1];
 
         var states = answers
                     .Select(ans => ans.Evaluate(answer))
@@ -140,7 +138,7 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
 
         if (answer is null && correct is null)
         {
-            Puzzle.WriteLine($"No Answer Given {extra}");
+            puzzle.WriteLine($"No Answer Given {extra}");
             return null;
         }
 
@@ -148,18 +146,18 @@ public class PuzzleInterface<T>(Puzzle<T> puzzle)
         {
             extra = $"[#r]| The correct answer is [#blue][{correct.Answer}] {extra}";
             answer ??= "[#purple]Null[#r]";
-            Puzzle.WriteLine($"[#red]Incorrect Answer: [{answer}] {extra}");
+            puzzle.WriteLine($"[#red]Incorrect Answer: [{answer}] {extra}");
             return null;
         }
 
         if (states.Length == 0)
         {
-            Puzzle.WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
+            puzzle.WriteLine($"[#darkyellow]Possible Answer: [{answer}] {extra}");
             return null;
         }
 
         var state = states.Order().First();
-        Puzzle.WriteLine(state.String(answer, extra));
+        puzzle.WriteLine(state.String(answer, extra));
 
         return state switch
         {
