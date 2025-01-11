@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2019;
 
-[Day(2019, 3, "Crossed Wires")]
-file class Day3
+file class Day3() : Puzzle<Instruction[][]>(2019, 3, "Crossed Wires")
 {
-    [ModifyInput]
-    public static Instruction[][] ProcessInput(string input)
+    public override Instruction[][] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(
@@ -15,7 +13,7 @@ file class Day3
     }
 
     [Answer(489)]
-    public static int Part1(Instruction[][] input)
+    public override object Part1(Instruction[][] input)
     {
         Dictionary<(int x, int y), int> map = new() { { (0, 0), -1 } };
 
@@ -57,7 +55,7 @@ file class Day3
     }
 
     [Answer(93654)]
-    public static int Part2(Instruction[][] input)
+    public override object Part2(Instruction[][] input)
     {
         Dictionary<(int x, int y), Cell> map = new() { { (0, 0), new Cell((0, 0), true) } };
 

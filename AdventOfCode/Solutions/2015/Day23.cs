@@ -1,22 +1,20 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 23, "Opening the Turing Lock")]
-file class Day23
+file class Day23() : Puzzle<string[][]>(2015, 23, "Opening the Turing Lock")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string inp)
+    public override string[][] ProcessInput(string inp)
     {
         return inp.Split('\n').Select(s => s.Replace(",", string.Empty).Split(' ').ToArray()).ToArray();
     }
 
     [Answer(184)]
-    public static long Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         return RunComputer(new Dictionary<string, long> { ["a"] = 0, ["b"] = 0 }, inp)["b"];
     }
 
     [Answer(231)]
-    public static long Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         return RunComputer(new Dictionary<string, long> { ["a"] = 1, ["b"] = 0 }, inp)["b"];
     }

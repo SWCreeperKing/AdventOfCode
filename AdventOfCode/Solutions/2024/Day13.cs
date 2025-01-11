@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 13, "Claw Contraption")]
-file class Day13
+file class Day13() : Puzzle<(double[] a, double[] b, double[] dest)[]>(2024, 13, "Claw Contraption")
 {
     public static readonly Regex Reg = new(@".*: X(?:\+|=)(\d+), Y(?:\+|=)(\d+)");
 
-    [ModifyInput]
-    public static (double[] a, double[] b, double[] dest)[] ProcessInput(string input)
+    public override (double[] a, double[] b, double[] dest)[] ProcessInput(string input)
     {
         return input.Split("\n\n")
                     .Select(line => line.Split('\n'))
@@ -18,13 +16,13 @@ file class Day13
     }
 
     [Answer(31065)]
-    public static long Part1((double[] a, double[] b, double[] dest)[] inp)
+    public override object Part1((double[] a, double[] b, double[] dest)[] inp)
     {
         return Equate(inp);
     }
 
     [Answer(93866170395343)]
-    public static long Part2((double[] a, double[] b, double[] dest)[] inp)
+    public override object Part2((double[] a, double[] b, double[] dest)[] inp)
     {
         return Equate(inp, true);
     }

@@ -2,18 +2,15 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 17, "Clumsy Crucible")]
-file class Day17
+file class Day17() : Puzzle<Matrix2d<int>>(2023, 17, "Clumsy Crucible")
 {
-    [ModifyInput]
-    public static Matrix2d<int> ProcessInput(string input)
+    public override Matrix2d<int> ProcessInput(string input)
     {
         return new Matrix2d<int>(input.Split('\n').Select(s => s.Select(c => c.ParseInt()).ToArray()).ToArray());
     }
 
-    [Answer(1128)] public static long Part1(Matrix2d<int> inp) { return Solve(inp); }
-
-    [Answer(1268)] public static long Part2(Matrix2d<int> inp) { return Solve(inp, true); }
+    [Answer(1128)] public override object Part1(Matrix2d<int> inp) { return Solve(inp); }
+    [Answer(1268)] public override object Part2(Matrix2d<int> inp) { return Solve(inp, true); }
 
     public static long Solve(Matrix2d<int> map, bool part2 = false)
     {

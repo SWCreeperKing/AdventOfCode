@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 8, "Haunted Wasteland")]
-file class Day8
+file class Day8() : Puzzle<(int[] instruction, Dictionary<string, string[]> paths)>(2023, 8, "Haunted Wasteland")
 {
     private static readonly Regex InputRegex = new(@"(.+) = \((.+), (.+)\)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (int[] instruction, Dictionary<string, string[]> paths) ProcessInput(string input)
+    public override (int[] instruction, Dictionary<string, string[]> paths) ProcessInput(string input)
     {
         return input.Split("\n\n")
                     .Inline(inp => (inp[0]
@@ -21,13 +19,13 @@ file class Day8
     }
 
     [Answer(13207)]
-    public static long Part1((int[] instruction, Dictionary<string, string[]> paths) inp)
+    public override object Part1((int[] instruction, Dictionary<string, string[]> paths) inp)
     {
         return CalcSteps(inp, "AAA", k => k != "ZZZ");
     }
 
     [Answer(12324145107121)]
-    public static long Part2((int[] instruction, Dictionary<string, string[]> paths) inp)
+    public override object Part2((int[] instruction, Dictionary<string, string[]> paths) inp)
     {
         return inp.paths.Keys.Where(k => k.EndsWith('A'))
                   .Select(k => CalcSteps(inp, k, key

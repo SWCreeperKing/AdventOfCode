@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 12, "Digital Plumber")]
-file class Day12
+file class Day12() : Puzzle<Dictionary<int, int[]>>(2017, 12, "Digital Plumber")
 {
-    [ModifyInput]
-    public static Dictionary<int, int[]> ProcessInput(string input)
+    public override Dictionary<int, int[]> ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(line =>
@@ -15,10 +13,10 @@ file class Day12
                     .ToDictionary(t => t.Item1, t => t.Item2.ToArray());
     }
 
-    [Answer(283)] public static long Part1(Dictionary<int, int[]> inp) { return Group(inp, 0).Count; }
+    [Answer(283)] public override object Part1(Dictionary<int, int[]> inp) { return Group(inp, 0).Count; }
 
     [Answer(195)]
-    public static long Part2(Dictionary<int, int[]> inp)
+    public override object Part2(Dictionary<int, int[]> inp)
     {
         var groups = 0;
         while (inp.Count > 0)

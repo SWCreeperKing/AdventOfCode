@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 5, "Supply Stacks")]
-file class Day5
+file class Day5() : Puzzle<(Dictionary<int, Stack<char>> ship, int[][] commands)>(2022, 5, "Supply Stacks")
 {
     public static readonly Regex InputRegex = new(@"move (\d+) from (\d+) to (\d+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (Dictionary<int, Stack<char>> ship, int[][] commands) ProcessInput(string inp)
+    public override (Dictionary<int, Stack<char>> ship, int[][] commands) ProcessInput(string inp)
     {
         var split = inp.Split("\n\n");
         var topRaw = split[0]
@@ -33,7 +31,7 @@ file class Day5
     }
 
     [Answer("LJSVLTWQM")]
-    public static string Part1((Dictionary<int, Stack<char>> ship, int[][] commands) inp)
+    public override object Part1((Dictionary<int, Stack<char>> ship, int[][] commands) inp)
     {
         foreach (var command in inp.commands)
             for (var i = 0; i < command[0]; i++)
@@ -43,7 +41,7 @@ file class Day5
     }
 
     [Answer("BRQWDBBJM")]
-    public static string Part2((Dictionary<int, Stack<char>> ship, int[][] commands) inp)
+    public override object Part2((Dictionary<int, Stack<char>> ship, int[][] commands) inp)
     {
         foreach (var command in inp.commands)
         {

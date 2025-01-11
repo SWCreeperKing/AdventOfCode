@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 18, "Like a GIF For Your Yard")]
-file class Day18
+file class Day18() : Puzzle<bool[]>(2015, 18, "Like a GIF For Your Yard")
 {
-    [ModifyInput]
-    public static bool[] ProcessInput(string input)
+    public override bool[] ProcessInput(string input)
     {
         var lights = new bool[10000];
         var split = input.Split('\n');
@@ -15,7 +13,7 @@ file class Day18
     }
 
     [Answer(814)]
-    public static long Part1(bool[] inp)
+    public override object Part1(bool[] inp)
     {
         for (var step = 0; step < 100; step++)
         {
@@ -26,7 +24,7 @@ file class Day18
     }
 
     [Answer(924)]
-    public static long Part2(bool[] inp)
+    public override object Part2(bool[] inp)
     {
         for (var step = 0; step < 100; step++)
         {
@@ -55,7 +53,7 @@ file class Day18
 
         return copy;
     }
-    
+
     private static int GetSurroundings(bool[] arr, int x, int y)
     {
         var on = 0;

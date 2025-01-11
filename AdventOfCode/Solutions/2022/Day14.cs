@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 14, "Regolith Reservoir")]
-file class Day14
+file class Day14() : Puzzle<Matrix2d<bool>>(2022, 14, "Regolith Reservoir")
 {
-    [ModifyInput]
-    public static Matrix2d<bool> ProcessInput(string inp)
+    public override Matrix2d<bool> ProcessInput(string inp)
     {
         var highY = 0;
         var lineOps = inp.SuperSplit("\n", " -> ", s => s.Select(str =>
@@ -42,7 +40,7 @@ file class Day14
     }
 
     [Answer(825)]
-    public static long Part1(Matrix2d<bool> inp)
+    public override object Part1(Matrix2d<bool> inp)
     {
         var sand = 0;
         while (true)
@@ -51,7 +49,7 @@ file class Day14
     }
 
     [Answer(26729)]
-    public static long Part2(Matrix2d<bool> inp)
+    public override object Part2(Matrix2d<bool> inp)
     {
         const int x = 500, y = 0;
         var sand = 0;

@@ -1,8 +1,9 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 10, "Knot Hash")]
-public class Day10
+public class Day10() : Puzzle<string>(2017, 10, "Knot Hash")
 {
+    public override string ProcessInput(string input) { return input; }
+
     [Answer(40132)]
     public static long Part1(string inp)
     {

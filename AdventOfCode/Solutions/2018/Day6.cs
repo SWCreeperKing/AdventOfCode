@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2018;
 
-[Day(2018, 6, "Chronal Coordinates")]
-file class Day6
+file class Day6() : Puzzle<Day6.NamedPos[]>(2018, 6, "Chronal Coordinates")
 {
-    [ModifyInput]
-    public static NamedPos[] ProcessInput(string input)
+    public override NamedPos[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select((pos, i)
@@ -17,14 +15,14 @@ file class Day6
     }
 
     [Answer(3687)]
-    public static long Part1(NamedPos[] inp)
+    public override object Part1(NamedPos[] inp)
     {
         MakeMap(inp, out var biggest, out _, out _);
         return biggest.MaxBy(kv => kv.Value).Value;
     }
 
     [Answer(38647, AnswerState.Low)]
-    public static long Part2(NamedPos[] inp)
+    public override object Part2(NamedPos[] inp)
     {
         var map = MakeMap(inp, out var biggest, out var maxX, out var maxY);
         var regionSize = 0;

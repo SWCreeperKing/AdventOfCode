@@ -2,14 +2,12 @@ using System.Numerics;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 2, "Bathroom Security")]
-file class Day2
+file class Day2() : Puzzle<char[][]>(2016, 2, "Bathroom Security")
 {
-    [ModifyInput]
-    public static char[][] ProcessInput(string inp) { return inp.Split('\n').Select(s => s.ToCharArray()).ToArray(); }
+    public override char[][] ProcessInput(string inp) { return inp.Split('\n').Select(s => s.ToCharArray()).ToArray(); }
 
     [Answer("19636")]
-    public static string Part1(char[][] inp)
+    public override object Part1(char[][] inp)
     {
         return Solve(inp, MakeMap("""
                                   123
@@ -19,7 +17,7 @@ file class Day2
     }
 
     [Answer("3CC43")]
-    public static string Part2(char[][] inp)
+    public override object Part2(char[][] inp)
     {
         return Solve(inp, MakeMap("""
                                     1

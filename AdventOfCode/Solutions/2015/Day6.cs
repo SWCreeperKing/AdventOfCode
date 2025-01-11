@@ -1,13 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 6, "Probably a Fire Hazard")]
-file class Day6
+file class Day6() : Puzzle<(string Value, (int, int), (int, int))[]>(2015, 6, "Probably a Fire Hazard")
 {
     private static readonly Regex Reg =
         new("^((on|off)|toggle) ([0-9]{1,3}),([0-9]{1,3}) through ([0-9]{1,3}),([0-9]{1,3})$", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (string Value, (int, int), (int, int))[] ProcessInput(string input)
+    public override (string Value, (int, int), (int, int))[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(s
@@ -20,14 +18,14 @@ file class Day6
     }
 
     [Answer(543903)]
-    public static int Part1((string Value, (int, int), (int, int))[] inp)
+    public override object Part1((string Value, (int, int), (int, int))[] inp)
     {
         return Map<bool>(inp, (instr, b) => instr is "on" || (instr is not "off" && !b))
            .Count(b => b);
     }
 
     [Answer(14687245)]
-    public static int Part2((string Value, (int, int), (int, int))[] inp)
+    public override object Part2((string Value, (int, int), (int, int))[] inp)
     {
         return Map<int>(inp, (instr, i) =>
                 i + instr switch

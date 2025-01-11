@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 23, "Lan Party")]
-file class Day23
+file class Day23() : Puzzle<Dictionary<string, List<string>>>(2024, 23, "Lan Party")
 {
-    [ModifyInput]
-    public static Dictionary<string, List<string>> ProcessInput(string input)
+    public override Dictionary<string, List<string>> ProcessInput(string input)
     {
         Dictionary<string, List<string>> map = [];
         foreach (var str in input.Split('\n'))
@@ -28,7 +26,7 @@ file class Day23
     }
 
     [Answer(1000)]
-    public static long Part1(Dictionary<string, List<string>> inp)
+    public override object Part1(Dictionary<string, List<string>> inp)
     {
         HashSet<string> seen = [];
         foreach (var (name, subList) in inp)
@@ -51,7 +49,7 @@ file class Day23
     }
 
     [Answer("cf,ct,cv,cz,fi,lq,my,pa,sl,tt,vw,wz,yd")]
-    public static string Part2(Dictionary<string, List<string>> inp)
+    public override object Part2(Dictionary<string, List<string>> inp)
     {
         HashSet<string> seen = [];
         foreach (var mainPc in inp.Keys)

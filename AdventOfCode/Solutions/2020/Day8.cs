@@ -1,16 +1,14 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 8, "Handheld Halting")]
-file class Day8
+file class Day8() : Puzzle<string[][]>(2020, 8, "Handheld Halting")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string input)
+    public override string[][] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => s.SplitSpace()).ToArray();
     }
 
     [Answer(2058)]
-    public static int Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var accumulator = 0;
 
@@ -36,7 +34,7 @@ file class Day8
     }
 
     [Answer(1000)]
-    public static int Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         for (var i = 0; i < inp.Length; i++)
         {

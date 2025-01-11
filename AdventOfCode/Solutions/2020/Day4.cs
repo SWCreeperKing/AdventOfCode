@@ -1,7 +1,6 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 4, "Passport Processing")]
-file class Day4
+file class Day4() : Puzzle<string[][]>(2020, 4, "Passport Processing")
 {
     private static readonly Dictionary<string, string> RegexArr = new()
     {
@@ -16,20 +15,19 @@ file class Day4
 
     private static readonly Regex KindValidator = new("((byr|iyr|eyr|hgt|hcl|ecl|pid):.*){7}", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static string[][] ProcessInput(string input)
+    public override string[][] ProcessInput(string input)
     {
         return input.Split("\n\n").Select(s => s.Replace('\n', ' ').Split(' ')).ToArray();
     }
 
     [Answer(170)]
-    public static int Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         return inp.Count(realS => realS.Count(s => new Regex("(byr|iyr|eyr|hgt|hcl|ecl|pid)").IsMatch(s)) == 7);
     }
 
     [Answer(103)]
-    public static int Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         return inp.Select(masterS
                        => masterS.All(s => s.Split(":")

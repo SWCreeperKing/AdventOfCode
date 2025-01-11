@@ -1,9 +1,10 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 12, "Passage Pathing")]
-file class Day12
+file class Day12() : Puzzle<string>(2021, 12, "Passage Pathing")
 {
-    public static long Part1(string inp)
+    public override string ProcessInput(string input) { return input; }
+
+    public override object Part1(string inp)
     {
         Dictionary<string, Node> nodes = new();
         foreach (var line in inp.Split('\n'))
@@ -31,7 +32,7 @@ file class Day12
         return -1;
     }
 
-    public static long Part2(string inp) { return -1; }
+    public override object Part2(string inp) { return null; }
 
     private class Node
     {

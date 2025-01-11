@@ -4,14 +4,12 @@ using Range = AdventOfCode.Experimental_Run.Misc.Range;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 19, "Aplenty")]
-file class Day19
+file class Day19() : Puzzle<(Dictionary<string, Workflow>, Cell[][])>(2023, 19, "Aplenty")
 {
     public static readonly ImmutableDictionary<char, int> Xmas =
         new Dictionary<char, int> { { 'x', 0 }, { 'm', 1 }, { 'a', 2 }, { 's', 3 } }.ToImmutableDictionary();
 
-    [ModifyInput]
-    public static (Dictionary<string, Workflow>, Cell[][]) ProcessInput(string input)
+    public override (Dictionary<string, Workflow>, Cell[][]) ProcessInput(string input)
     {
         var split = input.Split("\n\n");
         var workflows = split[0]
@@ -34,7 +32,7 @@ file class Day19
     }
 
     [Answer(280909)]
-    public static long Part1((Dictionary<string, Workflow>, Cell[][]) inp)
+    public override object Part1((Dictionary<string, Workflow>, Cell[][]) inp)
     {
         var (workflows, parts) = inp;
 
@@ -66,7 +64,7 @@ file class Day19
     }
 
     [Answer(116138474394508)]
-    public static long Part2((Dictionary<string, Workflow>, Cell[][]) inp)
+    public override object Part2((Dictionary<string, Workflow>, Cell[][]) inp)
     {
         var (workflows, _) = inp;
 

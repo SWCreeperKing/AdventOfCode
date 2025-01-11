@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 4, "Ceres Search")]
-file class Day4
+file class Day4() : Puzzle<Matrix2d<char>>(2024, 4, "Ceres Search")
 {
-    [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input)
+    public override Matrix2d<char> ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').SelectArr(l => l.ToCharArray()));
     }
 
     [Answer(2642)]
-    public static long Part1(Matrix2d<char> inp)
+    public override object Part1(Matrix2d<char> inp)
     {
         var count = 0;
 
@@ -30,7 +28,7 @@ file class Day4
     }
 
     [Answer(1974)]
-    public static long Part2(Matrix2d<char> inp)
+    public override object Part2(Matrix2d<char> inp)
     {
         var count = 0;
 

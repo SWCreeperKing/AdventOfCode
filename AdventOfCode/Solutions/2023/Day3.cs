@@ -2,11 +2,9 @@ using Range = System.Range;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 3, "Gear Ratios")]
-file class Day3
+file class Day3() : Puzzle<((int line, int number, Range range)[] numbs, Matrix2d<char> map)>(2023, 3, "Gear Ratios")
 {
-    [ModifyInput]
-    public static ((int line, int number, Range range)[] numbs, Matrix2d<char> map) ProcessInput(string input)
+    public override ((int line, int number, Range range)[] numbs, Matrix2d<char> map) ProcessInput(string input)
     {
         var inp = new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
 
@@ -40,7 +38,7 @@ file class Day3
     }
 
     [Answer(528819)]
-    public static long Part1(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
+    public override object Part1(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
     {
         var sum = 0;
         Iterate(inp.numbs, inp.map, c => c != '.' && !char.IsDigit(c), (_, number) => sum += number);
@@ -48,7 +46,7 @@ file class Day3
     }
 
     [Answer(80403602)]
-    public static long Part2(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
+    public override object Part2(((int line, int number, Range range)[] numbs, Matrix2d<char> map) inp)
     {
         Dictionary<Pos, List<int>> gears = new();
         Iterate(inp.numbs, inp.map, c => c == '*', (pos, number) =>

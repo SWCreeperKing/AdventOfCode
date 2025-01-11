@@ -2,13 +2,11 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 22, "Grid Computing")]
-file class Day22
+file class Day22() : Puzzle<Matrix2d<Node>>(2016, 22, "Grid Computing")
 {
     public static readonly Regex ToNode = new(@"/dev/grid/node-x(\d+)-y(\d+)\s+\d+T\s+(\d+)T\s+(\d+)T");
 
-    [ModifyInput]
-    public static Matrix2d<Node> ProcessInput(string input)
+    public override Matrix2d<Node> ProcessInput(string input)
     {
         var split = input.Split('\n');
         var match = ToNode.Match(split[^1]).Groups.Range(1..2);
@@ -25,7 +23,7 @@ file class Day22
     }
 
     [Answer(864)]
-    public static long Part1(Matrix2d<Node> inp)
+    public override object Part1(Matrix2d<Node> inp)
     {
         var pairs = 0;
         for (var i = 0; i < inp.TrueSize; i++)
@@ -43,7 +41,7 @@ file class Day22
     }
 
     [Answer(244)]
-    public static long Part2(Matrix2d<Node> inp)
+    public override object Part2(Matrix2d<Node> inp)
     {
         var max = inp[inp.Find(n => n.Used == 0)].Avail;
         var newMap = inp.MatrixSelect(node => node.Used == 0 ? '_' : node.Used > max ? '#' : '.');

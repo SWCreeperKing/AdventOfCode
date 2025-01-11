@@ -1,13 +1,10 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 11, "Cosmic Expansion")]
-file class Day11
+file class Day11() : Puzzle<string[]>(2023, 11, "Cosmic Expansion")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
-
-    [Answer(9563821)] public static long Part1(string[] inp) { return Solve(inp); }
-
-    [Answer(827009909817)] public static long Part2(string[] inp) { return Solve(inp, 1000000 - 1); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
+    [Answer(9563821)] public override object Part1(string[] inp) { return Solve(inp); }
+    [Answer(827009909817)] public override object Part2(string[] inp) { return Solve(inp, 1000000 - 1); }
 
     public static long Solve(string[] inp, int count = 1)
     {

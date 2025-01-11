@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 17, "Chronospatial Computer")]
-file class Day17
+file class Day17() : Puzzle<string>(2024, 17, "Chronospatial Computer")
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public override string ProcessInput(string input) => input;
 
     [Answer("4,0,4,7,1,2,7,1,6")]
-    public static string Part1(string inp)
+    public override object Part1(string inp)
     {
         var split = inp.Split("\n\n");
         var aRegister = long.Parse(split[0].Split('\n')[0].Split(' ')[2]);
@@ -15,7 +14,7 @@ file class Day17
     }
 
     [Answer(202322348616234)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         var split = inp.Split("\n\n");
         var program = split[1].Split(' ')[1].Split(',').SelectArr(int.Parse);

@@ -2,17 +2,14 @@
 
 namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 11, "Seating System")]
-file class Day11
+file class Day11() : Puzzle<string[]>(2020, 11, "Seating System")
 {
     private static readonly (int, int)[] Area = [(1, 0), (1, 1), (0, 1), (-1, 0), (-1, -1), (0, -1), (-1, 1), (1, -1)];
-
     private static bool IsOccupied(char c) { return c == '#'; }
-
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(2275)]
-    public static int Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         char Look(int i, int j)
         {
@@ -61,7 +58,7 @@ file class Day11
     }
 
     [Answer(2121)]
-    public static int Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         char Look(int i, int j, int ii, int jj)
         {

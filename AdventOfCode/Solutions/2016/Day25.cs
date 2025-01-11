@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 25, "Clock Signal")]
-file class Day25
+file class Day25() : Puzzle<string[][]>(2016, 25, "Clock Signal")
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
+    public override string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
 
     [Answer(196)]
-    public static long Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var i = 0;
         while (!Solve(inp, i++)) ;

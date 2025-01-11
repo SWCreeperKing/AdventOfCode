@@ -1,13 +1,12 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 22, "Monkey Market")]
-file class Day22
+file class Day22() : Puzzle<int[]>(2024, 22, "Monkey Market")
 {
     public const long Prune = 16777216;
-    [ModifyInput] public static int[] ProcessInput(string input) => input.Split('\n').SelectArr(int.Parse);
+    public override int[] ProcessInput(string input) => input.Split('\n').SelectArr(int.Parse);
 
     [Answer(19854248602)]
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         return inp.Aggregate(0L, (sum, line) =>
         {
@@ -22,7 +21,7 @@ file class Day22
     }
 
     [Answer(2223)]
-    public static long Part2(int[] inp)
+    public override object Part2(int[] inp)
     {
         Dictionary<int, long> seen = [];
         foreach (var line in inp)

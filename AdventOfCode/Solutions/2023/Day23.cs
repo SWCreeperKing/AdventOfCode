@@ -3,19 +3,17 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 23, "A Long Walk")]
-file class Day23
+file class Day23() : Puzzle<Input>(2023, 23, "A Long Walk")
 {
-    [ModifyInput]
-    public static Input ProcessInput(string input)
+    public override Input ProcessInput(string input)
     {
         return new Input(new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray()));
     }
 
-    [Answer(2278)] public static long Part1(Input inp) { return Solve(Populate(inp), inp.Start, inp.End); }
+    [Answer(2278)] public override object Part1(Input inp) { return Solve(Populate(inp), inp.Start, inp.End); }
 
     [Answer(6734)]
-    public static long Part2(Input inp)
+    public override object Part2(Input inp)
     {
         var nodes = Populate(inp, true);
         Compress();

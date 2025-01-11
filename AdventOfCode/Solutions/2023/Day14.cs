@@ -3,24 +3,22 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 14, "Parabolic Reflector Dish")]
-file class Day14
+file class Day14() : Puzzle<Matrix2d<char>>(2023, 14, "Parabolic Reflector Dish")
 {
-    [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input)
+    public override Matrix2d<char> ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
     }
 
     [Answer(102497)]
-    public static long Part1(Matrix2d<char> inp)
+    public override object Part1(Matrix2d<char> inp)
     {
         CycleSide(inp, Up);
         return CalcLoad(inp);
     }
 
     [Answer(105008)]
-    public static long Part2(Matrix2d<char> inp)
+    public override object Part2(Matrix2d<char> inp)
     {
         List<string> cache = [];
         List<Matrix2d<char>> cacheMaps = [];

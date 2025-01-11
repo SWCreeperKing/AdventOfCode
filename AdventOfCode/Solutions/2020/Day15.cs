@@ -1,14 +1,14 @@
 namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 15, "Rambunctious Recitation")]
-file class Day15
+file class Day15() : Puzzle<IReadOnlyList<int>>(2020, 15, "Rambunctious Recitation")
 {
-    [ModifyInput]
-    public static IReadOnlyList<int> ProcessInput(string input) { return input.Split(",").Select(int.Parse).ToArray(); }
+    public override IReadOnlyList<int> ProcessInput(string input)
+    {
+        return input.Split(",").Select(int.Parse).ToArray();
+    }
 
-    [Answer(387)] public static int Part1(IReadOnlyList<int> inp) { return ElfGame(inp, 2020); }
-
-    [Answer(6428)] public static int Part2(IReadOnlyList<int> inp) { return ElfGame(inp, 30000000); }
+    [Answer(387)] public override object Part1(IReadOnlyList<int> inp) { return ElfGame(inp, 2020); }
+    [Answer(6428)] public override object Part2(IReadOnlyList<int> inp) { return ElfGame(inp, 30000000); }
 
     private static int ElfGame(IReadOnlyList<int> numbs, int count)
     {

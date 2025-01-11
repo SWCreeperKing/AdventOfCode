@@ -1,7 +1,6 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 16, "Aunt Sue")]
-file class Day16
+file class Day16() : Puzzle<Dictionary<string, int>[]>(2015, 16, "Aunt Sue")
 {
     private static readonly Dictionary<string, int> SearchFor = new()
     {
@@ -9,8 +8,7 @@ file class Day16
         ["goldfish"] = 5, ["trees"] = 3, ["cars"] = 2, ["perfumes"] = 1
     };
 
-    [ModifyInput]
-    public static Dictionary<string, int>[] ProcessInput(string input)
+    public override Dictionary<string, int>[] ProcessInput(string input)
     {
         var split = input.Split('\n');
         var sues = new Dictionary<string, int>[split.Length];
@@ -30,7 +28,7 @@ file class Day16
     }
 
     [Answer(373)]
-    public static int Part1(Dictionary<string, int>[] inp)
+    public override object Part1(Dictionary<string, int>[] inp)
     {
         var searchForKeysWithZero = SearchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 
@@ -43,7 +41,7 @@ file class Day16
     }
 
     [Answer(260)]
-    public static int Part2(Dictionary<string, int>[] inp)
+    public override object Part2(Dictionary<string, int>[] inp)
     {
         var searchForKeysWithZero = SearchFor.Where(kv => kv.Value == 0).Select(kv => kv.Key);
 

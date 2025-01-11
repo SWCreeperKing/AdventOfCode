@@ -5,13 +5,14 @@ using System.Text;
 namespace AdventOfCode.Solutions._2015;
 
 [SuppressMessage("ReSharper.DPA", "DPA0001: Memory allocation issues")]
-[Day(2015, 4, "The Ideal Stocking Stuffer")]
-file class Day4
+file class Day4() : Puzzle<string>(2015, 4, "The Ideal Stocking Stuffer")
 {
-    [Answer(346386)] public static int Part1(string inp) { return Hash(inp); }
+    public override string ProcessInput(string input) { return input; }
+
+    [Answer(346386)] public override object Part1(string inp) { return Hash(inp); }
 
     [Answer(9958218)] // have not found a better solution
-    public static int Part2(string inp) { return Hash(inp, 0); }
+    public override object Part2(string inp) { return Hash(inp, 0); }
 
     private static int Hash(string input, int hash2 = 15)
     {
@@ -21,7 +22,7 @@ file class Day4
         {
             hash = MD5.HashData(Encoding.UTF8.GetBytes($"{input}{counter++}"));
         } while (hash[0] > 0 || hash[1] > 0 || hash[2] > hash2);
-        
+
         return counter - 1;
     }
 }

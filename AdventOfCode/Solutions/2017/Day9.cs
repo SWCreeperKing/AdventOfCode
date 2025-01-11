@@ -1,10 +1,11 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 9, "Stream Processing")]
-file class Day9
+file class Day9() : Puzzle<string>(2017, 9, "Stream Processing")
 {
+    public override string ProcessInput(string input) { return input; }
+
     [Answer(7616)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         inp = inp.Replace("!!", "")
                  .RemoveWhile('!', 2)
@@ -29,7 +30,7 @@ file class Day9
     }
 
     [Answer(3838)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         return inp.Replace("!!", "")
                   .RemoveWhile('!', 2)

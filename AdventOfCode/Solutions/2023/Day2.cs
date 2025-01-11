@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 2, "Cube Conundrum")]
-file class Day2
+file class Day2() : Puzzle<(int r, int g, int b)[][]>(2023, 2, "Cube Conundrum")
 {
-    [ModifyInput]
-    public static (int r, int g, int b)[][] ProcessInput(string input)
+    public override (int r, int g, int b)[][] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(line => line
@@ -18,7 +16,7 @@ file class Day2
     }
 
     [Answer(2268)]
-    public static long Part1((int r, int g, int b)[][] inp)
+    public override object Part1((int r, int g, int b)[][] inp)
     {
         return Enumerable.Range(1, inp.Length)
                          .Select(i => !inp[i - 1]
@@ -29,7 +27,7 @@ file class Day2
     }
 
     [Answer(63542)]
-    public static long Part2((int r, int g, int b)[][] inp)
+    public override object Part2((int r, int g, int b)[][] inp)
     {
         return inp.Select(arr => arr.Aggregate((a, b)
                        => (Math.Max(a.r, b.r), Math.Max(a.g, b.g), Math.Max(a.b, b.b))))

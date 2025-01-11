@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 10, "Hoof It")]
-file class Day10
+file class Day10() : Puzzle<Matrix2d<int>>(2024, 10, "Hoof It")
 {
-    [ModifyInput]
-    public static Matrix2d<int> ProcessInput(string input)
+    public override Matrix2d<int> ProcessInput(string input)
     {
         return new Matrix2d<int>(input.Split('\n').SelectArr(line => line.SelectArr(c => c - '0')));
     }
 
     [Answer(510)]
-    public static long Part1(Matrix2d<int> inp)
+    public override object Part1(Matrix2d<int> inp)
     {
         var highes = inp.FindAll(i => i == 9);
         var lowes = inp.FindAll(i => i == 0);
@@ -38,7 +36,7 @@ file class Day10
     }
 
     [Answer(1058)]
-    public static long Part2(Matrix2d<int> inp)
+    public override object Part2(Matrix2d<int> inp)
     {
         var highes = inp.FindAll(i => i == 9);
         var lowes = inp.FindAll(i => i == 0);

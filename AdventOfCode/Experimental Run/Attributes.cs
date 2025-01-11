@@ -2,14 +2,6 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Experimental_Run;
 
-[AttributeUsage(AttributeTargets.Class)]
-public class DayAttribute(int year, int day, string name) : Attribute
-{
-    public readonly int Day = day;
-    public readonly string Name = name;
-    public readonly int Year = year;
-}
-
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class AnswerAttribute(object answer, AnswerState state = AnswerState.Correct) : Attribute
 {
@@ -97,12 +89,6 @@ public class AnswerAttribute(object answer, AnswerState state = AnswerState.Corr
     }
 }
 
-[AttributeUsage(AttributeTargets.Method)]
-public class ModifyInputAttribute : Attribute;
-
-[AttributeUsage(AttributeTargets.Method)]
-public class ResetDataAttribute : Attribute;
-
 [AttributeUsage(AttributeTargets.Class)]
 public class RunAttribute : Attribute;
 
@@ -113,4 +99,7 @@ public class TestAttribute(string testInput) : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Method)]
-public class Copy : Attribute;
+public class CopyAttribute : Attribute;
+
+[AttributeUsage(AttributeTargets.Method)]
+public class DrawAttribute : Attribute;

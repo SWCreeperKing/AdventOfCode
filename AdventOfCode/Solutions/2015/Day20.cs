@@ -1,13 +1,10 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 20, "Infinite Elves and Infinite Houses")]
-file class Day20
+file class Day20() : Puzzle<long>(2015, 20, "Infinite Elves and Infinite Houses")
 {
-    [ModifyInput] public static long ProcessInput(string input) { return long.Parse(input); }
-
-    [Answer(665280)] public static long Part1(long inp) { return GetHouseFromPresents(inp, inp / 10); }
-
-    [Answer(705600)] public static long Part2(long inp) { return GetHouseFromPresents(inp, 50, 11); }
+    public override long ProcessInput(string input) { return long.Parse(input); }
+    [Answer(665280)] public override object Part1(long inp) { return GetHouseFromPresents(inp, inp / 10); }
+    [Answer(705600)] public override object Part2(long inp) { return GetHouseFromPresents(inp, 50, 11); }
 
     private static long GetHouseFromPresents(long presents, long maxHousesPerElf, int mul = 10)
     {

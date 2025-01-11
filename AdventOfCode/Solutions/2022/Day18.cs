@@ -1,13 +1,11 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 18, "Boiling Boulders")]
-file class Day18
+file class Day18() : Puzzle<int[][]>(2022, 18, "Boiling Boulders")
 {
-    [ModifyInput]
-    public static int[][] ProcessInput(string inp) { return inp.SuperSplit("\n", ",", s => s.ToIntArr()); }
+    public override int[][] ProcessInput(string inp) { return inp.SuperSplit("\n", ",", s => s.ToIntArr()); }
 
     [Answer(4460)]
-    public static long Part1(int[][] inp)
+    public override object Part1(int[][] inp)
     {
         var sides = 0;
 
@@ -33,7 +31,7 @@ file class Day18
     }
 
     [Answer(2498)]
-    public static long Part2(int[][] inp)
+    public override object Part2(int[][] inp)
     {
         var maxX = inp.Max(arr => arr[0]);
         var maxY = inp.Max(arr => arr[1]);

@@ -1,15 +1,13 @@
 using static CreepyUtil.Direction;
 
-
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 3, "Spiral Memory")]
-file class Day3
+file class Day3() : Puzzle<int>(2017, 3, "Spiral Memory")
 {
-    [ModifyInput] public static int ProcessInput(string input) { return int.Parse(input); }
+    public override int ProcessInput(string input) { return int.Parse(input); }
 
     [Answer(371)]
-    public static long Part1(int inp)
+    public override object Part1(int inp)
     {
         List<Pos> positions = [new()];
         var dir = Right;
@@ -46,7 +44,7 @@ file class Day3
     }
 
     [Answer(369601)]
-    public static long Part2(int inp)
+    public override object Part2(int inp)
     {
         Direction[] tally = [Up, UpLeft, Left, DownLeft, Down, DownRight, Right, UpRight];
         List<Pos> positions = [new()];

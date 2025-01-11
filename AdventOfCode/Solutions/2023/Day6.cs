@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 6, "Wait For It")]
-file class Day6
+file class Day6() : Puzzle<string[]>(2023, 6, "Wait For It")
 {
-    [ModifyInput]
-    public static string[] ProcessInput(string input)
+    public override string[] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => s.CleanSpaces().Remove("Time:", "Distance:").Trim()).ToArray();
     }
 
     [Answer(4811940)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         return inp[0]
               .Split(' ')
@@ -30,7 +28,7 @@ file class Day6
     }
 
     [Answer(30077773)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         var time = long.Parse(inp[0].Remove(" "));
         var dist = long.Parse(inp[1].Remove(" "));

@@ -1,11 +1,10 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 11, "Plutonian Pebbles")]
-file class Day11
+file class Day11() : Puzzle<long[]>(2024, 11, "Plutonian Pebbles")
 {
-    [ModifyInput] public static long[] ProcessInput(string input) => input.Split(' ').SelectArr(long.Parse);
-    [Answer(198089)] public static long Part1(long[] inp) { return Initiate(25, inp); }
-    [Answer(236302670835517)] public static long Part2(long[] inp) { return Initiate(75, inp); }
+    public override long[] ProcessInput(string input) => input.Split(' ').SelectArr(long.Parse);
+    [Answer(198089)] public override object Part1(long[] inp) { return Initiate(25, inp); }
+    [Answer(236302670835517)] public override object Part2(long[] inp) { return Initiate(75, inp); }
 
     public static long Initiate(int depth, long[] inp)
     {

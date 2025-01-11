@@ -1,13 +1,11 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 10, "Balance Bots")]
-file class Day10
+file class Day10() : Puzzle<string[][][]>(2016, 10, "Balance Bots")
 {
     private static readonly Regex ValueRegex = new(@"value (\d+?) goes to (.+)", RegexOptions.Compiled);
     private static readonly Regex GiveRegex = new("(.+) gives low to (.+) and high to (.+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static string[][][] ProcessInput(string inp)
+    public override string[][][] ProcessInput(string inp)
     {
         var rawInp = inp.Split('\n');
         return
@@ -18,7 +16,7 @@ file class Day10
     }
 
     [Answer(157)]
-    public static long Part1(string[][][] inp)
+    public override object Part1(string[][][] inp)
     {
         int[] compareDesire = { 61, 17 };
         Dictionary<int, List<int>> outputs = new();
@@ -58,7 +56,7 @@ file class Day10
     }
 
     [Answer(1085)]
-    public static long Part2(string[][][] inp)
+    public override object Part2(string[][][] inp)
     {
         Dictionary<int, List<int>> outputs = new();
         Dictionary<string, Bot> bots = new();

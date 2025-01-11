@@ -2,15 +2,12 @@ using System.Collections.Immutable;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 12, "Hot Springs")]
-file class Day12
+file class Day12() : Puzzle<(string, int[])[]>(2023, 12, "Hot Springs")
 {
     public static readonly Dictionary<string, long> Cached = new();
+    public override void Reset() { Cached.Clear(); }
 
-    [ResetData] public static void Reset() { Cached.Clear(); }
-
-    [ModifyInput]
-    public static (string, int[])[] ProcessInput(string input)
+    public override (string, int[])[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(s
@@ -22,13 +19,13 @@ file class Day12
     }
 
     [Answer(7007)]
-    public static long Part1((string, int[])[] inp)
+    public override object Part1((string, int[])[] inp)
     {
         return inp.Select(line => Cache(line.Item1, ImmutableStack.CreateRange(line.Item2))).Sum();
     }
 
     [Answer(3476169006222)]
-    public static long Part2((string, int[])[] inp)
+    public override object Part2((string, int[])[] inp)
     {
         return inp.Select(line => Cache(line.Item1.Repeat(5, '?'),
                        ImmutableStack.CreateRange(Enumerable.Repeat(line.Item2, 5).SelectMany(arr => arr))))

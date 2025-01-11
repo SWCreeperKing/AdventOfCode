@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 7, "Bridge Repair")]
-file class Day7
+file class Day7() : Puzzle<(long, int[])[]>(2024, 7, "Bridge Repair")
 {
-    [ModifyInput]
-    public static (long, int[])[] ProcessInput(string input)
+    public override (long, int[])[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .SelectArr(line =>
@@ -15,7 +13,7 @@ file class Day7
     }
 
     [Answer(1582598718861)]
-    public static long Part1((long, int[])[] inp)
+    public override object Part1((long, int[])[] inp)
     {
         var total = 0L;
         Parallel.ForEach(inp, line =>
@@ -28,7 +26,7 @@ file class Day7
     }
 
     [Answer(165278151522644)]
-    public static long Part2((long, int[])[] inp)
+    public override object Part2((long, int[])[] inp)
     {
         var total = 0L;
         Parallel.ForEach(inp, line =>

@@ -2,13 +2,11 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 18, "Lavaduct Lagoon")]
-file class Day18
+file class Day18() : Puzzle<(Direction dir, int amount, string color)[]>(2023, 18, "Lavaduct Lagoon")
 {
     public static readonly Regex Reg = new(@"(.) (\d+) \(#(.{6})\)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (Direction dir, int amount, string color)[] ProcessInput(string input)
+    public override (Direction dir, int amount, string color)[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(s
@@ -25,13 +23,13 @@ file class Day18
     }
 
     [Answer(50746)]
-    public static long Part1((Direction dir, int amount, string color)[] inp)
+    public override object Part1((Direction dir, int amount, string color)[] inp)
     {
         return inp.Select(t => (t.amount, t.dir)).Shoelace();
     }
 
     [Answer(70086216556038)]
-    public static long Part2((Direction dir, int amount, string color)[] inp)
+    public override object Part2((Direction dir, int amount, string color)[] inp)
     {
         return inp.Select(line => (Convert.ToInt32(line.color[..^1], 16), line.color[^1] switch
                    {

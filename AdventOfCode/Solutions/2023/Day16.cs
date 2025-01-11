@@ -3,19 +3,17 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 16, "The Floor Will Be Lava")]
-file class Day16
+file class Day16() : Puzzle<Matrix2d<Tile>>(2023, 16, "The Floor Will Be Lava")
 {
-    [ModifyInput]
-    public static Matrix2d<Tile> ProcessInput(string input)
+    public override Matrix2d<Tile> ProcessInput(string input)
     {
         return new Matrix2d<Tile>(input.Split('\n').Select(s => s.Select(c => new Tile(c)).ToArray()).ToArray());
     }
 
-    [Answer(7034)] public static long Part1(Matrix2d<Tile> inp) { return RunMap(inp, (Pos.Zero, Right)); }
+    [Answer(7034)] public override object Part1(Matrix2d<Tile> inp) { return RunMap(inp, (Pos.Zero, Right)); }
 
     [Answer(7759)]
-    public static long Part2(Matrix2d<Tile> inp)
+    public override object Part2(Matrix2d<Tile> inp)
     {
         var biggest = 0L;
         var size = inp.Size;

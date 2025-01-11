@@ -1,15 +1,17 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 16, "Dragon Checksum")]
-file class Day16
+file class Day16() : Puzzle<List<bool>>(2016, 16, "Dragon Checksum")
 {
-    [ModifyInput] public static List<bool> ProcessInput(string input) { return input.Select(c => c == '1').ToList(); }
+    public override List<bool> ProcessInput(string input) { return input.Select(c => c == '1').ToList(); }
 
     [Answer("11100110111101110")]
-    public static string Part1(List<bool> inp) { return CheckSum(DragonCurve(inp)).Select(b => b ? '1' : '0').Join(); }
+    public override object Part1(List<bool> inp)
+    {
+        return CheckSum(DragonCurve(inp)).Select(b => b ? '1' : '0').Join();
+    }
 
     [Answer("10001101010000101")]
-    public static string Part2(List<bool> inp)
+    public override object Part2(List<bool> inp)
     {
         return CheckSum(DragonCurve(inp, 35651584)).Select(b => b ? '1' : '0').Join();
     }

@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 25, "Code Chronicle")]
-file class Day25
+file class Day25() : Puzzle<string>(2024, 25, "Code Chronicle")
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public override string ProcessInput(string input) => input;
 
     [Answer(2815)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         List<int[]> locks = [];
         List<int[]> keys = [];

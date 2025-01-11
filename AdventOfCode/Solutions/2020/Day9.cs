@@ -1,13 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 9, "Encoding Error")]
-file class Day9
+file class Day9() : Puzzle<long[]>(2020, 9, "Encoding Error")
 {
-    [ModifyInput]
-    public static long[] ProcessInput(string input) { return input.Split('\n').Select(long.Parse).ToArray(); }
+    public override long[] ProcessInput(string input) { return input.Split('\n').Select(long.Parse).ToArray(); }
 
     [Answer(552655238)]
-    public static long Part1(long[] inp)
+    public override object Part1(long[] inp)
     {
         for (var i = 25; i < inp.Length; i++)
         {
@@ -23,9 +21,9 @@ file class Day9
     }
 
     [Answer(70672245)]
-    public static long Part2(long[] inp)
+    public override object Part2(long[] inp)
     {
-        var weakness = Part1(inp);
+        var weakness = (long) Part1(inp);
         for (var i = 2; i < inp.Length; i++)
         for (var j = 0; j < i; j++)
         {

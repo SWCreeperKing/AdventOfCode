@@ -2,11 +2,9 @@ using CreepyUtil.TreeNode;
 
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 7, "Recursive Circus")]
-file class Day7
+file class Day7() : Puzzle<Weight>(2017, 7, "Recursive Circus")
 {
-    [ModifyInput]
-    public static Weight ProcessInput(string input)
+    public override Weight ProcessInput(string input)
     {
         Weight.ParseMaps(input.Split('\n'), out var childMap,
             out var dataMap,
@@ -19,10 +17,10 @@ file class Day7
         return Weight.CreateTree(childMap, k => new Weight(k, dataMap[k]));
     }
 
-    [Answer("cyrupz")] public static string Part1(Weight inp) { return inp.Id; }
+    [Answer("cyrupz")] public override object Part1(Weight inp) { return inp.Id; }
 
     [Answer(193)]
-    public static long Part2(Weight inp)
+    public override object Part2(Weight inp)
     {
         var isEnd = true;
         foreach (var node in inp.IterateDeepestFirst().Where(w => w.Children is not null))

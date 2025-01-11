@@ -1,14 +1,12 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 15, "Beacon Exclusion Zone")]
-file class Day15
+file class Day15() : Puzzle<(int x1, int y1, int x2, int y2)[]>(2022, 15, "Beacon Exclusion Zone")
 {
     private static readonly Regex InputRegex = new(
         @"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
         RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (int x1, int y1, int x2, int y2)[] ProcessInput(string inp)
+    public override (int x1, int y1, int x2, int y2)[] ProcessInput(string inp)
     {
         var inputSplit = inp.Split('\n');
         var outArr = new (int x1, int y1, int x2, int y2)[inputSplit.Length];
@@ -23,7 +21,7 @@ file class Day15
     }
 
     [Answer(5607466)]
-    public static long Part1(IEnumerable<(int x1, int y1, int x2, int y2)> inp)
+    public override object Part1((int x1, int y1, int x2, int y2)[] inp)
     {
         List<int> ranges = [];
         foreach (var (x1, y1, x2, y2) in inp)
@@ -38,7 +36,7 @@ file class Day15
     }
 
     [Answer(12543202766584)]
-    public static ulong Part2(IEnumerable<(int x1, int y1, int x2, int y2)> inp)
+    public override object Part2((int x1, int y1, int x2, int y2)[] inp)
     {
         Dictionary<int, List<Range>> ranges = new();
         foreach (var (x1, y1, x2, y2) in inp)

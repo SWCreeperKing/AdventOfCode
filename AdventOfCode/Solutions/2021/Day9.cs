@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 9, "Smoke Basin")]
-file class Day9
+file class Day9() : Puzzle<Dictionary<(int, int), int>>(2021, 9, "Smoke Basin")
 {
-    [ModifyInput]
-    public static Dictionary<(int, int), int> ProcessInput(string input)
+    public override Dictionary<(int, int), int> ProcessInput(string input)
     {
         Dictionary<(int, int), int> dict = new();
         var split = input.Split('\n');
@@ -15,7 +13,7 @@ file class Day9
     }
 
     [Answer(452)]
-    public static long Part1(Dictionary<(int, int), int> inp)
+    public override object Part1(Dictionary<(int, int), int> inp)
     {
         var count = 0;
         foreach (var ((y, x), i) in inp)
@@ -31,7 +29,7 @@ file class Day9
     }
 
     [Answer(1263735)]
-    public static long Part2(Dictionary<(int, int), int> inp)
+    public override object Part2(Dictionary<(int, int), int> inp)
     {
         return -1;
         List<int> basins = [];

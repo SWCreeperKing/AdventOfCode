@@ -2,17 +2,15 @@ using System.Numerics;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 1, "No Time for a Taxicab")]
-file class Day1
+file class Day1() : Puzzle<(bool, int)[]>(2016, 1, "No Time for a Taxicab")
 {
-    [ModifyInput]
-    public static (bool, int)[] ProcessInput(string input)
+    public override (bool, int)[] ProcessInput(string input)
     {
         return input.Split(", ").Select(s => (s[0] == 'L', int.Parse(s[1..]))).ToArray();
     }
 
     [Answer(230)]
-    public static long Part1((bool, int)[] inp)
+    public override object Part1((bool, int)[] inp)
     {
         var pos = Vector2.Zero;
         var dir = 0;
@@ -25,7 +23,7 @@ file class Day1
     }
 
     [Answer(154)]
-    public static long Part2((bool, int)[] inp)
+    public override object Part2((bool, int)[] inp)
     {
         var pos = Vector2.Zero;
         var locations = new List<Vector2>();

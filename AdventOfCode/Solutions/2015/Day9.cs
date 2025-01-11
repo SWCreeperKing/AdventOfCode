@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 9, "All in a Single Night")]
-file class Day9
+file class Day9() : Puzzle<Dictionary<(string, string), int>>(2015, 9, "All in a Single Night")
 {
     private static readonly Regex InputRegex = new("(.*) to (.*) = (.*)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static Dictionary<(string, string), int> ProcessInput(string input)
+    public override Dictionary<(string, string), int> ProcessInput(string input)
     {
         return input.Split('\n')
                     .SelectMany(s =>
@@ -19,7 +17,7 @@ file class Day9
     }
 
     [Answer(141)]
-    public static long Part1(Dictionary<(string, string), int> inp)
+    public override object Part1(Dictionary<(string, string), int> inp)
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 
@@ -32,7 +30,7 @@ file class Day9
     }
 
     [Answer(736)]
-    public static long Part2(Dictionary<(string, string), int> inp)
+    public override object Part2(Dictionary<(string, string), int> inp)
     {
         var allPlaces = inp.Keys.Select(ss => ss.Item1).Distinct().ToArray();
 

@@ -1,14 +1,12 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 1, "Trebuchet?!")]
-file class Day1
+file class Day1() : Puzzle<string[]>(2023, 1, "Trebuchet?!")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
-
-    [Answer(54916)] public static long Part1(string[] inp) { return inp.Select(ParseRunNums).Sum(); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
+    [Answer(54916)] public override object Part1(string[] inp) { return inp.Select(ParseRunNums).Sum(); }
 
     [Answer(54728)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         return inp.Select(str => str
                       .LoopReplace(("eight", "e8t"), ("nine", "n9"), ("seven", "7"),

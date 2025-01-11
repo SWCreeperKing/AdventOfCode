@@ -11,7 +11,6 @@ namespace AdventOfCode;
 
 public static class Helper
 {
-
     // public static Regex NumberOnlyRegex = new(@"^\d+$", RegexOptions.Compiled);
     public static Regex SpaceRegex = new(@"\s+", RegexOptions.Compiled);
 
@@ -467,6 +466,12 @@ public static class Helper
     public static MethodInfo? FirstOrNull(this IEnumerable<MethodInfo> list, string name)
     {
         return list.FirstOrDefault(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase), null);
+    }
+
+    public static T? FirstOrNull<T>(this MethodInfo method) where T : Attribute
+    {
+        var list = method.GetCustomAttributes<T>().ToArray();
+        return list.Length != 0 ? list.ElementAt(0) : null;
     }
 
     public static T? Attribute<T>(this MethodInfo info) where T : Attribute { return info.GetCustomAttribute<T>(); }

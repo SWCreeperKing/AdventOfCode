@@ -1,13 +1,11 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 24, "Never Tell Me The Odds")]
-file class Day24
+file class Day24() : Puzzle<long[][]>(2023, 24, "Never Tell Me The Odds")
 {
     public static readonly Regex InputRegex =
         new(@"((?:-|)\d+), ((?:-|)\d+), ((?:-|)\d+) @ ((?:-|)\d+), ((?:-|)\d+), ((?:-|)\d+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static long[][] ProcessInput(string input)
+    public override long[][] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(s
@@ -16,7 +14,7 @@ file class Day24
     }
 
     [Answer(16779)]
-    public static long Part1(long[][] inp) // pos (xyz), velocity(xyz)
+    public override object Part1(long[][] inp) // pos (xyz), velocity(xyz)
     {
         const long min = (long)2e14;
         const long max = (long)4e14;
@@ -44,7 +42,7 @@ file class Day24
     }
 
     [Answer(871983857253169L)]
-    public static double Part2(long[][] inp) // pos (xyz), velocity(xyz)
+    public override object Part2(long[][] inp) // pos (xyz), velocity(xyz)
     {
         long[][] possibilities = [[], [], []];
 

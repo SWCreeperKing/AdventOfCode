@@ -1,10 +1,8 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 7, "Handy Haversacks")]
-file class Day7
+file class Day7() : Puzzle<Dictionary<string, List<(int, string)>>>(2020, 7, "Handy Haversacks")
 {
-    [ModifyInput]
-    public static Dictionary<string, List<(int, string)>> ProcessInput(string input)
+    public override Dictionary<string, List<(int, string)>> ProcessInput(string input)
     {
         Dictionary<string, List<(int, string)>> realBags = new();
 
@@ -22,7 +20,7 @@ file class Day7
     }
 
     [Answer(213)]
-    public static long Part1(Dictionary<string, List<(int, string)>> inp)
+    public override object Part1(Dictionary<string, List<(int, string)>> inp)
     {
         var realFinder = new List<string>();
         foreach (var (key, value) in inp)
@@ -43,7 +41,7 @@ file class Day7
     }
 
     [Answer(38426)]
-    public static long Part2(Dictionary<string, List<(int, string)>> inp) { return Counter(inp["shiny gold"], inp); }
+    public override object Part2(Dictionary<string, List<(int, string)>> inp) { return Counter(inp["shiny gold"], inp); }
 
     private static long Counter(IEnumerable<(int, string)> bags, Dictionary<string, List<(int, string)>> bagz)
     {

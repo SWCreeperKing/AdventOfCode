@@ -1,13 +1,11 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 8, "Two-Factor Authentication")]
-file class Day8
+file class Day8() : Puzzle<string[][]>(2016, 8, "Two-Factor Authentication")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string inp) { return inp.Split('\n').Select(s => s.Split(' ')).ToArray(); }
+    public override string[][] ProcessInput(string inp) { return inp.Split('\n').Select(s => s.Split(' ')).ToArray(); }
 
     [Answer(106)]
-    public static long Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var display = false;
         var map = new bool[300];

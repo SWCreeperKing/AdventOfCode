@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 22, "Wizard Simulator 20XX")]
-file class Day22
+file class Day22() : Puzzle<GameState>(2015, 22, "Wizard Simulator 20XX")
 {
-    [ModifyInput]
-    public static GameState ProcessInput(string input)
+    public override GameState ProcessInput(string input)
     {
         return input.Split('\n')
                     .Inline(arr => new GameState(
@@ -12,9 +10,8 @@ file class Day22
                          int.Parse(arr[1][(arr[1].IndexOf(": ", StringComparison.Ordinal) + 1)..])));
     }
 
-    [Answer(1269)] public static long Part1(GameState inp) { return Run(inp); }
-
-    [Answer(1309)] public static long Part2(GameState inp) { return Run(inp, true); }
+    [Answer(1269)] public override object Part1(GameState inp) { return Run(inp); }
+    [Answer(1309)] public override object Part2(GameState inp) { return Run(inp, true); }
 
     public static int Run(GameState initState, bool part2 = false)
     {

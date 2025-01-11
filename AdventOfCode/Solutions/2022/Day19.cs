@@ -1,15 +1,15 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 19, "Not Enough Minerals")]
-file class Day19
+file class Day19()
+    : Puzzle<(int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[]>(2022, 19,
+        "Not Enough Minerals")
 {
     public static readonly Regex InputRegex =
         new(
             @"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.",
             RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[]
+    public override (int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[]
         ProcessInput(string inp)
     {
         return inp.Split('\n')
@@ -23,7 +23,7 @@ file class Day19
                   .ToArray();
     }
 
-    public static long Part1(
+    public override object Part1(
         (int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[] inp)
     {
         var maxCollect = 0;
@@ -59,7 +59,7 @@ file class Day19
         return 0;
     }
 
-    public static long Part2(
+    public override object Part2(
         (int blueprint, int orebot, int claybot, int obibot1, int obibot2, int geobot1, int geobot2)[] inp)
     {
         return 0;

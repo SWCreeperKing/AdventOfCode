@@ -2,11 +2,9 @@ using System.Text;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 13, "Point of Incidence")]
-file class Day13
+file class Day13() : Puzzle<Map[]>(2023, 13, "Point of Incidence")
 {
-    [ModifyInput]
-    public static Map[] ProcessInput(string input)
+    public override Map[] ProcessInput(string input)
     {
         return input.Split("\n\n")
                     .Select(line =>
@@ -27,9 +25,8 @@ file class Day13
                     .ToArray();
     }
 
-    [Answer(40006)] public static long Part1(Map[] inp) { return inp.Select(CalcMap).Sum(); }
-
-    [Answer(28627)] public static long Part2(Map[] inp) { return inp.Select(FullCalcDoubleMap).Sum(); }
+    [Answer(40006)] public override object Part1(Map[] inp) { return inp.Select(CalcMap).Sum(); }
+    [Answer(28627)] public override object Part2(Map[] inp) { return inp.Select(FullCalcDoubleMap).Sum(); }
 
     public static List<string[]> MakeVariants(string[] list)
     {

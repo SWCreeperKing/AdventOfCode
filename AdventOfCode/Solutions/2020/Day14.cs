@@ -1,12 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 14, "Docking Data")]
-file class Day14
+file class Day14() : Puzzle<string[]>(2020, 14, "Docking Data")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Remove(" ").Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Remove(" ").Split('\n'); }
 
     [Answer(17765746710228)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         Dictionary<int, long> storage = new();
         var mask = string.Empty;
@@ -22,7 +21,7 @@ file class Day14
     }
 
     [Answer(4401465949086)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         Dictionary<long, long> storage = new();
         var mask = string.Empty;

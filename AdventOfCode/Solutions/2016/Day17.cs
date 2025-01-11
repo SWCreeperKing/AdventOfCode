@@ -4,14 +4,11 @@ using Convert = System.Convert;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 17, "Two Steps Forward")]
-file class Day17
+file class Day17() : Puzzle<string>(2016, 17, "Two Steps Forward")
 {
-    [ModifyInput] public static string ProcessInput(string input) { return input; }
-
-    [Answer("DDRLRRUDDR")] public static string Part1(string inp) { return Run(inp).First(); }
-
-    [Answer(556)] public static int Part2(string inp) { return Run(inp).Last().Length; }
+    public override string ProcessInput(string input) { return input; }
+    [Answer("DDRLRRUDDR")] public override object Part1(string inp) { return Run(inp).First(); }
+    [Answer(556)] public override object Part2(string inp) { return Run(inp).Last().Length; }
 
     public static IEnumerable<string> Run(string inp)
     {

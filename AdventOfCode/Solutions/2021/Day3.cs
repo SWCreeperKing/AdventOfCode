@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 3, "Binary Diagnostic")]
-file class Day3
+file class Day3() : Puzzle<string[]>(2021, 3, "Binary Diagnostic")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(1082324)]
-    public static int Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         var gamma = Enumerable.Range(0, inp[0].Length)
                               .Select(i => inp.Select(s => s[i]).Join())
@@ -16,7 +15,7 @@ file class Day3
     }
 
     [Answer(1353024)]
-    public static int Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         int FindMostReplace(List<string> ar, char first = '0', char sec = '1')
         {

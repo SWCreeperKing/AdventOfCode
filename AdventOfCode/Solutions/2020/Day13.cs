@@ -1,12 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 13, "Shuttle Search")]
-file class Day13
+file class Day13() : Puzzle<string[]>(2020, 13, "Shuttle Search")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(174)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         var timeStamp = int.Parse(inp[0]);
         var busSchedule = inp[1].Split(",").Where(s => s != "x").Select(int.Parse).ToDictionary(i => i);
@@ -25,7 +24,7 @@ file class Day13
     }
 
     [Answer(780601154795940)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         var busses = inp[1].Split(",").Select(s => s == "x" ? "-1" : s).Select(long.Parse).ToArray();
 

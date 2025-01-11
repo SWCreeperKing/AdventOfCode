@@ -2,8 +2,7 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 10, "Pipe Maze")]
-file class Day10
+file class Day10() : Puzzle<(Pos pos, Matrix2d<char> map)>(2023, 10, "Pipe Maze")
 {
     public static readonly Dictionary<char, Direction[]> Dirs = new()
     {
@@ -13,18 +12,17 @@ file class Day10
         { 'J', [Up, Left] }, { 'L', [Up, Right] }
     };
 
-    [ModifyInput]
-    public static (Pos pos, Matrix2d<char> map) ProcessInput(string input)
+    public override (Pos pos, Matrix2d<char> map) ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray())
            .Inline(map => (map.Find('S'), map));
     }
 
     [Answer(6778)]
-    public static long Part1((Pos pos, Matrix2d<char> map) inp) { return Follow(inp.map, inp.pos, []) / 2; }
+    public override object Part1((Pos pos, Matrix2d<char> map) inp) { return Follow(inp.map, inp.pos, []) / 2; }
 
     [Answer(433)]
-    public static long Part2((Pos pos, Matrix2d<char> map) inp)
+    public override object Part2((Pos pos, Matrix2d<char> map) inp)
     {
         Dictionary<int, char> path = new();
         Follow(inp.map, inp.pos, path);

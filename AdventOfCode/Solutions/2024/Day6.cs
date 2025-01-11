@@ -1,18 +1,16 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 6, "Guard Gallivant")]
-file class Day6
+file class Day6() : Puzzle<Matrix2d<char>>(2024, 6, "Guard Gallivant")
 {
-    [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input)
+    public override Matrix2d<char> ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').SelectArr(line => line.ToCharArray()));
     }
 
-    [Answer(4778)] public static long Part1(Matrix2d<char> inp) { return GetPath(inp).Length; }
+    [Answer(4778)] public override object Part1(Matrix2d<char> inp) { return GetPath(inp).Length; }
 
     [Answer(1618)]
-    public static long Part2(Matrix2d<char> inp)
+    public override object Part2(Matrix2d<char> inp)
     {
         var startPos = inp.Find(c => c == '^');
         var loops = 0;

@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 6, "Memory Reallocation")]
-file class Day6
+file class Day6() : Puzzle<int[]>(2017, 6, "Memory Reallocation")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input)
+    public override int[] ProcessInput(string input)
     {
         return input.Replace('\t', ' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
     }
 
     [Answer(5042)]
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         HashSet<string> hash = [inp.String()];
 
@@ -33,7 +31,7 @@ file class Day6
     }
 
     [Answer(1086)]
-    public static long Part2(int[] inp)
+    public override object Part2(int[] inp)
     {
         HashSet<string> hash = [inp.String()];
         var recorded = "";

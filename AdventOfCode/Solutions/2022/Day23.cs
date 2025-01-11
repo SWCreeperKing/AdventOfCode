@@ -1,11 +1,8 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 23, "Unstable Diffusion")]
-file class Day23
+file class Day23() : Puzzle<string[]>(2022, 23, "Unstable Diffusion")
 {
-    // [ModifyInput] public static string[] ProcessInput(string inp) => inp.Split('\n');
-
-    public static long Part1(string inp) { return 0; }
-
-    public static long Part2(string inp) { return 0; }
+    public override string[] ProcessInput(string inp) => inp.Split('\n');
+    public override object Part1(string[] inp) { return null; }
+    public override object Part2(string[] inp) { return null; }
 }

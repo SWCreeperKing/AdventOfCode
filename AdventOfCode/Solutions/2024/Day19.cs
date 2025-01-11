@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 19, "Linen Layout")]
-file class Day19
+file class Day19() : Puzzle<(string[] towels, string[] patterns)>(2024, 19, "Linen Layout")
 {
-    [ModifyInput]
-    public static (string[] towels, string[] patterns) ProcessInput(string input)
+    public override (string[] towels, string[] patterns) ProcessInput(string input)
     {
         return input.Split("\n\n").Inline(sep => (sep[0].Split(", "), sep[1].Split('\n')));
     }
 
     [Answer(369)]
-    public static long Part1((string[] towels, string[] patterns) inp)
+    public override object Part1((string[] towels, string[] patterns) inp)
     {
         var (towels, patterns) = inp;
         Dictionary<string, bool> cache = new() { [""] = true };
@@ -28,7 +26,7 @@ file class Day19
     }
 
     [Answer(761826581538190)]
-    public static long Part2((string[] towels, string[] patterns) inp)
+    public override object Part2((string[] towels, string[] patterns) inp)
     {
         var (towels, patterns) = inp;
         Dictionary<string, long> cache = new() { [""] = 1 };

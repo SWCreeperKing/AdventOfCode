@@ -2,11 +2,9 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 12, "Garden Groups")]
-file class Day12
+file class Day12() : Puzzle<(Matrix2d<char> map, List<Pos[]> regions)>(2024, 12, "Garden Groups")
 {
-    [ModifyInput]
-    public static (Matrix2d<char> map, List<Pos[]> regions) ProcessInput(string input)
+    public override (Matrix2d<char> map, List<Pos[]> regions) ProcessInput(string input)
     {
         var arr = input.Split('\n').SelectArr(line => line.ToCharArray());
         Matrix2d<char> map = new(arr);
@@ -39,7 +37,7 @@ file class Day12
     }
 
     [Answer(1396562)]
-    public static long Part1((Matrix2d<char> map, List<Pos[]> regions) inp)
+    public override object Part1((Matrix2d<char> map, List<Pos[]> regions) inp)
     {
         var (map, regions) = inp;
         var total = 0L;
@@ -73,7 +71,7 @@ file class Day12
     }
 
     [Answer(844132)]
-    public static long Part2((Matrix2d<char> map, List<Pos[]> regions) inp)
+    public override object Part2((Matrix2d<char> map, List<Pos[]> regions) inp)
     {
         var (map, regions) = inp;
         Direction[] dir = [Up, Down, Left, Right];

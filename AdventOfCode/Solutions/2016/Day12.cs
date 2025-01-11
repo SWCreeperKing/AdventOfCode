@@ -1,13 +1,10 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 12, "Leonardo's Monorail")]
-file class Day12
+file class Day12() : Puzzle<string[][]>(2016, 12, "Leonardo's Monorail")
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
-
-    [Answer(318003)] public static long Part1(string[][] inp) { return Solve(inp); }
-
-    [Answer(9227657)] public static long Part2(string[][] inp) { return Solve(inp, 1); }
+    public override string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
+    [Answer(318003)] public override object Part1(string[][] inp) { return Solve(inp); }
+    [Answer(9227657)] public override object Part2(string[][] inp) { return Solve(inp, 1); }
 
     private static long Solve(string[][] inp, int cInit = 0)
     {

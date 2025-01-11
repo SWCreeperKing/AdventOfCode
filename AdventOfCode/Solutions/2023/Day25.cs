@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 25, "Snowverload")]
-file class Day25
+file class Day25() : Puzzle<(List<Edge> edges, List<string> vertices)>(2023, 25, "Snowverload")
 {
-    [ModifyInput]
-    public static (List<Edge> edges, List<string> vertices) ProcessInput(string input)
+    public override (List<Edge> edges, List<string> vertices) ProcessInput(string input)
     {
         List<Edge> edges = [];
         HashSet<string> nodes = [];
@@ -25,7 +23,7 @@ file class Day25
     }
 
     [Answer(562772)]
-    public static long Part1((List<Edge> edges, List<string> vertices) inp)
+    public override object Part1((List<Edge> edges, List<string> vertices) inp)
     {
         var (edges, vertices) = inp;
 

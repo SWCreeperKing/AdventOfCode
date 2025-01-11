@@ -1,13 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 1, "Report Repair")]
-file class Day1
+file class Day1() : Puzzle<int[]>(2020, 1, "Report Repair")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).ToArray(); }
+    public override int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).ToArray(); }
 
     [Answer(1016619)]
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         return inp.Select(i => (i, n: 2020 - i))
                   .Where(t => inp.Contains(t.n))
@@ -16,7 +14,7 @@ file class Day1
     }
 
     [Answer(218767230)]
-    public static long Part2(int[] inp)
+    public override object Part2(int[] inp)
     {
         return inp.SelectMany(_ => inp, (i, j) => (i, j))
                   .Select(t => (t, n: 2020 - t.i - t.j))

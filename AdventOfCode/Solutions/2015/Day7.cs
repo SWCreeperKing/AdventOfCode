@@ -1,20 +1,18 @@
 ﻿namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 7, "Some Assembly Required")]
-file class Day7
+file class Day7() : Puzzle<Dictionary<string, string[]>>(2015, 7, "Some Assembly Required")
 {
-    [ModifyInput]
-    public static Dictionary<string, string[]> ProcessInput(string input)
+    public override Dictionary<string, string[]> ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(instruction => instruction.Split(" -> "))
                     .ToDictionary(split => split[1], split => split[0].Split(' ').ToArray());
     }
 
-    [Answer(956)] public static long Part1(Dictionary<string, string[]> inp) { return FollowWire("a", inp); }
+    [Answer(956)] public override object Part1(Dictionary<string, string[]> inp) { return FollowWire("a", inp); }
 
     [Answer(40149)]
-    public static long Part2(Dictionary<string, string[]> inp)
+    public override object Part2(Dictionary<string, string[]> inp)
     {
         return FollowWire("a", inp, new Dictionary<string, long> { ["b"] = FollowWire("a", inp) });
     }

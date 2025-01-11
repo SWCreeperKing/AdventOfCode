@@ -7,11 +7,12 @@ namespace AdventOfCode.Solutions._2016;
 ///     Stole from: https://github.com/encse/adventofcode/blob/master/2016/Day05/Solution.cs
 ///     because theres no way im doing stuff with md5 hash
 /// </summary>
-[Day(2016, 5, "How About a Nice Game of Chess?")]
-file class Day5
+file class Day5() : Puzzle<string>(2016, 5, "How About a Nice Game of Chess?")
 {
+    public override string ProcessInput(string input) { return input; }
+
     [Answer("c6697b55")]
-    public static string Part1(string input)
+    public override object Part1(string input)
     {
         var counter = 0L;
         List<string> col = [];
@@ -27,7 +28,7 @@ file class Day5
     }
 
     [Answer("8c35d1ab")]
-    public static string Part2(string input)
+    public override object Part2(string input)
     {
         var counter = 0L;
         List<char[]> col = [];

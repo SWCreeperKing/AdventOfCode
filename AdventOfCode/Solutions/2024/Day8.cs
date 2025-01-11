@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 8, "Resonant Collinearity")]
-file class Day8
+file class Day8() : Puzzle<string>(2024, 8, "Resonant Collinearity")
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public override string ProcessInput(string input) => input;
 
     [Answer(379)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
         Dictionary<char, List<Pos>> antenna = [];
@@ -49,7 +48,7 @@ file class Day8
     }
 
     [Answer(1339)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
         Dictionary<char, List<Pos>> antenna = [];

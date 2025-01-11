@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 13, "A Maze of Twisty Little Cubicles")]
-file class Day13
+file class Day13() : Puzzle<int>(2016, 13, "A Maze of Twisty Little Cubicles")
 {
-    [ModifyInput] public static int ProcessInput(string input) { return int.Parse(input); }
+    public override int ProcessInput(string input) { return int.Parse(input); }
 
     [Answer(86)]
-    public static long Part1(int inp)
+    public override object Part1(int inp)
     {
         Dictionary<(int x, int y), Node> map = new();
         List<Node> searchList = [];
@@ -57,7 +56,7 @@ file class Day13
     }
 
     [Answer(127)]
-    public static long Part2(int inp)
+    public override object Part2(int inp)
     {
         var map = new bool[60, 60];
         Dictionary<(int x, int y), (int steps, bool counted)> visited = new();

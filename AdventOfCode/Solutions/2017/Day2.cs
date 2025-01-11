@@ -1,18 +1,16 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 2, "Corruption Checksum")]
-internal class Day2
+internal class Day2() : Puzzle<int[][]>(2017, 2, "Corruption Checksum")
 {
-    [ModifyInput]
-    public static int[][] ProcessInput(string input)
+    public override int[][] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => s.CleanSpaces().Split(' ').Select(int.Parse).ToArray()).ToArray();
     }
 
-    [Answer(46402)] public static long Part1(int[][] input) { return input.Sum(row => row.Max() - row.Min()); }
+    [Answer(46402)] public override object Part1(int[][] input) { return input.Sum(row => row.Max() - row.Min()); }
 
     [Answer(265)]
-    public static long Part2(int[][] inp)
+    public override object Part2(int[][] inp)
     {
         return inp.Select(arr =>
                    {

@@ -1,18 +1,17 @@
 ﻿namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 8, "Matchsticks")]
-file class Day8
+file class Day8() : Puzzle<string[]>(2015, 8, "Matchsticks")
 {
     private static readonly Regex StringRegex = new("""^"(\\x..|\\.|.)*"$""", RegexOptions.Compiled);
     private static readonly Regex EscapeRegex = new(@"(\\|"")", RegexOptions.Compiled);
 
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(1333)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         return inp.Sum(s => s.Length - StringRegex.Match(s).Groups[1].Captures.Count);
     }
 
-    [Answer(2046)] public static long Part2(string[] inp) { return inp.Sum(s => EscapeRegex.Matches(s).Count + 2); }
+    [Answer(2046)] public override object Part2(string[] inp) { return inp.Sum(s => EscapeRegex.Matches(s).Count + 2); }
 }

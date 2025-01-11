@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 20, "Race Condition")]
-file class Day20
+file class Day20() : Puzzle<Pos[]>(2024, 20, "Race Condition")
 {
-    [ModifyInput]
-    public static Pos[] ProcessInput(string input)
+    public override Pos[] ProcessInput(string input)
     {
         Matrix2d<char> map = new(input.Split('\n')[1..^1].SelectArr(l => l.ToCharArray()[1..^1]));
         var start = map.Find('S');
@@ -16,8 +14,8 @@ file class Day20
               .Path;
     }
 
-    [Answer(1511)] public static long Part1(Pos[] inp) { return Cheat(inp); }
-    [Answer(1020507)] public static long Part2(Pos[] inp) { return Cheat(inp, 20); }
+    [Answer(1511)] public override object Part1(Pos[] inp) { return Cheat(inp); }
+    [Answer(1020507)] public override object Part2(Pos[] inp) { return Cheat(inp, 20); }
 
     public static int Cheat(Pos[] path, int cheatLength = 2)
     {

@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 8, "Seven Segment Search")]
-file class Day8
+file class Day8() : Puzzle<string>(2021, 8, "Seven Segment Search")
 {
-    [ModifyInput] public static string ProcessInput(string input) { return input; }
+    public override string ProcessInput(string input) { return input; }
 
     [Answer(375)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         return inp.Split('\n')
                   .Select(s => s.Split(" | ")[^1].Split(' '))
@@ -15,7 +14,7 @@ file class Day8
     }
 
     [Answer(1019355)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         var n = inp.Split('\n')
                    .Select(s =>

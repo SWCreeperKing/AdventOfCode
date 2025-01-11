@@ -1,14 +1,12 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 14, "Reindeer Olympics")]
-file class Day14
+file class Day14() : Puzzle<Dictionary<string, Day14.Flight>>(2015, 14, "Reindeer Olympics")
 {
     private static readonly Regex InputRegex =
         new(@"(\w+) can fly (\d+) km/s for (\d+) seconds, but then must rest for (\d+) seconds\.",
             RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static Dictionary<string, Flight> ProcessInput(string input)
+    public override Dictionary<string, Flight> ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(l => InputRegex.Match(l).Range(1..4))
@@ -17,7 +15,7 @@ file class Day14
     }
 
     [Answer(2660)]
-    public static long Part1(Dictionary<string, Flight> inp)
+    public override object Part1(Dictionary<string, Flight> inp)
     {
         var distance = 0;
         foreach (var (speed, sec, rest) in inp.Values)
@@ -31,7 +29,7 @@ file class Day14
     }
 
     [Answer(1256)]
-    public static long Part2(Dictionary<string, Flight> inp)
+    public override object Part2(Dictionary<string, Flight> inp)
     {
         Dictionary<string, int> canMove = new();
         Dictionary<string, int> distance = new();

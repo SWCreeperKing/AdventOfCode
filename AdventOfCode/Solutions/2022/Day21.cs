@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 21, "Monkey Math")]
-file class Day21
+file class Day21() : Puzzle<Dictionary<string, string[]>>(2022, 21, "Monkey Math")
 {
-    [ModifyInput]
-    public static Dictionary<string, string[]> ProcessInput(string inp)
+    public override Dictionary<string, string[]> ProcessInput(string inp)
     {
         Dictionary<string, string[]> monkeys = [];
         foreach (var line in inp.Split('\n'))
@@ -17,10 +15,10 @@ file class Day21
     }
 
     [Answer(170237589447588)]
-    public static long Part1(Dictionary<string, string[]> inp) { return Path(inp, [], ["root"]); }
+    public override object Part1(Dictionary<string, string[]> inp) { return Path(inp, [], ["root"]); }
 
     [Answer(3712643961892)]
-    public static long Part2(Dictionary<string, string[]> inp)
+    public override object Part2(Dictionary<string, string[]> inp)
     {
         var ab = inp["root"];
 

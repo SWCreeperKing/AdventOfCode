@@ -5,15 +5,13 @@ namespace AdventOfCode.Solutions._2022;
 // just like 2015 day 22, i was unable to solve this
 // solution used: https://github.com/encse/adventofcode/blob/master/2022/Day16/Solution.cs
 // >24hr was waited before submitting
-[Day(2022, 16, "Proboscidea Volcanium")]
-file class Day16
+file class Day16() : Puzzle<(string valve, int rate, string[] leadTo)[]>(2022, 16, "Proboscidea Volcanium")
 {
     private static readonly Regex InputRegex =
         new(@"Valve ([A-Z]{2}) has flow rate=(\d+); tunnel(?:s|) lead(?:s|) to valve(?:s|) ([A-Z]{2}(, [A-Z]{2})*)",
             RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (string valve, int rate, string[] leadTo)[] ProcessInput(string inp)
+    public override (string valve, int rate, string[] leadTo)[] ProcessInput(string inp)
     {
         var split = inp.Split('\n');
 
@@ -26,10 +24,10 @@ file class Day16
     }
 
     [Answer(2059)]
-    public static long Part1((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, true, 30); }
+    public override object Part1((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, true, 30); }
 
     [Answer(2790)]
-    public static long Part2((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, false, 26); }
+    public override object Part2((string valve, int rate, string[] leadTo)[] inp) { return Solve(inp, false, 26); }
 
     private static int Solve((string valve, int rate, string[] leadTo)[] inp, bool singlePlayer, int time)
     {

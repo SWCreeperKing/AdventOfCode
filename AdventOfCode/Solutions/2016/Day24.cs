@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 24, "Air Duct Spelunking")]
-file class Day24
+file class Day24() : Puzzle<Matrix2d<char>>(2016, 24, "Air Duct Spelunking")
 {
-    [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input)
+    public override Matrix2d<char> ProcessInput(string input)
     {
         var split = input.Split('\n');
         Matrix2d<char> map = new(split[0].Length, split.Length);
@@ -18,7 +16,7 @@ file class Day24
     }
 
     [Answer(518)]
-    public static long Part1(Matrix2d<char> inp)
+    public override object Part1(Matrix2d<char> inp)
     {
         Dictionary<int, Pos> positions = new();
         for (var i = 0; i < 8; i++) positions[i] = inp.Find($"{i}"[0]);
@@ -55,7 +53,7 @@ file class Day24
     }
 
     [Answer(716)]
-    public static long Part2(Matrix2d<char> inp)
+    public override object Part2(Matrix2d<char> inp)
     {
         Dictionary<int, Pos> positions = new();
         for (var i = 0; i < 8; i++) positions[i] = inp.Find($"{i}"[0]);

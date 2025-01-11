@@ -1,19 +1,17 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 10, "Cathode-Ray Tube")]
-file class Day10
+file class Day10() : Puzzle<(string op, int val)[]>(2022, 10, "Cathode-Ray Tube")
 {
     private static readonly long[] CyclesToCountOn = { 20, 60, 100, 140, 180, 220 };
 
-    [ModifyInput]
-    public static (string op, int val)[] ProcessInput(string inp)
+    public override (string op, int val)[] ProcessInput(string inp)
     {
         return inp.SuperSplit("\n", " ",
             line => (line[0], line.Length > 1 ? int.Parse(line[1]) : 0));
     }
 
     [Answer(13920)]
-    public static long Part1((string op, int val)[] inp)
+    public override object Part1((string op, int val)[] inp)
     {
         long cycleAmount = 0, x = 1, cycle = 1;
         Queue<int> numberQueue = new();
@@ -45,5 +43,5 @@ file class Day10
         return cycleAmount;
     }
 
-    [Answer("EGLHBLFJ")] public static string Part2((string op, int val)[] inp) { return "EGLHBLFJ"; }
+    [Answer("EGLHBLFJ")] public override object Part2((string op, int val)[] inp) { return "EGLHBLFJ"; }
 }

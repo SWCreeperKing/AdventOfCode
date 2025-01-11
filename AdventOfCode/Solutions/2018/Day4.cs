@@ -1,7 +1,6 @@
 namespace AdventOfCode.Solutions._2018;
 
-[Day(2018, 4, "Repose Record")]
-file class Day4
+file class Day4() : Puzzle<Dictionary<int, int[]>>(2018, 4, "Repose Record")
 {
     public enum GuardState
     {
@@ -12,8 +11,7 @@ file class Day4
 
     public static readonly Regex Reg = new(@"\[\d+-(\d+-\d+) (\d+:\d+)\] (.+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static Dictionary<int, int[]> ProcessInput(string input)
+    public override Dictionary<int, int[]> ProcessInput(string input)
     {
         Dictionary<int, List<TimeStamp>> guards = [];
         List<TimeStamp> timeStamps = [];
@@ -65,9 +63,10 @@ file class Day4
         return schedules;
     }
 
-    [Answer(101262)] public static long Part1(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Sum()); }
+    [Answer(101262)]
+    public override object Part1(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Sum()); }
 
-    [Answer(71976)] public static long Part2(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Max()); }
+    [Answer(71976)] public override object Part2(Dictionary<int, int[]> inp) { return Find(inp, kv => kv.Value.Max()); }
 
     public static int Find(Dictionary<int, int[]> inp, Func<KeyValuePair<int, int[]>, int> action)
     {

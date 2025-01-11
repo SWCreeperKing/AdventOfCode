@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 7, "No Space Left On Device")]
-file class Day7
+file class Day7() : Puzzle<Dictionary<string, long>>(2022, 7, "No Space Left On Device")
 {
-    [ModifyInput]
-    public static Dictionary<string, long> ProcessInput(string inp)
+    public override Dictionary<string, long> ProcessInput(string inp)
     {
         Directory<(string, long)> directory = new();
         var inputLines = inp.Split('\n').Select(s => s.Split(' ')).ToArray();
@@ -31,10 +29,10 @@ file class Day7
     }
 
     [Answer(1390824)]
-    public static long Part1(Dictionary<string, long> inp) { return inp.Values.Where(l => l <= 100000).Sum(); }
+    public override object Part1(Dictionary<string, long> inp) { return inp.Values.Where(l => l <= 100000).Sum(); }
 
     [Answer(7490863)]
-    public static long Part2(Dictionary<string, long> inp)
+    public override object Part2(Dictionary<string, long> inp)
     {
         var spaceNeeded = inp["home"] - 4e7;
         return inp.Values.Where(l => l >= spaceNeeded).Order().First();

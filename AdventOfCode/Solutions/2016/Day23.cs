@@ -1,13 +1,10 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 23, "Safe Cracking")]
-file class Day23
+file class Day23() : Puzzle<string[][]>(2016, 23, "Safe Cracking")
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
-
-    [Answer(10440)] public static long Part1(string[][] inp) { return Solve(inp, 7); }
-
-    [Answer(479007000)] public static long Part2(string[][] inp) { return Solve(inp, 12); }
+    public override string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
+    [Answer(10440)] public override object Part1(string[][] inp) { return Solve(inp, 7); }
+    [Answer(479007000)] public override object Part2(string[][] inp) { return Solve(inp, 12); }
 
     private static long Solve(string[][] inp, int aInit = 0, int cInit = 0)
     {

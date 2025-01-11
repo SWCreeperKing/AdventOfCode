@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 4, "Security Through Obscurity")]
-file class Day4
+file class Day4() : Puzzle<(string[], int, string)[]>(2016, 4, "Security Through Obscurity")
 {
-    [ModifyInput]
-    public static (string[], int, string)[] ProcessInput(string inp)
+    public override (string[], int, string)[] ProcessInput(string inp)
     {
         return inp.Split('\n')
                   .Select(s =>
@@ -26,10 +24,10 @@ file class Day4
                   .ToArray();
     }
 
-    [Answer(185371)] public static long Part1((string[], int, string)[] inp) { return inp.Sum(s => s.Item2); }
+    [Answer(185371)] public override object Part1((string[], int, string)[] inp) { return inp.Sum(s => s.Item2); }
 
     [Answer(984)]
-    public static long Part2((string[], int, string)[] inp)
+    public override object Part2((string[], int, string)[] inp)
     {
         return inp.Select(s => (s.Item1
                                  .Select(str => str.Select(c => (char)((c - 'a' + s.Item2) % 26 + 'a')).Join())

@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2018;
 
-[Day(2018, 2, "Inventory Management System")]
-file class Day2
+file class Day2() : Puzzle<string[]>(2018, 2, "Inventory Management System")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
     [Answer(8820)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         var two = 0;
         var three = 0;
@@ -24,7 +23,7 @@ file class Day2
     }
 
     [Answer("bpacnmglhizqygfsjixtkwudr")]
-    public static string Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         for (var i = 0; i < inp.Length; i++)
         {

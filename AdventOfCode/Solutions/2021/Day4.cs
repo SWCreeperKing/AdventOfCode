@@ -1,17 +1,15 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 4, "Giant Squid")]
-file class Day4
+file class Day4() : Puzzle<(string[] arr, Card[] cards)>(2021, 4, "Giant Squid")
 {
-    [ModifyInput]
-    public static (string[] arr, Card[] cards) ProcessInput(string input)
+    public override (string[] arr, Card[] cards) ProcessInput(string input)
     {
         var arr = input.Split("\n\n");
         return (arr, arr.Skip(1).Select(s => new Card(s)).ToArray());
     }
 
     [Answer(35711)]
-    public static int Part1((string[] arr, Card[] cards) inp)
+    public override object Part1((string[] arr, Card[] cards) inp)
     {
         foreach (var num in inp.arr[0].Split(',').Select(int.Parse))
         {
@@ -23,7 +21,7 @@ file class Day4
     }
 
     [Answer(5586)]
-    public static int Part2((string[] arr, Card[] cards) inp)
+    public override object Part2((string[] arr, Card[] cards) inp)
     {
         foreach (var num in inp.arr[0].Split(',').Select(int.Parse))
         {

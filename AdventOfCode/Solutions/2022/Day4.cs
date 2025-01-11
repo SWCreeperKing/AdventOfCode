@@ -2,11 +2,9 @@ using Range = System.Range;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 4, "Camp Cleanup")]
-file class Day4
+file class Day4() : Puzzle<Range[][]>(2022, 4, "Camp Cleanup")
 {
-    [ModifyInput]
-    public static Range[][] ProcessInput(string inp)
+    public override Range[][] ProcessInput(string inp)
     {
         return inp.Split('\n')
                   .Select(s
@@ -20,13 +18,13 @@ file class Day4
     }
 
     [Answer(444)]
-    public static long Part1(Range[][] inp)
+    public override object Part1(Range[][] inp)
     {
         return inp.Select(r => r[0].IsInRange(r[1]) || r[1].IsInRange(r[0])).Count(b => b);
     }
 
     [Answer(801)]
-    public static long Part2(Range[][] inp)
+    public override object Part2(Range[][] inp)
     {
         return inp.Select(r => r[0].IsOverlapping(r[1]) || r[1].IsOverlapping(r[0])).Count(b => b);
     }

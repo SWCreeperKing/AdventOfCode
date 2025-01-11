@@ -1,7 +1,6 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 21, "RPG Simulator 20XX")]
-file class Day21
+file class Day21() : Puzzle<(Entity, List<Player> playerStates)>(2015, 21, "RPG Simulator 20XX")
 {
     private static readonly List<Item> Weapons =
         [new(8, 4), new(10, 5), new(25, 6), new(40, 7), new(74, 8)];
@@ -14,8 +13,7 @@ file class Day21
         new(25, 1), new(50, 2), new(100, 3), new(20, 0, 1), new(40, 0, 2), new(80, 0, 3)
     ];
 
-    [ModifyInput]
-    public static (Entity, List<Player> playerStates) ProcessInput(string input)
+    public override (Entity, List<Player> playerStates) ProcessInput(string input)
     {
         var playerStates = Weapons.Select(weapon => new Player(100, weapon.Damage, 0, weapon.Cost)).ToList();
         var cachedStates = playerStates.ToArray();
@@ -36,13 +34,13 @@ file class Day21
     }
 
     [Answer(78)]
-    public static int Part1((Entity, List<Player> playerStates) inp)
+    public override object Part1((Entity, List<Player> playerStates) inp)
     {
         return inp.playerStates.OrderBy(ps => ps.MoneySpent).First(ps => Fight(ps, inp.Item1)).MoneySpent;
     }
 
     [Answer(148)]
-    public static int Part2((Entity, List<Player> playerStates) inp)
+    public override object Part2((Entity, List<Player> playerStates) inp)
     {
         return inp.playerStates.OrderByDescending(ps => ps.MoneySpent).First(ps => !Fight(ps, inp.Item1)).MoneySpent;
     }

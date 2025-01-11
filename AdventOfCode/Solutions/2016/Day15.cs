@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 15, "Timing is Everything")]
-file class Day15
+file class Day15() : Puzzle<(int count, int pos)[]>(2016, 15, "Timing is Everything")
 {
-    [ModifyInput]
-    public static (int count, int pos)[] ProcessInput(string input)
+    public override (int count, int pos)[] ProcessInput(string input)
     {
         List<(int c, int p)> disks = [];
         disks.AddRange(input.Split('\n')
@@ -16,7 +14,7 @@ file class Day15
 
     // [Test("")]
     [Answer(16824)]
-    public static long Part1((int count, int pos)[] inp)
+    public override object Part1((int count, int pos)[] inp)
     {
         var turn = 0L;
 
@@ -34,7 +32,7 @@ file class Day15
     }
 
     [Answer(3543984)]
-    public static long Part2((int count, int pos)[] inp)
+    public override object Part2((int count, int pos)[] inp)
     {
         var inpList = inp.ToList();
         inpList.Add((11, 0));

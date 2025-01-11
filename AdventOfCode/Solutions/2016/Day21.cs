@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 21, "Scrambled Letters and Hash")]
-file class Day21
+file class Day21() : Puzzle<string[][]>(2016, 21, "Scrambled Letters and Hash")
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
+    public override string[][] ProcessInput(string input) { return input.SuperSplit('\n', ' '); }
 
     [Answer("baecdfgh")]
-    public static string Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var abc = "abcdefgh".ToCharArray();
 
@@ -37,7 +36,7 @@ file class Day21
     }
 
     [Answer("cegdahbf")]
-    public static string Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         var abc = "fbgdceah".ToCharArray();
 

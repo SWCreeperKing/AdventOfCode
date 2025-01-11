@@ -1,20 +1,17 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 8, "Treetop Tree House")]
-file class Day8
-
+file class Day8() : Puzzle<Matrix2d<int>>(2022, 8, "Treetop Tree House")
 {
-    [ModifyInput]
-    public static Matrix2d<int> ProcessInput(string inp)
+    public override Matrix2d<int> ProcessInput(string inp)
     {
         var arr = inp.Split('\n').Select(s => s.Select(c => int.Parse($"{c}")).ToArray()).ToArray();
         return new Matrix2d<int>(arr);
     }
 
-    [Answer(1705)] public static long Part1(Matrix2d<int> inp) { return GetViewable(inp).Array.Count(b => b); }
+    [Answer(1705)] public override object Part1(Matrix2d<int> inp) { return GetViewable(inp).Array.Count(b => b); }
 
     [Answer(371200)]
-    public static long Part2(Matrix2d<int> inp)
+    public override object Part2(Matrix2d<int> inp)
     {
         var score = 0L;
 

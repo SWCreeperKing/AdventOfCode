@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 3, "Squares With Three Sides")]
-file class Day3
+file class Day3() : Puzzle<int[][]>(2016, 3, "Squares With Three Sides")
 {
     public static readonly Regex InputRegex = new(@"\s+(\d+)\s+(\d+)\s+(\d+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static int[][] ProcessInput(string inp)
+    public override int[][] ProcessInput(string inp)
     {
         return inp.Split('\n')
                   .Select(s => InputRegex.Match(s).Groups.Range(1..3).Select(int.Parse).ToArray())
@@ -14,7 +12,7 @@ file class Day3
     }
 
     [Answer(1032)]
-    public static long Part1(int[][] inp)
+    public override object Part1(int[][] inp)
     {
         return inp.Count(i =>
         {
@@ -27,7 +25,7 @@ file class Day3
     }
 
     [Answer(1838)]
-    public static long Part2(int[][] inp)
+    public override object Part2(int[][] inp)
     {
         List<int[]> triangles = [];
 

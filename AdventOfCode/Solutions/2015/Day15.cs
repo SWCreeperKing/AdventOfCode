@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 15, "Science for Hungry People")]
-file class Day15
+file class Day15() : Puzzle<long[][]>(2015, 15, "Science for Hungry People")
 {
-    [ModifyInput]
-    public static long[][] ProcessInput(string input)
+    public override long[][] ProcessInput(string input)
     {
         return input.Replace(",", string.Empty)
                     .Split('\n')
@@ -12,9 +10,8 @@ file class Day15
                     .ToArray();
     }
 
-    [Answer(21367368)] public static long Part1(long[][] inp) { return CookCookie(inp, false); }
-
-    [Answer(1766400)] public static long Part2(long[][] inp) { return CookCookie(inp, true); }
+    [Answer(21367368)] public override object Part1(long[][] inp) { return CookCookie(inp, false); }
+    [Answer(1766400)] public override object Part2(long[][] inp) { return CookCookie(inp, true); }
 
     private static long CookCookie(IReadOnlyCollection<long[]> ingredients, bool calories)
     {

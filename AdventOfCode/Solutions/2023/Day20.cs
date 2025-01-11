@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 20, "Pulse Propagation")]
-file class Day20
+file class Day20() : Puzzle<(string[] broadcaster, Dictionary<string, Module> modules)>(2023, 20, "Pulse Propagation")
 {
-    [ModifyInput]
-    public static (string[] broadcaster, Dictionary<string, Module> modules) ProcessInput(string input)
+    public override (string[] broadcaster, Dictionary<string, Module> modules) ProcessInput(string input)
     {
         string[] broadcaster = [];
         Dictionary<string, string[]> rawModules = new();
@@ -45,7 +43,7 @@ file class Day20
     }
 
     [Answer(899848294)]
-    public static long Part1((string[] broadcaster, Dictionary<string, Module> modules) inp)
+    public override object Part1((string[] broadcaster, Dictionary<string, Module> modules) inp)
     {
         var (broadcaster, modules) = inp;
 
@@ -94,7 +92,7 @@ file class Day20
     }
 
     [Answer(247454898168563)]
-    public static long Part2((string[] broadcaster, Dictionary<string, Module> modules) inp)
+    public override object Part2((string[] broadcaster, Dictionary<string, Module> modules) inp)
     {
         var (broadcaster, modules) = inp;
 

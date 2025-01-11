@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 1, "Calorie Counting")]
-file class Day1
+file class Day1() : Puzzle<int[]>(2022, 1, "Calorie Counting")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input)
+    public override int[] ProcessInput(string input)
     {
         return input.Split("\n\n")
                     .Select(s =>
@@ -12,7 +10,6 @@ file class Day1
                     .ToArray();
     }
 
-    [Answer(68923)] public static long Part1(int[] inp) { return inp.Max(); }
-
-    [Answer(200044)] public static long Part2(int[] inp) { return inp.OrderDescending().Take(3).Sum(); }
+    [Answer(68923)] public override object Part1(int[] inp) { return inp.Max(); }
+    [Answer(200044)] public override object Part2(int[] inp) { return inp.OrderDescending().Take(3).Sum(); }
 }

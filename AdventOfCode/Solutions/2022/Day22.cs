@@ -2,11 +2,9 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 22, "Monkey Map")]
-file class Day22
+file class Day22() : Puzzle<(Instruction[] instructions, Matrix2d<bool?> map)>(2022, 22, "Monkey Map")
 {
-    [ModifyInput]
-    public static (Instruction[] instructions, Matrix2d<bool?> map) ProcessInput(string inp)
+    public override (Instruction[] instructions, Matrix2d<bool?> map) ProcessInput(string inp)
     {
         var fileSep = inp.Split("\n\n");
         var rawMap = fileSep[0].Split('\n');
@@ -41,7 +39,7 @@ file class Day22
     }
 
     [Answer(60362)]
-    public static long Part1((Instruction[] instructions, Matrix2d<bool?> map) inp)
+    public override object Part1((Instruction[] instructions, Matrix2d<bool?> map) inp)
     {
         var (insts, map) = inp;
 
@@ -100,7 +98,7 @@ file class Day22
                };
     }
 
-    public static long Part2((Instruction[] instructions, Matrix2d<bool?> map) inp) { return 0; }
+    public override object Part2((Instruction[] instructions, Matrix2d<bool?> map) inp) { return 0; }
 }
 
 file class Instruction

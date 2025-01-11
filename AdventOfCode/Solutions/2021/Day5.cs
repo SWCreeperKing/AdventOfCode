@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 5, "Hydrothermal Venture")]
-file class Day5
+file class Day5() : Puzzle<(int x1, int x2, int y1, int y2)[]>(2021, 5, "Hydrothermal Venture")
 {
-    [ModifyInput]
-    public static (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
+    public override (int x1, int x2, int y1, int y2)[] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(s => s.Split(" -> ")
@@ -14,7 +12,7 @@ file class Day5
     }
 
     [Answer(5092)]
-    public static int Part1((int x1, int x2, int y1, int y2)[] inp)
+    public override object Part1((int x1, int x2, int y1, int y2)[] inp)
     {
         Dictionary<(int x, int y), int> dict = new();
 
@@ -34,7 +32,7 @@ file class Day5
     }
 
     [Answer(20484)]
-    public static int Part2((int x1, int x2, int y1, int y2)[] inp)
+    public override object Part2((int x1, int x2, int y1, int y2)[] inp)
     {
         Dictionary<(int x, int y), int> dict = new();
 

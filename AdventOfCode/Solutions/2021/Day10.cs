@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2021;
 
-[Day(2021, 10, "Syntax Scoring")]
-file class Day10
+file class Day10() : Puzzle<string>(2021, 10, "Syntax Scoring")
 {
-    [ModifyInput] public static string ProcessInput(string input) { return input; }
+    public override string ProcessInput(string input) { return input; }
 
     [Answer(271245)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         var wrong = 0;
         foreach (var line in inp.Split('\n'))
@@ -44,7 +43,7 @@ file class Day10
     }
 
     [Answer(1685293086)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         List<long> incomplete = [];
         foreach (var line in inp.Split('\n'))

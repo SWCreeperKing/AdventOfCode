@@ -1,8 +1,9 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 1, "Inverse Captcha")]
-file class Day1
+file class Day1() : Puzzle<string>(2017, 1, "Inverse Captcha")
 {
+    public override string ProcessInput(string input) { return input; }
+
     [Answer(1393)]
     public static long Part1(string input)
     {

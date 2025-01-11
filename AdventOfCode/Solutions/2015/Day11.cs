@@ -2,13 +2,12 @@ using static AdventOfCode.Helper;
 
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 11, "Corporate Policy")]
-file class Day11
+file class Day11() : Puzzle<int[]>(2015, 11, "Corporate Policy")
 {
-    [ModifyInput] public static int[] ProcessInput(string input) { return input.Select(c => c - 'a').ToArray(); }
+    public override int[] ProcessInput(string input) { return input.Select(c => c - 'a').ToArray(); }
 
     [Answer("hxbxxyzz")]
-    public static string Part1(int[] input)
+    public override object Part1(int[] input)
     {
         input[^1]--;
         while (true)
@@ -33,7 +32,7 @@ file class Day11
     }
 
     [Answer("hxcaabcc")]
-    public static string Part2(int[] input)
+    public override object Part2(int[] input)
     {
         Part1(input);
         input[^1]++;

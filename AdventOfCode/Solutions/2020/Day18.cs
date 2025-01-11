@@ -1,13 +1,12 @@
 namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 18, "Operation Order")]
-file class Day18
+file class Day18() : Puzzle<string[]>(2020, 18, "Operation Order")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
+    [Answer(12956356593940)] public override object Part1(string[] inp) { return inp.Sum(s => CalculateStart(s)); }
 
-    [Answer(12956356593940)] public static long Part1(string[] inp) { return inp.Sum(s => CalculateStart(s)); }
-
-    [Answer(94240043727614)] public static long Part2(string[] inp) { return inp.Sum(s => CalculateStart(s, false)); }
+    [Answer(94240043727614)]
+    public override object Part2(string[] inp) { return inp.Sum(s => CalculateStart(s, false)); }
 
     private static (int, int) GetPera(IList<string> equation)
     {

@@ -1,7 +1,6 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 17, "Pyroclastic Flow")]
-file class Day17
+file class Day17() : Puzzle<bool[]>(2022, 17, "Pyroclastic Flow")
 {
     public static readonly List<(int x, int y)[]> Pieces =
     [
@@ -12,11 +11,10 @@ file class Day17
         new[] { (0, 0), (1, 0), (0, 1), (1, 1) }
     ];
 
-    [ModifyInput]
-    public static bool[] ProcessInput(string inp) { return inp.ToCharArray().Select(c => c is '<').ToArray(); }
+    public override bool[] ProcessInput(string inp) { return inp.ToCharArray().Select(c => c is '<').ToArray(); }
 
     [Answer(3124)]
-    public static long Part1(bool[] inp)
+    public override object Part1(bool[] inp)
     {
         List<int>[] positions = { [], [], [], [], [], [], [] };
 
@@ -76,7 +74,7 @@ file class Day17
     // https://github.com/encse/adventofcode/blob/master/2022/Day17/Solution.cs
     // done 24+hr after puzzle release
     [Answer(1561176470569)]
-    public static long Part2(bool[] inp) { return new Tunnel(inp, 100).AddRocks(1000000000000).Height; }
+    public override object Part2(bool[] inp) { return new Tunnel(inp, 100).AddRocks(1000000000000).Height; }
 
     private static IEnumerable<Pos> Area(string[] mat)
     {

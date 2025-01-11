@@ -1,7 +1,6 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 2, "Rock Paper Scissors")]
-file class Day2
+file class Day2() : Puzzle<(int, int)[]>(2022, 2, "Rock Paper Scissors")
 {
     private static readonly Dictionary<string, int> RockPaperValue = new()
     {
@@ -12,8 +11,7 @@ file class Day2
     private static readonly int[] LoseArray = { 3, 1, 2 };
     private static readonly int[] ConditionArray = { 0, 3, 6 };
 
-    [ModifyInput]
-    public static (int, int)[] ProcessInput(string inp)
+    public override (int, int)[] ProcessInput(string inp)
     {
         return inp.Split('\n')
                   .Select(s => s.Split(' ')
@@ -22,14 +20,14 @@ file class Day2
     }
 
     [Answer(9177)]
-    public static long Part1((int, int)[] inp)
+    public override object Part1((int, int)[] inp)
     {
         return inp.Select(t => t.Item2 + (WinArray[t.Item1 - 1] == t.Item2 ? 6 : 0) + (t.Item1 == t.Item2 ? 3 : 0))
                   .Sum();
     }
 
     [Answer(12111)]
-    public static long Part2((int, int)[] inp)
+    public override object Part2((int, int)[] inp)
     {
         return inp.Select(t => ConditionArray[t.Item2 - 1]
                       .Inline(select => select + select switch

@@ -1,11 +1,11 @@
 using System.Text;
 using AdventOfCode.Experimental_Run.Misc;
+using CreepyUtil.ClrCnsl;
 using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 21, "Keypad Conundrum")]
-file class Day21
+file class Day21() : Puzzle<string[]>(2024, 21, "Keypad Conundrum")
 {
     public static readonly Direction[] MovingDirections = [Up, Right, Down, Left];
 
@@ -21,9 +21,9 @@ file class Day21
         ['<', 'v', '>'],
     ]);
 
-    [ModifyInput] public static string[] ProcessInput(string input) => input.Split('\n');
-    [Answer(128962)] public static long Part1(string[] inp) { return GetInstructions(inp); }
-    [Answer(159684145150108)] public static long Part2(string[] inp) { return GetInstructions(inp, 26); }
+    public override string[] ProcessInput(string input) => input.Split('\n');
+    [Answer(128962)] public override object Part1(string[] inp) { return GetInstructions(inp); }
+    [Answer(159684145150108)] public override object Part2(string[] inp) { return GetInstructions(inp, 26); }
 
     public static long GetInstructions(string[] lines, int depth = 3)
     {
@@ -81,5 +81,5 @@ file class Day21
         return $"{str}A";
     }
 
-    public static string RepeatChar(char c, int amount) { return amount <= 0 ? "" : Repeat(c, amount); }
+    public static string RepeatChar(char c, int amount) { return amount <= 0 ? "" : ClrCnsl.Repeat(c, amount); }
 }

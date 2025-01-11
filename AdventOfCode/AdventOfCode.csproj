@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="TextCopy" Version="6.2.1" />
+      <ProjectReference Include="..\Backbone\Backbone.csproj" />
     </ItemGroup>
 
 </Project>

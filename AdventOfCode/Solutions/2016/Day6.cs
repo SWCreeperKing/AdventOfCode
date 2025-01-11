@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 6, "Signals and Noise")]
-file class Day6
+file class Day6() : Puzzle<List<char>[]>(2016, 6, "Signals and Noise")
 {
-    [ModifyInput]
-    public static List<char>[] ProcessInput(string inp)
+    public override List<char>[] ProcessInput(string inp)
     {
         var newInput = inp.Split('\n');
         var columns = new List<char>[newInput[0].Length];
@@ -18,13 +16,13 @@ file class Day6
     }
 
     [Answer("tsreykjj")]
-    public static string Part1(List<char>[] inp)
+    public override object Part1(List<char>[] inp)
     {
         return inp.Select(list => list.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key).Join();
     }
 
     [Answer("hnfbujie")]
-    public static string Part2(List<char>[] inp)
+    public override object Part2(List<char>[] inp)
     {
         return inp.Select(list => list.GroupBy(c => c).OrderBy(g => g.Count()).First().Key).Join();
     }

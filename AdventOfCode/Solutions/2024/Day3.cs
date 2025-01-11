@@ -1,11 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 3, "Mull It Over")]
-file class Day3
+file class Day3() : Puzzle<string>(2024, 3, "Mull It Over")
 {
     public static readonly Regex Reg = new(@"mul\((\d+),(\d+)\)", RegexOptions.Compiled);
-    [Answer(170068701)] public static long Part1(string inp) { return Sum(inp); }
-    [Answer(78683433)] public static long Part2(string inp) { return Sum(inp, true); }
+    public override string ProcessInput(string input) { return input; }
+    [Answer(170068701)] public override object Part1(string inp) { return Sum(inp); }
+    [Answer(78683433)] public override object Part2(string inp) { return Sum(inp, true); }
 
     public static long Sum(string inp, bool part2 = false)
     {

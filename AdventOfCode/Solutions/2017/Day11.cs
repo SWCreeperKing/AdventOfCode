@@ -1,12 +1,12 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 11, "Hex Ed")]
-file class Day11 // https://www.redblobgames.com/grids/hexagons/#conversions
+// https://www.redblobgames.com/grids/hexagons/#conversions
+file class Day11() : Puzzle<string[]>(2017, 11, "Hex Ed")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split(','); }
+    public override string[] ProcessInput(string input) { return input.Split(','); }
 
     [Answer(698)]
-    public static long Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         int q = 0, r = 0, s = 0;
 
@@ -16,7 +16,7 @@ file class Day11 // https://www.redblobgames.com/grids/hexagons/#conversions
     }
 
     [Answer(1435)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         int q = 0, r = 0, s = 0;
         var max = 0;

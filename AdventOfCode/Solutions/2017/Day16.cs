@@ -2,13 +2,12 @@ using static System.Linq.Enumerable;
 
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 16, "Permutation Promenade")]
-file class Day16
+file class Day16() : Puzzle<string[]>(2017, 16, "Permutation Promenade")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split(','); }
+    public override string[] ProcessInput(string input) { return input.Split(','); }
 
     [Answer("ionlbkfeajgdmphc")]
-    public static string Part1(string[] inp)
+    public override object Part1(string[] inp)
     {
         var arr = Range(0, 16).ToList();
         Dance(arr, inp);
@@ -16,7 +15,7 @@ file class Day16
     }
 
     [Answer("fdnphiegakolcmjb")]
-    public static string Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         var (cycles, _, _) = Range(0, 16).GenerateCycleTillRepeat(l => Dance(l, inp));
         var mod = (int)((1e9 - 1) % cycles.Count);

@@ -4,14 +4,12 @@ using Convert = System.Convert;
 
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 14, "One-Time Pad")]
-file class Day14
+file class Day14() : Puzzle<string>(2016, 14, "One-Time Pad")
 {
     private static readonly Regex Match3 = new(@"(.)\1{2}", RegexOptions.Compiled);
-
-    [Answer(16106)] public static long Part1(string inp) { return FindHash(inp); }
-
-    [Answer(22423)] public static long Part2(string inp) { return FindHash(inp, true); }
+    public override string ProcessInput(string input) { return input; }
+    [Answer(16106)] public override object Part1(string inp) { return FindHash(inp); }
+    [Answer(22423)] public override object Part2(string inp) { return FindHash(inp, true); }
 
     public static long FindHash(string input, bool part2 = false)
     {

@@ -2,12 +2,11 @@ using System.Text;
 
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 10, "Elves Look, Elves Say")]
-file class Day10
+file class Day10() : Puzzle<string>(2015, 10, "Elves Look, Elves Say")
 {
-    [Answer(492982)] public static long Part1(string input) { return RunLook(input, 40); }
-
-    [Answer(6989950)] public static long Part2(string input) { return RunLook(input, 50); }
+    public override string ProcessInput(string input) { return input; }
+    [Answer(492982)] public override object Part1(string input) { return RunLook(input, 40); }
+    [Answer(6989950)] public override object Part2(string input) { return RunLook(input, 50); }
 
     private static string LookSay(string look)
     {

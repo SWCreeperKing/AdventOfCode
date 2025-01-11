@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 9, "Mirage Maintenance")]
-file class Day9
+file class Day9() : Puzzle<long[][]>(2023, 9, "Mirage Maintenance")
 {
-    [ModifyInput]
-    public static long[][] ProcessInput(string input)
+    public override long[][] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => s.Split(' ').Select(long.Parse).ToArray()).ToArray();
     }
 
     [Answer(1842168671)]
-    public static long Part1(long[][] inp)
+    public override object Part1(long[][] inp)
     {
         return inp.Select(line
                        => Solve(MakeDifferenceList(line), (l1, l2) => l1 + l2))
@@ -18,7 +16,7 @@ file class Day9
     }
 
     [Answer(903)]
-    public static long Part2(long[][] inp)
+    public override object Part2(long[][] inp)
     {
         return inp.Select(line => Solve(MakeDifferenceList(line)
                                        .Select(s => s.Rever())

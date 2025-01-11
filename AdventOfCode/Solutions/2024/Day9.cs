@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 9, "Disk Fragmenter")]
-file class Day9
+file class Day9() : Puzzle<string>(2024, 9, "Disk Fragmenter")
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public override string ProcessInput(string input) => input;
 
     [Answer(6242766523059)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         var line = inp.SelectArr(c => c - '0');
         var drive = new int[line.Sum()];
@@ -57,7 +56,7 @@ file class Day9
     }
 
     [Answer(6272188244509)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         var line = inp.SelectArr(c => c - '0');
         var drive = new int[line.Sum()];

@@ -4,20 +4,18 @@ using Parser = System.Func<string, System.Collections.Generic.IEnumerable<string
 
 namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 19, "Monster Messages")]
-file class Day19
+file class Day19() : Puzzle<(string[] inp, string[] rules, string[] realIn)>(2020, 19, "Monster Messages")
 {
     private static readonly Regex RuleRegex = new(@"""(\D)""", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static (string[] inp, string[] rules, string[] realIn) ProcessInput(string input)
+    public override (string[] inp, string[] rules, string[] realIn) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
         return (inp, inp[0].Split('\n'), inp[1].Split('\n'));
     }
 
     [Answer(122)]
-    public static int Part1((string[] inp, string[] rules, string[] realIn) inp)
+    public override object Part1((string[] inp, string[] rules, string[] realIn) inp)
     {
         Dictionary<int, string> splitRules = new();
         foreach (var (i, r) in inp.rules.Select(s =>
@@ -35,7 +33,7 @@ file class Day19
 
     // maybe in the future I will come up with a way for part 2 to be done with Regex
     [Answer(287)]
-    public static int Part2((string[] inp, string[] rules, string[] realIn) inp)
+    public override object Part2((string[] inp, string[] rules, string[] realIn) inp)
     {
         Dictionary<int, string> splitRules = new();
         foreach (var (i, r) in inp.rules.Select(s =>

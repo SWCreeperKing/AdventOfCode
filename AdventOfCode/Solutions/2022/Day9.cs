@@ -1,23 +1,19 @@
 using static CreepyUtil.Direction;
 
-
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 9, "Rope Bridge")]
-file class Day9
+file class Day9() : Puzzle<(Direction, int)[]>(2022, 9, "Rope Bridge")
 {
     private static readonly Dictionary<char, Direction> DirectionParse = new()
         { ['U'] = Up, ['R'] = Right, ['D'] = Down, ['L'] = Left };
 
-    [ModifyInput]
-    public static (Direction, int)[] ProcessInput(string inp)
+    public override (Direction, int)[] ProcessInput(string inp)
     {
         return inp.Split('\n').Select(s => (DirectionParse[s[0]], int.Parse(s[2..]))).ToArray();
     }
 
-    [Answer(5695)] public static long Part1((Direction, int)[] inp) { return PlaySnake(inp); }
-
-    [Answer(2434)] public static long Part2((Direction, int)[] inp) { return PlaySnake(inp, 9); }
+    [Answer(5695)] public override object Part1((Direction, int)[] inp) { return PlaySnake(inp); }
+    [Answer(2434)] public override object Part2((Direction, int)[] inp) { return PlaySnake(inp, 9); }
 
     private static long PlaySnake((Direction, int)[] inp, int snakeLength = 1)
     {

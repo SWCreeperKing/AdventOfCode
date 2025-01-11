@@ -1,15 +1,13 @@
 namespace AdventOfCode.Solutions._2018;
 
-[Day(2018, 1, "Chronal Calibration")]
-file class Day1
+file class Day1() : Puzzle<long[]>(2018, 1, "Chronal Calibration")
 {
-    [ModifyInput]
-    public static long[] ProcessInput(string input) { return input.Split('\n').Select(long.Parse).ToArray(); }
+    public override long[] ProcessInput(string input) { return input.Split('\n').Select(long.Parse).ToArray(); }
 
-    [Answer(497)] public static long Part1(long[] inp) { return inp.Sum(); }
+    [Answer(497)] public override object Part1(long[] inp) { return inp.Sum(); }
 
     [Answer(558)]
-    public static long Part2(long[] inp)
+    public override object Part2(long[] inp)
     {
         var finalFreq = 0L;
         List<long> history = [finalFreq];

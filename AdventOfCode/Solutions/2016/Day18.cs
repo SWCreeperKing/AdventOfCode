@@ -1,13 +1,10 @@
 namespace AdventOfCode.Solutions._2016;
 
-[Day(2016, 18, "Like a Rogue")]
-file class Day18
+file class Day18() : Puzzle<bool[]>(2016, 18, "Like a Rogue")
 {
-    [ModifyInput] public static bool[] ProcessInput(string input) { return input.Select(c => c == '^').ToArray(); }
-
-    [Answer(2013)] public static long Part1(bool[] inp) { return Generate(inp, 40 - 1); }
-
-    [Answer(20006289)] public static long Part2(bool[] inp) { return Generate(inp, 400000 - 1); }
+    public override bool[] ProcessInput(string input) { return input.Select(c => c == '^').ToArray(); }
+    [Answer(2013)] public override object Part1(bool[] inp) { return Generate(inp, 40 - 1); }
+    [Answer(20006289)] public override object Part2(bool[] inp) { return Generate(inp, 400000 - 1); }
 
     public static long Generate(bool[] inp, int leng)
     {

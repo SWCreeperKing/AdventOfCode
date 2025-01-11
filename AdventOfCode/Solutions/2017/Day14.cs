@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 14, "Disk Defragmentation")]
-file class Day14
+file class Day14() : Puzzle<string>(2017, 14, "Disk Defragmentation")
 {
-    [ModifyInput] public static string ProcessInput(string input) { return input; }
+    public override string ProcessInput(string input) { return input; }
 
     [Answer(8074)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         var count = 0L;
         for (var i = 0; i < 128; i++)
@@ -18,7 +17,7 @@ file class Day14
     }
 
     [Answer(1212)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         var map = new Matrix2d<char>(128).MatrixSelect(_ => '0');
 

@@ -3,18 +3,19 @@ using static System.Text.Json.JsonValueKind;
 
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 12, "JSAbacusFramework.io")]
-internal class Day12
+internal class Day12() : Puzzle<string>(2015, 12, "JSAbacusFramework.io")
 {
     private static readonly Regex NegativeRegex = new(@"[-\d]+", RegexOptions.Compiled);
 
+    public override string ProcessInput(string input) { return input; }
+
     [Answer(111754)]
-    public static long Part1(string input)
+    public override object Part1(string input)
     {
         return NegativeRegex.Matches(input).Aggregate(0, (counter, match) => counter + int.Parse(match.Value));
     }
 
-    [Answer(65402)] public static long Part2(string input) { return SearchWithoutRed(input); }
+    [Answer(65402)] public override object Part2(string input) { return SearchWithoutRed(input); }
 
     private static int SearchWithoutRed(string inp)
     {

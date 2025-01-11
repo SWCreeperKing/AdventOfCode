@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 12, "Hill Climbing Algorithm")]
-file class Day12
+file class Day12() : Puzzle<(Pos start, Pos end, Matrix2d<int> map)>(2022, 12, "Hill Climbing Algorithm")
 {
-    [ModifyInput]
-    public static (Pos start, Pos end, Matrix2d<int> map) ProcessInput(string inp)
+    public override (Pos start, Pos end, Matrix2d<int> map) ProcessInput(string inp)
     {
         var matrix = new Matrix2d<int>(inp.Split('\n')
                                           .Select(s => s.Select(c => c switch
@@ -23,9 +21,8 @@ file class Day12
         return (matrix.Find(0), end, matrix);
     }
 
-    [Answer(481)] public static long Part1((Pos start, Pos end, Matrix2d<int> map) inp) { return Solve(inp); }
-
-    [Answer(480)] public static long Part2((Pos start, Pos end, Matrix2d<int> map) inp) { return Solve(inp, true); }
+    [Answer(481)] public override object Part1((Pos start, Pos end, Matrix2d<int> map) inp) { return Solve(inp); }
+    [Answer(480)] public override object Part2((Pos start, Pos end, Matrix2d<int> map) inp) { return Solve(inp, true); }
 
     public static long Solve((Pos start, Pos end, Matrix2d<int> map) inp, bool part2 = false)
     {

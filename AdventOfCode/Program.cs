@@ -2,11 +2,10 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using static AdventOfCode.Experimental_Run.Starter;
 
 namespace AdventOfCode;
 
-public class Program
+public static class Program
 {
     // These are all solutions for
     // Advent of Code:
@@ -20,10 +19,9 @@ public class Program
         MessageId = "type: System.Int64[]")]
     public static void Main()
     {
-        CursorVis(false);
-        EnableAscii();
         InitHttpClient();
-        Start();
+        UserInterface ui = new();
+        ui.Loop();
     }
 
     public static void InitHttpClient()
@@ -38,27 +36,26 @@ public class Program
         };
     }
 
-    public static string SaveInput(YearDayInfo info)
+    public static string SaveInput<T>(Puzzle<T> info)
     {
-        Write($"[#yellow]Downloading Input for [{info}]... ");
+        Console.WriteLine($"[#yellow]Downloading Input for [{info}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
             Task.Delay((int)(3e4 - (time - LastDownload))).GetAwaiter().GetResult();
 
-        Console.WriteLine();
         var input = client.GetStringAsync(info.Url).GetAwaiter().GetResult();
         if (!Directory.Exists($"{InputDir}/{info.Year}")) Directory.CreateDirectory($"{InputDir}/{info.Year}");
 
-        File.WriteAllText(info.File, input);
-        WriteLine("[#darkyellow][Done]");
+        File.WriteAllText(info.FilePath, input);
+        Console.WriteLine("[#darkyellow][Done]");
         LastDownload = time;
         return input;
     }
 
     public static string[][] GetLeaderBoard(int year)
     {
-        Write($"[#yellow]Downloading leaderboard for [{year}]... ");
+        Console.WriteLine($"[#yellow]Downloading leaderboard for [{year}]... ");
         var time = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
         if (time - LastDownload <= 3e4) // 30s
@@ -68,7 +65,7 @@ public class Program
                             .GetAwaiter()
                             .GetResult();
         var leaderboardRaw = content.Remove("\r").Split('\n');
-        WriteLine("[#darkyellow][Done]");
+        Console.WriteLine("[#darkyellow][Done]");
         LastDownload = time;
 
         var leaderboardStartText = leaderboardRaw.First(s => s.Contains("Day "));

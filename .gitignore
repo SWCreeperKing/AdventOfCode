@@ -1,5 +1,5 @@
-﻿/AdventOfCode/bin/
-/AdventOfCode/obj/
+﻿/bin/
+/obj/
 /.idea/
 /AdventOfCode/Token.cs
 /AdventOfCode/Resource

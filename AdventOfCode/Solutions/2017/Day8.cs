@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 8, "I Heard You Like Registers")]
-file class Day8
+file class Day8() : Puzzle<string[][]>(2017, 8, "I Heard You Like Registers")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string input)
+    public override string[][] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(line =>
@@ -16,7 +14,7 @@ file class Day8
     }
 
     [Answer(5946)]
-    public static long Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var reg = inp.Select(arr => arr[0]).Distinct().ToDictionary(s => s, _ => 0L);
 
@@ -30,7 +28,7 @@ file class Day8
     }
 
     [Answer(6026)]
-    public static long Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         var max = 0L;
         var reg = inp.Select(arr => arr[0]).Distinct().ToDictionary(s => s, _ => 0L);

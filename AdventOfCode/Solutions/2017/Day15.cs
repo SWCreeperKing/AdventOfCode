@@ -1,19 +1,17 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 15, "Dueling Generators")]
-file class Day15
+file class Day15() : Puzzle<(int a, int b)>(2017, 15, "Dueling Generators")
 {
     private const long Lowest = 65536;
 
-    [ModifyInput]
-    public static (int a, int b) ProcessInput(string input)
+    public override (int a, int b) ProcessInput(string input)
     {
         var lines = input.Split('\n');
         return (int.Parse(lines[0].Split(' ')[^1]), int.Parse(lines[1].Split(' ')[^1]));
     }
 
     [Answer(573)]
-    public static long Part1((int a, int b) inp)
+    public override object Part1((int a, int b) inp)
     {
         var count = 0;
 
@@ -31,7 +29,7 @@ file class Day15
     }
 
     [Answer(294)]
-    public static long Part2((int a, int b) inp)
+    public override object Part2((int a, int b) inp)
     {
         var count = 0;
 

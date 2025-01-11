@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2018;
 
-[Day(2018, 3, "No Matter How You Slice It")]
-file class Day3
+file class Day3() : Puzzle<Day3.Rect[]>(2018, 3, "No Matter How You Slice It")
 {
     public static readonly Regex Reg = new(@"#\d+ @ (\d+),(\d+): (\d+)x(\d+)", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static Rect[] ProcessInput(string input)
+    public override Rect[] ProcessInput(string input)
     {
         var split = input.Split('\n');
         var rects = new Rect[split.Length];
@@ -20,10 +18,10 @@ file class Day3
         return rects;
     }
 
-    [Answer(112418)] public static long Part1(Rect[] inp) { return MakeMap(inp).Array.Count(l => l?.Count > 1); }
+    [Answer(112418)] public override object Part1(Rect[] inp) { return MakeMap(inp).Array.Count(l => l?.Count > 1); }
 
     [Answer(560)]
-    public static long Part2(Rect[] inp)
+    public override object Part2(Rect[] inp)
     {
         var map = MakeMap(inp);
         var singleClaims = map.Array.Where(l => l?.Count == 1).Select(l => l[0]).ToHashSet();

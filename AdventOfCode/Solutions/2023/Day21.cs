@@ -3,17 +3,15 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 21, "Step Counter")]
-file class Day21
+file class Day21() : Puzzle<Matrix2d<char>>(2023, 21, "Step Counter")
 {
-    [ModifyInput]
-    public static Matrix2d<char> ProcessInput(string input)
+    public override Matrix2d<char> ProcessInput(string input)
     {
         return new Matrix2d<char>(input.Split('\n').Select(s => s.ToCharArray()).ToArray());
     }
 
     [Answer(3847)]
-    public static long Part1(Matrix2d<char> inp)
+    public override object Part1(Matrix2d<char> inp)
     {
         HashSet<Pos> locations = [inp.Find('S')];
 
@@ -43,7 +41,7 @@ file class Day21
     }
 
     [Answer(637537341306357)]
-    public static long Part2(Matrix2d<char> inp)
+    public override object Part2(Matrix2d<char> inp)
     {
         List<long> counter = [];
         HashSet<Pos> locations = [inp.Find('S')];

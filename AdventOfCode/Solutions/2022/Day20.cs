@@ -1,11 +1,10 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 20, "Grove Positioning System")]
-file class Day20
+file class Day20() : Puzzle<int[]>(2022, 20, "Grove Positioning System")
 {
-    [ModifyInput] public static int[] ProcessInput(string inp) { return inp.Split('\n').ToIntArr(); }
+    public override int[] ProcessInput(string inp) { return inp.Split('\n').ToIntArr(); }
 
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         var arr = inp.ToList();
         var moved = new bool[inp.Length].ToList();
@@ -37,5 +36,5 @@ file class Day20
         return sum;
     }
 
-    public static long Part2(int[] inp) { return 0; }
+    public override object Part2(int[] inp) { return 0; }
 }

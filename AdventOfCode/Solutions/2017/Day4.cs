@@ -1,14 +1,13 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 4, "High-Entropy Passphrases")]
-file class Day4
+file class Day4() : Puzzle<string[]>(2017, 4, "High-Entropy Passphrases")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split('\n'); }
+    public override string[] ProcessInput(string input) { return input.Split('\n'); }
 
-    [Answer(451)] public static long Part1(string[] inp) { return inp.Count(line => line.Split(' ').IsAllUnique()); }
+    [Answer(451)] public override object Part1(string[] inp) { return inp.Count(line => line.Split(' ').IsAllUnique()); }
 
     [Answer(223)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         return inp.Select(line => line.Split(' '))
                   .Count(split =>

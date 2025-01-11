@@ -1,14 +1,12 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 15, "Lens Library")]
-file class Day15
+file class Day15() : Puzzle<string[]>(2023, 15, "Lens Library")
 {
-    [ModifyInput] public static string[] ProcessInput(string input) { return input.Split(','); }
-
-    [Answer(502139)] public static long Part1(string[] inp) { return inp.Select(HashString).Sum(); }
+    public override string[] ProcessInput(string input) { return input.Split(','); }
+    [Answer(502139)] public override object Part1(string[] inp) { return inp.Select(HashString).Sum(); }
 
     [Answer(284132)]
-    public static long Part2(string[] inp)
+    public override object Part2(string[] inp)
     {
         Dictionary<int, List<(string, int)>> boxes = new();
 

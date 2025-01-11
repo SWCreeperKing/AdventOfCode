@@ -2,17 +2,17 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 18, "Duet")]
-file class Day18
+[Run]
+file class Day18() : Puzzle<string[][]>(2017, 18, "Duet")
 {
-    [ModifyInput] public static string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
+    public override string[][] ProcessInput(string input) => input.SuperSplit('\n', ' ');
 
-    [Answer(7071)] public static long Part1(string[][] inp) { return new DuetProgram(inp).Run()[^1]; }
+    [Answer(7071)] public override object Part1(string[][] inp) { return new DuetProgram(inp).Run()[^1]; }
 
     [Copy]
-    [Answer(127, AnswerState.Low)]
+    // [Answer(127, AnswerState.Low)]
     // [Test("snd 1\nsnd 2\nsnd p\nrcv a\nrcv b\nrcv c\nrcv d")]
-    public static long Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         var sent = 0;
         var deadLock1 = 0;
@@ -24,7 +24,6 @@ file class Day18
         while (true)
         {
             var run1 = p1.Run();
-            sent += run1.Count;
             if (run1.Count == 0)
             {
                 deadLock1++;
@@ -39,6 +38,7 @@ file class Day18
             }
             
             var run2 = p2.Run();
+            sent += run2.Count;
             if (run2.Count == 0)
             {
                 deadLock2++;

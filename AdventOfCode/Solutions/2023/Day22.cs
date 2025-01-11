@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 22, "Sand Slabs")]
-file class Day22
+file class Day22() : Puzzle<List<Cube>>(2023, 22, "Sand Slabs")
 {
-    [ModifyInput]
-    public static List<Cube> ProcessInput(string input)
+    public override List<Cube> ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select((s, i)
@@ -18,13 +16,13 @@ file class Day22
     }
 
     [Answer(421)]
-    public static long Part1(List<Cube> inp)
+    public override object Part1(List<Cube> inp)
     {
         return inp.Count(cube => cube.Supporting.Count == 0 || cube.Supporting.All(cube => cube.SupportBy.Count > 1));
     }
 
     [Answer(39247)]
-    public static long Part2(List<Cube> inp)
+    public override object Part2(List<Cube> inp)
     {
         var count = 0L;
         foreach (var cube in inp)

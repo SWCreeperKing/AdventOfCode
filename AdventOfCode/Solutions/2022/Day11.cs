@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 11, "Monkey in the Middle")]
-file class Day11
+file class Day11() : Puzzle<string[][]>(2022, 11, "Monkey in the Middle")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string inp)
+    public override string[][] ProcessInput(string inp)
     {
         return inp.Split("\n\n")
                   .Select(s => s.Split('\n').Skip(1).ToArray())
@@ -12,7 +10,7 @@ file class Day11
     }
 
     [Answer(61503)]
-    public static long Part1(string[][] inp)
+    public override object Part1(string[][] inp)
     {
         var monkeys = new List<Monkey>();
 
@@ -66,7 +64,7 @@ file class Day11
     }
 
     [Answer(14081365540)]
-    public static long Part2(string[][] inp)
+    public override object Part2(string[][] inp)
     {
         var monkeys = new List<Monkey>();
 

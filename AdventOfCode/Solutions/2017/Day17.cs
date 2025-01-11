@@ -1,12 +1,11 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 17, "Spinlock")]
-file class Day17
+file class Day17() : Puzzle<int>(2017, 17, "Spinlock")
 {
-    [ModifyInput] public static int ProcessInput(string input) => int.Parse(input);
+    public override int ProcessInput(string input) => int.Parse(input);
 
     [Answer(1025)]
-    public static long Part1(int inp)
+    public override object Part1(int inp)
     {
         List<int> spinlock = [0];
         inp++;
@@ -20,7 +19,7 @@ file class Day17
     }
 
     [Answer(37803463)]
-    public static long Part2(int inp)
+    public override object Part2(int inp)
     {
         inp++;
         var last = 0;

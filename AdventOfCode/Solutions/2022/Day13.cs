@@ -2,11 +2,12 @@ using System.Text.Json.Nodes;
 
 namespace AdventOfCode.Solutions._2022;
 
-[Day(2022, 13, "Distress Signal")]
-file class Day13
+file class Day13() : Puzzle<string>(2022, 13, "Distress Signal")
 {
+    public override string ProcessInput(string input) { return input; }
+
     [Answer(6623)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         return inp.Split("\n\n")
                   .Select((s, i) =>
@@ -19,7 +20,7 @@ file class Day13
     }
 
     [Answer(23049)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         var divPacks = GetJson("[[2]]", "[[6]]");
         var rawPacks = inp.Replace("\n\n", "\n").Split('\n').Select(GetJsonRaw);

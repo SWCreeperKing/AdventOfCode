@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 5, "Print Queue")]
-file class Day5
+file class Day5() : Puzzle<int[][][]>(2024, 5, "Print Queue")
 {
-    [ModifyInput]
-    public static int[][][] ProcessInput(string input)
+    public override int[][][] ProcessInput(string input)
     {
         var sections = input.Split("\n\n");
         return
@@ -15,13 +13,13 @@ file class Day5
     }
 
     [Answer(5964)]
-    public static long Part1(int[][][] inp)
+    public override object Part1(int[][][] inp)
     {
         return inp[1].Where(line => Check(inp[0], line)).Sum(line => line[(int)Math.Floor(line.Length / 2f)]);
     }
 
     [Answer(4719)]
-    public static long Part2(int[][][] inp)
+    public override object Part2(int[][][] inp)
     {
         var ruleDict = inp[0]
                       .GroupBy(arr => arr[0])

@@ -1,16 +1,14 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 12, "Rain Risk")]
-file class Day12
+file class Day12() : Puzzle<(char, int)[]>(2020, 12, "Rain Risk")
 {
-    [ModifyInput]
-    public static (char, int)[] ProcessInput(string input)
+    public override (char, int)[] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => (s[0], int.Parse(s[1..]))).ToArray();
     }
 
     [Answer(759)]
-    public static long Part1((char, int)[] inp)
+    public override object Part1((char, int)[] inp)
     {
         (int, int)[] dir = [(0, 1), (1, 0), (0, -1), (-1, 0)];
         int[] ship = [0, 0];
@@ -37,7 +35,7 @@ file class Day12
     }
 
     [Answer(45763)]
-    public static long Part2((char, int)[] inp)
+    public override object Part2((char, int)[] inp)
     {
         int[] ship = [0, 0];
         int[] waypoint = [10, -1];

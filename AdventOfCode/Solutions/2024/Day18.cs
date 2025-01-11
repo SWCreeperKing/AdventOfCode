@@ -2,11 +2,9 @@ using AdventOfCode.Experimental_Run.Misc;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 18, "RAM Run")]
-file class Day18
+file class Day18() : Puzzle<Pos[]>(2024, 18, "RAM Run")
 {
-    [ModifyInput]
-    public static Pos[] ProcessInput(string input)
+    public override Pos[] ProcessInput(string input)
     {
         return input
               .Split('\n')
@@ -17,7 +15,7 @@ file class Day18
     }
 
     [Answer(306)]
-    public static long Part1(Pos[] inp)
+    public override object Part1(Pos[] inp)
     {
         Matrix2d<char> map = new(71);
         for (var i = 0; i < 1024; i++)
@@ -31,7 +29,7 @@ file class Day18
     }
 
     [Answer("38,63")]
-    public static string Part2(Pos[] inp)
+    public override object Part2(Pos[] inp)
     {
         Matrix2d<char> map = new(71);
         for (var i = 0; i < 1024; i++)

@@ -1,17 +1,14 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 7, "Camel Cards")]
-file class Day7
+file class Day7() : Puzzle<string[][]>(2023, 7, "Camel Cards")
 {
-    [ModifyInput]
-    public static string[][] ProcessInput(string input)
+    public override string[][] ProcessInput(string input)
     {
         return input.Split('\n').Select(s => s.Split(' ').ToArray()).ToArray();
     }
 
-    [Answer(250898830)] public static long Part1(string[][] inp) { return Solve(Parse(inp)); }
-
-    [Answer(252127335)] public static long Part2(string[][] inp) { return Solve(Parse(inp, true)); }
+    [Answer(250898830)] public override object Part1(string[][] inp) { return Solve(Parse(inp)); }
+    [Answer(252127335)] public override object Part2(string[][] inp) { return Solve(Parse(inp, true)); }
 
     public static IEnumerable<Hand> Parse(string[][] inp, bool part2 = false)
     {

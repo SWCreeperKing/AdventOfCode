@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2017;
 
-[Day(2017, 13, "Packet Scanners")]
-file class Day13
+file class Day13() : Puzzle<Dictionary<int, int>>(2017, 13, "Packet Scanners")
 {
-    [ModifyInput]
-    public static Dictionary<int, int> ProcessInput(string input)
+    public override Dictionary<int, int> ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(line =>
@@ -16,7 +14,7 @@ file class Day13
     }
 
     [Answer(648)]
-    public static long Part1(Dictionary<int, int> inp)
+    public override object Part1(Dictionary<int, int> inp)
     {
         List<int> intersect = [];
         for (var i = 0; i <= inp.Keys.Max(); i++)
@@ -36,7 +34,7 @@ file class Day13
         }
     }
 
-    public static long Part2(Dictionary<int, int> inp)
+    public override object Part2(Dictionary<int, int> inp)
     {
         for (var delay = 0;; delay++)
         {

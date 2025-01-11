@@ -2,11 +2,9 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 15, "Warehouse Woes")]
-file class Day15
+file class Day15() : Puzzle<(string map, Direction[] instructions)>(2024, 15, "Warehouse Woes")
 {
-    [ModifyInput]
-    public static (string map, Direction[] instructions) ProcessInput(string input)
+    public override (string map, Direction[] instructions) ProcessInput(string input)
     {
         var sep = input.Split("\n\n");
         var instructions = sep[1]
@@ -24,7 +22,7 @@ file class Day15
     }
 
     [Answer(1457740)]
-    public static long Part1((string map, Direction[] instructions) inp)
+    public override object Part1((string map, Direction[] instructions) inp)
     {
         Matrix2d<char> map = new(inp.map.Split('\n').SelectArr(line => line.ToCharArray()));
         var bot = map.Find(c => c == '@');
@@ -79,7 +77,7 @@ file class Day15
     }
 
     [Answer(1467145)]
-    public static long Part2((string map, Direction[] instructions) inp)
+    public override object Part2((string map, Direction[] instructions) inp)
     {
         Matrix2d<char> map = new(inp.map
                                     .LoopReplace(("#", "##"), ("O", "[]"), (".", ".."), ("@", "@."))

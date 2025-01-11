@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2023;
 
-[Day(2023, 5, "If You Give A Seed A Fertilizer")]
-file class Day5
+file class Day5() : Puzzle<(long[] seeds, (long start, long start2, long end2)[][] ranges)>(2023, 5, "If You Give A Seed A Fertilizer")
 {
-    [ModifyInput]
-    public static (long[] seeds, (long start, long start2, long end2)[][] ranges) ProcessInput(string input)
+    public override (long[] seeds, (long start, long start2, long end2)[][] ranges) ProcessInput(string input)
     {
         var inp = input.Split("\n\n");
         var seeds = inp[0].Remove("seeds: ").CleanSpaces().Trim().Split(' ').Select(long.Parse);
@@ -23,13 +21,13 @@ file class Day5
     }
 
     [Answer(265018614)]
-    public static long Part1((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
+    public override object Part1((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
     {
         return inp.seeds.Select(i => FindLocation(inp.ranges, i)).Min();
     }
 
     [Answer(63179500)]
-    public static long Part2((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
+    public override object Part2((long[] seeds, (long start, long start2, long end2)[][] ranges) inp)
     {
         List<long> seeds = [];
 

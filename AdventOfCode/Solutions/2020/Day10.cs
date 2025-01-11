@@ -1,13 +1,11 @@
 ﻿namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 10, "Adapter Array")]
-file class EDay10
+file class Day10() : Puzzle<int[]>(2020, 10, "Adapter Array")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).Order().ToArray(); }
+    public override int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).Order().ToArray(); }
 
     [Answer(1848)]
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         var last = 0;
         var counter = new[] { 0, 1 };
@@ -22,7 +20,7 @@ file class EDay10
     }
 
     [Answer(8099130339328)]
-    public static long Part2(int[] inp)
+    public override object Part2(int[] inp)
     {
         var numbers = inp.Prepend(0).ToList();
         numbers.Add(numbers.Max() + 3);

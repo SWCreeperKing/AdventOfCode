@@ -1,10 +1,8 @@
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 19, "Medicine for Rudolph")]
-file class Day19
+file class Day19() : Puzzle<(string, List<(string, string)>)>(2015, 19, "Medicine for Rudolph")
 {
-    [ModifyInput]
-    public static (string, List<(string, string)>) ProcessInput(string input)
+    public override (string, List<(string, string)>) ProcessInput(string input)
     {
         var baseSplit = input.Replace("\r", string.Empty).Split("\n\n");
         var dict = baseSplit[0]
@@ -19,7 +17,7 @@ file class Day19
     }
 
     [Answer(535)]
-    public static long Part1((string, List<(string, string)>) inp)
+    public override object Part1((string, List<(string, string)>) inp)
     {
         List<string> replaced = [];
         var replaceString = inp.Item1;
@@ -37,7 +35,7 @@ file class Day19
     }
 
     [Answer(212)]
-    public static long Part2((string, List<(string, string)>) inp)
+    public override object Part2((string, List<(string, string)>) inp)
     {
         var reversed = inp.Item2.Select(ss => (ss.Item2, ss.Item1)).ToList();
         var finalE = reversed.Where(ss => ss.Item2 == "e").ToList();

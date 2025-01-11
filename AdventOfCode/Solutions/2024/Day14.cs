@@ -1,12 +1,10 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 14, "Restroom Redoubt")]
-file class Day14
+file class Day14() : Puzzle<Pos[][]>(2024, 14, "Restroom Redoubt")
 {
     public static readonly Regex Reg = new(@"p=([-\d]+),([-\d]+) v=([-\d]+),([-\d]+)");
 
-    [ModifyInput]
-    public static Pos[][] ProcessInput(string input)
+    public override Pos[][] ProcessInput(string input)
     {
         return input.Split('\n')
                     .Select(line => Reg.Match(line).Groups.Range(1..4).SelectArr(int.Parse))
@@ -15,7 +13,7 @@ file class Day14
     }
 
     [Answer(222901875)]
-    public static long Part1(Pos[][] inp)
+    public override object Part1(Pos[][] inp)
     {
         Pos size = (101, 103);
         var halfSize = ((int)Math.Floor(size.X / 2f), (int)Math.Floor(size.Y / 2f));
@@ -43,7 +41,7 @@ file class Day14
     }
 
     [Answer(6243)]
-    public static long Part2(Pos[][] inp)
+    public override object Part2(Pos[][] inp)
     {
         Pos size = (101, 103);
         for (var j = 0;; j++)

@@ -1,13 +1,11 @@
 namespace AdventOfCode.Solutions._2019;
 
-[Day(2019, 2, "Program Alarm")]
-file class Day2
+file class Day2() : Puzzle<int[]>(2019, 2, "Program Alarm")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input) { return input.Split(',').Select(int.Parse).ToArray(); }
+    public override int[] ProcessInput(string input) { return input.Split(',').Select(int.Parse).ToArray(); }
 
     [Answer(2692315)]
-    public static long Part1(int[] inp)
+    public override object Part1(int[] inp)
     {
         inp[1] = 12;
         inp[2] = 2;
@@ -23,7 +21,7 @@ file class Day2
     }
 
     [Answer(9507)]
-    public static long Part2(int[] inpRaw)
+    public override object Part2(int[] inpRaw)
     {
         for (var j = 0; j < 100; j++)
         for (var k = 0; k < 100; k++)

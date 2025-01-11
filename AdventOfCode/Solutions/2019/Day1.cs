@@ -1,15 +1,13 @@
 namespace AdventOfCode.Solutions._2019;
 
-[Day(2019, 1, "The Tyranny of the Rocket Equation")]
-file class Day1
+file class Day1() : Puzzle<int[]>(2019, 1, "The Tyranny of the Rocket Equation")
 {
-    [ModifyInput]
-    public static int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).ToArray(); }
+    public override int[] ProcessInput(string input) { return input.Split('\n').Select(int.Parse).ToArray(); }
 
-    [Answer(3465245)] public static long Part1(IEnumerable<int> inp) { return inp.Select(i => i / 3 - 2).Sum(); }
+    [Answer(3465245)] public override object Part1(int[] inp) { return inp.Select(i => i / 3 - 2).Sum(); }
 
     [Answer(5194970)]
-    public static long Part2(IEnumerable<int> inp)
+    public override object Part2(int[] inp)
     {
         return inp.Select(i =>
                    {

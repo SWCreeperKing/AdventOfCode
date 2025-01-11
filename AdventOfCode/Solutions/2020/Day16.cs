@@ -1,16 +1,14 @@
 namespace AdventOfCode.Solutions._2020;
 
-[Day(2020, 16, "Ticket Translation")]
-file class Day16
+file class Day16() : Puzzle<(string[] inp, string[] nearbyTickets)>(2020, 16, "Ticket Translation")
 {
-    [ModifyInput]
-    public static (string[] inp, string[] nearbyTickets) ProcessInput(string input)
+    public override (string[] inp, string[] nearbyTickets) ProcessInput(string input)
     {
         return input.Split("\n\n").Flatten(arr => (arr, arr[2].Split('\n')[1..]));
     }
 
     [Answer(29878)]
-    public static long Part1((string[] inp, string[] nearbyTickets) inp)
+    public override object Part1((string[] inp, string[] nearbyTickets) inp)
     {
         var rules = inp.inp[0].Split('\n');
         List<Func<int, bool>> requirements = [];
@@ -30,7 +28,7 @@ file class Day16
     }
 
     [Answer(855438643439)]
-    public static long Part2((string[] inp, string[] nearbyTickets) inp)
+    public override object Part2((string[] inp, string[] nearbyTickets) inp)
     {
         var myTicket = inp.inp[1].Split('\n')[^1].Split(",");
         Dictionary<string, Func<int, bool>> requirementsRaw = new();

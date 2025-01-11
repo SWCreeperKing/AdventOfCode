@@ -3,13 +3,12 @@ using static CreepyUtil.Direction;
 
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 16, "Reindeer Maze")]
-file class Day16
+file class Day16() : Puzzle<string>(2024, 16, "Reindeer Maze")
 {
-    [ModifyInput] public static string ProcessInput(string input) => input;
+    public override string ProcessInput(string input) => input;
 
     [Answer(90460)]
-    public static long Part1(string inp)
+    public override object Part1(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
         var start = map.Find(c => c is 'S');
@@ -20,7 +19,7 @@ file class Day16
     }
 
     [Answer(575)]
-    public static long Part2(string inp)
+    public override object Part2(string inp)
     {
         Matrix2d<char> map = new(inp.Split('\n').SelectArr(line => line.ToCharArray()));
         var start = map.Find(c => c is 'S');
@@ -77,7 +76,7 @@ file class Day16
                     if (deadEnds.Contains(intersections[j])) continue;
                     var set = (intersections[i], intersections[j]);
                     if (deadEnds2.Contains(set)) continue;
-                    
+
                     copy[intersections[j]] = '#';
                     try
                     {

@@ -1,25 +1,23 @@
 namespace AdventOfCode.Solutions._2024;
 
-[Day(2024, 2, "Red-Nosed Reports")]
-file class Day2
+file class Day2() : Puzzle<int[][]>(2024, 2, "Red-Nosed Reports")
 {
-    [ModifyInput]
-    public static int[][] ProcessInput(string input)
+    public override int[][] ProcessInput(string input)
     {
         return input.Split('\n').SelectArr(l => l.Split(' ').SelectArr(int.Parse));
     }
 
-    [Answer(442)] public static long Part1(int[][] inp) { return inp.Count(Check); }
+    [Answer(442)] public override object Part1(int[][] inp) { return inp.Count(Check); }
 
     [Answer(493)]
-    public static long Part2(int[][] inp)
+    public override object Part2(int[][] inp)
     {
         return inp
            .Count(ints => (..ints.Length)
                .LoopSelect(l => Check(ints.SkipIndexArr((int)l)), _ => true));
     }
 
-    public static bool Check(int[] ints)
+    public bool Check(int[] ints)
     {
         return ints.WindowArr(2, arr => arr[0] - arr[1])
                    .Inline(deltas

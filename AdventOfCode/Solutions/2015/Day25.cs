@@ -2,13 +2,11 @@ using System.Numerics;
 
 namespace AdventOfCode.Solutions._2015;
 
-[Day(2015, 25, "Let It Snow")]
-file class Day25
+file class Day25() : Puzzle<Vector2>(2015, 25, "Let It Snow")
 {
     public static readonly Regex InputRegex = new(@"(?:\w+) row (\d+), column (\d+).", RegexOptions.Compiled);
 
-    [ModifyInput]
-    public static Vector2 ProcessInput(string inp)
+    public override Vector2 ProcessInput(string inp)
     {
         return InputRegex.Match(inp)
                          .Groups.Range(1..2)
@@ -17,7 +15,7 @@ file class Day25
     }
 
     [Answer(8997277)]
-    public static long Part1(Vector2 inp)
+    public override object Part1(Vector2 inp)
     {
         var pos = Vector2.One;
         var pass = 1;
